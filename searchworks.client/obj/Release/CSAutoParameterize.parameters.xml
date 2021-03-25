@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="DefaultConnection_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\DawnKTO\\Documents\\Visual\ Studio\ 2019\\searchworks\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="searchworks.client.Models.checkList-Web.config Connection String" description="searchworks.client.Models.checkList Connection String used in web.config by the application to access the database." defaultValue="searchworks.client.Models.checkList_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\DawnKTO\\Documents\\Visual\ Studio\ 2019\\searchworks\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='searchworks.client.Models.checkList']/@connectionString" />
+  </parameter>
+  <parameter name="searchworks.client.Models.dbChecks-Web.config Connection String" description="searchworks.client.Models.dbChecks Connection String used in web.config by the application to access the database." defaultValue="searchworks.client.Models.dbChecks_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\DawnKTO\\Documents\\Visual\ Studio\ 2019\\searchworks\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='searchworks.client.Models.dbChecks']/@connectionString" />
+  </parameter>
+</parameters>

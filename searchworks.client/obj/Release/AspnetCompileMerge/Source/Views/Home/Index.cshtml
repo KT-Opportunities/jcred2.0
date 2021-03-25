@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_LoginPartial.cshtml";
+}
+@model searchworks.client.Models.Login
+
+
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+ <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/ico" href="~/Content/img/White Logo.png">
+
+
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/signin.css">
+
+</head>
+<body>
+
+    <div class="signup">
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post,
+                            new { @class = "login100-form validate-form", enctype = "multipart/form-data" }))
+        {
+
+            <img src="~/Content/img/Blue Logo.png" alt="can't display image" id="imgs">
+            <h1 class="head">Sign In to KT Opportunities</h1>
+            <h3 class="tag">Use your email account</h3>
+            <img src="~/Content/img/email.png" alt="can't display image" id="email">
+            @*@Html.TextBoxFor(a => a.Email, new { @class = "log", id = "Email", placeholder = "Email" })
+            @Html.ValidationMessageFor(a => a.Email)*@
+            @Html.TextBox("Email", null, new { @class = "log", id = "Email", placeholder = "Email" })
+
+            <img src="~/Content/img/Password.png" alt="can't display image" id="pass">
+            @*@Html.TextBoxFor(a => a.Password, new { @class = "log2", id = "Password", placeholder = "Password", @type = "password" })
+            @Html.ValidationMessageFor(a => a.Password)*@
+            @Html.TextBox("Password", null, new { @class = "log2", id = "Password", placeholder = "Password", @type = "password" })
+
+            <button type="submit" class="sub" name="login">
+                Sign In
+            </button>
+
+            <a href="#" class="forgot">Forgot your password?</a>
+        }
+
+
+
+    </div>
+
+    <div class="signin">
+        <h1 class="hello">Hello Friend!</h1>
+        <h3 class="enter">Enter your details to start your journey with us.</h3>
+
+        <button class="sub2">Sign Up</button>
+
+
+    </div>
+
+
+
+</body>
+</html>
+
+

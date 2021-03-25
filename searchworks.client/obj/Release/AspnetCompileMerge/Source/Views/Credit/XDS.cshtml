@@ -1,0 +1,168 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Models.CompanyInformation>
+
+@{
+    ViewBag.Title = "XDS";
+}
+
+
+
+<div class="col-md-10 col-sm-10 con">
+    <div class="seaTab">
+        <div class="col-md-6 col-sm-6">
+            <div class="sea">
+
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6">
+            <div class="sea">
+                <div class="opt1">
+                    <div class="exp">Export List </div>
+                    <div class="create">Create Group</div>
+                    <div class="history"><i class="fa fa-history"></i>History</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="seaTable form-style-9">
+        <form action="" method="POST">
+            <h3 class="Trans">XDS </h3>
+
+            <ul>
+                <li>
+                    <input type="text" id="ref" name="ref" class="field-style field-split align-left" placeholder="Reference" />
+                    <input type="text" id="comID" name="IDnum" class="field-style field-split align-right" placeholder="ID Number" />
+                </li>
+                <li>
+                    <input type="text" id="comID" name="passportNum" class="field-style field-split align-left" placeholder="Passport Number" />
+                    <input type="text" id="comID" name="surname" class="field-style field-split align-right" placeholder="Surname" />
+                </li>
+
+                <li>
+                    <input type="submit" name="XDSConSubmit" value="Search" />
+                </li>
+            </ul>
+        </form>
+    </div>
+
+    <h3>Results</h3>
+    <div id="dem">
+    </div>
+
+    <table id="table" class="table table-hover table-fixed " style=" margin-top: 24px;">
+        <thead class="head" style="">
+            <tr style="">
+                <th scope="col">Company ID</th>
+                <th scope="col">Registration number</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Translated Name</th>
+                <th scope="col">Registration Date</th>
+                <th scope="col">Status Code</th>
+                <th scope="col">Status</th>
+                <th scope="col">View</th>
+            </tr>
+        </thead>
+        @*<tbody style="">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyID)
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyTranslatedName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegistrationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyStatusCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyStatus)
+                        </td>
+                    </tr>
+                }
+            </tbody>*@
+    </table>
+</div>
+</div>
+
+<script>
+    function Search() {
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("GetCompanyResults", "Home")',
+                                data: {
+                                    companyName: $('#comName').val(),
+
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Account Created </div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+
+
+
+
+                            },
+                                success: function (result) {
+
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+                                    //alert(result.user_type);
+
+                                    debugger;
+
+
+
+                          if (result.status == true) {
+
+                                        if (result.user_type === "client") {
+
+                                            console.log(result);
+
+                                            window.location.href = '@Url.Action("SubmissionStep2", "Checks")';
+
+                                        }
+                                        else if (result.user_type === "admin") {
+                                             window.location.href = '@Url.Action("Admin_S", "Dashboard")';
+                                        }
+
+
+                            }
+                            else {
+
+                                var alertMessage = '<div class="alert alert-danger" role="alert">'
+                                    + 'Invalid Usename/Password</div>';
+
+                                $(".resturn-message").html(alertMessage)
+
+                                alert(result.message);
+                            }
+                            }
+                        });
+                        }
+
+</script>
