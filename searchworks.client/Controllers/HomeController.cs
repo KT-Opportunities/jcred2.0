@@ -16,10 +16,10 @@ namespace searchworks.client.Controllers
 {
     public class HomeController : Controller
     {
-        //string serverIp = "localhost";
-        //string username = "root";
-        //string password = "";
-        //string databaseName = "jcred";
+        string serverIp = "localhost";
+        string username = "root";
+        string password = "";
+        string databaseName = "jcred";
 
         //string serverIp = "197.242.148.16";
         //string username = "cykgxznt_admin";
@@ -27,10 +27,10 @@ namespace searchworks.client.Controllers
         //string databaseName = "cykgxznt_jcred";
 
 
-        string serverIp = "jcred-azpoc.mysql.database.azure.com";
-        string username = "jcredadmin@jcred-azpoc";
-        string password = "vVHBF2XdhPfWsC";
-        string databaseName = "jcred";
+        //string serverIp = "jcred-azpoc.mysql.database.azure.com";
+        //string username = "jcredadmin@jcred-azpoc";
+        //string password = "vVHBF2XdhPfWsC";
+        //string databaseName = "jcred";
         public ActionResult Index()
         {
 
