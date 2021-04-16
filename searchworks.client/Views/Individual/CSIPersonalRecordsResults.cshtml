@@ -18,7 +18,7 @@
                     <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
                     <p>2 Results</p>
                 </div>
-                <p class="num">@ViewData["Fullname"]</p>
+                <p class="num">@TempData["Fullname"]</p>
                 <p class="num2">CSI Person Records</p>
 
                 <div class="multi act">
@@ -33,10 +33,10 @@
                 </div>
 
                 <div class="userInfo">
-                    <p class="">User:<span>@ViewData["user"]</span></p>
-                    <p class="">Date:<span>@ViewData["date"]</span></p>
-                    <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                    <p class="">Request:<span>@ViewData["ResponseMessage"]</span></p>
+                    <p class="">User:<span>@TempData["user"]</span></p>
+                    <p class="">Date:<span>@TempData["date"]</span></p>
+                    <p class="">Reference:<span>@TempData["ref"]</span></p>
+                    <p class="">Request:<span>@TempData["ResponseMessage"]</span></p>
 
                 </div>
 
@@ -58,14 +58,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@ViewData["FirstName"]</td>
-                            <td>@ViewData["Surname"]</td>
-                            <td>@ViewData["IDNumber"]</td>
-                            <td> @ViewData["Age"]</td>
-                            <td class="last">@ViewData["DateOfBirth"]</td>
+                            <td>@TempData["FirstName"]</td>
+                            <td>@TempData["Surname"]</td>
+                            <td>@TempData["IDNumber"]</td>
+                            <td> @TempData["Age"]</td>
+                            <td class="last">@TempData["DateOfBirth"]</td>
                             <td>
                                 
-                                @Html.ActionLink("Search more", "CSIPersonalRecordsDetails", "Individual", new { indiID = @ViewData["IDNumber"] }, new { @id = "view", @class = "seaMore" })
+                                @Html.ActionLink("View more", "CSIPersonalRecordsDetails", "Individual", new { indiID = @TempData["IDNumber"] }, new { @id = "view", @class = "seaMore" })
                             </td>
                         </tr>
                         

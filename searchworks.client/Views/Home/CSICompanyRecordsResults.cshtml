@@ -92,7 +92,7 @@
                                 </td>
                                 <td>
 
-                                    @Html.ActionLink("Search more", "CSICompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
+                                    @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
                                 </td>
                             </tr>
                         }
@@ -152,7 +152,7 @@
                             </td>
                             <td>
 
-                                @Html.ActionLink("Search more", "CSICompanyDetails", "Home", new { comID = @ViewData["ComID"] }, new { @id = "view", @class = "seaMore" })
+                                @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = @ViewData["ComID"] }, new { @id = "view", @class = "seaMore" })
                             </td>
                         </tr>
 

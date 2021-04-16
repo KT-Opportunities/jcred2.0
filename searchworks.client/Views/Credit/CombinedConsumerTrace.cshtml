@@ -10,24 +10,24 @@
 
 
 
-    <div class="col-md-10 col-sm-10">
-        <div class="sea">SEARCH RESULTS</div>
-        <div class="sea act">Combined Consumer Trace</div>
-        <div class="sea_bar">
-            <label>Search History</label>
-            <input name="search" />
-            <button>RESET</button>
-        </div>
-        <div class="con">
-            <div class="col-md-6 col-sm-6 left">
-                @using (Html.BeginForm("CombinedConsumerTraceResults", "Credit", FormMethod.Post))
-                {
-                    <div class="ref">
-                        <label>Reference</label><br>
+<div class="col-md-10 col-sm-10">
+    <div class="sea">SEARCH RESULTS</div>
+    <div class="sea act">Combined Consumer Trace</div>
+    <div class="sea_bar">
+        <label>Search History</label>
+        <input name="search" />
+        <button>RESET</button>
+    </div>
+    <div class="con">
+        <div class="col-md-6 col-sm-6 left">
+            @using (Html.BeginForm("CombinedConsumerTraceResults", "Credit", FormMethod.Post))
+            {
+                <div class="ref">
+                    <label>Reference</label><br>
 
-                        @Html.TextBox("Reference", null, new { @id = "Ref" })
-                    </div>
-                    @*<div class="eqType">
+                    @Html.TextBox("Reference", null, new { @id = "Ref" })
+                </div>
+                @*<div class="eqType">
                         <label>CIPC Search By</label><br>
 
                         @Html.DropDownList("CipcSearchBy", new List<SelectListItem>
@@ -39,7 +39,7 @@
                           new SelectListItem { Text = "By Registration Number", Value = "4"}
                     }, " Select CIPC Search Parameter", new { @id = "eqtype", required = "required" })
                     </div>*@
-                    @*<div class="seaType">
+                @*<div class="seaType">
                         <label>Search Criteria</label><br>
 
                         @Html.DropDownList("seatype", new List<SelectListItem>
@@ -52,47 +52,47 @@
                     }, "Please Select", new { @id = "seatype", required = "required" })
 
                     </div>*@
-                    <div class="firstname" style="top: 96px;">
-                        <label>ID Number</label><br>
+                <div class="firstname" style="top: 96px;">
+                    <label>ID Number</label><br>
 
-                        @Html.TextBox("IDNumber", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
-                    </div>
-                    @*<div class="surname">
+                    @Html.TextBox("IDNumber", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
+                </div>
+                @*<div class="surname">
                         <label>Registration Number</label><br>
 
                         @Html.TextBox("RegistrationNumber", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
                     </div>*@
 
-                    @*<div class="idnumber">
+                @*<div class="idnumber">
                         <label>ID Number</label><br>
 
                         @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
                     </div>*@
 
-                    <div class="tc">
-                        <div>
-                            I accept the <a href="#">terms and conditions</a>
-                            <input id="tc" type="checkbox" value="tc" required />
-                        </div>
+                <div class="tc">
+                    <div>
+                        I accept the <a href="#">terms and conditions</a>
+                        <input id="tc" type="checkbox" value="tc" required />
                     </div>
-
-                    <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
-
-
-                }
-
-
-
-            </div>
-            <div class="col-md-6 col-sm-6 right">
-                <div class="cen_text">
-                    Obtain the consumer trace details of an individual comprising of address, contact or employment history.
-                    For more information about this repost please download the sample report. <br><br>
-                    Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
                 </div>
+
+                <button onclick="Search()" id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
+
+
+            }
+
+
+
+        </div>
+        <div class="col-md-6 col-sm-6 right">
+            <div class="cen_text">
+                Obtain the consumer trace details of an individual comprising of address, contact or employment history.
+                For more information about this repost please download the sample report. <br><br>
+                Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
             </div>
         </div>
     </div>
+</div>
 
 <script>
     function Search() {

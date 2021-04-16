@@ -1,0 +1,32 @@
+Individual
+  -CSI Person Records
+Company
+  -CIPC company search
+  -CSI Company records
+Credit
+  -Combined consumer trace
+  -Combined credit report 
+  -Compuscan
+	*Bank codes document
+	*Bank on file
+	*Consumer Profile
+	*Combined credit report
+	*Contract Information
+	*Employment confidence index
+	*Gross monthly income by ID
+	*ID Photo verification
+  -Experian
+ 	*Consumer Profile
+  -Letter of demand
+  -Transunion
+ 	*All done
+  -VeriCred		
+	*Account verification
+	*Consumer profile
+	*Contact info by ID
+	*ID Photo Verification
+	*Income estimated by ID
+	*Person verification by ID
+  -XDS
+	*Consumer ID Verification
+	*Consumer Trace

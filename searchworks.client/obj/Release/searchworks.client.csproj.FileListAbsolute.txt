@@ -555,7 +555,8 @@ C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\Syste
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\System.Web.WebPages.Razor.xml
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\System.Web.Optimization.xml
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\Antlr3.Runtime.pdb
-C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\searchworks.client.csprojAssemblyReference.cache
+C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\searchworks.client.Properties.Resources.resources
+C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\searchworks.client.csproj.GenerateResource.cache
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\searchworks.client.csproj.CoreCompileInputs.cache
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\searchworks.client.csproj.CopyComplete
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\searchworks.client.dll
