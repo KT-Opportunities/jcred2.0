@@ -2,10 +2,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@model searchworks.client.Individual.EmploymentHisto;*@
-@*@model IEnumerable<searchworks.client.Individual.EmploymentHistory>*@
+@model IEnumerable<searchworks.client.Individual.EmploymentHistory>
 
-@model IEnumerable<searchworks.client.Individual.PersonInformation>
 
 @{
     ViewBag.Title = "CSI Personal Records";
@@ -162,12 +160,18 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                 
                         <tr>
+
+
                             @{ foreach (KeyValuePair<string, string> item in @ViewBag.MianArrayList[0])
                                 {
                                     <td> @item.Value</td>
 
                                 }
+                            }
+
                             }
                         </tr>
                     </tbody>
@@ -191,39 +195,55 @@
                         </tr>
                     </thead>
 
-                    @*@foreach (item in @ViewBag.ArrayList1)
-                        {
-                            <tr>
 
-                                <td> @item["EmployerName"]</td>
-                                <td> @item["Designation"]</td>
-                                <td> @item.LastUpdatedDate</td>
-                            </tr>
+                    @foreach (var item in @ViewBag.empH)
+                    {
+                        <tr>
 
-                        }*@
+                            <td>@item.EmployerName</td>
+                            <td>@item.Designation</td>
+                            <td>@item.LastUpdatedDate</td>
+                        </tr>
+                    }
+
+
+                    @*<tr>*@
+                    @* @foreach (EmploymentHistory item in @ViewBag.ArrayList1)*@
+                    @*@foreach (KeyValuePair<string, string> item in @ViewBag.ArrayList1)
+        {
+
+
+            <td> @item.Value </td>*@
+                    @*<td> @item.Value[1] </td>
+        <td> @item.Value[2] </td>*@
+
+
+                    @*  }*@
+
+                    @*</tr>*@
                 </table>
 
                 @*<table>
-                        <thead>
-                            <tr>
-                                <th>Employer Name</th>
-                                <th>Designation</th>
-                                <th class="last">Last Updated Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @{ foreach (KeyValuePair<string, string> item in (ViewBag.MianArrayList[0]))
+        <thead>
+            <tr>
+                <th>Employer Name</th>
+                <th>Designation</th>
+                <th class="last">Last Updated Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @{ foreach (KeyValuePair<string, string> item in (ViewBag.MianArrayList[0]))
 
-                                    {
-                                        <td> @item.Value</td>
-                                    }
+                    {
+                        <td> @item.Value</td>
+                    }
 
-                                }
-                            </tr>
-                        </tbody>
-                    </table>*@
-            </div>
+                }
+            </tr>
+        </tbody>
+    </table>*@
+</div>
         </div>
     </div>
 </div>

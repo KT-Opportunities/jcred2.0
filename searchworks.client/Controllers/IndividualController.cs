@@ -380,6 +380,8 @@ namespace searchworks.client.Controllers
             return View();
         }
 
+
+        
         public ActionResult CSIPersonalRecordsDetails(string indiID)
         {
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
@@ -529,13 +531,21 @@ namespace searchworks.client.Controllers
                 //}
             }
 
+            string EmployerName = "";
+            string Designation = "";
+            string LastUpdatedDate1 = "";
+            List<EmploymentHistory> empH;
+
             if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName != null)
             {
+
+                empH = new List<EmploymentHistory>();
+
                 for (int count = 0; count < (elements1.Count); count++)
                 {
-                    string EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                    string Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation;
-                    string LastUpdatedDate1 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                    Designation  = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation;
+                    LastUpdatedDate1 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
                     //string FirstName = rootObject.ResponseObject.Directors[count].FirstName;
                     //string Surname = rootObject.ResponseObject.Directors[count].Surname;
                     //string Fullname = rootObject.ResponseObject.Directors[count].Fullname;
@@ -572,13 +582,17 @@ namespace searchworks.client.Controllers
                     //arrayList.Add(count + "_Age", Age);
                     //arrayList.Add(count + "_Status", Status);
                     //arrayList.Add(count + "_ResignationDate", ResignationDate);
-                    List<EmploymentHistory> EmploymentH = new List<EmploymentHistory>();
-                    EmploymentH.Add(new EmploymentHistory
+
+
+                    empH.Add(new EmploymentHistory
                     {
-                        EmployerName = arrayList["EmployerName"],
-                        Designation = arrayList["Designation"],
-                        LastUpdatedDate = arrayList["LastUpdateDate1"]
+                        EmployerName = EmployerName,
+                        Designation = Designation,
+                        LastUpdatedDate = LastUpdatedDate1
                     });
+
+
+
                     ViewData["ArrayList1"] = arrayList1;
                     Debug.WriteLine(arrayList1.GetType());
                     Debug.WriteLine("itssss uhh", EmployerName, Designation, LastUpdatedDate1);
@@ -594,6 +608,20 @@ namespace searchworks.client.Controllers
 
                     //System.Diagnostics.Debug.WriteLine(" Director ID "+count+" : "+ DirectorID);
                 }
+
+                //empH = new List<EmploymentHistory>();
+
+                //foreach (var item in arrayList1)
+                //{
+                //    empH.Add(new EmploymentHistory
+                //    {
+                //        EmployerName = EmployerName,
+                //        Designation = Designation,
+                //        LastUpdatedDate = LastUpdatedDate1
+                //    });
+                //}
+
+                ViewData["empH"] = empH;
                 //foreach (KeyValuePair<string, string> item in arrayList1)
                 //{
                 //    System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
