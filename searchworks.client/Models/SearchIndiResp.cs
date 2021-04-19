@@ -26,10 +26,8 @@ namespace searchworks.client.Individual
         public string MaritalStatus { get; set; }
         public string Gender { get; set; }
         public string Age { get; set; }
-
-
-
     }
+
     public class HomeAffairsInformation
     {
         public string DeceasedStatus { get; set; }
@@ -40,10 +38,7 @@ namespace searchworks.client.Individual
         public string IDCardIssuedDate { get; set; }
         public string IDCardIssued { get; set; }
         public string VerifiedStatus { get; set; }
-
     }
-
-
 
     public class EmploymentHistory
     {
@@ -55,7 +50,6 @@ namespace searchworks.client.Individual
         public string IDCardIssuedDate { get; set; }
         public string IDCardIssued { get; set; }
         public string VerifiedStatus { get; set; }
-
     }
 
     public class TelephoneHistory
@@ -68,7 +62,6 @@ namespace searchworks.client.Individual
         public string IDCardIssuedDate { get; set; }
         public string IDCardIssued { get; set; }
         public string VerifiedStatus { get; set; }
-
     }
 
     public class HistoricalInformation
@@ -83,10 +76,7 @@ namespace searchworks.client.Individual
         public string VerifiedStatus { get; set; }
         public TelephoneHistory TelephoneHistory { get; set; }
         public EmploymentHistory SearchInformation { get; set; }
-
-
     }
-
 
     public class ResponseObject
     {
@@ -95,7 +85,6 @@ namespace searchworks.client.Individual
         public HomeAffairsInformation HomeAffairsInformation { get; set; }
         public List<HistoricalInformation> HistoricalInformation { get; set; }
         public DeedsInformation DeedsInformation { get; set; }
-
     }
 
     public class RootObject
@@ -110,8 +99,6 @@ namespace searchworks.client.Individual
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string IDNumber { get; set; }
-
-
     }
 
     public class CSI
@@ -122,8 +109,6 @@ namespace searchworks.client.Individual
         public string seaType { get; set; }
         public string eqType { get; set; }
         public string Reference { get; set; }
-
-
     }
 
     public class Deeds
@@ -151,8 +136,5 @@ namespace searchworks.client.Individual
         public string Age { get; set; }
         public string DeedsOfficeID { get; set; }
         public string DeedsOfficeName { get; set; }
-
-
-
     }
 }

@@ -20,26 +20,35 @@
     src: local('Poppins-Regular'), url(../fonts/Poppins-Regular.ttf) format('truetype');
 }
 
-
-html, body{
+ 
+/*html {
     background-image: url("../img/Sign In BG.png");
     padding: 0;
     margin: 0;
-    width: 100%;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    text-align: center;
 }
-
+*/
+body {
+    background-image: url("../img/Sign In BG.png");
+    padding: 0;
+    margin: 0;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    background-size: cover
+}
 #imgs{
     position: absolute;
     top: 25px;
     left: 60px;
-    
 }
 
 .signin {
     position: relative;
     display: inline-block;
     top: 66px;
-    right: -46px;
     width: 415px;
     height: 618px;
     background: transparent linear-gradient(180deg, #09182F 0%, #011A44 100%) 0% 0% no-repeat padding-box;
@@ -52,7 +61,7 @@ html, body{
     display: inline-block;
     position: relative;
     top: 66px;
-    left: 50px;
+   
     width: 843px;
     height: 618px;
     background: #F7F7F7 0% 0% no-repeat padding-box;

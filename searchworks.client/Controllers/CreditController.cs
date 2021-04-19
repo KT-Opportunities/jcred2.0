@@ -11,21 +11,20 @@ namespace searchworks.client.Controllers
 {
     public class CreditController : Controller
     {
-
-        //string serverIp = "localhost";
-        //string username = "root";
-        //string password = "";
-        //string databaseName = "jcred";
+        private string serverIp = "localhost";
+        private string username = "root";
+        private string password = "";
+        private string databaseName = "jcred";
 
         //string serverIp = "197.242.148.16";
         //string username = "cykgxznt_admin";
         //string password = "Jcred123@";
         //string databaseName = "cykgxznt_jcred";
 
-        string serverIp = "jcred-azpoc.mysql.database.azure.com";
-        string username = "jcredadmin@jcred-azpoc";
-        string password = "vVHBF2XdhPfWsC";
-        string databaseName = "jcred";
+        //string serverIp = "jcred-azpoc.mysql.database.azure.com";
+        //string username = "jcredadmin@jcred-azpoc";
+        //string password = "vVHBF2XdhPfWsC";
+        //string databaseName = "jcred";
 
         public string GetLoginToken(string api_username, string api_password)
         {
@@ -66,6 +65,7 @@ namespace searchworks.client.Controllers
 
             return tokenIsValid;
         }
+
         public ActionResult CombinedCreditReport()
         {
             return View();
@@ -81,9 +81,8 @@ namespace searchworks.client.Controllers
             string refe = search.Reference;
             ViewData["refe"] = name + " " + sur;
 
-            System.Diagnostics.Debug.WriteLine(id);
-            System.Diagnostics.Debug.WriteLine(er);
-
+            //System.Diagnostics.Debug.WriteLine(id);
+            //System.Diagnostics.Debug.WriteLine(er);
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -106,7 +105,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Combined Credit Report";
@@ -114,18 +112,16 @@ namespace searchworks.client.Controllers
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
+            //System.Diagnostics.Debug.WriteLine(date_add);
+            //System.Diagnostics.Debug.WriteLine(time_add);
+            //System.Diagnostics.Debug.WriteLine(page);
+            //System.Diagnostics.Debug.WriteLine(action);
+            //System.Diagnostics.Debug.WriteLine(user_id);
+            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
-
-
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -133,13 +129,9 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -166,11 +158,6 @@ namespace searchworks.client.Controllers
                 IDNumber = id,
                 FirstName = name,
                 Surname = sur
-
-
-
-
-
             };
 
             //add parameters and token to request
@@ -182,10 +169,9 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -193,7 +179,6 @@ namespace searchworks.client.Controllers
             //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-
 
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -207,12 +192,11 @@ namespace searchworks.client.Controllers
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
                 ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation["CompuScan"];
-                System.Diagnostics.Debug.WriteLine(ViewData["CompuScanMessage"]);
+                //System.Diagnostics.Debug.WriteLine(ViewData["CompuScanMessage"]);
                 ViewData["ExperianMessage"] = rootObject.ResponseObject.CombinedCreditInformation.Experian;
                 ViewData["TransUnion"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
                 ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
 
-                //
                 if (ViewData["CompuScanMessage"].ToString() == "CONSUMER MATCH")
                 {
                     //personaInformantion
@@ -223,7 +207,6 @@ namespace searchworks.client.Controllers
                     ViewData["ComGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Gender;
                     ViewData["ComAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Age;
                     ViewData["ComVerificationStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus;
-
 
                     //CreditInformation
                     ViewData["ComDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScore;
@@ -262,14 +245,12 @@ namespace searchworks.client.Controllers
                     ViewData["ComNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.NLRAccounts;
                     ViewData["ComApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
 
-
                     //ConsumerStatistics
                     ViewData["ComHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
                     ViewData["ComRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
                     ViewData["ComInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
                     ViewData["ComOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
                     ViewData["ComAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
-
 
                     //NLRStats
                     ViewData["ComNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
@@ -278,7 +259,6 @@ namespace searchworks.client.Controllers
                     ViewData["ComNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
                     ViewData["ComNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
 
-
                     //CCAStats
                     ViewData["ComCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
                     ViewData["ComCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
@@ -286,13 +266,11 @@ namespace searchworks.client.Controllers
                     ViewData["ComCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
                     ViewData["ComCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
 
-
                     //NLR12Months
                     ViewData["ComNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
                     ViewData["ComNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
                     ViewData["ComNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
                     ViewData["ComNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-
 
                     //NLR24Months
                     ViewData["ComNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
@@ -300,13 +278,11 @@ namespace searchworks.client.Controllers
                     ViewData["ComNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
                     ViewData["ComNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
 
-
                     //NLR36Months
                     ViewData["ComNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
                     ViewData["ComNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
                     ViewData["ComNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
                     ViewData["ComNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-
 
                     //CCA12Months
                     ViewData["ComCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
@@ -314,27 +290,22 @@ namespace searchworks.client.Controllers
                     ViewData["ComCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
                     ViewData["ComCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
 
-
                     //CCA24Months
                     ViewData["ComCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
                     ViewData["ComCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
                     ViewData["ComCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
                     ViewData["ComCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
 
-
                     //CCA36Months
                     ViewData["ComCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
                     ViewData["ComCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
                     ViewData["ComCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
                     ViewData["ComCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-
                 }
                 else
                 {
                     ViewData["CompuScanMessage"] = "No Match";
                 }
-
-
 
                 if (ViewData["ExperianMessage"].ToString() == "CONSUMER MATCH")
                 {
@@ -350,23 +321,16 @@ namespace searchworks.client.Controllers
                     ViewData["ExReference"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Reference;
                     //ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress;
 
-
                     //HomeAffairsInformation
                     ViewData["ExIDVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.IDVerified;
                     ViewData["ExSurnameVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.SurnameVerified;
                     ViewData["ExInitialsVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.InitialsVerified;
-
-
 
                     //CreditInformation
                     ViewData["ExDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScoreChartURL;
                     ViewData["ExDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScore;
                     ViewData["ExFlagCount"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagCount;
                     ViewData["ExFlagDetails"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagDetails;
-
-
-
-
 
                     ViewData["ExAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Accounts;
                     ViewData["ExEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Enquiries;
@@ -400,7 +364,6 @@ namespace searchworks.client.Controllers
                     ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.NLRAccounts;
                     ViewData["ExApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
 
-
                     //ConsumerStatistics
                     ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
                     ViewData["ExRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
@@ -409,14 +372,12 @@ namespace searchworks.client.Controllers
                     ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
                     ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
 
-
                     //NLRStats
                     ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                     ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
                     ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
                     ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
                     ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-
 
                     //CCAStats
                     ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
@@ -425,13 +386,11 @@ namespace searchworks.client.Controllers
                     ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
                     ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
 
-
                     //NLR12Months
                     ViewData["ExNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
                     ViewData["ExNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
                     ViewData["ExNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
                     ViewData["ExNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-
 
                     //NLR24Months
                     ViewData["ExNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
@@ -439,13 +398,11 @@ namespace searchworks.client.Controllers
                     ViewData["ExNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
                     ViewData["ExNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
 
-
                     //NLR36Months
                     ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
                     ViewData["ExNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
                     ViewData["ExNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
                     ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-
 
                     //CCA12Months
                     ViewData["ExCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
@@ -453,51 +410,38 @@ namespace searchworks.client.Controllers
                     ViewData["ExCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
                     ViewData["ExCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
 
-
                     //CCA24Months
                     ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
                     ViewData["ExCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
                     ViewData["ExCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
                     ViewData["ExCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
 
-
                     //CCA36Months
                     ViewData["ExCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
                     ViewData["ExCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
                     ViewData["ExCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
                     ViewData["ExCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-
-
-
                 }
                 else
                 {
                     ViewData["Experian"] = "No Match";
                 }
 
-
                 if (rootObject.ResponseObject.CombinedCreditInformation.TransUnion == "CONSUMER MATCH")
                 {
-
                 }
                 else
                 {
                     ViewData["TransUnion"] = "No Match";
                 }
 
-
-
-
                 if (ViewData["XDSMessage"].ToString() == "CONSUMER MATCH")
                 {
+                    //System.Diagnostics.Debug.WriteLine(ViewData["CompuScan"]);
+                    //System.Diagnostics.Debug.WriteLine(ViewData["Experian"]);
+                    //System.Diagnostics.Debug.WriteLine(ViewData["TransUnion"]);
 
-                    System.Diagnostics.Debug.WriteLine(ViewData["CompuScan"]);
-                    System.Diagnostics.Debug.WriteLine(ViewData["Experian"]);
-                    System.Diagnostics.Debug.WriteLine(ViewData["TransUnion"]);
-
-                    System.Diagnostics.Debug.WriteLine(ViewData["BuyerName"]);
-
-
+                    //System.Diagnostics.Debug.WriteLine(ViewData["BuyerName"]);
 
                     //Person Information:
                     ViewData["PersonID"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.PersonID;
@@ -510,8 +454,7 @@ namespace searchworks.client.Controllers
                     ViewData["MiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MiddleName1;
                     ViewData["Fullname"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Fullname;
 
-                    System.Diagnostics.Debug.WriteLine(ViewData["PersonID"]);
-
+                    //System.Diagnostics.Debug.WriteLine(ViewData["PersonID"]);
 
                     //COntact Information:
                     //ViewData["EmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress;
@@ -523,7 +466,6 @@ namespace searchworks.client.Controllers
                     ViewData["DeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedStatus;
                     ViewData["DeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate;
                     ViewData["VerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus;
-
 
                     //FraudIndicatorSummary:
                     ViewData["SAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing;
@@ -538,7 +480,7 @@ namespace searchworks.client.Controllers
                         ViewData["AppointmentDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].AppointmentDate;
                         ViewData["PhysicalAddressD"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].PhysicalAddress;
 
-                        System.Diagnostics.Debug.WriteLine(ViewData["CompanyName"]);
+                        //System.Diagnostics.Debug.WriteLine(ViewData["CompanyName"]);
 
                         //PropertyInformation
                         ViewData["BuyerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.Fullname;
@@ -546,16 +488,13 @@ namespace searchworks.client.Controllers
                         ViewData["BuyerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.MaritalStatus;
                         ViewData["BuyerPropertySharePercentage"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.PropertySharePercentage;
 
-
                         ViewData["SellerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.Fullname;
                         ViewData["SellerIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.IDNumber;
                         ViewData["SellerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.MaritalStatus;
 
-
                         ViewData["Institution"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.Institution;
                         ViewData["BondNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.BondNumber;
                         ViewData["BondAmount"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.BondAmount;
-
 
                         //TransferInformation
                         ViewData["AttorneyFirmNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.AttorneyFirmNumber;
@@ -565,7 +504,6 @@ namespace searchworks.client.Controllers
                         ViewData["PurchaseDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.PurchaseDate;
                         ViewData["PurchasePrice"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.PurchasePrice;
                         ViewData["TitleDeedNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TitleDeedNumber;
-
 
                         //GeneralInformation
                         ViewData["Municipality"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.Municipality;
@@ -628,7 +566,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Combined Consumer Trace";
@@ -648,22 +585,15 @@ namespace searchworks.client.Controllers
             ViewData["ref"] = refe;
             //ViewData["ComName"] = comID;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -698,7 +628,6 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
 
@@ -717,7 +646,6 @@ namespace searchworks.client.Controllers
             }
             else
             {
-
                 ViewData["Message"] = "good";
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
@@ -727,7 +655,6 @@ namespace searchworks.client.Controllers
                 ViewData["TransUnionMessage"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
                 ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
                 ViewData["VeriCredMessage"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCred;
-
 
                 if (ViewData["CompuScanMessage"].ToString() == "Found")
                 {
@@ -749,7 +676,6 @@ namespace searchworks.client.Controllers
                     ViewData["CompuScanCauseOfDeath"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].CauseOfDeath;
                     ViewData["CompuScanVerifiedDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].VerifiedDate;
                     ViewData["CompuScanVerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].VerifiedStatus;
-
 
                     //Credit Information
                     ViewData["CompuScanProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["FraudIndicatorSummary"].ProtectiveVerification;
@@ -781,14 +707,12 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
                         System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in arrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
-
 
                     // Telephone
                     Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
@@ -807,7 +731,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in TelarrayList)
@@ -832,14 +755,12 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in EMarrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
-
                 }
 
                 if (ViewData["TransUnionMessage"].ToString() == "Found")
@@ -871,7 +792,6 @@ namespace searchworks.client.Controllers
                     ViewData["TransUnionInfoHomeTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].HomeTelephoneNumber;
                     ViewData["TransUnionInfoWorkTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].WorkTelephoneNumber;
 
-
                     //Historical Information
 
                     // Address
@@ -899,14 +819,12 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
                         System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in arrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
-
 
                     // Telephone
                     Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
@@ -925,7 +843,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in TelarrayList)
@@ -950,14 +867,12 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in EMarrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
-
                 }
 
                 if (ViewData["XDSMessage"].ToString() == "Found")
@@ -985,7 +900,6 @@ namespace searchworks.client.Controllers
                     ViewData["XDSInfoDeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].DeceasedStatus;
                     ViewData["XDSInfoDeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].DeceasedDate;
                     ViewData["XDSInfoVerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].VerifiedStatus;
-
 
                     //Credit Information
                     ViewData["XDSInfoProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["FraudIndicatorSummary"].ProtectiveVerification;
@@ -1019,14 +933,12 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
                         System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in arrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
-
 
                     // Telephone
                     Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
@@ -1045,7 +957,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in TelarrayList)
@@ -1070,14 +981,12 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in EMarrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
-
                 }
 
                 if (ViewData["VeriCredMessage"].ToString() == "Found")
@@ -1094,13 +1003,11 @@ namespace searchworks.client.Controllers
                     ViewData["VeriCredInfoAge"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Age;
                     ViewData["VeriCredInfoCurrentEmployer"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].CurrentEmployer;
 
-
                     //Contact Information
                     ViewData["VeriCredInfoPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["ContactInformation"].PhysicalAddress;
                     ViewData["VeriCredInfoMobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["ContactInformation"].MobileNumber;
                     ViewData["VeriCredInfoHomeTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["ContactInformation"].HomeTelephoneNumber;
                     ViewData["VeriCredInfoWorkTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["ContactInformation"].WorkTelephoneNumber;
-
 
                     //Historical Information
 
@@ -1129,14 +1036,12 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
                         System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in arrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
-
 
                     // Telephone
                     Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
@@ -1155,7 +1060,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in TelarrayList)
@@ -1180,18 +1084,15 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
                         System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-
                     }
 
                     foreach (KeyValuePair<string, string> item in EMarrayList)
                     {
                         System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
-
                 }
                 else
                 {
-
                 }
             }
 
@@ -1217,8 +1118,6 @@ namespace searchworks.client.Controllers
 
             System.Diagnostics.Debug.WriteLine(id);
 
-
-
             //string serverIp = "localhost";
             //string username = "root";
             //string password = "";
@@ -1240,7 +1139,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Combined Consumer Trace";
@@ -1248,15 +1146,12 @@ namespace searchworks.client.Controllers
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
-
-
-
+            //System.Diagnostics.Debug.WriteLine(date_add);
+            //System.Diagnostics.Debug.WriteLine(time_add);
+            //System.Diagnostics.Debug.WriteLine(page);
+            //System.Diagnostics.Debug.WriteLine(action);
+            //System.Diagnostics.Debug.WriteLine(user_id);
+            //System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1264,13 +1159,9 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -1313,7 +1204,6 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
 
@@ -1335,10 +1225,7 @@ namespace searchworks.client.Controllers
         {
             string id = comp.IDNumber;
 
-
             System.Diagnostics.Debug.WriteLine(id);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -1361,7 +1248,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan Bank On File";
@@ -1376,22 +1262,15 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(user_id);
             System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -1426,7 +1305,6 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
 
@@ -1445,7 +1323,6 @@ namespace searchworks.client.Controllers
             }
             else
             {
-
             }
             return View();
         }
@@ -1463,12 +1340,7 @@ namespace searchworks.client.Controllers
             string firstname = comp.FirstName;
             string refe = comp.Reference;
 
-
-
-
             System.Diagnostics.Debug.WriteLine(id);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -1491,7 +1363,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan Consumer Profile";
@@ -1506,22 +1377,15 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(user_id);
             System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -1559,7 +1423,6 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
 
@@ -1585,7 +1448,6 @@ namespace searchworks.client.Controllers
                 ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation["DelphiScore"];
                 ViewData["DirectorshipInformationMessage"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
                 ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
-
 
                 if (ViewData["PersonInformationMessage"].ToString() != "")
                 {
@@ -1797,12 +1659,9 @@ namespace searchworks.client.Controllers
                     ViewData["NLR_PaymentHistoryChart"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistoryChart;
                     ViewData["NLR_MonthEndDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].MonthEndDate;
                     ViewData["NLR_DateCreated"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].DateCreated;
-
-
                 }
                 else
                 {
-
                     ViewData["CreditInformationMessage"] = "No Match";
                 }
 
@@ -1858,7 +1717,6 @@ namespace searchworks.client.Controllers
                     ViewData["EH_SalaryFrequency"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].SalaryFrequency;
                     ViewData["EH_PayslipReference"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].PayslipReference;
                     ViewData["EH_EmployeeNumber"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployeeNumber;
-
                 }
                 else
                 {
@@ -1881,14 +1739,10 @@ namespace searchworks.client.Controllers
             string traceType = comp.TraceType;
             string refe = comp.Reference;
 
-
-
             System.Diagnostics.Debug.WriteLine(id);
-
 
             if (traceType == "ID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -1910,7 +1764,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "CompuScan Consumer Trace By IDNumber";
@@ -1929,20 +1782,15 @@ namespace searchworks.client.Controllers
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
 
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -1977,18 +1825,15 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 JToken token = JToken.Parse(response.Content);
 
                 //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-
-
 
                 var mes = ViewData["ResponseMessage"].ToString();
                 if (mes == "ServiceOffline")
@@ -2005,7 +1850,6 @@ namespace searchworks.client.Controllers
                     ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
                     ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
                     ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeCode;
-
 
                     if (ViewData["PersonInformationMessage"].ToString() != "")
                     {
@@ -2030,7 +1874,6 @@ namespace searchworks.client.Controllers
                     {
                         //FraudIndicatorSummary
                         ViewData["ProtectiveVerification"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-
                     }
                     else
                     {
@@ -2045,7 +1888,6 @@ namespace searchworks.client.Controllers
                         ViewData["CauseOfDeath"] = rootObject.ResponseObject.HomeAffairsInformation.CauseOfDeath;
                         ViewData["VerifiedDate"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedDate;
                         ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus;
-
                     }
                     else
                     {
@@ -2074,7 +1916,6 @@ namespace searchworks.client.Controllers
                         ViewData["EH_EmployerName"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
                         ViewData["EH_Designation"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
                         ViewData["EH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
-
                     }
                     else
                     {
@@ -2082,12 +1923,9 @@ namespace searchworks.client.Controllers
                     }
                     return View();
                 }
-
             }
-
             else if (traceType == "tele")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -2109,7 +1947,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "CompuScan Consumer Trace By Telephone Number";
@@ -2128,20 +1965,15 @@ namespace searchworks.client.Controllers
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
 
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -2176,7 +2008,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -2200,7 +2031,6 @@ namespace searchworks.client.Controllers
 
                     ViewData["PersonInformationMessage"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
 
-
                     if (ViewData["PersonInformationMessage"].ToString() != "")
                     {
                         //personaInformantion
@@ -2217,12 +2047,9 @@ namespace searchworks.client.Controllers
                     }
                     return View();
                 }
-
             }
-
             else if (traceType == "teleID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -2244,7 +2071,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "CompuScan Consumer Trace By TelephoneID";
@@ -2263,20 +2089,15 @@ namespace searchworks.client.Controllers
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
 
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -2311,7 +2132,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -2328,7 +2148,6 @@ namespace searchworks.client.Controllers
         public ActionResult CompuScanContactInformation()
         {
             return View();
-
         }
 
         public ActionResult CompuScanContactInformationResults(CompuScan comp)
@@ -2340,8 +2159,6 @@ namespace searchworks.client.Controllers
             string refe = comp.Reference;
 
             System.Diagnostics.Debug.WriteLine(id);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -2364,7 +2181,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan Contact Information";
@@ -2372,19 +2188,16 @@ namespace searchworks.client.Controllers
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
-
+            //System.Diagnostics.Debug.WriteLine(date_add);
+            //System.Diagnostics.Debug.WriteLine(time_add);
+            //System.Diagnostics.Debug.WriteLine(page);
+            //System.Diagnostics.Debug.WriteLine(action);
+            //System.Diagnostics.Debug.WriteLine(user_id);
+            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
-
-
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -2392,13 +2205,9 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -2436,10 +2245,9 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -2500,7 +2308,6 @@ namespace searchworks.client.Controllers
                     ViewData["EH_EmployerName"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
                     ViewData["EH_Designation"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
                     ViewData["EH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
-
                 }
                 else
                 {
@@ -2513,7 +2320,6 @@ namespace searchworks.client.Controllers
         public ActionResult CompuScanEmploymentConfidenceIndex()
         {
             return View();
-
         }
 
         public ActionResult CompuScanEmploymentConfidenceIndexResults(CompuScan comp)
@@ -2524,8 +2330,6 @@ namespace searchworks.client.Controllers
             string refe = comp.Reference;
 
             System.Diagnostics.Debug.WriteLine(id);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -2548,7 +2352,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan Employment Confidence Index";
@@ -2567,22 +2370,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -2618,7 +2414,6 @@ namespace searchworks.client.Controllers
 
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
-
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
@@ -2672,13 +2467,11 @@ namespace searchworks.client.Controllers
                     ViewData["EH_NumberOfAccounts"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].NumberOfAccounts;
                     ViewData["EH_ConfidenceIndex"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].ConfidenceIndex;
                     ViewData["EH_HighestConfidence"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].HighestConfidence;
-
                 }
                 else
                 {
                     ViewData["HistoricalInformationMessage"] = "No Match";
                 }
-
             }
             return View();
         }
@@ -2693,10 +2486,7 @@ namespace searchworks.client.Controllers
             string id = comp.IDNumber;
             string refe = comp.Reference;
 
-
             System.Diagnostics.Debug.WriteLine(id);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -2719,7 +2509,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan Employment Confidence Index";
@@ -2738,22 +2527,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -2777,7 +2559,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = us,//search reference: probably store in logs
                 IDNumber = id,
-
             };
 
             //add parameters and token to request
@@ -2788,7 +2569,6 @@ namespace searchworks.client.Controllers
 
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
-
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
@@ -2846,10 +2626,7 @@ namespace searchworks.client.Controllers
             string id = comp.IDNumber;
             string refe = comp.Reference;
 
-
             System.Diagnostics.Debug.WriteLine(id);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -2872,7 +2649,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan ID Photo Verification";
@@ -2891,22 +2667,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -2930,7 +2699,6 @@ namespace searchworks.client.Controllers
                 sessionToken = authtoken,
                 reference = us,//search reference: probably store in logs
                 idNumber = id,
-
             };
 
             //add parameters and token to request
@@ -2941,7 +2709,6 @@ namespace searchworks.client.Controllers
 
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
-
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
@@ -3009,7 +2776,6 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-
         public ActionResult ExperianConsumerProfile()
         {
             return View();
@@ -3024,14 +2790,9 @@ namespace searchworks.client.Controllers
             string passport = exp.passportNumber;
             string refe = exp.reference;
 
-
-
-
             System.Diagnostics.Debug.WriteLine("exp ID: " + id);
             System.Diagnostics.Debug.WriteLine("exp reason: " + enquiryReason);
             System.Diagnostics.Debug.WriteLine("exp ref: " + refe);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -3054,7 +2815,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Experian Consumer Profile";
@@ -3062,19 +2822,16 @@ namespace searchworks.client.Controllers
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
+            //System.Diagnostics.Debug.WriteLine(date_add);
+            //System.Diagnostics.Debug.WriteLine(time_add);
+            //System.Diagnostics.Debug.WriteLine(page);
+            //System.Diagnostics.Debug.WriteLine(action);
+            //System.Diagnostics.Debug.WriteLine(user_id);
+            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
-
-
-
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3082,13 +2839,9 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -3127,10 +2880,9 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -3149,7 +2901,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
-
                 if (ViewData["ResponseMessage"].ToString() == "ExperianConsumerProfile")
                 {
                     //PersonInformation
@@ -3167,23 +2918,16 @@ namespace searchworks.client.Controllers
                     ViewData["ExReference"] = rootObject.ResponseObject.PersonInformation.Reference;
                     //ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress;
 
-
                     //HomeAffairsInformation
                     ViewData["ExIDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
                     ViewData["ExSurnameVerified"] = rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified;
                     ViewData["ExInitialsVerified"] = rootObject.ResponseObject.HomeAffairsInformation.InitialsVerified;
-
-
 
                     //CreditInformation
                     ViewData["ExDelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
                     ViewData["ExDelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
                     ViewData["ExFlagCount"] = rootObject.ResponseObject.CreditInformation.FlagCount;
                     ViewData["ExFlagDetails"] = rootObject.ResponseObject.CreditInformation.FlagDetails;
-
-
-
-
 
                     ViewData["ExAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Accounts;
                     ViewData["ExEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries;
@@ -3217,7 +2961,6 @@ namespace searchworks.client.Controllers
                     ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
                     ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
 
-
                     //ConsumerStatistics
                     ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
                     ViewData["ExRevolvingAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.RevolvingAccounts;
@@ -3226,14 +2969,12 @@ namespace searchworks.client.Controllers
                     ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts;
                     ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
 
-
                     //NLRStats
                     ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                     ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
                     ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
                     ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
                     ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-
 
                     //CCAStats
                     ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
@@ -3242,13 +2983,11 @@ namespace searchworks.client.Controllers
                     ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
                     ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
 
-
                     //NLR12Months
                     ViewData["ExNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
                     ViewData["ExNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
                     ViewData["ExNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
                     ViewData["ExNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-
 
                     //NLR24Months
                     ViewData["ExNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
@@ -3256,13 +2995,11 @@ namespace searchworks.client.Controllers
                     ViewData["ExNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
                     ViewData["ExNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
 
-
                     //NLR36Months
                     ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
                     ViewData["ExNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
                     ViewData["ExNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
                     ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-
 
                     //CCA12Months
                     ViewData["ExCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
@@ -3270,22 +3007,17 @@ namespace searchworks.client.Controllers
                     ViewData["ExCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
                     ViewData["ExCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
 
-
                     //CCA24Months
                     ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
                     ViewData["ExCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
                     ViewData["ExCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
                     ViewData["ExCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
 
-
                     //CCA36Months
                     ViewData["ExCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
                     ViewData["ExCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
                     ViewData["ExCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
                     ViewData["ExCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-
-
-
                 }
                 else
                 {
@@ -3295,9 +3027,7 @@ namespace searchworks.client.Controllers
 
                 return View();
             }
-
         }
-
 
         public ActionResult LetterOfDemand()
         {
@@ -3311,18 +3041,12 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionCompanyProfileByCompanyIDResults(TransUnion trans)
         {
-
             string enquiryReason = trans.EnquiryReason;
             string searchDesc = trans.SearchDescription;
             string companyID = trans.CompanyID;
             Array moduleCodes = trans.ModuleCodes;
 
-
-
-
             System.Diagnostics.Debug.WriteLine(companyID);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -3345,7 +3069,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "TransUnion Company Profile By CompanyID";
@@ -3360,22 +3083,15 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(user_id);
             System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -3402,7 +3118,6 @@ namespace searchworks.client.Controllers
                 SearchDescription = searchDesc,
                 CompanyID = companyID,
                 ModuleCodes = moduleCodes,
-
             };
 
             //add parameters and token to request
@@ -3413,7 +3128,6 @@ namespace searchworks.client.Controllers
 
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
-
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
@@ -3434,19 +3148,13 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionCompanyProfileResults(TransUnion trans)
         {
-
             string enquiryReason = trans.EnquiryReason;
             string enquiryType = trans.EnquiryType;
             string entityNumber = trans.EntityNumber;
             string entityName = trans.EntityName;
             Array moduleCodes = trans.ModuleCodes;
 
-
-
-
             System.Diagnostics.Debug.WriteLine(entityName);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -3469,7 +3177,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "TransUnion Company Profile";
@@ -3484,22 +3191,15 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(user_id);
             System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -3527,7 +3227,6 @@ namespace searchworks.client.Controllers
                 EntityNumber = entityNumber,
                 EntityName = entityName,
                 ModuleCodes = moduleCodes,
-
             };
 
             //add parameters and token to request
@@ -3539,10 +3238,9 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -3559,16 +3257,12 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionConsumerContactInformationResults(TransUnion trans)
         {
-
             string enquiryReason = trans.EnquiryReason;
             string idNumber = trans.IDNumber;
             string surname = trans.Surname;
             string refe = trans.Reference;
 
-
             System.Diagnostics.Debug.WriteLine("ID: " + idNumber);
-
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -3591,7 +3285,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "TransUnion Consumer Contact Information";
@@ -3610,22 +3303,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -3651,8 +3337,6 @@ namespace searchworks.client.Controllers
                 EnquiryReason = enquiryReason,
                 IDNumber = idNumber,
                 Surname = surname
-
-
             };
 
             //add parameters and token to request
@@ -3664,10 +3348,9 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -3690,7 +3373,6 @@ namespace searchworks.client.Controllers
             }
         }
 
-
         public ActionResult TransUnionConsumerIDVerification()
         {
             return View();
@@ -3698,7 +3380,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionConsumerIDVerificationResults(TransUnion search)
         {
-
             string id = search.IDNumber;
             string refe = search.Reference;
 
@@ -3725,7 +3406,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "TransUnion Consumer ID Verification";
@@ -3733,19 +3413,16 @@ namespace searchworks.client.Controllers
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
+            //System.Diagnostics.Debug.WriteLine(date_add);
+            //System.Diagnostics.Debug.WriteLine(time_add);
+            //System.Diagnostics.Debug.WriteLine(page);
+            //System.Diagnostics.Debug.WriteLine(action);
+            //System.Diagnostics.Debug.WriteLine(user_id);
+            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
-
-
-
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3753,13 +3430,9 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -3783,10 +3456,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = authtoken,//search reference: probably store in logs
                 IDNumber = id,
-
-
-
-
             };
 
             //add parameters and token to request
@@ -3800,7 +3469,7 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -3821,8 +3490,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
                 //ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
-
-
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
@@ -3840,7 +3507,6 @@ namespace searchworks.client.Controllers
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
                 ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
 
-
                 ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
                 ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
                 System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
@@ -3851,17 +3517,13 @@ namespace searchworks.client.Controllers
                 //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
                 //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
 
-                //    ViewData["AddressLine3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-                //    ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+                // ViewData["AddressLine3"] =
+                // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
+                // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
 
                 //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
                 //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
                 //}
-
-
-
-
-
 
                 //for (int i = 0; i < 5; i++)
                 //{
@@ -3876,10 +3538,6 @@ namespace searchworks.client.Controllers
                 return View();
             }
 
-
-
-
-
             return View();
         }
 
@@ -3890,7 +3548,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionConsumerProfileResults(TransUnion trans)
         {
-
             string id = trans.IDNumber;
             string conName = trans.ContactName;
             string conNumber = trans.ContactNumber;
@@ -3924,7 +3581,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "TransUnion Consumer ID Verification";
@@ -3943,22 +3599,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -3989,8 +3638,6 @@ namespace searchworks.client.Controllers
                 FirstName = firstName,
                 PassportNumber = passport,
                 DateOfBirth = dob,
-
-
             };
 
             //add parameters and token to request
@@ -4027,7 +3674,6 @@ namespace searchworks.client.Controllers
             ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
             ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
 
-
             ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
             ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
             System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
@@ -4038,17 +3684,13 @@ namespace searchworks.client.Controllers
             //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
             //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
 
-            //    ViewData["AddressLine3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-            //    ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+            // ViewData["AddressLine3"] =
+            // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
+            // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
 
             //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
             //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
             //}
-
-
-
-
-
 
             //for (int i = 0; i < 5; i++)
             //{
@@ -4059,10 +3701,6 @@ namespace searchworks.client.Controllers
             //extract list of companies returned
 
             //PersonInformation lst = getIndividualList(response);
-
-
-
-
 
             return View();
         }
@@ -4089,10 +3727,8 @@ namespace searchworks.client.Controllers
 
             System.Diagnostics.Debug.WriteLine(id);
 
-
             if (traceType == "enquiryID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -4114,7 +3750,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "TransUnion Consumer Trace By EnquiryID";
@@ -4129,22 +3764,15 @@ namespace searchworks.client.Controllers
                 System.Diagnostics.Debug.WriteLine(user_id);
                 System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -4181,7 +3809,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -4192,10 +3819,8 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
-
             else if (traceType == "ID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -4217,7 +3842,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "TransUnion Consumer Trace By ID Number";
@@ -4225,19 +3849,16 @@ namespace searchworks.client.Controllers
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
+                //System.Diagnostics.Debug.WriteLine(date_add);
+                //System.Diagnostics.Debug.WriteLine(time_add);
+                //System.Diagnostics.Debug.WriteLine(page);
+                //System.Diagnostics.Debug.WriteLine(action);
+                //System.Diagnostics.Debug.WriteLine(user_id);
+                //System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
-
-
-
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4245,13 +3866,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -4286,10 +3903,9 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
-
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
                 JToken token = JToken.Parse(response.Content);
@@ -4308,13 +3924,9 @@ namespace searchworks.client.Controllers
                     ViewData["Message"] = "good";
                     //ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
-
-
                     ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
                     var name = ViewData["FirstName"].ToString();
                     System.Diagnostics.Debug.WriteLine(name);
-
-
 
                     ViewData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
                     System.Diagnostics.Debug.WriteLine(ViewData["DateOfBirth"].ToString());
@@ -4332,25 +3944,18 @@ namespace searchworks.client.Controllers
                     ViewData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
                     ViewData["EnquiryID"] = rootObject.ResponseObject[0].PersonInformation.EnquiryID;
 
-
-
-
                     //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
                     //{
                     //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
                     //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
 
-                    //    ViewData["AddressLine3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-                    //    ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+                    // ViewData["AddressLine3"] =
+                    // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
+                    // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
 
                     //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
                     //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
                     //}
-
-
-
-
-
 
                     //for (int i = 0; i < 5; i++)
                     //{
@@ -4365,10 +3970,8 @@ namespace searchworks.client.Controllers
                     return View();
                 }
             }
-
             else if (traceType == "mobile")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -4390,7 +3993,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "TransUnion Consumer Trace By Mobile Number";
@@ -4405,22 +4007,15 @@ namespace searchworks.client.Controllers
                 System.Diagnostics.Debug.WriteLine(user_id);
                 System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -4455,7 +4050,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -4466,10 +4060,8 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
-
             else if (traceType == "surname")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -4491,7 +4083,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "TransUnion Consumer Trace By Surname and Date of Birth";
@@ -4506,22 +4097,15 @@ namespace searchworks.client.Controllers
                 System.Diagnostics.Debug.WriteLine(user_id);
                 System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -4557,7 +4141,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -4568,10 +4151,8 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
-
             else if (traceType == "tele")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -4593,7 +4174,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "TransUnion Consumer Trace By Telephone Number";
@@ -4608,22 +4188,15 @@ namespace searchworks.client.Controllers
                 System.Diagnostics.Debug.WriteLine(user_id);
                 System.Diagnostics.Debug.WriteLine(us);
 
-
-
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -4659,7 +4232,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -4681,7 +4253,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredAccountVerificationResults(VeriCred veri)
         {
-
             string id = veri.idNumber;
             string accType = veri.accountType;
             string surname = veri.surname;
@@ -4713,7 +4284,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "VeriCred Account Verification";
@@ -4732,22 +4302,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -4776,8 +4339,6 @@ namespace searchworks.client.Controllers
                 initials = initials,
                 branchCode = branchCode,
                 accountNumber = accNumber,
-
-
             };
 
             //add parameters and token to request
@@ -4814,7 +4375,6 @@ namespace searchworks.client.Controllers
             ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
             ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
 
-
             ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
             ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
             System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
@@ -4825,17 +4385,13 @@ namespace searchworks.client.Controllers
             //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
             //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
 
-            //    ViewData["AddressLine3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-            //    ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+            // ViewData["AddressLine3"] =
+            // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
+            // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
 
             //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
             //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
             //}
-
-
-
-
-
 
             //for (int i = 0; i < 5; i++)
             //{
@@ -4847,10 +4403,6 @@ namespace searchworks.client.Controllers
 
             //PersonInformation lst = getIndividualList(response);
 
-
-
-
-
             return View();
         }
 
@@ -4861,11 +4413,9 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredConsumerProfileResults(VeriCred veri)
         {
-
             string id = veri.idNumber;
             string enquiryReason = veri.EnquiryReason;
             string refe = veri.Reference;
-
 
             System.Diagnostics.Debug.WriteLine(id);
 
@@ -4890,7 +4440,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "VeriCred Consumer Profile";
@@ -4905,13 +4454,9 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(user_id);
             System.Diagnostics.Debug.WriteLine(us);
 
-
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
-
-
-
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4919,13 +4464,9 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -4950,9 +4491,6 @@ namespace searchworks.client.Controllers
                 Reference = authtoken,//search reference: probably store in logs
                 IDNumber = id,
                 EnquiryReason = enquiryReason,
-
-
-
             };
 
             //add parameters and token to request
@@ -4992,35 +4530,25 @@ namespace searchworks.client.Controllers
                 ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
 
-
                 ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
                 ViewData["RiskColour"] = rootObject.ResponseObject.CreditInformation.RiskColour;
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
 
-
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
-
-
-
-
 
                 //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
                 //{
                 //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
                 //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
 
-                //    ViewData["AddressLine3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-                //    ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+                // ViewData["AddressLine3"] =
+                // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
+                // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
 
                 //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
                 //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
                 //}
-
-
-
-
-
 
                 //for (int i = 0; i < 5; i++)
                 //{
@@ -5032,10 +4560,7 @@ namespace searchworks.client.Controllers
 
                 //PersonInformation lst = getIndividualList(response);
                 return View();
-
-
             }
-
 
             return View();
         }
@@ -5047,12 +4572,10 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredContactInfoByIDNumberResults(VeriCred veri)
         {
-
             string id = veri.idNumber;
             string refe = veri.Reference;
 
             System.Diagnostics.Debug.WriteLine(id);
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -5075,7 +4598,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "VeriCred Contact Info By IDNumber";
@@ -5094,24 +4616,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -5135,9 +4648,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = authtoken,//search reference: probably store in logs
                 IDNumber = id,
-
-
-
             };
 
             //add parameters and token to request
@@ -5181,25 +4691,14 @@ namespace searchworks.client.Controllers
                 ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
 
-
-
                 //ContactInformation
                 ViewData["MobileNumber"] = rootObject.ResponseObject.ContactInformation.MobileNumber;
                 ViewData["HomeTelephoneNumber"] = rootObject.ResponseObject.ContactInformation.HomeTelephoneNumber;
                 ViewData["WorkTelephoneNumber"] = rootObject.ResponseObject.ContactInformation.WorkTelephoneNumber;
                 ViewData["PhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
 
-
                 return View();
             }
-
-
-
-
-
-
-
-
 
             return View();
         }
@@ -5211,12 +4710,10 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredIDPhotoVerificationResults(VeriCred veri)
         {
-
             string id = veri.idNumber;
             string refe = veri.Reference;
 
             System.Diagnostics.Debug.WriteLine(id);
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -5239,7 +4736,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "VeriCred ID Photo Verification";
@@ -5258,26 +4754,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -5301,9 +4786,6 @@ namespace searchworks.client.Controllers
                 sessionToken = authtoken,
                 reference = authtoken,//search reference: probably store in logs
                 idNumber = id,
-
-
-
             };
 
             //add parameters and token to request
@@ -5348,7 +4830,6 @@ namespace searchworks.client.Controllers
                 ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
 
-
                 //HomeAffairsInformation
                 ViewData["DeceasedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
                 ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
@@ -5375,12 +4856,10 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredIncomeEstimateByIDNumberResults(VeriCred veri)
         {
-
             string id = veri.idNumber;
             string refe = veri.Reference;
 
             System.Diagnostics.Debug.WriteLine(id);
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -5403,7 +4882,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "VeriCred Income Estimate By IDNumber";
@@ -5422,24 +4900,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -5463,9 +4932,6 @@ namespace searchworks.client.Controllers
                 sessionToken = authtoken,
                 reference = authtoken,//search reference: probably store in logs
                 idNumber = id,
-
-
-
             };
 
             //add parameters and token to request
@@ -5503,7 +4969,6 @@ namespace searchworks.client.Controllers
             {
                 ViewData["Message"] = "good";
 
-
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                 System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
@@ -5527,16 +4992,7 @@ namespace searchworks.client.Controllers
                 ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus;
 
                 return View();
-
             }
-
-
-
-
-
-
-
-
 
             return View();
         }
@@ -5548,12 +5004,10 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredPersonVerificationByIDNumberResults(VeriCred search)
         {
-
             string id = search.idNumber;
             string refe = search.Reference;
 
             System.Diagnostics.Debug.WriteLine(id);
-
 
             //string serverIp = "localhost";
             //string username = "root";
@@ -5576,7 +5030,6 @@ namespace searchworks.client.Controllers
 
             DateTime time = DateTime.Now;
 
-
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "VeriCred Person Verification By IDNumber";
@@ -5595,24 +5048,15 @@ namespace searchworks.client.Controllers
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -5636,9 +5080,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = authtoken,//search reference: probably store in logs
                 idNumber = id,
-
-
-
             };
 
             //add parameters and token to request
@@ -5674,7 +5115,6 @@ namespace searchworks.client.Controllers
             {
                 ViewData["Message"] = "good";
 
-
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                 System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
@@ -5698,16 +5138,7 @@ namespace searchworks.client.Controllers
                 ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus;
 
                 return View();
-
             }
-
-
-
-
-
-
-
-
 
             return View();
         }
@@ -5728,13 +5159,10 @@ namespace searchworks.client.Controllers
             string name = xds.FirstName;
             string sur = xds.Surname;
 
-
             System.Diagnostics.Debug.WriteLine(id);
 
             if (type == "photo")
             {
-
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -5755,7 +5183,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -5782,15 +5209,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -5814,9 +5235,6 @@ namespace searchworks.client.Controllers
                     sessionToken = authtoken,
                     Reference = authtoken,//search reference: probably store in logs
                     IDNumber = id,
-
-
-
                 };
 
                 //add parameters and token to request
@@ -5890,17 +5308,9 @@ namespace searchworks.client.Controllers
                     }
                     return View();
                 }
-
-
-
-
-
-
             }
-
             else if (type == "enquiryID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -5921,7 +5331,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -5948,13 +5357,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -5991,7 +5396,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -6025,7 +5429,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "XDS Consumer ID Verification";
@@ -6051,15 +5454,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6085,9 +5482,6 @@ namespace searchworks.client.Controllers
                     idNumber = id,
                     firstName = name,
                     surname = sur
-
-
-
                 };
 
                 //add parameters and token to request
@@ -6151,7 +5545,6 @@ namespace searchworks.client.Controllers
                 }
             }
 
-
             return View();
         }
 
@@ -6192,7 +5585,6 @@ namespace searchworks.client.Controllers
 
             if (type == "address")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -6213,7 +5605,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -6240,15 +5631,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6276,9 +5661,6 @@ namespace searchworks.client.Controllers
                     StreetName = streetName,
                     City = city,
                     Province = province,
-
-
-
                 };
 
                 //add parameters and token to request
@@ -6317,10 +5699,8 @@ namespace searchworks.client.Controllers
 
                 //PersonInformation lst = getIndividualList(response);
             }
-
             else if (type == "enquiryID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -6341,7 +5721,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -6368,13 +5747,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6411,7 +5786,6 @@ namespace searchworks.client.Controllers
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
 
-
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
 
@@ -6422,10 +5796,8 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
-
             else if (type == "ID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -6446,7 +5818,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -6473,13 +5844,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6513,7 +5880,6 @@ namespace searchworks.client.Controllers
 
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
-
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
@@ -6566,13 +5932,9 @@ namespace searchworks.client.Controllers
 
                     return View();
                 }
-
-
             }
-
             else if (type == "name")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -6593,7 +5955,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -6620,13 +5981,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6662,7 +6019,6 @@ namespace searchworks.client.Controllers
 
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
-
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
@@ -6717,10 +6073,8 @@ namespace searchworks.client.Controllers
                     return View();
                 }
             }
-
             else if (type == "passport")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -6741,7 +6095,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -6768,13 +6121,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6798,7 +6147,6 @@ namespace searchworks.client.Controllers
                     SessionToken = authtoken,
                     Reference = us,//search reference: probably store in logs
                     PassportNumber = passport,
-
                 };
 
                 //add parameters and token to request
@@ -6809,7 +6157,6 @@ namespace searchworks.client.Controllers
 
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
-
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
@@ -6879,10 +6226,8 @@ namespace searchworks.client.Controllers
                     return View();
                 }
             }
-
             else if (type == "tele")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -6903,7 +6248,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -6930,13 +6274,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -6972,7 +6312,6 @@ namespace searchworks.client.Controllers
 
                 //make the API request and get a response
                 IRestResponse response = client.Execute<RootObject>(request);
-
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
@@ -7026,7 +6365,6 @@ namespace searchworks.client.Controllers
                     return View();
                 }
             }
-
 
             return View();
         }

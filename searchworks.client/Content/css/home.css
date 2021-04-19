@@ -43,9 +43,10 @@
     color: white;
     opacity: 1;
     display: inline-block;
+
     margin-right: 16px;
 }
-
+ 
 .act {
     background: #00BECE 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00BECE4A;
@@ -434,7 +435,7 @@
     opacity: 1;
 }
 
-
+ 
 .seaRes {
     position: relative;
     width: 850px;

@@ -11,29 +11,26 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace searchworks.client.Controllers
 {
     public class HomeController : Controller
     {
-        string serverIp = "localhost";
-        string username = "root";
-        string password = "";
-        string databaseName = "jcred";
+        private string serverIp = "localhost";
+        private string username = "root";
+        private string password = "";
+        private string databaseName = "jcred";
 
         //string serverIp = "197.242.148.16";
         //string username = "cykgxznt_admin";
         //string password = "Jcred123@";
         //string databaseName = "cykgxznt_jcred";
 
-
-        // string serverIp = "jcred-azpoc.mysql.database.azure.com";
-        // string username = "jcredadmin@jcred-azpoc";
-        // string password = "vVHBF2XdhPfWsC";
-        // string databaseName = "jcred";
+        //string serverIp = "jcred-azpoc.mysql.database.azure.com";
+        //string username = "jcredadmin@jcred-azpoc";
+        //string password = "vVHBF2XdhPfWsC";
+        //string databaseName = "jcred";
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -58,25 +55,14 @@ namespace searchworks.client.Controllers
             //string databaseName = "familzkk_familylaw";
             //string port = "3306";
 
-
-
-
             string dbConnectionString = string.Format("server={0};database={1};uid={2};pwd={3};", serverIp, databaseName, username, password, databaseName);
             //string connsqlstring = "SERVER=" + serverIp + ";PORT=" + port + ";USER=" + username + ";PASSWORD=" + password + ";DATABASE=" + databaseName + "Persist Security Info= true;Charset=utf8";
 
-
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-
-
-
-
             //System.Diagnostics.Debug.WriteLine(connsqlstring);
-            System.Diagnostics.Debug.WriteLine(log.Password);
-            System.Diagnostics.Debug.WriteLine(log.Email);
-
-
-
+            //System.Diagnostics.Debug.WriteLine(log.Password);
+            //System.Diagnostics.Debug.WriteLine(log.Email);
 
             string query_uid = "SELECT * FROM users WHERE email = '" + log.Email + "' && password = '" + log.Password + "'";
 
@@ -84,11 +70,7 @@ namespace searchworks.client.Controllers
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
-
             var reader2 = cmd2.ExecuteReader();
-
 
             if (reader2.Read())
             {
@@ -98,15 +80,10 @@ namespace searchworks.client.Controllers
                 Session["ID"] = reader2["uid"].ToString();
                 Session["Name"] = reader2["fullname"].ToString();
 
-
-
                 if (userEmail == log.Email && userPass == log.Password)
                 {
-                    System.Diagnostics.Debug.WriteLine(DateTime.Today.ToShortDateString());
-
                     conn.Close();
                     DateTime time = DateTime.Now;
-
 
                     string date_add = DateTime.Today.ToShortDateString();
                     string time_add = time.ToString("T");
@@ -115,15 +92,12 @@ namespace searchworks.client.Controllers
                     string user_id = Session["ID"].ToString();
                     string us = Session["Name"].ToString();
 
-                    System.Diagnostics.Debug.WriteLine(date_add);
-                    System.Diagnostics.Debug.WriteLine(time_add);
-                    System.Diagnostics.Debug.WriteLine(page);
-                    System.Diagnostics.Debug.WriteLine(action);
-                    System.Diagnostics.Debug.WriteLine(user_id);
-                    System.Diagnostics.Debug.WriteLine(us);
-
-
-
+                    //System.Diagnostics.Debug.WriteLine(date_add);
+                    //System.Diagnostics.Debug.WriteLine(time_add);
+                    //System.Diagnostics.Debug.WriteLine(page);
+                    //System.Diagnostics.Debug.WriteLine(action);
+                    //System.Diagnostics.Debug.WriteLine(user_id);
+                    //System.Diagnostics.Debug.WriteLine(us);
 
                     string query_uidd = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
                     conn.Open();
@@ -146,18 +120,10 @@ namespace searchworks.client.Controllers
                 conn.Close();
                 return View("Index");
             }
-
-
-
-
-
-
-
         }
 
         public ActionResult Logs()
         {
-
             //string serverIp = "localhost";
             //string username = "root";
             //string password = "";
@@ -172,18 +138,14 @@ namespace searchworks.client.Controllers
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-
             List<string> thatlist = new List<string>();
             Dictionary<string, string> ArrayList = new Dictionary<string, string>();
-
 
             string query_uid = "SELECT * FROM logs ORDER BY id DESC";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
-
-
 
             var reader2 = cmd2.ExecuteReader();
 
@@ -210,12 +172,8 @@ namespace searchworks.client.Controllers
 
                 ViewData["ArrayList"] = thatlist;
 
-
                 conn.Close();
                 return View();
-
-
-
             }
             else
             {
@@ -223,9 +181,6 @@ namespace searchworks.client.Controllers
                 conn.Close();
                 return View();
             }
-
-
-
         }
 
         public ActionResult Admin(Admin ad)
@@ -241,7 +196,6 @@ namespace searchworks.client.Controllers
             //string password = "jcred123";
             //string databaseName = "cykgxznt_jcred";
             //string port = "3306";
-
 
             string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
@@ -263,17 +217,11 @@ namespace searchworks.client.Controllers
 
             if (ad.email != " ")
             {
-
-
-
                 string query_uid = "INSERT INTO users (fullname,email,dob,phone,gender,org,type,date_added) VALUES('" + fullname + "','" + email + "','" + dob + "','" + phone + "','" + gender + "','" + org + "','" + type + "','" + date_add + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
-
-
-
 
                 var reader2 = cmd2.ExecuteReader();
                 conn.Close();
@@ -281,7 +229,6 @@ namespace searchworks.client.Controllers
 
             string users = "SELECT * FROM users ORDER BY uid DESC";
             conn.Open();
-
 
             var cmd = new MySqlCommand(users, conn);
             var reader3 = cmd.ExecuteReader();
@@ -302,7 +249,6 @@ namespace searchworks.client.Controllers
                     System.Diagnostics.Debug.WriteLine("Name: " + name);
                     System.Diagnostics.Debug.WriteLine("Num: " + ph);
 
-
                     thatlist.Add(name);
                     thatlist.Add(userEmail);
                     thatlist.Add(ph);
@@ -319,14 +265,7 @@ namespace searchworks.client.Controllers
 
                     conn.Close();
                     return View();
-
-
                 }
-
-
-
-
-
             }
             else
             {
@@ -400,7 +339,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult CIPCCompany()
         {
-
             return View();
         }
 
@@ -411,9 +349,6 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(pdf);
             string strCompanyName = name;
             string refe = search.Reference;
-
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -451,14 +386,13 @@ namespace searchworks.client.Controllers
             IRestResponse response = client.Execute<RootObject>(request);
 
             dynamic rootObject = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(response);
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             //extract list of companies returned
             List<CompanyInformation> lst = getCompanyList(response);
-
-
+            System.Diagnostics.Debug.WriteLine(lst);
             //string serverIp = "localhost";
             //string username = "root";
             //string password = "";
@@ -477,7 +411,6 @@ namespace searchworks.client.Controllers
             //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
-
 
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
@@ -499,22 +432,15 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(refe);
             ViewData["ComName"] = name;
 
-
-
-
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-
 
             return View(lst);
         }
@@ -524,9 +450,10 @@ namespace searchworks.client.Controllers
             List<CompanyInformation> lst = new List<CompanyInformation>();
 
             dynamic respContent = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            System.Diagnostics.Debug.WriteLine("YList: " + rawList);
+            //System.Diagnostics.Debug.WriteLine("YList: " + rawList);
+            //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             //var rawList = respContent.ResponseObject;
 
             //foreach (JObject responseObject in rawList)
@@ -537,19 +464,13 @@ namespace searchworks.client.Controllers
                 lst.Add(responseObject.CompanyInformation);
             }
 
-
             System.Diagnostics.Debug.WriteLine("List: " + lst);
             return lst;
-
         }
-
 
         public ActionResult CIPCCompanyDetails(string comID)
         {
-
             System.Diagnostics.Debug.WriteLine(comID);
-
-
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -662,7 +583,6 @@ namespace searchworks.client.Controllers
                 //ViewData["FirstName"] = FirstName;
                 //ViewData["Surname"] = Surname;
 
-
                 //System.Diagnostics.Debug.WriteLine(" Director ID "+count+" : "+ DirectorID);
             }
             foreach (KeyValuePair<string, string> item in arrayList)
@@ -694,15 +614,10 @@ namespace searchworks.client.Controllers
             ViewData["PostalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine4;
             ViewData["PostalPostCode"] = rootObject.ResponseObject.CompanyInformation.PostalPostCode;
 
-
-
             //ViewData["Director"] = rootObject.ResponseObject.Directors[1].FirstName[1];
-
 
             //extract list of companies returned
             //List<Directors> lst = getCompanyDetails(response);
-
-
 
             return View();
         }
@@ -730,7 +645,12 @@ namespace searchworks.client.Controllers
         {
             return View();
         }
-
+        public ActionResult CSICompanyDetails()
+        {
+            {
+                return View();
+            }
+        }
         public ActionResult CSICompanyRecordsResults(Search search)
         {
             string name = search.CompanyName;
@@ -742,10 +662,8 @@ namespace searchworks.client.Controllers
             string strCompanyName = name;
             ViewData["type"] = type;
 
-
             if (type == "name")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -764,7 +682,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -785,21 +702,15 @@ namespace searchworks.client.Controllers
                 ViewData["ref"] = refe;
                 ViewData["ComName"] = name;
 
-
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -823,7 +734,6 @@ namespace searchworks.client.Controllers
                     SessionToken = authtoken,
                     Reference = us,//search reference: probably store in logs
                     CompanyName = strCompanyName,
-
                 };
 
                 //add parameters and token to request
@@ -840,6 +750,7 @@ namespace searchworks.client.Controllers
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
                 System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
                 if (mes == "ServiceOffline")
                 {
@@ -855,15 +766,9 @@ namespace searchworks.client.Controllers
                     List<CompanyInformation> lst = getCSICompanyList(response);
                     return View(lst);
                 }
-
-
-
-
             }
-
             else if (type == "comID")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -882,7 +787,6 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
-
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
@@ -903,21 +807,15 @@ namespace searchworks.client.Controllers
                 ViewData["ref"] = refe;
                 ViewData["ComName"] = comID;
 
-
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -941,7 +839,6 @@ namespace searchworks.client.Controllers
                     SessionToken = authtoken,
                     Reference = us,//search reference: probably store in logs
                     CompanyID = comID,
-
                 };
 
                 //add parameters and token to request
@@ -979,15 +876,11 @@ namespace searchworks.client.Controllers
                     ViewData["ComStatCode"] = rootObject.ResponseObject["CompanyInformation"].CompanyStatusCode;
                     ViewData["ComStat"] = rootObject.ResponseObject["CompanyInformation"].CompanyStatus;
 
-
-
                     return View();
                 }
             }
-
             else if (type == "regNum")
             {
-
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
@@ -1007,7 +900,6 @@ namespace searchworks.client.Controllers
 
                 DateTime time = DateTime.Now;
 
-
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
                 string page = "CSI Company Trace By Registration Number";
@@ -1015,20 +907,17 @@ namespace searchworks.client.Controllers
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
+                //System.Diagnostics.Debug.WriteLine(date_add);
+                //System.Diagnostics.Debug.WriteLine(time_add);
+                //System.Diagnostics.Debug.WriteLine(page);
+                //System.Diagnostics.Debug.WriteLine(action);
+                //System.Diagnostics.Debug.WriteLine(user_id);
+                //System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
                 ViewData["ComName"] = regNum;
-
-
-
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1036,13 +925,9 @@ namespace searchworks.client.Controllers
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
 
-
-
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-
 
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -1066,7 +951,6 @@ namespace searchworks.client.Controllers
                     SessionToken = authtoken,
                     Reference = us,//search reference: probably store in logs
                     RegistrationNumber = regNum,
-
                 };
 
                 //add parameters and token to request
@@ -1107,14 +991,11 @@ namespace searchworks.client.Controllers
                     ViewData["ComStatCode"] = rootObject.ResponseObject["CompanyInformation"].CompanyStatusCode;
                     ViewData["ComStat"] = rootObject.ResponseObject["CompanyInformation"].CompanyStatus;
 
-
-
                     return View();
                 }
             }
 
             return View();
-
         }
 
         private List<CompanyInformation> getCSICompanyList(IRestResponse response)
@@ -1134,8 +1015,6 @@ namespace searchworks.client.Controllers
                 lst.Add(responseObject.CompanyInformation);
             }
 
-
-
             return lst;
         }
 
@@ -1153,8 +1032,6 @@ namespace searchworks.client.Controllers
         {
             return View();
         }
-
-
 
         [HttpPost]
         [ActionName("PDF")]
@@ -1286,9 +1163,5 @@ namespace searchworks.client.Controllers
 
             return View();
         }
-
-
-
     }
-
 }
