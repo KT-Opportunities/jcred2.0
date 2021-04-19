@@ -445,29 +445,6 @@ namespace searchworks.client.Controllers
             return View(lst);
         }
 
-        private List<CompanyInformation> getCompanyList(IRestResponse response)
-        {
-            List<CompanyInformation> lst = new List<CompanyInformation>();
-
-            dynamic respContent = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            //System.Diagnostics.Debug.WriteLine("YList: " + rawList);
-            //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-            //var rawList = respContent.ResponseObject;
-
-            //foreach (JObject responseObject in rawList)
-            foreach (ResponseObject responseObject in rawList)
-            {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
-                lst.Add(responseObject.CompanyInformation);
-            }
-
-            System.Diagnostics.Debug.WriteLine("List: " + lst);
-            return lst;
-        }
-
         public ActionResult CIPCCompanyDetails(string comID)
         {
             System.Diagnostics.Debug.WriteLine(comID);
@@ -622,35 +599,41 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        private List<Directors> getCompanyDetails(IRestResponse response)
-        {
-            List<Directors> lst = new List<Directors>();
-
-            dynamic respContent = JsonConvert.DeserializeObject(response.Content);
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            //var rawList = respContent.ResponseObject;
-
-            //foreach (JObject responseObject in rawList)
-            //foreach (ResponseObject responseObject in rawList)
-            //{
-            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
-            //    //res.SearchInformation = responseObject.SearchInformation;
-            //    lst.Add(responseObject.Directors);
-            //}
-
-            return lst;
-        }
-
         public ActionResult CSICompanyRecords()
         {
             return View();
         }
-        public ActionResult CSICompanyDetails()
+
+        public ActionResult CSICompanyDetails(string comID)
         {
+            System.Diagnostics.Debug.WriteLine(comID);
+
+            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            if (!tokenValid(authtoken))
+            {
+                //exit with a warning
+            }
+
+            var client = new RestClient();
+            var request = new RestRequest();
+            //request headers
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            //object containing input parameter data for company() API method
+           
+             var apiInput = new
+            {
+                SessionToken = authtoken,
+                Reference = authtoken,
+                RegistrationNumber = comID,
+            };
+            System.Diagnostics.Debug.WriteLine(authtoken,apiInput,"dawwwg");
+            DateTime time = DateTime.Now;
             {
                 return View();
             }
         }
+
         public ActionResult CSICompanyRecordsResults(Search search)
         {
             string name = search.CompanyName;
@@ -690,12 +673,12 @@ namespace searchworks.client.Controllers
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
+                //System.Diagnostics.Debug.WriteLine(date_add);
+                //System.Diagnostics.Debug.WriteLine(time_add);
+                //System.Diagnostics.Debug.WriteLine(page);
+                //System.Diagnostics.Debug.WriteLine(action);
+                //System.Diagnostics.Debug.WriteLine(user_id);
+                //System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -749,8 +732,8 @@ namespace searchworks.client.Controllers
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
-                System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
-                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                //System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
+                //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
                 if (mes == "ServiceOffline")
                 {
@@ -795,12 +778,12 @@ namespace searchworks.client.Controllers
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
+                //System.Diagnostics.Debug.WriteLine(date_add);
+                //System.Diagnostics.Debug.WriteLine(time_add);
+                //System.Diagnostics.Debug.WriteLine(page);
+                //System.Diagnostics.Debug.WriteLine(action);
+                //System.Diagnostics.Debug.WriteLine(user_id);
+                //System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -854,7 +837,7 @@ namespace searchworks.client.Controllers
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
-                System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
+                //System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
                 if (mes == "ServiceOffline")
@@ -963,10 +946,11 @@ namespace searchworks.client.Controllers
                 IRestResponse response = client.Execute<RootObject>(request);
 
                 dynamic rootObject = JObject.Parse(response.Content);
+                System.Diagnostics.Debug.WriteLine(response.Content, "hereeee");
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
-                System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
+                //System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
                 if (mes == "ServiceOffline")
@@ -982,8 +966,8 @@ namespace searchworks.client.Controllers
                     ViewData["type"] = type;
                     ViewData["ComID"] = rootObject.ResponseObject["CompanyInformation"].CompanyID;
                     ViewData["ComID2"] = rootObject.ResponseObject["CompanyInformation"];
-                    System.Diagnostics.Debug.WriteLine("Com Message: " + ViewData["ComID"]);
-                    System.Diagnostics.Debug.WriteLine("Com2 Message: " + ViewData["ComID2"]);
+                    //System.Diagnostics.Debug.WriteLine("Com Message: " + ViewData["ComID"]);
+                    //System.Diagnostics.Debug.WriteLine("Com2 Message: " + ViewData["ComID2"]);
                     ViewData["ComReg"] = rootObject.ResponseObject["CompanyInformation"].CompanyRegistrationNumber;
                     ViewData["ComName"] = rootObject.ResponseObject["CompanyInformation"].CompanyName;
                     ViewData["ComTransName"] = rootObject.ResponseObject["CompanyInformation"].CompanyTranslatedName;
@@ -1004,16 +988,28 @@ namespace searchworks.client.Controllers
 
             dynamic respContent = JObject.Parse(response.Content);
 
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            //var rawList = respContent.ResponseObject;
+            //List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            var rawList = respContent.ResponseObject;
+            System.Diagnostics.Debug.WriteLine(response.Content, "hereeee");
+            //List<ResponseObject> rawListResponse = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            //foreach (ResponseObject responseObject in rawListResponse)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(responseObject, "here it is");
+
+            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+            //    //res.SearchInformation = responseObject.SearchInformation;
+            //    //lst.Add(responseObject.CompanyInformation);
+            //}
+
+        
 
             //foreach (JObject responseObject in rawList)
-            foreach (ResponseObject responseObject in rawList)
-            {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
-                lst.Add(responseObject.CompanyInformation);
-            }
+            //    //foreach (ResponseObject responseObject in rawList)
+            //{
+            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+            //    //res.SearchInformation = responseObject.SearchInformation;
+            //    lst.Add(responseObject.CompanyInformation);
+            //}
 
             return lst;
         }
@@ -1162,6 +1158,48 @@ namespace searchworks.client.Controllers
             Response.End();
 
             return View();
+        }
+
+        private List<CompanyInformation> getCompanyList(IRestResponse response)
+        {
+            List<CompanyInformation> lst = new List<CompanyInformation>();
+
+            dynamic respContent = JObject.Parse(response.Content);
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            //System.Diagnostics.Debug.WriteLine("YList: " + rawList);
+            //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+            //var rawList = respContent.ResponseObject;
+
+            //foreach (JObject responseObject in rawList)
+            foreach (ResponseObject responseObject in rawList)
+            {
+                //ResponseObject res = responseObject.ToObject<ResponseObject>;
+                //res.SearchInformation = responseObject.SearchInformation;
+                lst.Add(responseObject.CompanyInformation);
+            }
+
+            System.Diagnostics.Debug.WriteLine("List: " + lst);
+            return lst;
+        }
+
+        private List<Directors> getCompanyDetails(IRestResponse response)
+        {
+            List<Directors> lst = new List<Directors>();
+
+            dynamic respContent = JsonConvert.DeserializeObject(response.Content);
+            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            //var rawList = respContent.ResponseObject;
+
+            //foreach (JObject responseObject in rawList)
+            //foreach (ResponseObject responseObject in rawList)
+            //{
+            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+            //    //res.SearchInformation = responseObject.SearchInformation;
+            //    lst.Add(responseObject.Directors);
+            //}
+
+            return lst;
         }
     }
 }

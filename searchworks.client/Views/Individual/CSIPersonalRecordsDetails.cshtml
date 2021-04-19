@@ -191,13 +191,13 @@
                         </tr>
                     </thead>
 
-                    @*@foreach (item in @ViewBag.ArrayList1)
+                    @*@foreach (List<string> item in @ViewBag.ArrayList1)
                         {
                             <tr>
 
-                                <td> @item["EmployerName"]</td>
-                                <td> @item["Designation"]</td>
-                                <td> @item.LastUpdatedDate</td>
+                                <td> @item[0]</td>
+                                <td> @item[1]</td>
+                                <td> @item[2]</td>
                             </tr>
 
                         }*@

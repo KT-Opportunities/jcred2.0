@@ -147,7 +147,6 @@ namespace searchworks.client.Controllers
                     o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
                     token = JToken.Parse(response.Content);
                     TempData["SearchType"] = seaType;
-                    System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                     TempData["ResponseMessage"] = rootObject.ResponseMessage;
                     TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
                     TempData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
@@ -405,6 +404,7 @@ namespace searchworks.client.Controllers
                 Reference = authtoken,//search reference: probably store in logs
                 IDNumber = indiID,
             };
+
             //add parameters and token to request
             request.Parameters.Clear();
             request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
@@ -433,6 +433,7 @@ namespace searchworks.client.Controllers
             ViewData["TheCount"] = elements.Count;
             elements1 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
             ViewData["TheCount"] = elements1.Count;
+
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
@@ -573,12 +574,7 @@ namespace searchworks.client.Controllers
                     //arrayList.Add(count + "_Status", Status);
                     //arrayList.Add(count + "_ResignationDate", ResignationDate);
                     List<EmploymentHistory> EmploymentH = new List<EmploymentHistory>();
-                    EmploymentH.Add(new EmploymentHistory
-                    {
-                        EmployerName = arrayList["EmployerName"],
-                        Designation = arrayList["Designation"],
-                        LastUpdatedDate = arrayList["LastUpdateDate1"]
-                    });
+
                     ViewData["ArrayList1"] = arrayList1;
                     Debug.WriteLine(arrayList1.GetType());
                     Debug.WriteLine("itssss uhh", EmployerName, Designation, LastUpdatedDate1);
