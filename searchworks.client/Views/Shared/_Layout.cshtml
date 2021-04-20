@@ -20,6 +20,7 @@
 
     <link rel="stylesheet" href="~/Content/css/nav.css">
     <link rel="stylesheet" href="~/Content/css/home.css">
+    <link rel="stylesheet" href="~/Content/css/tabs.css">
 
 </head>
 <body>
@@ -168,33 +169,24 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        function openCity(evt, cityName) {
-            var i, tabcontent, tablinks;
+        function openCity(evt, tabName) {
+            var i, tabcontent, multi;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            multi = document.getElementsByClassName("multi");
+             
+
+            for (i = 0; i < multi.length; i++) {
+                multi[i].classList.remove("active");
             }
-            document.getElementById(cityName).style.display = "block";
+
+            document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
 
-        function openCity1(evt, cityName) {
-            var i, tabcontent, tablinks1;
-            tabcontent = document.getElementsByClassName("tabcontent1");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks1");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active1", "");
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active1";
-        }
+         
     </script>
     <script type="text/javascript" src="~/Content/js/sidenav.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

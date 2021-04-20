@@ -2,6 +2,18 @@
 
 namespace searchworks.client.Company
 {
+    public class CapitalInformation
+    {
+        public string CapitalType { get; set; }
+        public string CompanyCapitalID { get; set; }
+        public string CompanyID { get; set; }
+        public string CompanyRegistrationNumber { get; set; }
+        public string NoShares { get; set; }
+        public string ParriValue { get; set; }
+        public string Premium { get; set; }
+        public string ShareAmount { get; set; }
+    }
+
     public class SearchInformation
     {
         public string SearchUserName { get; set; }
@@ -91,9 +103,10 @@ namespace searchworks.client.Company
     {
         public SearchInformation SearchInformation { get; set; }
         public CompanyInformation CompanyInformation { get; set; }
-        //public Directors Directors { get; set; }
-    }
+        public Directors Directors { get; set; }
+        public CapitalInformation CapitalInformation { get; set; }
 
+    }
     public class RootObject
     {
         public string ResponseMessage { get; set; }

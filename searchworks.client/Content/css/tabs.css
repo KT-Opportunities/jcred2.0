@@ -1,8 +1,5 @@
 ﻿/* Style the tab */
-.tab {
-    overflow: hidden;
-}
-
+ 
     /* Style the buttons inside the tab */
     .tab button {
         background-color: inherit;
@@ -33,11 +30,9 @@
     border-top: none;
 }
 
-/* Style the tab */
-.tab {
-    overflow: hidden;
-}
-
+    .tabcontent:active {
+        display: block;
+    }
     /* Style the buttons inside the tab */
     .tab button {
         background-color: inherit;
@@ -65,4 +60,4 @@
     display: none;
     padding: 6px 12px;
     border-top: none;
-
+}

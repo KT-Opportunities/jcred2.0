@@ -11,7 +11,6 @@
 }
 
 
-
 <div class="col-md-10 col-sm-10">
     <div class="sea act">SEARCH RESULTS</div>
     <div class="con2">
@@ -48,62 +47,59 @@
                 Search Results
             </div>
            
-            @if (@ViewData["Message"].ToString() == "good" && type == "name")
+            @if (ViewData["Message"].ToString() == "good" && type == "name")
             {
-                <table class="table table-striped">
-                    <thead>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+
+                    <th>Company ID</th>
+                    <th>Registration number</th>
+                    <th>Company Name</th>
+                    <th>Translated Name</th>
+                    <th>Registration Date</th>
+                    <th>Status Code</th>
+                    <th class="last">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
                         <tr>
+                            <td>
+                                @ViewData["CompanyID"]
+                            </td>
+                            <td>
 
-                            <th>Company ID</th>
-                            <th>Registration number</th>
-                            <th>Company Name</th>
-                            <th>Translated Name</th>
-                            <th>Registration Date</th>
-                            <th>Status Code</th>
-                            <th class="last">Status</th>
-                            <th></th>
+                                @ViewData["CompanyRegistrationNumber"]
+                            </td>
+                            <td>
+                                @ViewData["CompanyName"]
+                            </td>
+                            <td>
+                                @ViewData["CompanyTranslatedName"]
+                            </td>
+                            <td>
+                                @ViewData["RegistrationDate"]
+                            </td>
+                            <td>
+                                @ViewData["CompanyStatusCode"]
+                            </td>
+                            <td class="last">
+                                @ViewData["CompanyStatus"]
+                            </td>
+                            <td>
+
+                                @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = @ViewData["CompanyID"] }, new { @id = "view", @class = "seaMore" })
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyID)
-                                </td>
-                                <td>
-
-                                    @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyTranslatedName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyStatusCode)
-                                </td>
-                                <td class="last">
-                                    @Html.DisplayFor(modelItem => item.CompanyStatus)
-                                </td>
-                                <td>
-
-                                    @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
-                                </td>
-                            </tr>
-                        }
 
 
 
 
-                    </tbody>
-                </table>
+                </tbody>
+        </table>
             }
-
+       
             else if (@ViewData["Message"].ToString() == "good" && type == "comID" || type == "regNum")
             {
                 <table class="table table-striped">

@@ -1,20 +1,145 @@
 ﻿@{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <!DOCTYPE html>
 @{
-    ViewBag.Title = "CIPC Company Details";
+    ViewBag.Title = "CSI Company Details";
 }
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>CIPC Company Details</title>
-</head>
-<body>
-    <div>
+<div class="col-md-10 col-sm-10 con">
 
+    <div class="left_col">
+        <div class="results">
+            <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+            <p>2 Results</p>
+        </div>
+        <p class="num">@ViewData["CompanyName"]</p>
+        <p class="num2">CSI Company Records</p>
+        <div class="btnNavigation">
+            <button class="multi active" onclick="openCity(event, 'CompanyInfo')">Company Information</button>
+            <button class="multi" onclick="openCity(event, 'DirectorsDetails')">Directors Details</button>
+            <button class="multi" onclick="openCity(event, 'CapitalInformation')">Capital Information</button>
+        </div>
+        <div class="seaInfo">
+            Search Information
+        </div>
+        <div class="userInfo">
+            <p class="">User:<span>@ViewData["user"]</span></p>
+            <p class="">Date:<span>@ViewData["date"]</span></p>
+            <p class="">Reference:<span>@ViewData["ref"]</span></p>
+            <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @ViewData["ResponseMessage"]</span></p>
+        </div>
     </div>
-</body>
-</html>
+    <div class="right_col">
+
+        <div id="CompanyInfo" class="tabcontent active" style=display:block>
+            <div class="seaRes">
+                Company Information
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Registration Number:</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Finacial Year End:</th>
+                        <th>Region</th>
+                        <th>Country</th>
+                        <th>Registration Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@ViewData["CompanyID"] </td>
+                        <td>@ViewData["CompanyRegistrationNumber"]</td>
+                        <td>@ViewData["CompanyStatus"]</td>
+                        <td>@ViewData["CompanyType"]</td>
+                        <td>@ViewData["FinancialYearEnd"]</td>
+                        <td>@ViewData["Region"]</td>
+                        <td>@ViewData["Country"]</td>
+                        <td>@ViewData["RegistrationDate"]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="DirectorsDetails" class="tabcontent">
+            <div class="seaRes">
+                Directors Details
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Director ID</th>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Gender</th>
+                        <th>ID Number</th>
+                        <th>Age</th>
+                        <th>Status</th>
+                        <th>Resignation Date</th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @*@foreach (var key in ViewBag.ArrayList)
+                    {
+                        <tr>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                        </tr>
+                    }*@
+                </tbody>
+            </table>
+        </div>
+
+        <div id="CapitalInformation" class="tabcontent">
+            <div class="seaRes">
+                Capital Information
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>CapitalType</th>
+                        <th>CompanyCapitalID</th>
+                        <th>CompanyID</th>
+                        <th>CompanyRegistrationNumber</th>
+                        <th>NoShares</th>
+                        <th>ParriValue</th>
+                        <th>Premium</th>
+                        <th>ShareAmount</th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @*@foreach (var key in ViewBag.ArrayList)
+                    {
+                        <tr>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                            <td>@key.Value</td>
+                        </tr>
+                    }*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1434,7 +1434,6 @@ C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csproj.CopyComplete
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.dll
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.pdb
-C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\searchworks.client.dll.config
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\searchworks.client.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\searchworks.client.pdb
@@ -1718,3 +1717,4 @@ C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\s
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csproj.CopyComplete
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.pdb
+C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache
