@@ -24,7 +24,7 @@ namespace searchworks.client.Credit
         public string Surname { get; set; }
         public string Fullname { get; set; }
         public string IDNumber { get; set; }
-        public string PassportNumber { get; set; }
+        public string PassportNumber{ get; set; }
         public string EnquiryID { get; set; }
         public string EnquiryResultID { get; set; }
         public string Reference { get; set; }
@@ -33,7 +33,7 @@ namespace searchworks.client.Credit
         public string Initials { get; set; }
         public string MaritalStatus { get; set; }
         public string Quality { get; set; }
-
+        
 
 
     }
@@ -71,7 +71,7 @@ namespace searchworks.client.Credit
         public PersonInformation PersonInformation { get; set; }
         public HomeAffairsInformation HomeAffairsInformation { get; set; }
         public HistoricalInformation HistoricalInformation { get; set; }
-
+        
     }
 
     public class RootObject
@@ -83,11 +83,11 @@ namespace searchworks.client.Credit
 
     public class Search
     {
-        public string FirstName { get; set; }
-        public string Surname { get; set; }
-        public string IDNumber { get; set; }
-        public string Reference { get; set; }
-        public int EnquiryReason { get; set; }
+         public string FirstName { get; set; }
+         public string Surname{ get; set; }
+         public string IDNumber{ get; set; }
+         public string Reference{ get; set; }
+         public int EnquiryReason { get; set; }
 
 
     }
@@ -98,10 +98,10 @@ namespace searchworks.client.Credit
         public string ContactName { get; set; }
         public string ContactNumber { get; set; }
         public int EnquiryReason { get; set; }
-
+      
         public string FirstName { get; set; }
         public string Surname { get; set; }
-
+        
         public string clientName { get; set; }
         public string bankName { get; set; }
         public string branchCode { get; set; }
@@ -114,7 +114,7 @@ namespace searchworks.client.Credit
         public string TelephoneID { get; set; }
         public string passport { get; set; }
         public string TraceType { get; set; }
-
+     
         public string Reference { get; set; }
     }
 
@@ -150,7 +150,7 @@ namespace searchworks.client.Credit
         public string telephoneNumber { get; set; }
         public string TraceType { get; set; }
         public string Reference { get; set; }
-
+       
 
     }
 
@@ -164,7 +164,7 @@ namespace searchworks.client.Credit
         public string surname { get; set; }
         public string EnquiryReason { get; set; }
         public string Reference { get; set; }
-
+       
 
     }
 

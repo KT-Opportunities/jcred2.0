@@ -1,76 +1,66 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using searchworks.client.Company;
-using searchworks.client.Models;
+using ServiceStack.Text.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using searchworks.client.Models;
+using searchworks.client.Report;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Configuration;
 
 namespace searchworks.client.Controllers
 {
     public class HomeController : Controller
     {
-        private string serverIp = "localhost";
-        private string username = "root";
-        private string password = "";
-        private string databaseName = "jcred";
-
-        //string serverIp = "197.242.148.16";
-        //string username = "cykgxznt_admin";
-        //string password = "Jcred123@";
-        //string databaseName = "cykgxznt_jcred";
-
-        //string serverIp = "jcred-azpoc.mysql.database.azure.com";
-        //string username = "jcredadmin@jcred-azpoc";
-        //string password = "vVHBF2XdhPfWsC";
+        //string serverIp = "localhost";
+        //string username = "root";
+        //string password = "password";
         //string databaseName = "jcred";
+
+
+
+
+
         public ActionResult Index()
         {
+            
             return View();
         }
 
-        public ActionResult Login(Login log)
+        public ActionResult Login(Login log) 
         {
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            //string serverIp = "localhost";
-
-            //string username = "familzkk_user";
-            //string password = "familylaw1";
-            //string databaseName = "familzkk_familylaw";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};database={1};uid={2};pwd={3};", serverIp, databaseName, username, password, databaseName);
-            //string connsqlstring = "SERVER=" + serverIp + ";PORT=" + port + ";USER=" + username + ";PASSWORD=" + password + ";DATABASE=" + databaseName + "Persist Security Info= true;Charset=utf8";
-
+            string dbConnectionString = "";
+            dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
             //System.Diagnostics.Debug.WriteLine(connsqlstring);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
-            //System.Diagnostics.Debug.WriteLine(log.Email);
+            System.Diagnostics.Debug.WriteLine(log.Password);
+            System.Diagnostics.Debug.WriteLine(log.Email);
+
+            
+
 
             string query_uid = "SELECT * FROM users WHERE email = '" + log.Email + "' && password = '" + log.Password + "'";
 
             conn.Open();
 
             var cmd2 = new MySqlCommand(query_uid, conn);
+            
+
+
 
             var reader2 = cmd2.ExecuteReader();
+            
 
             if (reader2.Read())
             {
@@ -82,6 +72,8 @@ namespace searchworks.client.Controllers
 
                 if (userEmail == log.Email && userPass == log.Password)
                 {
+                    System.Diagnostics.Debug.WriteLine(DateTime.Today.ToShortDateString());
+                    
                     conn.Close();
                     DateTime time = DateTime.Now;
 
@@ -120,21 +112,20 @@ namespace searchworks.client.Controllers
                 conn.Close();
                 return View("Index");
             }
+
+
+
+
+
+
+            
         }
 
         public ActionResult Logs()
         {
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
 
-            //string serverIp = "197.242.148.16";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
 
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString; //string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -157,7 +148,7 @@ namespace searchworks.client.Controllers
                     thatlist.Add(reader2["page"].ToString());
                     thatlist.Add(reader2["action"].ToString());
                     thatlist.Add(reader2["date"].ToString());
-                    thatlist.Add(reader2["time"].ToString());
+                    thatlist.Add( reader2["time"].ToString());
 
                     foreach (string item in thatlist)
                     {
@@ -171,6 +162,7 @@ namespace searchworks.client.Controllers
                 }
 
                 ViewData["ArrayList"] = thatlist;
+                
 
                 conn.Close();
                 return View();
@@ -181,23 +173,16 @@ namespace searchworks.client.Controllers
                 conn.Close();
                 return View();
             }
+            
+
+            
         }
 
         public ActionResult Admin(Admin ad)
         {
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
+            
 
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//= string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -391,7 +376,10 @@ namespace searchworks.client.Controllers
 
             //extract list of companies returned
             List<CompanyInformation> lst = getCompanyList(response);
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+
+            
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//= string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -421,6 +409,31 @@ namespace searchworks.client.Controllers
 
             return View(lst);
         }
+
+        private List<CompanyInformation> getCompanyList(IRestResponse response)
+        {
+            List<CompanyInformation> lst = new List<CompanyInformation>(); 
+
+            dynamic respContent = JObject.Parse(response.Content);
+
+            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            System.Diagnostics.Debug.WriteLine("YList: " + rawList);
+            //var rawList = respContent.ResponseObject;
+
+            //foreach (JObject responseObject in rawList)
+            foreach (ResponseObject responseObject in rawList)
+            {
+                //ResponseObject res = responseObject.ToObject<ResponseObject>;
+                //res.SearchInformation = responseObject.SearchInformation;
+                lst.Add(responseObject.CompanyInformation);
+            }
+
+
+            System.Diagnostics.Debug.WriteLine("List: " + lst);
+            return lst;
+
+        }
+
 
         public ActionResult CIPCCompanyDetails(string comID)
         {
@@ -621,19 +634,15 @@ namespace searchworks.client.Controllers
             string strCompanyName = name;
             ViewData["type"] = type;
 
-            if (type == "name")
-            {
+
+            if (type == "name"){
+
                 //string serverIp = "localhost";
                 //string username = "root";
                 //string password = "";
                 //string databaseName = "jcred";
 
-                //string serverIp = "197.242.148.16";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -683,6 +692,7 @@ namespace searchworks.client.Controllers
                     SessionToken = authtoken,
                     Reference = us,//search reference: probably store in logs
                     CompanyName = strCompanyName,
+                    
                 };
 
                 //add parameters and token to request
@@ -724,17 +734,8 @@ namespace searchworks.client.Controllers
             }
             else if (type == "comID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
 
-                //string serverIp = "197.242.148.16";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -762,6 +763,8 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
+
+                
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
@@ -806,8 +809,7 @@ namespace searchworks.client.Controllers
                     ViewData["Message"] = "Service is offline";
                     return View();
                 }
-                else
-                {
+                else {
                     //extract list of companies returned
                     ViewData["Message"] = "good";
 
@@ -821,21 +823,11 @@ namespace searchworks.client.Controllers
                     ViewData["ComStat"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
 
                     return View();
-                }
+            }
             }
             else if (type == "regNum")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 

@@ -1,24 +1,33 @@
-﻿using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using searchworks.client.Individual;
+using ServiceStack.Text.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using searchworks.client.Models;
+using searchworks.client.Report;
+using MySql.Data.MySqlClient;
+
 
 namespace searchworks.client.Controllers
 {
     public class IndividualController : Controller
     {
-        private string serverIp = "localhost";
-        private string username = "root";
-        private string password = "";
-        private string databaseName = "jcred";
+        string serverIp = "localhost";
+        string username = "root";
+        string password = "";
+        string databaseName = "jcred";
 
+        //string serverIp = "197.242.148.16";
+        //string username = "cykgxznt_admin";
+        //string password = "jcred123";
+        //string databaseName = "cykgxznt_jcred";
         public string GetLoginToken(string api_username, string api_password)
         {
             string loginToken = "";

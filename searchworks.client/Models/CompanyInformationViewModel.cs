@@ -1,4 +1,9 @@
-﻿namespace searchworks.client.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace searchworks.client.Models
 {
     public class CompanyInformationViewModel
     {
