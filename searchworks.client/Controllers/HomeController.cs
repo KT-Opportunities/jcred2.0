@@ -410,30 +410,7 @@ namespace searchworks.client.Controllers
             return View(lst);
         }
 
-        private List<CompanyInformation> getCompanyList(IRestResponse response)
-        {
-            List<CompanyInformation> lst = new List<CompanyInformation>(); 
-
-            dynamic respContent = JObject.Parse(response.Content);
-
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            System.Diagnostics.Debug.WriteLine("YList: " + rawList);
-            //var rawList = respContent.ResponseObject;
-
-            //foreach (JObject responseObject in rawList)
-            foreach (ResponseObject responseObject in rawList)
-            {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
-                lst.Add(responseObject.CompanyInformation);
-            }
-
-
-            System.Diagnostics.Debug.WriteLine("List: " + lst);
-            return lst;
-
-        }
-
+     
 
         public ActionResult CIPCCompanyDetails(string comID)
         {
@@ -1094,13 +1071,35 @@ namespace searchworks.client.Controllers
             return View();
         }
 
+        //private List<CompanyInformation> getCompanyList(IRestResponse response)
+        //{
+        //    List<CompanyInformation> lst = new List<CompanyInformation>();
+
+        //    dynamic respContent = JObject.Parse(response.Content);
+        //    List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+
+        //    foreach (ResponseObject responseObject in rawList)
+        //    {
+        //        //ResponseObject res = responseObject.ToObject<ResponseObject>;
+        //        //res.SearchInformation = responseObject.SearchInformation;
+        //        lst.Add(responseObject.CompanyInformation);
+        //    }
+
+        //    return lst;
+        //}
+
+
         private List<CompanyInformation> getCompanyList(IRestResponse response)
         {
             List<CompanyInformation> lst = new List<CompanyInformation>();
 
             dynamic respContent = JObject.Parse(response.Content);
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
 
+            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            System.Diagnostics.Debug.WriteLine("YList: " + rawList);
+            //var rawList = respContent.ResponseObject;
+
+            //foreach (JObject responseObject in rawList)
             foreach (ResponseObject responseObject in rawList)
             {
                 //ResponseObject res = responseObject.ToObject<ResponseObject>;
@@ -1108,8 +1107,13 @@ namespace searchworks.client.Controllers
                 lst.Add(responseObject.CompanyInformation);
             }
 
+
+            System.Diagnostics.Debug.WriteLine("List: " + lst);
             return lst;
+
         }
+
+
 
         private List<Directors> getCompanyDetails(IRestResponse response)
         {
