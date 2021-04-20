@@ -26,7 +26,7 @@ namespace searchworks.client.Individual
         public string MaritalStatus { get; set; }
         public string Gender { get; set; }
         public string Age { get; set; }
-
+        
 
 
     }
@@ -43,7 +43,7 @@ namespace searchworks.client.Individual
 
     }
 
-
+  
 
     public class EmploymentHistory
     {
@@ -107,10 +107,10 @@ namespace searchworks.client.Individual
 
     public class Search
     {
-        public string FirstName { get; set; }
-        public string Surname { get; set; }
-        public string IDNumber { get; set; }
-
+         public string FirstName { get; set; }
+         public string Surname{ get; set; }
+         public string IDNumber{ get; set; }
+        
 
     }
 
@@ -151,7 +151,7 @@ namespace searchworks.client.Individual
         public string Age { get; set; }
         public string DeedsOfficeID { get; set; }
         public string DeedsOfficeName { get; set; }
-
+        
 
 
     }

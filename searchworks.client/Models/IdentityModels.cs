@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.Data.Entity.Migrations.History;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using MySql.Data.Entity;
 
 namespace searchworks.client.Models
 {
@@ -17,6 +23,7 @@ namespace searchworks.client.Models
         }
     }
 
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -26,7 +33,31 @@ namespace searchworks.client.Models
 
         public static ApplicationDbContext Create()
         {
+            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             return new ApplicationDbContext();
         }
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingTableNameConvention>();
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Properties().Where(x =>
+                    x.PropertyType.FullName != null &&
+                    (x.PropertyType.FullName.Equals("System.String") &&
+                    !x.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(q => q.TypeName != null &&
+                    q.TypeName.Equals("varchar(max)", StringComparison.InvariantCultureIgnoreCase)))).Configure(c =>
+                    c.HasColumnType("varchar(65000)"));
+
+            modelBuilder.Properties().Where(x =>
+                    x.PropertyType.FullName != null &&
+                    (x.PropertyType.FullName.Equals("System.String") &&
+                    !x.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(q => q.TypeName != null &&
+                    q.TypeName.Equals("nvarchar", StringComparison.InvariantCultureIgnoreCase)))).Configure(c =>
+                    c.HasColumnType("varchar"));
+        }
+
+        public DbSet<User> AppUsers { get; set; }
     }
 }

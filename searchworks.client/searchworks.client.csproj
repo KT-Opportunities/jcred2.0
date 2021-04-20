@@ -176,6 +176,9 @@
     <Reference Include="MySql.Data, Version=8.0.20.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.20\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.10.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.10.9\lib\net452\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data.EntityFramework, Version=8.0.19.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.EntityFramework.8.0.19\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
     </Reference>
@@ -321,6 +324,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\al.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\users.cs" />
     <Compile Include="Models\check_list.cs" />
     <Compile Include="Models\dbChecks.cs" />
@@ -869,13 +873,6 @@
     <Content Include="Content\fonts\Poppins-Bold.ttf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - FTP1.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - FTP2.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - ReadOnly - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - ReadOnly - FTP1.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - ReadOnly - FTP2.pubxml" />
-    <None Include="Properties\PublishProfiles\jcred - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Jcred.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

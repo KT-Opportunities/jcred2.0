@@ -5,173 +5,142 @@
 @model IEnumerable<searchworks.client.Individual.PersonInformation>
 
 @{
-    ViewBag.Title = "Deeds Office Person";
+    ViewBag.Title = "Deeds Office Records";
 }
 
-<div class="col-md-10 col-sm-10">
-    <div class="sea">SEARCH RESULTS</div>
-    <div class="sea act">Deeds Office Person</div>
-    <div class="sea_bar">
-        <label>Search History</label>
-        <input name="search" />
-        <button>RESET</button>
-    </div>
-    <div class="con" style="height: 700px">
-        <div class="col-md-6 col-sm-6 left" style="height: 640px">
-            @using (Html.BeginForm("DeedsOfficeRecordsIndividualResults", "Individual", FormMethod.Post))
-            {
-                <div class="ref">
-                    <label>Reference</label><br>
-
-                    @Html.TextBox("Reference", null, new { @id = "Ref" })
-                </div>
 
 
-
-                <div class="firstname" style=" margin-top: -62px;">
-                    <label>ID Number</label><br>
-
-                    @Html.TextBox("IDNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
-                </div>
-                <div class="surname" style=" margin-top: -65px;">
-                    <label>First Name</label><br>
-
-                    @Html.TextBox("Firstname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
-                </div>
-
-                <div class="idnumber" style=" margin-top: -68px;">
-                    <label>Surname</label><br>
-
-                    @Html.TextBox("Surname", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
-                </div>
-
-                <div class="idnumber" style=" margin-top: 34px;">
-                    <label>Deeds Office</label><br>
-
-                    @Html.DropDownList("DeedsOffice", new List<SelectListItem>
-                {
-
-                      new SelectListItem { Text = "Bloemfontein", Value = "1"},
-                      new SelectListItem { Text = "Cape Town", Value = "2"},
-                      new SelectListItem { Text = "Johannesburg", Value = "3"},
-                      new SelectListItem { Text = "Kimberley", Value = "4"},
-                      new SelectListItem { Text = "KingWilliamsTown", Value = "5"},
-                      new SelectListItem { Text = "Pietermaritzburg", Value = "6"},
-                      new SelectListItem { Text = "Pretoria", Value = "7"},
-                      new SelectListItem { Text = "Vryburg", Value = "8"},
-                      new SelectListItem { Text = "Umtata", Value = "9"},
-                      new SelectListItem { Text = "Mpumalanga", Value = "11"},
-                      new SelectListItem { Text = "Limpopo", Value = "12"},
-                }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
-                </div>
-
-                
-
-
-
-
-                <div class="tc" style=" margin-top: 150px;">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
-                        <input id="tc" type="checkbox" value="tc" required />
+<div class="col-md-10 col-sm-10 con">
+    <div class="seaTab">
+        <div class="col-md-6 col-sm-6">
+            <div class="sea">
+                <form action="" method="POST">
+                    <label>Search For: </label><input type="text" class="sea-input" id="search" name="searchterm">
+                    <div class="opt">
+                        <button type="submit" class="reset" id="btnS" name="submit">Submit</button>
+                        <div class="filter"><i class="fas fa-filter"></i></div>
+                        <div class="cal"><i class="fas fa-calendar-alt"></i></div>
                     </div>
-                </div>
-
-                <button id="combinedComSearch" class="btn" name="combinedComSearch" style=" margin-top: 162px;">Perform Search</button>
-
-
-            }
-
-
-
+            </div>
         </div>
-        <div class="col-md-6 col-sm-6 right">
-            <div class="cen_text">
-                Obtain the consumer trace details of an individual comprising of address, contact or employment history.
-                For more information about this repost please download the sample report. <br><br>
-                Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
+
+        <div class="col-md-6 col-sm-6">
+            <div class="sea">
+                <div class="opt1">
+                    <div class="exp">Export List </div>
+                    <div class="create">Create Group</div>
+                    <div class="history"><i class="fa fa-history"></i>History</div>
+                </div>
             </div>
         </div>
     </div>
+
+
+
+    <div class="seaTable form-style-9">
+        <form action="" method="POST">
+            <h3 class="Trans">Deeds Office Records </h3>
+
+            <ul>
+                <li>
+                    <input type="text" name="ref" class="field-style field-split align-left" placeholder="Reference" disabled />
+                    <input type="text" name="Firstname" class="field-style field-split align-right" placeholder="First Name" />
+
+                </li>
+                <li>
+                    <input type="text" name="Surname" class="field-style field-split align-left" placeholder="Surname" />
+                    <input type="text" name="IDNumber" class="field-style field-split align-right" placeholder="ID Number" />
+                </li>
+                <li>
+                    <select class="sea-input field-style field-split align-right" id="DeedsOffice" style="height: 36px;" name="DeedsOffice">
+                        <option value="1" selected>Bloemfontein</option>
+                        <option value="2">CapeTown</option>
+                        <option value="3">Johannesburg</option>
+                        <option value="4">Kimberley</option>
+                        <option value="5">KingWilliamsTown</option>
+                        <option value="6">Pietermaritzburg</option>
+                        <option value="7">Pretoria</option>
+                        <option value="8">Vryburg</option>
+                        <option value="9">Umtata</option>
+                        <option value="11">Mpumalanga</option>
+                        <option value="12">Limpopo</option>
+                    </select>
+                </li>
+                <li>
+                    <button id="individualSearch" class="btn btn-primary" name="individualSearch">Search</button>
+                </li>
+            </ul>
+
+        </form>
+    </div>
+
+    
+
+    
 </div>
-
-
 
 
 <script>
     function Search() {
-        $('#load').addClass('loader'); // to animate when successfull
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("GetCompanyResults", "Home")',
+                                data: {
+                                    companyName: $('#comName').val(),
 
-        var comName = document.getElementById("comName").value;
-        var CIPCSearch = document.getElementById("CIPCSearch").value;
-        var Reg = document.getElementById("Reg").value;
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Account Created </div>';
 
-
-
-        if (comName === "" && CIPCSearch === "") {
-            var alertMessage = '<div class="alert alert-danger" role="alert">'
-                + 'Please fill in details to search!</div>';
-
-            $(".resturn-message").html(alertMessage)
-        }
-
-        else if (comName === "") {
-            var alertMessage = '<div class="alert alert-danger" role="alert">'
-                + 'Please fill in Company Name to search!</div>';
-
-            $(".resturn-message").html(alertMessage);
-
-
-        }
-
-
-        else if (CIPCSearch === "") {
-            var alertMessage = '<div class="alert alert-danger" role="alert">'
-                + 'Please fill in CIPC Search to search!</div>';
-
-            $(".resturn-message").html(alertMessage);
-
-
-        }
-
-        else  {
-
-
-
-
-        $.ajax(
-            {
-                type: "POST",
-                url: '@Url.Action("CIPCCompanyResults", "Home")',
-                data: {
-                    companyName: $('#comName').val(),
-
-                },
-                dataType: "text",
-                error: function (result) {
-                    alert(data);
+                                    $(".resturn-message").html(alertMessage)
 
 
 
 
 
-                },
-                success: function (result) {
+                            },
+                                success: function (result) {
 
-                    var alertMessage = '<div class="alert alert-success" role="alert">'
-                        + 'Searching...</div>';
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
 
-                    $(".resturn-message").html(alertMessage)
+                                    $(".resturn-message").html(alertMessage)
 
-                    //alert(result.user_type);
+                                    //alert(result.user_type);
+
+                                    debugger;
 
 
 
+                          if (result.status == true) {
+
+                                        if (result.user_type === "client") {
+
+                                            console.log(result);
+
+                                            window.location.href = '@Url.Action("SubmissionStep2", "Checks")';
+
+                                        }
+                                        else if (result.user_type === "admin") {
+                                             window.location.href = '@Url.Action("Admin_S", "Dashboard")';
+                                        }
 
 
-                }
-            });
-    }
+                            }
+                            else {
+
+                                var alertMessage = '<div class="alert alert-danger" role="alert">'
+                                    + 'Invalid Usename/Password</div>';
+
+                                $(".resturn-message").html(alertMessage)
+
+                                alert(result.message);
+                            }
+                            }
+                        });
                         }
 
 </script>

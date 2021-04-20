@@ -1,31 +1,30 @@
-﻿using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using searchworks.client.Individual;
+using ServiceStack.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using searchworks.client.Models;
+using searchworks.client.Report;
+using MySql.Data.MySqlClient;
 
 
 namespace searchworks.client.Controllers
 {
     public class IndividualController : Controller
     {
-        //string serverIp = "localhost";
-        //string username = "root";
-        //string password = "";
-        //string databaseName = "jcred";
+        string serverIp = "localhost";
+        string username = "root";
+        string password = "";
+        string databaseName = "jcred";
 
         //string serverIp = "197.242.148.16";
         //string username = "cykgxznt_admin";
-        //string password = "Jcred123@";
+        //string password = "jcred123";
         //string databaseName = "cykgxznt_jcred";
-
-        string serverIp = "jcred-azpoc.mysql.database.azure.com";
-        string username = "jcredadmin@jcred-azpoc";
-        string password = "vVHBF2XdhPfWsC";
-        string databaseName = "jcred";
         public string GetLoginToken(string api_username, string api_password)
         {
             string loginToken = "";
@@ -123,7 +122,7 @@ namespace searchworks.client.Controllers
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
-
+                
 
 
 
@@ -189,8 +188,8 @@ namespace searchworks.client.Controllers
                 Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
                 JToken token = JToken.Parse(response.Content);
 
-
-
+                
+                
 
                 System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
@@ -205,7 +204,7 @@ namespace searchworks.client.Controllers
                 ViewData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
                 ViewData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
                 ViewData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-
+                
                 //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                 //extract list of companies returned
 
@@ -299,7 +298,7 @@ namespace searchworks.client.Controllers
                 {
                     sessionToken = authtoken,
                     reference = us,//search reference: probably store in logs
-
+                   
                     firstName = name,
                     surname = sur
 
@@ -429,7 +428,7 @@ namespace searchworks.client.Controllers
                     sessionToken = authtoken,
                     reference = us,//search reference: probably store in logs
                     idNumber = id,
-
+                    
                 };
 
                 //add parameters and token to request
@@ -473,11 +472,11 @@ namespace searchworks.client.Controllers
             return View();
 
         }
-
+       
 
         public ActionResult CSIPersonalRecordsDetails(string indiID)
         {
-
+            
             System.Diagnostics.Debug.WriteLine(indiID);
 
             return View();
@@ -504,7 +503,7 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = authtoken,//search reference: probably store in logs
                 idNumber = indiID,
-
+                
 
 
 
@@ -526,7 +525,7 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-
+           
             Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
             Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
             Dictionary<string, string> arrayList = new Dictionary<string, string>();
@@ -623,7 +622,7 @@ namespace searchworks.client.Controllers
                 }
             }
 
-            if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName != null)
+            if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName !=null)
             {
                 for (int count = 0; count < (elements1.Count); count++)
                 {
@@ -714,7 +713,7 @@ namespace searchworks.client.Controllers
                 ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus;
             }
 
-
+            
 
 
             System.Diagnostics.Debug.WriteLine(ViewData["DeceasedStatus"]);
@@ -725,7 +724,7 @@ namespace searchworks.client.Controllers
 
 
 
-
+            
         }
 
         public ActionResult DatabasePropertyIndividual()
@@ -738,7 +737,7 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-
+       
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
@@ -777,7 +776,7 @@ namespace searchworks.client.Controllers
                 Firstname = name,
                 IDNumber = id,
                 Sequestration = "false",
-
+               
             };
 
             //add parameters and token to request

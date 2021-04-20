@@ -1,14 +1,17 @@
-﻿using MySql.Data.MySqlClient;
-using searchworks.client.Models;
+﻿using searchworks.client.Models;
 using searchworks.client.Report;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
+using HtmlHelpers.BeginCollectionItem;
+using MySql.Data.MySqlClient;
 
 namespace searchworks.client.Controllers
 {
@@ -353,44 +356,44 @@ namespace searchworks.client.Controllers
                             }
                         }
 
-                        //if (checksSubmission.Check != null)
-                        //{
-                        //    foreach (Check attachment in checksSubmission.Check)
-                        //    {
-                        //        string query_checklist = "INSERT INTO check_list (checks_id, checks, detail_attached_file_name) " +
-                        //            "VALUES('" + ar[iLoop] + "', '" + attachment.CheckType + "', '" + attachment.CheckInfo + "' )";
+                                //if (checksSubmission.Check != null)
+                                //{
+                                //    foreach (Check attachment in checksSubmission.Check)
+                                //    {
+                                //        string query_checklist = "INSERT INTO check_list (checks_id, checks, detail_attached_file_name) " +
+                                //            "VALUES('" + ar[iLoop] + "', '" + attachment.CheckType + "', '" + attachment.CheckInfo + "' )";
 
-                        //        conn.Open();
+                                //        conn.Open();
 
-                        //        var cmd3 = new MySql.Data.MySqlClient.MySqlCommand(query_checklist, conn);
-                        //        var reader3 = cmd3.ExecuteReader();
+                                //        var cmd3 = new MySql.Data.MySqlClient.MySqlCommand(query_checklist, conn);
+                                //        var reader3 = cmd3.ExecuteReader();
 
-                        //        conn.Close();
+                                //        conn.Close();
 
-                        //        if (attachment.CheckDocument != null)
-                        //        {
-                        //            fileList += attachment.CheckType.Split('|')[0] + " : " + Path.GetFileName(attachment.CheckDocument.FileName) + "<br>";
+                                //        if (attachment.CheckDocument != null)
+                                //        {
+                                //            fileList += attachment.CheckType.Split('|')[0] + " : " + Path.GetFileName(attachment.CheckDocument.FileName) + "<br>";
 
-                        //            if (attachment != null)
-                        //            {
-                        //                string fileName = Path.GetFileName(attachment.CheckDocument.FileName);
-                        //                mm.Attachments.Add(new Attachment(attachment.CheckDocument.InputStream, fileName));
-                        //            }
-                        //        }
-                        //        else
-                        //            fileList += attachment.CheckType.Split('|')[0] + " : " + attachment.CheckInfo + "<br>";
-                        //    }
-                        //}
+                                //            if (attachment != null)
+                                //            {
+                                //                string fileName = Path.GetFileName(attachment.CheckDocument.FileName);
+                                //                mm.Attachments.Add(new Attachment(attachment.CheckDocument.InputStream, fileName));
+                                //            }
+                                //        }
+                                //        else
+                                //            fileList += attachment.CheckType.Split('|')[0] + " : " + attachment.CheckInfo + "<br>";
+                                //    }
+                                //}
 
-                        //{
-                        //    fileList += "Consent Form : " + Path.GetFileName(checksSubmission.ConsentForm.FileName) + "<br>";
-                        //    string fileName = Path.GetFileName(checksSubmission.ConsentForm.FileName);
-                        //    mm.Attachments.Add(new Attachment(checksSubmission.ConsentForm.InputStream, fileName));
-                        //}
+                                //{
+                                //    fileList += "Consent Form : " + Path.GetFileName(checksSubmission.ConsentForm.FileName) + "<br>";
+                                //    string fileName = Path.GetFileName(checksSubmission.ConsentForm.FileName);
+                                //    mm.Attachments.Add(new Attachment(checksSubmission.ConsentForm.InputStream, fileName));
+                                //}
 
-                        //mm.Body += fileList;
-                        //mm.IsBodyHtml = true;
-                    }
+                                //mm.Body += fileList;
+                                //mm.IsBodyHtml = true;
+                            }
                     //SmtpClient smtp = new SmtpClient
                     //{
                     //    Host = "mail.backgroundchecks.co.za",

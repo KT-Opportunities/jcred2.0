@@ -275,7 +275,7 @@ C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\bin
 C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\bin\System.Web.Optimization.xml
 C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\bin\Antlr3.Runtime.pdb
 C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\obj\Release\searchworks.client.csprojAssemblyReference.cache
-C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\obj\Release\searchworks.client.csproj.CoreCompileInputs.cache
 C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\obj\Release\searchworks.client.csproj.CopyComplete
 C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\obj\Release\searchworks.client.dll
 C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\obj\Release\searchworks.client.pdb
+C:\Users\DawnKTO\Documents\Visual Studio 2019\searchworks\searchworks.client\obj\Release\searchworks.client.csproj.CoreCompileInputs.cache
