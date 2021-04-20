@@ -33,6 +33,7 @@
         <div class="seaInfo">
             Search Information
         </div>
+
         <div class="userInfo">
             <p class="">User:<span>@ViewData["user"]</span></p>
             <p class="">Date:<span>@ViewData["date"]</span></p>
@@ -70,17 +71,14 @@
                         <td>@ViewData["Country"]</td>
                         <td>@ViewData["RegistrationDate"]</td>
                     </tr>
-
                 </tbody>
             </table>
-          
         </div>
 
         <div id="DirectorsDetails" class="tabcontent">
             <div class="seaRes">
                 Directors Details
             </div>
-
 
             <table class="table table-striped">
                 <thead>
@@ -97,28 +95,33 @@
                         <th></th>
                     </tr>
                 </thead>
-               
+
                 <tbody>
-                    @foreach (var key in ViewBag.ArrayList)
+
+                    @foreach (var item in @ViewBag.DirectorsDetails)
                     {
                         <tr>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
-                            <td>@key.Value</td>
+                            <td>@item.DirectorID</td>
+                            <td>@item.FirstName</td>
+                            <td>@item.Surname</td>
                         </tr>
                     }
-              
+
+                    @*@foreach (var key in ViewBag.ArrayList)
+                        {
+                            <tr>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                                <td>@key.Value</td>
+                            </tr>
+                        }*@
                 </tbody>
             </table>
-
-
-           
-          
         </div>
     </div>
 </div>
@@ -129,9 +132,6 @@
     var arrayList = new Object;
     arrayList = @ViewData["ArrayList"];
 
-    for (var i in arrayList) {
-        console.log("i:       "+i);
-    }
     function Search() {
                         $.ajax(
                         {
@@ -159,4 +159,3 @@
                         });
                         }
 </script>
-

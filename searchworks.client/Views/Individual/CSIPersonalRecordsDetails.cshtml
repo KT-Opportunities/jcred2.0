@@ -1,15 +1,8 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-@*@model searchworks.client.Individual.EmploymentHisto;*@
-@*@model IEnumerable<searchworks.client.Individual.EmploymentHistory>*@
+@model IEnumerable<searchworks.client.Individual.EmploymentHistory>
 
-@model IEnumerable<searchworks.client.Individual.PersonInformation>
-
-@{
-    ViewBag.Title = "CSI Personal Records";
-}
+@{ ViewBag.Title = "CSI Personal Records"; }
 
 <div class="col-md-10 col-sm-10">
     <div class="sea non">SEARCH RESULTS</div>
@@ -161,16 +154,16 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            @{ foreach (KeyValuePair<string, string> item in @ViewBag.MianArrayList[0])
-                                {
-                                    <td> @item.Value</td>
 
-                                }
-                            }
-                        </tr>
-                    </tbody>
+                    @foreach (var item in @ViewBag.telH)
+                    {
+        <tr>
+
+            <td>@item.TypeDescription</td>
+            <td>@item.TypeCode</td>
+            <td>@item.Number</td>
+            <td>@item.LastUpdatedDate</td>
+        </tr>}
                 </table>
             </div>
 
@@ -191,16 +184,28 @@
                         </tr>
                     </thead>
 
-                    @*@foreach (List<string> item in @ViewBag.ArrayList1)
+                    @foreach (var item in @ViewBag.empH)
+                    {
+        <tr>
+
+            <td>@item.EmployerName</td>
+            <td>@item.Designation</td>
+            <td>@item.LastUpdatedDate</td>
+        </tr>
+}
+
+                    @*<tr>*@
+                    @* @foreach (EmploymentHistory item in @ViewBag.ArrayList1)*@
+                    @*@foreach (KeyValuePair<string, string> item in @ViewBag.ArrayList1)
                         {
-                            <tr>
 
-                                <td> @item[0]</td>
-                                <td> @item[1]</td>
-                                <td> @item[2]</td>
-                            </tr>
+                            <td> @item.Value </td>*@
+                    @*<td> @item.Value[1] </td>
+                        <td> @item.Value[2] </td>*@
 
-                        }*@
+                    @*  }*@
+
+                    @*</tr>*@
                 </table>
 
                 @*<table>
