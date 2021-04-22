@@ -1,5 +1,6 @@
 ﻿namespace searchworks.client.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,7 +26,7 @@
         [StringLength(255)]
         public string user { get; set; }
 
-
+        
 
 
 

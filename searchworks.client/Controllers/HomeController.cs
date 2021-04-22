@@ -442,7 +442,7 @@ namespace searchworks.client.Controllers
             Dictionary<int, Dictionary<string, string>> MianArrayList = new Dictionary<int, Dictionary<string, string>>();
             elements = rootObject.ResponseObject.Directors;
             ViewData["TheCount"] = elements.Count;
-            
+
             List<Directors> DirecD;
             DirecD = new List<Directors>();
             for (int count = 0; count < (elements.Count); count++)
@@ -478,7 +478,7 @@ namespace searchworks.client.Controllers
                 string Gender = rootObject.ResponseObject.Directors[count].Gender;
 
                 thatlist.Add(FirstName);
-         
+
                 ViewData["ArrayList"] = arrayList;
                 ViewData["thatlist"] = thatlist;
 
@@ -541,7 +541,7 @@ namespace searchworks.client.Controllers
 
             string strCompanyName = name;
             TempData["type"] = type;
-
+            TempData.Keep();
             if (type == "name")
             {
                 string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -828,6 +828,7 @@ namespace searchworks.client.Controllers
 
             return View();
         }
+
         public ActionResult CSICompanyDetails(string comID)
         {
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
@@ -988,7 +989,6 @@ namespace searchworks.client.Controllers
                 return View();
             }
         }
-
 
         private List<CompanyInformation> getCSICompanyList(IRestResponse response)
         {
