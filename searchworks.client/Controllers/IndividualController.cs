@@ -9,16 +9,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Data;
+using System.Configuration;
 
 namespace searchworks.client.Controllers
 {
     public class IndividualController : Controller
     {
-        private string serverIp = "localhost";
-        private string username = "root";
-        private string password = "";
-        private string databaseName = "jcred";
-
         public string GetLoginToken(string api_username, string api_password)
         {
             string loginToken = "";
@@ -88,7 +85,8 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine("EQ: " + eqType);
             System.Diagnostics.Debug.WriteLine("SE: " + seaType);
 
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
@@ -712,7 +710,7 @@ namespace searchworks.client.Controllers
             //extract list of companies returned
             List<DeedsInformation> lst = getCompanyList(response);
 
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -763,10 +761,5 @@ namespace searchworks.client.Controllers
 
             return lst;
         }
-
-        //public ActionResult DOTSRecords()
-        //{
-        //    return View();
-        //}
     }
 }

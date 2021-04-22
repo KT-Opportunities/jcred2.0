@@ -161,64 +161,45 @@
 
 <script>
         $("#view").click(function () {
-
             $('#load').addClass('loader'); // to animate when successfull
         });
-
     function Search() {
         $('#load').addClass('loader'); // to animate when successfull
-
         var comName = document.getElementById("comName").value;
         var CIPCSearch = document.getElementById("CIPCSearch").value;
         var Reg = document.getElementById("Reg").value;
-
         if (comName === "" && CIPCSearch === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in details to search!</div>';
-
             $(".resturn-message").html(alertMessage)
         }
-
         else if (comName === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in Company Name to search!</div>';
-
             $(".resturn-message").html(alertMessage);
-
         }
-
         else if (CIPCSearch === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in CIPC Search to search!</div>';
-
             $(".resturn-message").html(alertMessage);
-
         }
-
         else  {
-
         $.ajax(
             {
                 type: "POST",
                 url: '@Url.Action("GetCompanyResults", "Home")',
                 data: {
                     companyName: $('#comName').val(),
-
                 },
                 dataType: "text",
                 error: function (result) {
                     alert(data);
-
                 },
                 success: function (result) {
-
                     var alertMessage = '<div class="alert alert-success" role="alert">'
                         + 'Searching.../div>';
-
                     $(".resturn-message").html(alertMessage)
-
                     //alert(result.user_type);
-
                 }
             });
     }
