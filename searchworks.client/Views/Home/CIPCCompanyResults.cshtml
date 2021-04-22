@@ -18,7 +18,7 @@
                 <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
                 <p>2 Results</p>
             </div>
-            <p class="num">@ViewData["ComName"]</p>
+            <p class="num">@TempData["ComName"]</p>
             <p class="num2">CIPC Company Search</p>
 
             <div class="multi act">
@@ -33,10 +33,10 @@
             </div>
 
             <div class="userInfo">
-                <p class="">User:<span>@ViewData["user"]</span></p>
-                <p class="">Date:<span>@ViewData["date"]</span></p>
-                <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                <p class="">Request:<span> @ViewData["ResponseMessage"]</span></p>
+                <p class="">User:<span>@TempData["user"]</span></p>
+                <p class="">Date:<span>@TempData["date"]</span></p>
+                <p class="">Reference:<span>@TempData["ref"]</span></p>
+                <p class="">Request:<span> @TempData["ResponseMessage"]</span></p>
 
             </div>
 
@@ -60,7 +60,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
                     @foreach (var item in Model)
                     {
                         <tr>

@@ -1,15 +1,16 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string absolutepath = HttpContext.Current.Request.Url.AbsolutePath;
+    bool pathContains = absolutepath.Contains("Result");
 }
 
 @model IEnumerable<searchworks.client.Company.CompanyInformation>
 
 @{
     ViewBag.Title = "CSI Company Records";
-    var type = @ViewData["type"].ToString();
+    var type = @TempData["type"].ToString();
     var mes = @ViewData["Message"].ToString();
 }
-
 
 <div class="col-md-10 col-sm-10">
     <div class="sea act">SEARCH RESULTS</div>
@@ -34,147 +35,127 @@
             </div>
 
             <div class="userInfo">
-                <p class="">User:<span>@ViewData["user"]</span></p>
-                <p class="">Date:<span>@ViewData["date"]</span></p>
-                <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @ViewData["ResponseMessage"]</span></p>
-
+                <p class="">User:<span>@TempData["user"]</span></p>
+                <p class="">Date:<span>@TempData["date"]</span></p>
+                <p class="">Reference:<span>@TempData["ref"]</span></p>
+                <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
             </div>
-
         </div>
         <div class="right_col">
             <div class="seaRes">
                 Search Results
             </div>
-           
-            @if (ViewData["Message"].ToString() == "good" && type == "name")
-            {
-        <table class="table table-striped">
-            <thead>
-                <tr>
+            <p>
 
-                    <th>Company ID</th>
-                    <th>Registration number</th>
-                    <th>Company Name</th>
-                    <th>Translated Name</th>
-                    <th>Registration Date</th>
-                    <th>Status Code</th>
-                    <th class="last">Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                        <tr>
-                            <td>
-                                @ViewData["CompanyID"]
-                            </td>
-                            <td>
+                @if (ViewData["Message"].ToString() == "good" && type == "name")
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
 
-                                @ViewData["CompanyRegistrationNumber"]
-                            </td>
-                            <td>
-                                @ViewData["CompanyName"]
-                            </td>
-                            <td>
-                                @ViewData["CompanyTranslatedName"]
-                            </td>
-                            <td>
-                                @ViewData["RegistrationDate"]
-                            </td>
-                            <td>
-                                @ViewData["CompanyStatusCode"]
-                            </td>
-                            <td class="last">
-                                @ViewData["CompanyStatus"]
-                            </td>
-                            <td>
+                                <th>Company ID</th>
+                                <th>Registration number</th>
+                                <th>Company Name</th>
+                                <th>Translated Name</th>
+                                <th>Registration Date</th>
+                                <th>Status Code</th>
+                                <th class="last">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @ViewData["CompanyID"]
+                                </td>
+                                <td>
 
-                                @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = @ViewData["CompanyID"] }, new { @id = "view", @class = "seaMore" })
-                            </td>
-                        </tr>
+                                    @ViewData["CompanyRegistrationNumber"]
+                                </td>
+                                <td>
+                                    @ViewData["CompanyName"]
+                                </td>
+                                <td>
+                                    @ViewData["CompanyTranslatedName"]
+                                </td>
+                                <td>
+                                    @ViewData["RegistrationDate"]
+                                </td>
+                                <td>
+                                    @ViewData["CompanyStatusCode"]
+                                </td>
+                                <td class="last">
+                                    @ViewData["CompanyStatus"]
+                                </td>
+                                <td>
 
+                                    @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = @ViewData["CompanyID"] }, new { @id = "view", @class = "seaMore" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
 
+                else if (@ViewData["Message"].ToString() == "good" && type == "comID" || type == "regNum")
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
 
+                                <th>Company ID</th>
+                                <th>Registration number</th>
+                                <th>Company Name</th>
+                                <th>Translated Name</th>
+                                <th>Registration Date</th>
+                                <th>Status Code</th>
+                                <th class="last">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
 
-                </tbody>
-        </table>
-            }
-       
-            else if (@ViewData["Message"].ToString() == "good" && type == "comID" || type == "regNum")
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
+                                    @ViewData["ComID"]
+                                </td>
+                                <td>
+                                    @ViewData["ComReg"]
+                                </td>
+                                <td>
+                                    @ViewData["ComName"]
+                                </td>
+                                <td>
+                                    @ViewData["ComTransName"]
+                                </td>
+                                <td>
+                                    @ViewData["ComRegDate"]
+                                </td>
+                                <td>
+                                    @ViewData["ComStatCode"]
+                                </td>
+                                <td class="last">
+                                    @ViewData["ComStat"]
+                                </td>
+                                <td>
 
-                            <th>Company ID</th>
-                            <th>Registration number</th>
-                            <th>Company Name</th>
-                            <th>Translated Name</th>
-                            <th>Registration Date</th>
-                            <th>Status Code</th>
-                            <th class="last">Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
+                                    @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = @ViewData["ComID"] }, new { @id = "view", @class = "seaMore" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
 
-                                @ViewData["ComID"]
-                            </td>
-                            <td>
-                                @ViewData["ComReg"]
-
-                            </td>
-                            <td>
-                                @ViewData["ComName"]
-
-                            </td>
-                            <td>
-                                @ViewData["ComTransName"]
-
-                            </td>
-                            <td>
-                                @ViewData["ComRegDate"]
-
-                            </td>
-                            <td>
-                                @ViewData["ComStatCode"]
-
-                            </td>
-                            <td class="last">
-                                @ViewData["ComStat"]
-
-                            </td>
-                            <td>
-
-                                @Html.ActionLink("View more", "CSICompanyDetails", "Home", new { comID = @ViewData["ComID"] }, new { @id = "view", @class = "seaMore" })
-                            </td>
-                        </tr>
-
-
-
-
-                    </tbody>
-                </table>
-            }
-
-            else if (@ViewData["Message"].ToString() == "Service is offline" && type == "name" || type == "comID" || type == "regNum")
-            {
-                <div class="no_results">
-                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                    <div class="no_res">
-                        @ViewData["Message"]
+                else if (@ViewData["Message"].ToString() == "Service is offline" && type == "name" || type == "comID" || type == "regNum")
+                {
+                    <div class="no_results">
+                        <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                        <div class="no_res">
+                            @ViewData["Message"]
+                        </div>
                     </div>
-                </div>
 
-            }
-
-
-
+                }
         </div>
-
-
     </div>
 </div>
 
@@ -191,8 +172,6 @@
         var CIPCSearch = document.getElementById("CIPCSearch").value;
         var Reg = document.getElementById("Reg").value;
 
-
-
         if (comName === "" && CIPCSearch === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in details to search!</div>';
@@ -206,9 +185,7 @@
 
             $(".resturn-message").html(alertMessage);
 
-
         }
-
 
         else if (CIPCSearch === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
@@ -216,13 +193,9 @@
 
             $(".resturn-message").html(alertMessage);
 
-
         }
 
         else  {
-
-
-
 
         $.ajax(
             {
@@ -236,10 +209,6 @@
                 error: function (result) {
                     alert(data);
 
-
-
-
-
                 },
                 success: function (result) {
 
@@ -250,14 +219,8 @@
 
                     //alert(result.user_type);
 
-
-
-
-
                 }
             });
     }
                         }
-
 </script>
-

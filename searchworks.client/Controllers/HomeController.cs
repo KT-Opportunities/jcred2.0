@@ -36,33 +36,15 @@ namespace searchworks.client.Controllers
 
         public ActionResult Login(Login log)
         {
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            //string serverIp = "localhost";
-
-            //string username = "familzkk_user";
-            //string password = "familylaw1";
-            //string databaseName = "familzkk_familylaw";
-            //string port = "3306";
+            string serverIp = "localhost";
+            string username = "root";
+            string password = "";
+            string databaseName = "jcred";
 
             string dbConnectionString = string.Format("server={0};database={1};uid={2};pwd={3};", serverIp, databaseName, username, password, databaseName);
             //string connsqlstring = "SERVER=" + serverIp + ";PORT=" + port + ";USER=" + username + ";PASSWORD=" + password + ";DATABASE=" + databaseName + "Persist Security Info= true;Charset=utf8";
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(connsqlstring);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
-            //System.Diagnostics.Debug.WriteLine(log.Email);
 
             string query_uid = "SELECT * FROM users WHERE email = '" + log.Email + "' && password = '" + log.Password + "'";
 
@@ -91,13 +73,6 @@ namespace searchworks.client.Controllers
                     string action = "Email:" + log.Email;
                     string user_id = Session["ID"].ToString();
                     string us = Session["Name"].ToString();
-
-                    //System.Diagnostics.Debug.WriteLine(date_add);
-                    //System.Diagnostics.Debug.WriteLine(time_add);
-                    //System.Diagnostics.Debug.WriteLine(page);
-                    //System.Diagnostics.Debug.WriteLine(action);
-                    //System.Diagnostics.Debug.WriteLine(user_id);
-                    //System.Diagnostics.Debug.WriteLine(us);
 
                     string query_uidd = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
                     conn.Open();
@@ -386,7 +361,7 @@ namespace searchworks.client.Controllers
             IRestResponse response = client.Execute<RootObject>(request);
 
             dynamic rootObject = JObject.Parse(response.Content);
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+            TempData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             //extract list of companies returned
@@ -404,11 +379,11 @@ namespace searchworks.client.Controllers
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-            ViewData["ComName"] = name;
-
+            TempData["user"] = Session["Name"].ToString();
+            TempData["date"] = DateTime.Today.ToShortDateString();
+            TempData["ref"] = refe;
+            TempData["ComName"] = name;
+            TempData.Keep();
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             conn.Open();
@@ -467,18 +442,7 @@ namespace searchworks.client.Controllers
             Dictionary<int, Dictionary<string, string>> MianArrayList = new Dictionary<int, Dictionary<string, string>>();
             elements = rootObject.ResponseObject.Directors;
             ViewData["TheCount"] = elements.Count;
-            foreach (object element in elements)
-            {
-                //ViewData["DirectorName"] = rootObject.ResponseObject.Directors[0].DirectorID;
-                //System.Diagnostics.Debug.WriteLine("element: "+element);
-
-                // JObject.Parse(element);
-                //System.Diagnostics.Debug.WriteLine("element: " + element["Gender"]);
-                //System.Diagnostics.Debug.WriteLine(JsonConvert.DeserializeObject<System.Collections.ArrayList>(element));
-
-                //ViewData["DirectorName"] = element.DirectorID;
-                //System.Diagnostics.Debug.WriteLine(ViewData["DirectorName"]);
-            }
+            
             List<Directors> DirecD;
             DirecD = new List<Directors>();
             for (int count = 0; count < (elements.Count); count++)
@@ -514,14 +478,7 @@ namespace searchworks.client.Controllers
                 string Gender = rootObject.ResponseObject.Directors[count].Gender;
 
                 thatlist.Add(FirstName);
-                //arrayList.Add(count + "_DirectorID", DirectorID);
-                //arrayList.Add(count + "_FirstName", FirstName);
-                //arrayList.Add(count + "_Surname", Surname);
-                //arrayList.Add(count + "_Gender", Gender);
-                //arrayList.Add(count + "_IdNumber", IdNumber);
-                //arrayList.Add(count + "_Age", Age);
-                //arrayList.Add(count + "_Status", Status);
-                //arrayList.Add(count + "_ResignationDate", ResignationDate);
+         
                 ViewData["ArrayList"] = arrayList;
                 ViewData["thatlist"] = thatlist;
 
@@ -530,6 +487,11 @@ namespace searchworks.client.Controllers
                     DirectorID = DirectorID,
                     FirstName = FirstName,
                     Surname = Surname,
+                    Gender = Gender,
+                    IdNumber = IdNumber,
+                    Age = Age,
+                    Status = Status,
+                    ResignationDate = ResignationDate,
                 });
 
                 MianArrayList.Add(count, arrayList);
@@ -537,7 +499,7 @@ namespace searchworks.client.Controllers
                 ViewData["DirectorsDetails"] = DirecD;
             }
 
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+            TempData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
             ViewData["CompanyID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
@@ -560,54 +522,13 @@ namespace searchworks.client.Controllers
             ViewData["PostalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine3;
             ViewData["PostalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine4;
             ViewData["PostalPostCode"] = rootObject.ResponseObject.CompanyInformation.PostalPostCode;
-
+            TempData.Keep();
             return View();
         }
 
         public ActionResult CSICompanyRecords()
         {
             return View();
-        }
-
-        public ActionResult CSICompanyDetails(string comID)
-        {
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-            var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
-
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-
-            var apiInput = new
-            {
-                SessionToken = authtoken,
-                Reference = authtoken,
-                CompanyID = comID,
-                SearchDescription = "CSI CompanyID Search",
-            };
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-
-            {
-                return View();
-            }
         }
 
         public ActionResult CSICompanyRecordsResults(Search search)
@@ -619,20 +540,10 @@ namespace searchworks.client.Controllers
             string refe = search.Reference;
 
             string strCompanyName = name;
-            ViewData["type"] = type;
+            TempData["type"] = type;
 
             if (type == "name")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-
                 string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
@@ -646,10 +557,10 @@ namespace searchworks.client.Controllers
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
-                ViewData["user"] = Session["Name"].ToString();
-                ViewData["date"] = DateTime.Today.ToShortDateString();
-                ViewData["ref"] = refe;
-                ViewData["ComName"] = name;
+                TempData["user"] = Session["Name"].ToString();
+                TempData["date"] = DateTime.Today.ToShortDateString();
+                TempData["ref"] = refe;
+                TempData["ComName"] = name;
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -695,12 +606,14 @@ namespace searchworks.client.Controllers
                 IRestResponse response = client.Execute<RootObject>(request);
 
                 dynamic rootObject = JObject.Parse(response.Content);
-
+                JObject root = JObject.Parse(response.Content);
                 JObject elements = rootObject.ResponseObject.CompanyInformation;
-                System.Diagnostics.Debug.WriteLine(elements);
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = ViewData["ResponseMessage"].ToString();
+                System.Diagnostics.Debug.WriteLine(root.Count);
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                var mes = TempData["ResponseMessage"].ToString();
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                TempData.Keep();
+
                 if (mes == "ServiceOffline")
                 {
                     ViewData["Message"] = "Service is offline";
@@ -724,16 +637,6 @@ namespace searchworks.client.Controllers
             }
             else if (type == "comID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-
                 string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
@@ -747,10 +650,10 @@ namespace searchworks.client.Controllers
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
-                ViewData["user"] = Session["Name"].ToString();
-                ViewData["date"] = DateTime.Today.ToShortDateString();
-                ViewData["ref"] = refe;
-                ViewData["ComName"] = comID;
+                TempData["user"] = Session["Name"].ToString();
+                TempData["date"] = DateTime.Today.ToShortDateString();
+                TempData["ref"] = refe;
+                TempData["ComName"] = comID;
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -797,10 +700,10 @@ namespace searchworks.client.Controllers
 
                 dynamic rootObject = JObject.Parse(response.Content);
 
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = ViewData["ResponseMessage"].ToString();
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                var mes = TempData["ResponseMessage"].ToString();
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-
+                TempData.Keep();
                 if (mes == "ServiceOffline")
                 {
                     ViewData["Message"] = "Service is offline";
@@ -825,22 +728,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "regNum")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-
                 string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -858,10 +748,10 @@ namespace searchworks.client.Controllers
                 //System.Diagnostics.Debug.WriteLine(user_id);
                 //System.Diagnostics.Debug.WriteLine(us);
 
-                ViewData["user"] = Session["Name"].ToString();
-                ViewData["date"] = DateTime.Today.ToShortDateString();
-                ViewData["ref"] = refe;
-                ViewData["ComName"] = regNum;
+                TempData["user"] = Session["Name"].ToString();
+                TempData["date"] = DateTime.Today.ToShortDateString();
+                TempData["ref"] = refe;
+                TempData["ComName"] = regNum;
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -908,9 +798,10 @@ namespace searchworks.client.Controllers
 
                 dynamic rootObject = JObject.Parse(response.Content);
 
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = ViewData["ResponseMessage"].ToString();
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                var mes = TempData["ResponseMessage"].ToString();
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                TempData.Keep();
 
                 if (mes == "ServiceOffline")
                 {
@@ -937,6 +828,167 @@ namespace searchworks.client.Controllers
 
             return View();
         }
+        public ActionResult CSICompanyDetails(string comID)
+        {
+            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            if (!tokenValid(authtoken))
+            {
+                //exit with a warning
+            }
+            var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+
+            //request headers
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            //object containing input parameter data for company() API method
+
+            var apiInput = new
+            {
+                SessionToken = authtoken,
+                Reference = authtoken,
+                CompanyID = comID,
+                SearchDescription = "CSI CompanyID Search",
+            };
+
+            //add parameters and token to request
+            request.Parameters.Clear();
+            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+
+            //make the API request and get a response
+            IRestResponse response = client.Execute<RootObject>(request);
+            dynamic rootObject = JObject.Parse(response.Content);
+            Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
+            Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
+
+            elements1 = rootObject.ResponseObject.CapitalInformation;
+            elements2 = rootObject.ResponseObject.Directors;
+
+            string CapitalType = "";
+            string CompanyCapitalID = "";
+            string CompanyID = "";
+            string CompanyRegistrationNumber = "";
+            string NoShares = "";
+            string ParriValue = "";
+            string Premium = "";
+            string ShareAmount = "";
+
+            List<CapitalInformation> CapInfo;
+            List<Directors> DirecD;
+            TempData["ResponseMessage"] = rootObject.ResponseMessage;
+            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+            ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
+            ViewData["CompanyID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
+            ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
+            ViewData["CompanyStatus"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
+            ViewData["CompanyType"] = rootObject.ResponseObject.CompanyInformation.CompanyType;
+            ViewData["FinancialYearEnd"] = rootObject.ResponseObject.CompanyInformation.FinancialYearEnd;
+            ViewData["RegistrationDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
+            ViewData["Region"] = rootObject.ResponseObject.CompanyInformation.Region;
+            ViewData["Country"] = rootObject.ResponseObject.CompanyInformation.Country;
+
+            ViewData["PhysicalAddressLine1"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine1;
+            ViewData["PhysicalAddressLine2"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine2;
+            ViewData["PhysicalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine3;
+            ViewData["PhysicalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine4;
+            ViewData["PhysicalPostCode"] = rootObject.ResponseObject.CompanyInformation.PhysicalPostCode;
+
+            ViewData["PostalAddressLine1"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine1;
+            ViewData["PostalAddressLine2"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine2;
+            ViewData["PostalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine3;
+            ViewData["PostalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine4;
+            ViewData["PostalPostCode"] = rootObject.ResponseObject.CompanyInformation.PostalPostCode;
+            TempData.Keep();
+            if (rootObject.ResponseObject.Directors[0].DirectorID != null)
+            {
+                DirecD = new List<Directors>();
+                for (int count = 0; count < (elements2.Count); count++)
+                {
+                    string DirectorID = rootObject.ResponseObject.Directors[count].DirectorID;
+                    string FirstName = rootObject.ResponseObject.Directors[count].FirstName;
+                    string Surname = rootObject.ResponseObject.Directors[count].Surname;
+                    string Fullname = rootObject.ResponseObject.Directors[count].Fullname;
+                    string IdNumber = rootObject.ResponseObject.Directors[count].IdNumber;
+                    string DateOfBirth = rootObject.ResponseObject.Directors[count].DateOfBirth;
+                    string Age = rootObject.ResponseObject.Directors[count].Age;
+                    string StatusCode = rootObject.ResponseObject.Directors[count].StatusCode;
+                    string Status = rootObject.ResponseObject.Directors[count].Status;
+                    string TypeCode = rootObject.ResponseObject.Directors[count].TypeCode;
+                    string Type = rootObject.ResponseObject.Directors[count].Type;
+                    string AppointmentDate = rootObject.ResponseObject.Directors[count].AppointmentDate;
+                    string ResignationDate = rootObject.ResponseObject.Directors[count].ResignationDate;
+                    string MemberContribution = rootObject.ResponseObject.Directors[count].MemberContribution;
+                    string MemberSize = rootObject.ResponseObject.Directors[count].MemberSize;
+                    string ResidentialAddress1 = rootObject.ResponseObject.Directors[count].ResidentialAddress1;
+                    string ResidentialAddress2 = rootObject.ResponseObject.Directors[count].ResidentialAddress2;
+                    string ResidentialAddress3 = rootObject.ResponseObject.Directors[count].ResidentialAddress3;
+                    string ResidentialAddress4 = rootObject.ResponseObject.Directors[count].ResidentialAddress4;
+                    string ResidentialPostCode = rootObject.ResponseObject.Directors[count].ResidentialPostCode;
+                    string PostalAddress1 = rootObject.ResponseObject.Directors[count].PostalAddress1;
+                    string PostalAddress2 = rootObject.ResponseObject.Directors[count].PostalAddress2;
+                    string PostalAddress3 = rootObject.ResponseObject.Directors[count].PostalAddress3;
+                    string PostalAddress4 = rootObject.ResponseObject.Directors[count].PostalAddress4;
+                    string PostalPostCode = rootObject.ResponseObject.Directors[count].PostalPostCode;
+                    string CountryCode = rootObject.ResponseObject.Directors[count].CountryCode;
+                    string Country = rootObject.ResponseObject.Directors[count].Country;
+                    string NationalityCode = rootObject.ResponseObject.Directors[count].NationalityCode;
+                    string Gender = rootObject.ResponseObject.Directors[count].Gender;
+
+                    DirecD.Add(new Directors
+                    {
+                        DirectorID = DirectorID,
+                        FirstName = FirstName,
+                        Surname = Surname,
+                        Gender = Gender,
+                        IdNumber = IdNumber,
+                        Age = Age,
+                        Status = Status,
+                        ResignationDate = ResignationDate,
+                    });
+
+                    ViewData["DirectorsDetails"] = DirecD;
+                }
+            }
+
+            if (rootObject.ResponseObject.CapitalInformation[0].CapitalType != null)
+            {
+                CapInfo = new List<CapitalInformation>();
+
+                for (int count = 0; count < (elements1.Count); count++)
+                {
+                    CapitalType = rootObject.ResponseObject.CapitalInformation[count].CapitalType;
+                    CompanyCapitalID = rootObject.ResponseObject.CapitalInformation[count].CompanyCapitalID;
+                    CompanyID = rootObject.ResponseObject.CapitalInformation[count].CompanyID;
+                    CompanyRegistrationNumber = rootObject.ResponseObject.CapitalInformation[count].CompanyRegistrationNumber;
+                    NoShares = rootObject.ResponseObject.CapitalInformation[count].NoShares;
+                    ParriValue = rootObject.ResponseObject.CapitalInformation[count].ParriValue;
+                    Premium = rootObject.ResponseObject.CapitalInformation[count].Premium;
+                    ShareAmount = rootObject.ResponseObject.CapitalInformation[count].ShareAmount;
+
+                    CapInfo.Add(new CapitalInformation
+                    {
+                        CapitalType = CapitalType,
+                        CompanyCapitalID = CompanyCapitalID,
+                        CompanyID = CompanyID,
+                        CompanyRegistrationNumber = CompanyRegistrationNumber,
+                        NoShares = NoShares,
+                        ParriValue = ParriValue,
+                        Premium = Premium,
+                        ShareAmount = ShareAmount,
+                    });
+
+                    ViewData["CapInfo"] = CapInfo;
+                }
+            }
+
+            {
+                return View();
+            }
+        }
+
 
         private List<CompanyInformation> getCSICompanyList(IRestResponse response)
         {
