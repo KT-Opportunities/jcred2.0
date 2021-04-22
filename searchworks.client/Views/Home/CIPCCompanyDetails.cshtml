@@ -27,104 +27,91 @@
         <p class="num2">CSI Company Records</p>
 
         <div class="btnNavigation">
-            <button class="multi active" onclick="openCity(event, 'CompanyInfo')">Company Information</button>
-            <button class="multi" onclick="openCity(event, 'DirectorsDetails')">Directors Details</button>
+            <p onclick="openCity(event, 'CompanyInfo')">Company Information</p>
+            <p onclick="openCity(event, 'DirectorsDetails')">Directors Details</p>
         </div>
         <div class="seaInfo">
             Search Information
         </div>
 
         <div class="userInfo">
-            <p class="">User:<span>@ViewData["user"]</span></p>
-            <p class="">Date:<span>@ViewData["date"]</span></p>
-            <p class="">Reference:<span>@ViewData["ref"]</span></p>
-            <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @ViewData["ResponseMessage"]</span></p>
+            <p class="">User:<span>@TempData["user"]</span></p>
+            <p class="">Date:<span>@TempData["date"]</span></p>
+            <p class="">Reference:<span>@TempData["ref"]</span></p>
+            <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
         </div>
     </div>
     <div class="right_col">
 
-        <div id="CompanyInfo" class="tabcontent active" style=display:block>
-            <div class="seaRes">
-                Company Information
-            </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Registration Number:</th>
-                        <th>Status</th>
-                        <th>Type</th>
-                        <th>Finacial Year End:</th>
-                        <th>Region</th>
-                        <th>Country</th>
-                        <th>Registration Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@ViewData["CompanyID"] </td>
-                        <td>@ViewData["CompanyRegistrationNumber"]</td>
-                        <td>@ViewData["CompanyStatus"]</td>
-                        <td>@ViewData["CompanyType"]</td>
-                        <td>@ViewData["FinancialYearEnd"]</td>
-                        <td>@ViewData["Region"]</td>
-                        <td>@ViewData["Country"]</td>
-                        <td>@ViewData["RegistrationDate"]</td>
-                    </tr>
-                </tbody>
-            </table>
+        @*<div id="CompanyInfo" class="tabcontent active" style=display:block>*@
+        <div class="seaRes">
+            Company Information
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Registration No:</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Finacial Year End:</th>
+                    <th>Region</th>
+                    <th>Country</th>
+                    <th>Registration Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@ViewData["CompanyID"] </td>
+                    <td>@ViewData["CompanyRegistrationNumber"]</td>
+                    <td>@ViewData["CompanyStatus"]</td>
+                    <td>@ViewData["CompanyType"]</td>
+                    <td>@ViewData["FinancialYearEnd"]</td>
+                    <td>@ViewData["Region"]</td>
+                    <td>@ViewData["Country"]</td>
+                    <td>@ViewData["RegistrationDate"]</td>
+                </tr>
+            </tbody>
+        </table>
+        @*</div>*@
+
+        <div class="seaRes">
+            Directors Details
         </div>
 
-        <div id="DirectorsDetails" class="tabcontent">
-            <div class="seaRes">
-                Directors Details
-            </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Surname</th>
+                    <th>Gender</th>
+                    <th>ID Number</th>
+                    <th>Age</th>
+                    <th>Status</th>
+                    <th>Resignation Date</th>
+                </tr>
+            </thead>
 
-            <table class="table table-striped">
-                <thead>
+            <tbody>
+                @foreach (var item in @ViewBag.DirectorsDetails)
+                {
                     <tr>
-                        <th>Director ID</th>
-                        <th>First Name</th>
-                        <th>Surname</th>
-                        <th>Gender</th>
-                        <th>ID Number</th>
-                        <th>Age</th>
-                        <th>Status</th>
-                        <th>Resignation Date</th>
-
-                        <th></th>
+                        <td>@item.DirectorID</td>
+                        <td>@item.FirstName</td>
+                        <td>@item.Surname</td>
+                        <td>@item.Gender</td>
+                        <td>@item.IdNumber</td>
+                        <td>@item.Age</td>
+                        <td>@item.Status</td>
+                        <td>@item.ResignationDate</td>
                     </tr>
-                </thead>
-
-                <tbody>
-
-                    @foreach (var item in @ViewBag.DirectorsDetails)
-                    {
-                        <tr>
-                            <td>@item.DirectorID</td>
-                            <td>@item.FirstName</td>
-                            <td>@item.Surname</td>
-                        </tr>
-                    }
-
-                    @*@foreach (var key in ViewBag.ArrayList)
-                        {
-                            <tr>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                                <td>@key.Value</td>
-                            </tr>
-                        }*@
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
+
 <body onload="document.getElementById('CompanyInfo').click();">
 </body>
 
