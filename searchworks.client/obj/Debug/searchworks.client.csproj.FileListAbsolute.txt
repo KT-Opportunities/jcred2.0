@@ -1721,5 +1721,4 @@ C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.D
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.dll
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.xml
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache
-C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.dll
-C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.xml
+C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache

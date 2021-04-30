@@ -19,7 +19,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -876,8 +877,23 @@
     <Content Include="Content\fonts\Poppins-Regular.ttf" />
     <Content Include="Content\fonts\Poppins-SemiBold.ttf" />
     <Content Include="Content\fonts\Poppins-Bold.ttf" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001 - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001-dev - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001-dev - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001-dev - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001-qa - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001-qa - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\app-jcred-prod-zanorth-001-qa - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\jcred - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\jcred - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\jcred - FTP2.pubxml" />
+    <None Include="Properties\PublishProfiles\jcred - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\jcred - ReadOnly - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\jcred - ReadOnly - FTP2.pubxml" />
     <None Include="Properties\PublishProfiles\Jcred.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
