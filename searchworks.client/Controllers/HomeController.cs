@@ -29,13 +29,9 @@ namespace searchworks.client.Controllers
 
         public ActionResult Login(Login log)
         {
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
             string dbConnectionString = "";
             dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
             string query_uid = "SELECT * FROM users WHERE email = '" + log.Email + "' && password = '" + log.Password + "'";
 
@@ -114,16 +110,6 @@ namespace searchworks.client.Controllers
                     thatlist.Add(reader2["action"].ToString());
                     thatlist.Add(reader2["date"].ToString());
                     thatlist.Add(reader2["time"].ToString());
-
-                    foreach (string item in thatlist)
-                    {
-                        System.Diagnostics.Debug.WriteLine(item);
-                    }
-                }
-
-                foreach (KeyValuePair<string, string> item in ArrayList)
-                {
-                    System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                 }
 
                 ViewData["ArrayList"] = thatlist;
@@ -144,9 +130,6 @@ namespace searchworks.client.Controllers
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            System.Diagnostics.Debug.WriteLine("Post:" + ad.email);
-            System.Diagnostics.Debug.WriteLine(ad.password);
 
             List<string> thatlist = new List<string>();
 
@@ -189,10 +172,6 @@ namespace searchworks.client.Controllers
                     string ty = reader3["type"].ToString();
                     string or = reader3["org"].ToString();
 
-                    System.Diagnostics.Debug.WriteLine("Email: " + userEmail);
-                    System.Diagnostics.Debug.WriteLine("Name: " + name);
-                    System.Diagnostics.Debug.WriteLine("Num: " + ph);
-
                     thatlist.Add(name);
                     thatlist.Add(userEmail);
                     thatlist.Add(ph);
@@ -201,10 +180,6 @@ namespace searchworks.client.Controllers
                     thatlist.Add(ty);
                     thatlist.Add(or);
 
-                    foreach (string item in thatlist)
-                    {
-                        System.Diagnostics.Debug.WriteLine(item);
-                    }
                     ViewData["ArrayList"] = thatlist;
 
                     conn.Close();
@@ -240,8 +215,6 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        //https://uatrest.searchworks.co.za/auth/login/
-
         public string GetLoginToken(string api_username, string api_password)
         {
             string loginToken = "";
@@ -270,7 +243,6 @@ namespace searchworks.client.Controllers
             //return View(members);
             dynamic respContent = JObject.Parse(response.Content);
             loginToken = respContent.ResponseMessage;
-            System.Diagnostics.Debug.WriteLine(loginToken);
             return loginToken;
         }
 
@@ -290,7 +262,6 @@ namespace searchworks.client.Controllers
         {
             string name = search.CompanyName;
             string pdf = search.PDF;
-            System.Diagnostics.Debug.WriteLine(pdf);
             string strCompanyName = name;
             string refe = search.Reference;
 
@@ -510,289 +481,288 @@ namespace searchworks.client.Controllers
 
             string strCompanyName = name;
             TempData["type"] = type;
-
-            if (type == "name")
+            try
             {
-                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                DateTime time = DateTime.Now;
-
-                string date_add = DateTime.Today.ToShortDateString();
-                string time_add = time.ToString("T");
-                string page = "CSI Company Trace By Name";
-                string action = "Company Name:" + name;
-                string user_id = Session["ID"].ToString();
-                string us = Session["Name"].ToString();
-
-                TempData["user"] = Session["Name"].ToString();
-                TempData["date"] = DateTime.Today.ToShortDateString();
-                TempData["ref"] = refe;
-                TempData["ComName"] = name;
-
-                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                conn.Open();
-
-                var cmd2 = new MySqlCommand(query_uid, conn);
-
-                var reader2 = cmd2.ExecuteReader();
-
-                conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                if (!tokenValid(authtoken))
+                if (type == "name")
                 {
-                    //exit with a warning
+                    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+                    var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+                    DateTime time = DateTime.Now;
+
+                    string date_add = DateTime.Today.ToShortDateString();
+                    string time_add = time.ToString("T");
+                    string page = "CSI Company Trace By Name";
+                    string action = "Company Name:" + name;
+                    string user_id = Session["ID"].ToString();
+                    string us = Session["Name"].ToString();
+
+                    TempData["user"] = Session["Name"].ToString();
+                    TempData["date"] = DateTime.Today.ToShortDateString();
+                    TempData["ref"] = refe;
+                    TempData["ComName"] = name;
+
+                    string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                    conn.Open();
+
+                    var cmd2 = new MySqlCommand(query_uid, conn);
+
+                    var reader2 = cmd2.ExecuteReader();
+
+                    conn.Close();
+
+                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                    if (!tokenValid(authtoken))
+                    {
+                        //exit with a warning
+                    }
+
+                    //company search API call
+                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyname/";
+
+                    //create RestSharp client and POST request object
+                    var client = new RestClient(url);
+                    var request = new RestRequest(Method.POST);
+
+                    //request headers
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddHeader("Content-Type", "application/json");
+                    //object containing input parameter data for company() API method
+                    var apiInput = new
+                    {
+                        SessionToken = authtoken,
+                        Reference = us,//search reference: probably store in logs
+                        CompanyName = strCompanyName,
+                    };
+
+                    //add parameters and token to request
+                    request.Parameters.Clear();
+                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                    //ApiResponse is a class to model the data we want from the API response
+
+                    //make the API request and get a response
+                    IRestResponse response = client.Execute<RootObject>(request);
+
+                    dynamic rootObject = JObject.Parse(response.Content);
+
+                    ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                    var mes = ViewData["ResponseMessage"].ToString();
+                    System.Diagnostics.Debug.WriteLine("Resp Message: " + mes);
+                    System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                    ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+
+                    if (mes == "ServiceOffline")
+                    {
+                        ViewData["Message"] = "Service is offline";
+                        return View();
+                    }
+                    else
+                    {
+                        //extract list of companies returned
+                        ViewData["Message"] = "good";
+
+                        ViewData["CompanyID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
+                        ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
+                        ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
+                        ViewData["CompanyTranslatedName"] = rootObject.ResponseObject.CompanyInformation.CompanyTranslatedName;
+                        ViewData["RegistrationDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
+                        ViewData["CompanyStatusCode"] = rootObject.ResponseObject.CompanyInformation.CompanyStatusCode;
+                        ViewData["CompanyStatus"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
+
+                        return View();
+                    }
                 }
-
-                //company search API call
-                var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyname/";
-
-                //create RestSharp client and POST request object
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-
-                //request headers
-                request.RequestFormat = DataFormat.Json;
-                request.AddHeader("Content-Type", "application/json");
-                //object containing input parameter data for company() API method
-                var apiInput = new
+                else if (type == "comID")
                 {
-                    SessionToken = authtoken,
-                    Reference = us,//search reference: probably store in logs
-                    CompanyName = strCompanyName,
-                };
+                    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
-                //add parameters and token to request
-                request.Parameters.Clear();
-                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                //ApiResponse is a class to model the data we want from the API response
+                    var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-                //make the API request and get a response
-                IRestResponse response = client.Execute<RootObject>(request);
+                    DateTime time = DateTime.Now;
 
-                dynamic rootObject = JObject.Parse(response.Content);
-                JObject root = JObject.Parse(response.Content);
-                JObject elements = rootObject.ResponseObject.CompanyInformation;
-                System.Diagnostics.Debug.WriteLine(root.Count);
-                TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = TempData["ResponseMessage"].ToString();
-                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                TempData.Keep();
+                    string date_add = DateTime.Today.ToShortDateString();
+                    string time_add = time.ToString("T");
+                    string page = "CSI Company Trace By CompanyID";
+                    string action = "Company ID:" + comID;
+                    string user_id = Session["ID"].ToString();
+                    string us = Session["Name"].ToString();
 
-                if (mes == "ServiceOffline")
-                {
-                    ViewData["Message"] = "Service is offline";
-                    return View();
+                    TempData["user"] = Session["Name"].ToString();
+                    TempData["date"] = DateTime.Today.ToShortDateString();
+                    TempData["ref"] = refe;
+                    TempData["ComName"] = comID;
+
+                    string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                    conn.Open();
+
+                    var cmd2 = new MySqlCommand(query_uid, conn);
+
+                    var reader2 = cmd2.ExecuteReader();
+
+                    conn.Close();
+
+                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                    if (!tokenValid(authtoken))
+                    {
+                        //exit with a warning
+                    }
+
+                    //company search API call
+                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+
+                    //create RestSharp client and POST request object
+                    var client = new RestClient(url);
+                    var request = new RestRequest(Method.POST);
+
+                    //request headers
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddHeader("Content-Type", "application/json");
+                    //object containing input parameter data for company() API method
+                    var apiInput = new
+                    {
+                        SessionToken = authtoken,
+                        Reference = us,//search reference: probably store in logs
+                        CompanyID = comID,
+                    };
+
+                    //add parameters and token to request
+                    request.Parameters.Clear();
+                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                    //ApiResponse is a class to model the data we want from the API response
+
+                    //make the API request and get a response
+                    IRestResponse response = client.Execute<RootObject>(request);
+
+                    dynamic rootObject = JObject.Parse(response.Content);
+
+                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                    var mes = TempData["ResponseMessage"].ToString();
+                    ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                    TempData.Keep();
+                    if (mes == "ServiceOffline")
+                    {
+                        ViewData["Message"] = "Service is offline";
+                        return View();
+                    }
+                    else
+                    {
+                        //extract list of companies returned
+                        ViewData["Message"] = "good";
+
+                        ViewData["type"] = type;
+                        ViewData["ComID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
+                        ViewData["ComReg"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
+                        ViewData["ComName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
+                        ViewData["ComTransName"] = rootObject.ResponseObject.CompanyInformation.CompanyTranslatedName;
+                        ViewData["ComRegDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
+                        ViewData["ComStatCode"] = rootObject.ResponseObject.CompanyInformation.CompanyStatusCode;
+                        ViewData["ComStat"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
+
+                        return View();
+                    }
                 }
-                else
+                else if (type == "regNum")
                 {
-                    //extract list of companies returned
-                    ViewData["Message"] = "good";
+                    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
-                    ViewData["CompanyID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
-                    ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
-                    ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
-                    ViewData["CompanyTranslatedName"] = rootObject.ResponseObject.CompanyInformation.CompanyTranslatedName;
-                    ViewData["RegistrationDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
-                    ViewData["CompanyStatusCode"] = rootObject.ResponseObject.CompanyInformation.CompanyStatusCode;
-                    ViewData["CompanyStatus"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
+                    var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-                    return View();
+                    DateTime time = DateTime.Now;
+
+                    string date_add = DateTime.Today.ToShortDateString();
+                    string time_add = time.ToString("T");
+                    string page = "CSI Company Trace By Registration Number";
+                    string action = "Registration Number:" + regNum;
+                    string user_id = Session["ID"].ToString();
+                    string us = Session["Name"].ToString();
+
+                    TempData["user"] = Session["Name"].ToString();
+                    TempData["date"] = DateTime.Today.ToShortDateString();
+                    TempData["ref"] = refe;
+                    TempData["ComName"] = regNum;
+
+                    string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                    conn.Open();
+
+                    var cmd2 = new MySqlCommand(query_uid, conn);
+
+                    var reader2 = cmd2.ExecuteReader();
+
+                    conn.Close();
+
+                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                    if (!tokenValid(authtoken))
+                    {
+                        //exit with a warning
+                    }
+
+                    //company search API call
+                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
+
+                    //create RestSharp client and POST request object
+                    var client = new RestClient(url);
+                    var request = new RestRequest(Method.POST);
+
+                    //request headers
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddHeader("Content-Type", "application/json");
+                    //object containing input parameter data for company() API method
+                    var apiInput = new
+                    {
+                        SessionToken = authtoken,
+                        Reference = us,//search reference: probably store in logs
+                        RegistrationNumber = regNum,
+                    };
+
+                    //add parameters and token to request
+                    request.Parameters.Clear();
+                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                    //ApiResponse is a class to model the data we want from the API response
+
+                    //make the API request and get a response
+                    IRestResponse response = client.Execute<RootObject>(request);
+
+                    dynamic rootObject = JObject.Parse(response.Content);
+
+                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                    var mes = TempData["ResponseMessage"].ToString();
+                    ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                    TempData.Keep();
+
+                    if (mes == "ServiceOffline")
+                    {
+                        ViewData["Message"] = "Service is offline";
+                        return View();
+                    }
+                    else
+                    {
+                        //extract list of companies returned
+                        ViewData["Message"] = "good";
+
+                        ViewData["type"] = type;
+                        ViewData["ComID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
+                        ViewData["ComReg"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
+                        ViewData["ComName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
+                        ViewData["ComTransName"] = rootObject.ResponseObject.CompanyInformation.CompanyTranslatedName;
+                        ViewData["ComRegDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
+                        ViewData["ComStatCode"] = rootObject.ResponseObject.CompanyInformation.CompanyStatusCode;
+                        ViewData["ComStat"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
+
+                        return View();
+                    }
                 }
             }
-            else if (type == "comID")
+            catch (Exception e)
+
             {
-                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                DateTime time = DateTime.Now;
-
-                string date_add = DateTime.Today.ToShortDateString();
-                string time_add = time.ToString("T");
-                string page = "CSI Company Trace By CompanyID";
-                string action = "Company ID:" + comID;
-                string user_id = Session["ID"].ToString();
-                string us = Session["Name"].ToString();
-
-                TempData["user"] = Session["Name"].ToString();
-                TempData["date"] = DateTime.Today.ToShortDateString();
-                TempData["ref"] = refe;
-                TempData["ComName"] = comID;
-
-                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                conn.Open();
-
-                var cmd2 = new MySqlCommand(query_uid, conn);
-
-                var reader2 = cmd2.ExecuteReader();
-
-                conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                if (!tokenValid(authtoken))
-                {
-                    //exit with a warning
-                }
-
-                //company search API call
-                var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
-
-                //create RestSharp client and POST request object
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-
-                //request headers
-                request.RequestFormat = DataFormat.Json;
-                request.AddHeader("Content-Type", "application/json");
-                //object containing input parameter data for company() API method
-                var apiInput = new
-                {
-                    SessionToken = authtoken,
-                    Reference = us,//search reference: probably store in logs
-                    CompanyID = comID,
-                };
-
-                //add parameters and token to request
-                request.Parameters.Clear();
-                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                //ApiResponse is a class to model the data we want from the API response
-
-                //make the API request and get a response
-                IRestResponse response = client.Execute<RootObject>(request);
-
-                dynamic rootObject = JObject.Parse(response.Content);
-
-                TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = TempData["ResponseMessage"].ToString();
-                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                TempData.Keep();
-                if (mes == "ServiceOffline")
-                {
-                    ViewData["Message"] = "Service is offline";
-                    return View();
-                }
-                else
-                {
-                    //extract list of companies returned
-                    ViewData["Message"] = "good";
-
-                    ViewData["type"] = type;
-                    ViewData["ComID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
-                    ViewData["ComReg"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
-                    ViewData["ComName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
-                    ViewData["ComTransName"] = rootObject.ResponseObject.CompanyInformation.CompanyTranslatedName;
-                    ViewData["ComRegDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
-                    ViewData["ComStatCode"] = rootObject.ResponseObject.CompanyInformation.CompanyStatusCode;
-                    ViewData["ComStat"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
-
-                    return View();
-                }
-            }
-            else if (type == "regNum")
-            {
-                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                DateTime time = DateTime.Now;
-
-                string date_add = DateTime.Today.ToShortDateString();
-                string time_add = time.ToString("T");
-                string page = "CSI Company Trace By Registration Number";
-                string action = "Registration Number:" + regNum;
-                string user_id = Session["ID"].ToString();
-                string us = Session["Name"].ToString();
-
-                //System.Diagnostics.Debug.WriteLine(date_add);
-                //System.Diagnostics.Debug.WriteLine(time_add);
-                //System.Diagnostics.Debug.WriteLine(page);
-                //System.Diagnostics.Debug.WriteLine(action);
-                //System.Diagnostics.Debug.WriteLine(user_id);
-                //System.Diagnostics.Debug.WriteLine(us);
-
-                TempData["user"] = Session["Name"].ToString();
-                TempData["date"] = DateTime.Today.ToShortDateString();
-                TempData["ref"] = refe;
-                TempData["ComName"] = regNum;
-
-                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                conn.Open();
-
-                var cmd2 = new MySqlCommand(query_uid, conn);
-
-                var reader2 = cmd2.ExecuteReader();
-
-                conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                if (!tokenValid(authtoken))
-                {
-                    //exit with a warning
-                }
-
-                //company search API call
-                var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
-
-                //create RestSharp client and POST request object
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-
-                //request headers
-                request.RequestFormat = DataFormat.Json;
-                request.AddHeader("Content-Type", "application/json");
-                //object containing input parameter data for company() API method
-                var apiInput = new
-                {
-                    SessionToken = authtoken,
-                    Reference = us,//search reference: probably store in logs
-                    RegistrationNumber = regNum,
-                };
-
-                //add parameters and token to request
-                request.Parameters.Clear();
-                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                //ApiResponse is a class to model the data we want from the API response
-
-                //make the API request and get a response
-                IRestResponse response = client.Execute<RootObject>(request);
-
-                dynamic rootObject = JObject.Parse(response.Content);
-
-                TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = TempData["ResponseMessage"].ToString();
-                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                TempData.Keep();
-
-                if (mes == "ServiceOffline")
-                {
-                    ViewData["Message"] = "Service is offline";
-                    return View();
-                }
-                else
-                {
-                    //extract list of companies returned
-                    ViewData["Message"] = "good";
-
-                    ViewData["type"] = type;
-                    ViewData["ComID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
-                    ViewData["ComReg"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
-                    ViewData["ComName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
-                    ViewData["ComTransName"] = rootObject.ResponseObject.CompanyInformation.CompanyTranslatedName;
-                    ViewData["ComRegDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
-                    ViewData["ComStatCode"] = rootObject.ResponseObject.CompanyInformation.CompanyStatusCode;
-                    ViewData["ComStat"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
-
-                    return View();
-                }
+                TempData["msg"] = "An error occured, please check the entered values.";
             }
 
             return View();
@@ -1127,16 +1097,22 @@ namespace searchworks.client.Controllers
         {
             List<CompanyInformation> lst = new List<CompanyInformation>();
 
-            dynamic respContent = JObject.Parse(response.Content);
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-
-            foreach (ResponseObject responseObject in rawList)
+            try
             {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
-                lst.Add(responseObject.CompanyInformation);
-            }
+                dynamic respContent = JObject.Parse(response.Content);
+                List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
 
+                foreach (ResponseObject responseObject in rawList)
+                {
+                    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+                    //res.SearchInformation = responseObject.SearchInformation;
+                    lst.Add(responseObject.CompanyInformation);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "An error occured, please check the entered values.";
+            }
             return lst;
         }
 
@@ -1147,7 +1123,6 @@ namespace searchworks.client.Controllers
             dynamic respContent = JsonConvert.DeserializeObject(response.Content);
             List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
             ViewData["Directors"] = rawList;
-            System.Diagnostics.Debug.WriteLine(rawList, "Rawest");
             //foreach (JObject responseObject in rawList)
             //foreach (ResponseObject responseObject in rawList)
             //{

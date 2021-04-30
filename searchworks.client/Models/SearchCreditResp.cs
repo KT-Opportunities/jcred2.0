@@ -24,7 +24,7 @@ namespace searchworks.client.Credit
         public string Surname { get; set; }
         public string Fullname { get; set; }
         public string IDNumber { get; set; }
-        public string PassportNumber{ get; set; }
+        public string PassportNumber { get; set; }
         public string EnquiryID { get; set; }
         public string EnquiryResultID { get; set; }
         public string Reference { get; set; }
@@ -33,9 +33,6 @@ namespace searchworks.client.Credit
         public string Initials { get; set; }
         public string MaritalStatus { get; set; }
         public string Quality { get; set; }
-        
-
-
     }
 
     public class HomeAffairsInformation
@@ -48,7 +45,6 @@ namespace searchworks.client.Credit
         public string IDCardIssuedDate { get; set; }
         public string IDCardIssued { get; set; }
         public string VerifiedStatus { get; set; }
-
     }
 
     public class HistoricalInformation
@@ -61,9 +57,13 @@ namespace searchworks.client.Credit
         public string IDCardIssuedDate { get; set; }
         public string IDCardIssued { get; set; }
         public string VerifiedStatus { get; set; }
-
     }
 
+    public class EmploymentHistory
+    {
+        public string EmployerName { get; set; }
+        public string Designation { get; set; }
+    }
 
     public class ResponseObject
     {
@@ -71,7 +71,6 @@ namespace searchworks.client.Credit
         public PersonInformation PersonInformation { get; set; }
         public HomeAffairsInformation HomeAffairsInformation { get; set; }
         public HistoricalInformation HistoricalInformation { get; set; }
-        
     }
 
     public class RootObject
@@ -83,13 +82,11 @@ namespace searchworks.client.Credit
 
     public class Search
     {
-         public string FirstName { get; set; }
-         public string Surname{ get; set; }
-         public string IDNumber{ get; set; }
-         public string Reference{ get; set; }
-         public int EnquiryReason { get; set; }
-
-
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
+        public string IDNumber { get; set; }
+        public string Reference { get; set; }
+        public int EnquiryReason { get; set; }
     }
 
     public class CompuScan
@@ -98,10 +95,10 @@ namespace searchworks.client.Credit
         public string ContactName { get; set; }
         public string ContactNumber { get; set; }
         public int EnquiryReason { get; set; }
-      
+
         public string FirstName { get; set; }
         public string Surname { get; set; }
-        
+
         public string clientName { get; set; }
         public string bankName { get; set; }
         public string branchCode { get; set; }
@@ -114,7 +111,7 @@ namespace searchworks.client.Credit
         public string TelephoneID { get; set; }
         public string passport { get; set; }
         public string TraceType { get; set; }
-     
+
         public string Reference { get; set; }
     }
 
@@ -126,6 +123,33 @@ namespace searchworks.client.Credit
         public string surname { get; set; }
         public string firstName { get; set; }
         public string passportNumber { get; set; }
+    }
+
+    public class EnquiryHistory
+    {
+        public string EnquiryDate { get; set; }
+        public string EnquiredBy { get; set; }
+        public string EnquiredByContact { get; set; }
+    }
+
+    public class AddressHistory
+    {
+        public string TypeDescription { get; set; }
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+        public string Line3 { get; set; }
+        public string PostalCode { get; set; }
+        public string FullAddress { get; set; }
+        public string LastUpdatedDate { get; set; }
+    }
+
+    public class TelephoneHistory
+    {
+        public string TypeDescriptionTel { get; set; }
+        public string DialCode { get; set; }
+        public string Number { get; set; }
+        public string FullNumber { get; set; }
+        public string LastUpdatedDateTel { get; set; }
     }
 
     public class TransUnion
@@ -150,8 +174,6 @@ namespace searchworks.client.Credit
         public string telephoneNumber { get; set; }
         public string TraceType { get; set; }
         public string Reference { get; set; }
-       
-
     }
 
     public class VeriCred
@@ -164,8 +186,6 @@ namespace searchworks.client.Credit
         public string surname { get; set; }
         public string EnquiryReason { get; set; }
         public string Reference { get; set; }
-       
-
     }
 
     public class XDS
@@ -187,10 +207,5 @@ namespace searchworks.client.Credit
         public string TelephoneNumber { get; set; }
         public string Type { get; set; }
         public string Reference { get; set; }
-
-
     }
 }
-
-
-
