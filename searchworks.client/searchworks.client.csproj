@@ -316,6 +316,7 @@
     <Compile Include="Controllers\IntelligenceReportController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TrustController.cs" />
+    <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1104,9 +1105,13 @@
     <Content Include="Views\Credit\XDSConsumerTraceResults.cshtml" />
     <Content Include="Views\Individual\DeedsOfficeRecordsIndividualResults.cshtml" />
     <Content Include="Views\Home\CSICompanyDetails.cshtml" />
+    <Content Include="Views\UserManagement\UserManagementHome.cshtml" />
+    <Content Include="Views\Credit\TransUnionCompanyProfileResults.cshtml" />
+    <Content Include="Views\Credit\TransUnionConsumerProfileResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\App_LocalResources\" />
     <Folder Include="Views\CreatePdf\" />
     <Folder Include="Views\Shared\NewFolder1\" />
   </ItemGroup>

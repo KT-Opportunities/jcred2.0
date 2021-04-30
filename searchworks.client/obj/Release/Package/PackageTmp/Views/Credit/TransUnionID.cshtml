@@ -1,0 +1,145 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Credit.PersonInformation>
+
+@{
+    ViewBag.Title = "TransUnion ID Verification";
+}
+
+
+
+    <div class="col-md-10 col-sm-10 con">
+        <div class="" id="load"></div>
+        <div class="resturn-message"></div>
+        <div class="seaTab">
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+                    <div class="opt1">
+                        <div class="exp">Export List </div>
+                        <div class="create">Create Group</div>
+                        <div class="history"><i class="fa fa-history"></i>History</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="seaTable form-style-9">
+            @using (Html.BeginForm("TransUnionIDResults", "Credit", FormMethod.Post))
+            {
+                <h3 class="Trans">TransUnion ID Verification</h3>
+
+                <ul>
+                    <li>
+                        @Html.TextBox("Reference", null, new { @class = "field-style field-split align-left", @id = "Ref", @placeholder = "Reference", disabled = "disabled" })
+                        @Html.TextBox("IDNumber", null, new { @class = "field-style field-split align-right", @id = "IDNumber", @placeholder = "ID Number", required = "required", minlength = "13", maxlength = "13" })
+
+
+
+                    </li>
+                    <li>
+                        I accept the terms and conditions
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </li>
+
+
+                    <li>
+                        <button onclick="Search()" id="individualSearch" class="btn btn-primary" name="individualSearch">Search</button>
+                    </li>
+                </ul>
+
+            }
+        </div>
+
+        @*<h3>Results</h3>
+        <div id="dem">
+        </div>*@
+
+       
+    </div>
+
+<script>
+    function Search() {
+        $('#load').addClass('loader'); // to animate when successfull
+        
+        var ID = document.getElementById("IDNumber").value;
+        
+        
+        
+    
+
+        //if (ID === "" && EnquiryReason === "") {
+        //    var alertMessage = '<div class="alert alert-danger" role="alert">'
+        //        + 'Please fill in details to search!</div>';
+
+        //    $(".resturn-message").html(alertMessage)
+        //}
+
+        if (ID === "") {
+            var alertMessage = '<div class="alert alert-danger" role="alert">'
+                + 'Please fill in ID Number to search!</div>';
+
+            $(".resturn-message").html(alertMessage);
+
+
+        }
+
+
+        //else if (EnquiryReason === "") {
+        //    var alertMessage = '<div class="alert alert-danger" role="alert">'
+        //        + 'Please fill in Enquiry Reasonto search!</div>';
+
+        //    $(".resturn-message").html(alertMessage);
+
+
+        //}
+
+        else {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '@Url.Action("TransUnionIDResults", "Credit")',
+                    data: {
+
+                        IDNumber: $('#IDNumber').val(),
+
+                    },
+                    dataType: "text",
+                    error: function (result) {
+                        alertMessage = '<div class="alert alert-success" role="alert">'
+                            + 'Account Created </div>';
+
+                        $(".resturn-message").html(alertMessage)
+
+
+
+
+
+                    },
+                    success: function (result) {
+
+                        var alertMessage = '<div class="alert alert-success" role="alert">'
+                            + 'Right Usename/Password</div>';
+
+                        $(".resturn-message").html(alertMessage)
+
+                        //alert(result.user_type);
+
+                        debugger;
+
+
+                    }
+                });
+        }
+                        }
+
+</script>

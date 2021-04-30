@@ -1,0 +1,153 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Credit.Experian>
+
+@{
+    ViewBag.Title = "Experian Consumer Profile";
+}
+
+
+
+<div class="col-md-10 col-sm-10">
+    <div class="sea">SEARCH RESULTS</div>
+    <div class="sea act">Experian Consumer Profile</div>
+    <div class="sea_bar">
+        <label>Search History</label>
+        <input name="search" />
+        <button>RESET</button>
+    </div>
+    <div class="con">
+        <div class="col-md-6 col-sm-6 left">
+            @using (Html.BeginForm("ExperianConsumerProfileResults", "Credit", FormMethod.Post))
+            {
+                <div class="ref">
+                    <label>Reference</label><br>
+
+                    @Html.TextBox("reference", null, new { @id = "Ref" })
+                </div>
+                <div class="eqType">
+                    <label>Enquiry Reason</label><br>
+
+                        @Html.DropDownList("enquiryReason", new List<SelectListItem>
+                    {
+
+                          new SelectListItem { Text = "Credit Assessment", Value = "Credit Assessment"},
+                          new SelectListItem { Text = "SAPS or State Agency", Value = "SAPS or State Agency"},
+                          new SelectListItem { Text = "Employment Screening", Value = "Employment Screening"},
+                          new SelectListItem { Text = "Account Limit Determination", Value = "Account Limit Determination"},
+                          new SelectListItem { Text = "Application for Insurance", Value = "Application for Insurance"},
+                          new SelectListItem { Text = "Employment Verification", Value = "Employment Verification"},
+                          new SelectListItem { Text = "Affordability Assessment", Value = "Affordability Assessment"},
+                          new SelectListItem { Text = "Debt Review Applications", Value = "Debt Review Applications"},
+                    }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
+                    </div>
+        
+                    
+                <div class="firstname" style="">
+                    <label>ID Number</label><br>
+
+                    @Html.TextBox("iDNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
+                </div>
+                <div class="surname">
+                        <label>Surname</label><br>
+
+                        @Html.TextBox("surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                    </div>
+
+                <div class="idnumber">
+                        <label>First Name </label><br>
+
+                        @Html.TextBox("firstName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                    </div>
+
+                <div class="tc">
+                    <div>
+                        I accept the <a href="#">terms and conditions</a>
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </div>
+                </div>
+
+                <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
+
+
+            }
+
+
+
+        </div>
+        <div class="col-md-6 col-sm-6 right">
+            <div class="cen_text">
+                Obtain the consumer trace details of an individual comprising of address, contact or employment history.
+                For more information about this repost please download the sample report. <br><br>
+                Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Search() {
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("GetCompanyResults", "Home")',
+                                data: {
+                                    companyName: $('#comName').val(),
+
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Account Created </div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+
+
+
+
+                            },
+                                success: function (result) {
+
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+                                    //alert(result.user_type);
+
+                                    debugger;
+
+
+
+                          if (result.status == true) {
+
+                                        if (result.user_type === "client") {
+
+                                            console.log(result);
+
+                                            window.location.href = '@Url.Action("SubmissionStep2", "Checks")';
+
+                                        }
+                                        else if (result.user_type === "admin") {
+                                             window.location.href = '@Url.Action("Admin_S", "Dashboard")';
+                                        }
+
+
+                            }
+                            else {
+
+                                var alertMessage = '<div class="alert alert-danger" role="alert">'
+                                    + 'Invalid Usename/Password</div>';
+
+                                $(".resturn-message").html(alertMessage)
+
+                                alert(result.message);
+                            }
+                            }
+                        });
+                        }
+
+</script>

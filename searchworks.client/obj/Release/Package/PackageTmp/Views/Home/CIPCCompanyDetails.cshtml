@@ -1,0 +1,148 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Company.Directors>
+
+@*@model IEnumerable<searchworks.client.Models.Directors>*@
+
+@{
+    ViewBag.Title = "CIPC Company Search";
+}
+
+@*Add CIPC Company Search as title*@
+
+<div class="col-md-10 col-sm-10 con">
+    @*@{
+            string msg1 = "<a class=export target=_blank href=" + ViewData["PDFCopyURL"] + "><img src=/Content/img/export.png alt= /></a>";
+            @Html.Raw(msg1)
+        }*@
+
+    <div class="left_col">
+        <div class="results">
+            <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+            <p>2 Results</p>
+        </div>
+        <p class="num">@ViewData["CompanyName"]</p>
+        <p class="num2">CSI Company Records</p>
+
+        <div class="btnNavigation">
+            <p onclick="openCity(event, 'CompanyInfo')">Company Information</p>
+            <p onclick="openCity(event, 'DirectorsDetails')">Directors Details</p>
+        </div>
+        <div class="seaInfo">
+            Search Information
+        </div>
+
+        <div class="userInfo">
+            <p class="">User:<span>@TempData["user"]</span></p>
+            <p class="">Date:<span>@TempData["date"]</span></p>
+            <p class="">Reference:<span>@TempData["ref"]</span></p>
+            <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
+        </div>
+    </div>
+    <div class="right_col">
+
+        @*<div id="CompanyInfo" class="tabcontent active" style=display:block>*@
+        <div class="seaRes">
+            Company Information
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Registration No:</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Finacial Year End:</th>
+                    <th>Region</th>
+                    <th>Country</th>
+                    <th>Registration Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@ViewData["CompanyID"] </td>
+                    <td>@ViewData["CompanyRegistrationNumber"]</td>
+                    <td>@ViewData["CompanyStatus"]</td>
+                    <td>@ViewData["CompanyType"]</td>
+                    <td>@ViewData["FinancialYearEnd"]</td>
+                    <td>@ViewData["Region"]</td>
+                    <td>@ViewData["Country"]</td>
+                    <td>@ViewData["RegistrationDate"]</td>
+                </tr>
+            </tbody>
+        </table>
+        @*</div>*@
+
+        <div class="seaRes">
+            Directors Details
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Surname</th>
+                    <th>Gender</th>
+                    <th>ID Number</th>
+                    <th>Age</th>
+                    <th>Status</th>
+                    <th>Resignation Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in @ViewBag.DirectorsDetails)
+                {
+                    <tr>
+                        <td>@item.DirectorID</td>
+                        <td>@item.FirstName</td>
+                        <td>@item.Surname</td>
+                        <td>@item.Gender</td>
+                        <td>@item.IdNumber</td>
+                        <td>@item.Age</td>
+                        <td>@item.Status</td>
+                        <td>@item.ResignationDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<body onload="document.getElementById('CompanyInfo').click();">
+</body>
+
+<script>
+    var arrayList = new Object;
+    arrayList = @ViewData["ArrayList"];
+
+    function Search() {
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("GetCompanyResults", "Home")',
+                                data: {
+                                    companyName: $('#comName').val(),
+
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alert(data);
+
+                            },
+                                success: function (result) {
+
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+                                    //alert(result.user_type);
+
+                            }
+                        });
+                        }
+</script>

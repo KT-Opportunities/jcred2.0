@@ -3,29 +3,22 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
 using searchworks.client.Credit;
+using searchworks.client.Models;
 using ServiceStack.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace searchworks.client.Controllers
 {
     public class CreditController : Controller
     {
-
-        string serverIp = "localhost";
-        string username = "root";
-        string password = "";
-        string databaseName = "jcred";
-
-        //string serverIp = "197.242.148.16";
-        //string username = "cykgxznt_admin";
-        //string password = "jcred123";
-        //string databaseName = "cykgxznt_jcred";
-
         public string GetLoginToken(string api_username, string api_password)
         {
+            string user_id = Session["ID"].ToString();
+            System.Diagnostics.Debug.WriteLine(user_id);
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
@@ -52,7 +45,6 @@ namespace searchworks.client.Controllers
             //return View(members);
             dynamic respContent = JObject.Parse(response.Content);
             loginToken = respContent.ResponseMessage;
-            System.Diagnostics.Debug.WriteLine("Login Token: " + loginToken);
 
             return loginToken;
         }
@@ -77,45 +69,20 @@ namespace searchworks.client.Controllers
             int er = search.EnquiryReason;
 
             string refe = search.Reference;
-            ViewData["refe"] = name +" "+ sur;
+            ViewData["refe"] = name + " " + sur;
 
-            //System.Diagnostics.Debug.WriteLine(id);
-            //System.Diagnostics.Debug.WriteLine(er);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Combined Credit Report";
-            string action = "Name:" + name +"; Surname: "+ sur + "; Equiry Reason:" + er + "; ID: "+id;
+            string action = "Name:" + name + "; Surname: " + sur + "; Equiry Reason:" + er + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -156,11 +123,6 @@ namespace searchworks.client.Controllers
                 IDNumber = id,
                 FirstName = name,
                 Surname = sur
-                
-
-
-
-
             };
 
             //add parameters and token to request
@@ -172,18 +134,14 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
 
-            
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-            
 
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -197,7 +155,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
                 ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation["CompuScan"];
-                //System.Diagnostics.Debug.WriteLine(ViewData["CompuScanMessage"]);
                 ViewData["ExperianMessage"] = rootObject.ResponseObject.CombinedCreditInformation.Experian;
                 ViewData["TransUnion"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
                 ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
@@ -442,12 +399,6 @@ namespace searchworks.client.Controllers
 
                 if (ViewData["XDSMessage"].ToString() == "CONSUMER MATCH")
                 {
-                    //System.Diagnostics.Debug.WriteLine(ViewData["CompuScan"]);
-                    //System.Diagnostics.Debug.WriteLine(ViewData["Experian"]);
-                    //System.Diagnostics.Debug.WriteLine(ViewData["TransUnion"]);
-
-                    //System.Diagnostics.Debug.WriteLine(ViewData["BuyerName"]);
-
                     //Person Information:
                     ViewData["PersonID"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.PersonID;
                     ViewData["Title"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Title;
@@ -458,9 +409,6 @@ namespace searchworks.client.Controllers
                     ViewData["Gender"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Gender;
                     ViewData["MiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MiddleName1;
                     ViewData["Fullname"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Fullname;
-
-                    System.Diagnostics.Debug.WriteLine(ViewData["PersonID"]);
-                    
 
                     //COntact Information:
                     //ViewData["EmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress;
@@ -485,8 +433,6 @@ namespace searchworks.client.Controllers
                         ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyRegistrationNumber;
                         ViewData["AppointmentDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].AppointmentDate;
                         ViewData["PhysicalAddressD"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].PhysicalAddress;
-
-                        //System.Diagnostics.Debug.WriteLine(ViewData["CompanyName"]);
 
                         //PropertyInformation
                         ViewData["BuyerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.Fullname;
@@ -537,7 +483,7 @@ namespace searchworks.client.Controllers
         {
             return View();
         }
-        
+
         public ActionResult CombinedConsumerTrace()
         {
             return View();
@@ -547,44 +493,21 @@ namespace searchworks.client.Controllers
         {
             string id = comp.IDNumber;
             string refe = comp.Reference;
-            System.Diagnostics.Debug.WriteLine(id);
 
             ViewData["refe"] = id;
 
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Combined Consumer Trace";
-            string action =  "ID: " + id;
+            string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -641,7 +564,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -652,17 +574,13 @@ namespace searchworks.client.Controllers
             }
             else
             {
-              
                 ViewData["Message"] = "good";
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-               
-                    System.Diagnostics.Debug.WriteLine(ViewData["ResponseMessage"]);
 
                 ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScan;
                 ViewData["TransUnionMessage"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
                 ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
                 ViewData["VeriCredMessage"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCred;
-              
 
                 if (ViewData["CompuScanMessage"].ToString() == "Found")
                 {
@@ -714,12 +632,6 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Telephone
@@ -738,12 +650,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -762,12 +668,6 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
 
@@ -799,7 +699,6 @@ namespace searchworks.client.Controllers
                     ViewData["TransUnionInfoMobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].MobileNumber;
                     ViewData["TransUnionInfoHomeTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].HomeTelephoneNumber;
                     ViewData["TransUnionInfoWorkTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].WorkTelephoneNumber;
-                   
 
                     //Historical Information
 
@@ -827,14 +726,7 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
                     }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
-                    }
-
                     // Telephone
                     Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
                     Telelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
@@ -851,12 +743,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -875,19 +761,13 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
 
                 if (ViewData["XDSMessage"].ToString() == "Found")
                 {
                     //Personal Information
-                  
+
                     ViewData["XDSInfoPersonID"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PersonInformation"].PersonID;
                     ViewData["XDSInfoTitle"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PersonInformation"].Title;
                     ViewData["XDSInfoDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PersonInformation"].DateOfBirth;
@@ -941,12 +821,6 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Telephone
@@ -965,12 +839,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -989,29 +857,22 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
 
                 if (ViewData["VeriCredMessage"].ToString() == "Found")
                 {
                     //Personal Information
-                   
+
                     ViewData["VeriCredInfoDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].DateOfBirth;
                     ViewData["VeriCredInfoFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].FirstName;
                     ViewData["VeriCredInfoSurname"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Surname;
                     ViewData["VeriCredInfoFullname"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Fullname;
                     ViewData["VeriCredInfoIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].IDNumber;
-                    
+
                     ViewData["VeriCredInfoGender"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Gender;
                     ViewData["VeriCredInfoAge"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Age;
                     ViewData["VeriCredInfoCurrentEmployer"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].CurrentEmployer;
-                   
 
                     //Contact Information
                     ViewData["VeriCredInfoPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["ContactInformation"].PhysicalAddress;
@@ -1045,12 +906,6 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Telephone
@@ -1069,12 +924,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -1093,12 +942,6 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
                 else
@@ -1126,26 +969,9 @@ namespace searchworks.client.Controllers
             string terms = comp.terms;
             int reportType = comp.ReportType;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -1155,13 +981,6 @@ namespace searchworks.client.Controllers
             string action = "Client Name:" + clientName + "; Bank Name: " + bankName + "; Branch Code:" + branchCode + "; Branch Name: " + branchName + "; Account Number:" + accountNumber + "; Amount:" + amount + "; Terms:" + terms + "; Report Type" + reportType;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1221,7 +1040,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             return View();
         }
@@ -1235,26 +1053,9 @@ namespace searchworks.client.Controllers
         {
             string id = comp.IDNumber;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -1264,13 +1065,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1322,7 +1116,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -1334,7 +1127,7 @@ namespace searchworks.client.Controllers
             else
             {
             }
-                return View();
+            return View();
         }
 
         public ActionResult CompuScanConsumerProfile()
@@ -1350,26 +1143,9 @@ namespace searchworks.client.Controllers
             string firstname = comp.FirstName;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -1379,13 +1155,6 @@ namespace searchworks.client.Controllers
             string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1440,7 +1209,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
 
@@ -1455,8 +1223,9 @@ namespace searchworks.client.Controllers
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
                 ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation["DateOfBirth"];
+
                 ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation["DelphiScore"];
-                ViewData["DirectorshipInformationMessage"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
+                //ViewData["DirectorshipInformationMessage"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
                 ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
 
                 if (ViewData["PersonInformationMessage"].ToString() != "")
@@ -1529,7 +1298,8 @@ namespace searchworks.client.Controllers
                     ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
 
                     //DebtReviewStatus
-                    ViewData["ApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
+                    ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
+                    ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
 
                     //ConsumerStatistics
                     ViewData["HighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
@@ -1748,31 +1518,12 @@ namespace searchworks.client.Controllers
             string teleID = comp.TelephoneID;
             string traceType = comp.TraceType;
             string refe = comp.Reference;
-           
-
-
-            System.Diagnostics.Debug.WriteLine(id);
 
             if (traceType == "ID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -1782,13 +1533,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -1841,10 +1585,8 @@ namespace searchworks.client.Controllers
                 //JObject o = JObject.Parse(response.Content);
 
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -1938,24 +1680,9 @@ namespace searchworks.client.Controllers
             }
             else if (traceType == "tele")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -1965,13 +1692,6 @@ namespace searchworks.client.Controllers
                 string action = "Telephone Number: " + tele;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2027,7 +1747,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -2062,24 +1781,9 @@ namespace searchworks.client.Controllers
             }
             else if (traceType == "teleID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -2089,13 +1793,6 @@ namespace searchworks.client.Controllers
                 string action = "TelephoneID: " + tele;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2151,7 +1848,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             return View();
@@ -2170,26 +1866,9 @@ namespace searchworks.client.Controllers
             string firstname = comp.FirstName;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2199,13 +1878,6 @@ namespace searchworks.client.Controllers
             string action = "First Name: " + firstname + "; Surname: " + surname + "; Passport: " + passport + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2259,12 +1931,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -2341,42 +2011,18 @@ namespace searchworks.client.Controllers
             string surname = comp.Surname;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "CompuScan Employment Confidence Index";
-            string action = "First Name: " + firstname +"; Surname: "+ surname +"; ID: " + id;
+            string action = "First Name: " + firstname + "; Surname: " + surname + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2434,7 +2080,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -2497,28 +2142,10 @@ namespace searchworks.client.Controllers
         {
             string id = comp.IDNumber;
             string refe = comp.Reference;
-          
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2528,13 +2155,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2572,7 +2192,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = us,//search reference: probably store in logs
                 IDNumber = id,
-                
             };
 
             //add parameters and token to request
@@ -2591,25 +2210,23 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline" || mes == "NotFound")
             {
                 ViewData["Message"] = "Service is offline";
-                
+
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
                 return View();
             }
             else
             {
                 ViewData["Message"] = "good";
-                
+
                 ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                System.Diagnostics.Debug.WriteLine("PersonalMessage: " + ViewData["PersonInformationMessage"].ToString());
                 //ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
                 //ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-                
+
                 if (ViewData["PersonInformationMessage"].ToString() != "")
                 {
                     //personaInformantion
@@ -2640,26 +2257,9 @@ namespace searchworks.client.Controllers
             string id = comp.IDNumber;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2669,13 +2269,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2731,7 +2324,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -2804,45 +2396,18 @@ namespace searchworks.client.Controllers
             string passport = exp.passportNumber;
             string refe = exp.reference;
 
-            System.Diagnostics.Debug.WriteLine("exp ID: " + id);
-            System.Diagnostics.Debug.WriteLine("exp reason: " + enquiryReason);
-            System.Diagnostics.Debug.WriteLine("exp ref: " + refe);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "Experian Consumer Profile";
-            string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; Passport: " + passport + "; ID: "+id;
+            string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; Passport: " + passport + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
-
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
@@ -2896,12 +2461,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -2919,18 +2482,18 @@ namespace searchworks.client.Controllers
                 {
                     //PersonInformation
                     ViewData["ExDateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-
-                    System.Diagnostics.Debug.WriteLine("DATEofBiRTH: " + ViewData["ExDateOfBirth"]);
-
+                    ViewData["ExTitle"] = rootObject.ResponseObject.PersonInformation.Title;
                     ViewData["ExFirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                     ViewData["ExSurname"] = rootObject.ResponseObject.PersonInformation.Surname;
+                    ViewData["ExFullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
                     ViewData["ExIDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
                     ViewData["ExGender"] = rootObject.ResponseObject.PersonInformation.Gender;
                     ViewData["ExAge"] = rootObject.ResponseObject.PersonInformation.Age;
                     ViewData["ExMaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
                     ViewData["ExMiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
                     ViewData["ExReference"] = rootObject.ResponseObject.PersonInformation.Reference;
-                    //ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress;
+                    ViewData["ExHasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
+                    ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
 
                     //HomeAffairsInformation
                     ViewData["ExIDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
@@ -2973,7 +2536,7 @@ namespace searchworks.client.Controllers
                     ViewData["ExDeeds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Deeds;
                     ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
                     ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
-                    ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
+                    //ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
 
                     //ConsumerStatistics
                     ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
@@ -2981,8 +2544,115 @@ namespace searchworks.client.Controllers
                     ViewData["ExInstalmentAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.InstalmentAccounts;
                     ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
                     ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts;
-                    ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
+                    ViewData["ExPercent0ArrearsLast12Histories"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.Percent0ArrearsLast12Histories;
+                    ViewData["ExMonthsOldestOpenedPPSEver"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.MonthsOldestOpenedPPSEver;
+                    ViewData["ExNumberPPSLast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NumberPPSLast12Months;
+                    ViewData["ExNLRMicroloansPast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months;
 
+                    //DebtReviewStatus
+                    ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
+                    ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+
+                    List<EnquiryHistory> EnqHIst;
+                    List<AddressHistory> AddressHist;
+                    List<TelephoneHistory> TelHist;
+                    List<EmploymentHistory> EmpHist;
+                    Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+                    elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
+                    elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                    elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                    elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                    //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                    String EnquiryDate = "";
+                    String EnquiredBy = "";
+                    String EnquiredByContact = "";
+                    //AddressHIstoryValues
+                    String TypeDescription = "";
+                    String Line1 = "";
+                    String Line2 = "";
+                    String Line3 = "";
+                    String PostalCode = "";
+                    String FullAddress = "";
+                    String LastUpdatedDate = "";
+                    //TelephoneHIstory
+                    String TypeDescriptionTel = "";
+                    String DialCode = "";
+                    String Number = "";
+                    String FullNumber = "";
+                    String LastUpdatedDateTel = "";
+                    //EmploymentHistory
+                    String EmployerName = "";
+                    String Designation = "";
+                    EnqHIst = new List<EnquiryHistory>();
+                    AddressHist = new List<AddressHistory>();
+                    TelHist = new List<TelephoneHistory>();
+                    EmpHist = new List<EmploymentHistory>();
+                    for (int count = 0; count < (elements.Count); count++)
+                    {
+                        EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                        EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                        EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                        EnqHIst.Add(new EnquiryHistory
+                        {
+                            EnquiryDate = EnquiryDate,
+                            EnquiredBy = EnquiredBy,
+                            EnquiredByContact = EnquiredByContact
+                        });
+                    }
+                    for (int count = 0; count < (elements1.Count); count++)
+                    {
+                        TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                        Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                        Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                        Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                        PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                        FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+
+                        AddressHist.Add(new AddressHistory
+                        {
+                            TypeDescription = TypeDescription,
+                            Line1 = Line1,
+                            Line2 = Line2,
+                            Line3 = Line3,
+                            PostalCode = PostalCode,
+                            FullAddress = FullAddress,
+                            LastUpdatedDate = LastUpdatedDate,
+                        });
+                    }
+                    for (int count = 0; count < (elements2.Count); count++)
+                    {
+                        TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                        DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                        Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                        FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                        LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+
+                        TelHist.Add(new TelephoneHistory
+                        {
+                            TypeDescriptionTel = TypeDescriptionTel,
+                            DialCode = DialCode,
+                            Number = Number,
+                            FullNumber = FullNumber,
+                            LastUpdatedDateTel = LastUpdatedDate,
+                        });
+                    }
+                    for (int count = 0; count < (elements3.Count); count++)
+                    {
+                        EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                        Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+
+                        EmpHist.Add(new EmploymentHistory
+                        {
+                            EmployerName = EmployerName,
+                            Designation = Designation,
+                        });
+                    }
+                    ViewData["EnqHIst"] = EnqHIst;
+                    ViewData["AddressHist"] = AddressHist;
+                    ViewData["TelHist"] = TelHist;
+                    ViewData["EmpHist"] = EmpHist;
                     //NLRStats
                     ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                     ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
@@ -3042,7 +2712,6 @@ namespace searchworks.client.Controllers
                 return View();
             }
         }
-        
 
         public ActionResult LetterOfDemand()
         {
@@ -3056,32 +2725,14 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionCompanyProfileByCompanyIDResults(TransUnion trans)
         {
-            
             string enquiryReason = trans.EnquiryReason;
             string searchDesc = trans.SearchDescription;
             string companyID = trans.CompanyID;
             Array moduleCodes = trans.ModuleCodes;
 
-            System.Diagnostics.Debug.WriteLine(companyID);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3091,13 +2742,6 @@ namespace searchworks.client.Controllers
             string action = "Company ID: " + companyID + "; Search Description: " + searchDesc + "; Enquiry Reason: " + enquiryReason + "; Module Codes: " + moduleCodes;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3134,7 +2778,6 @@ namespace searchworks.client.Controllers
                 SearchDescription = searchDesc,
                 CompanyID = companyID,
                 ModuleCodes = moduleCodes,
-                
             };
 
             //add parameters and token to request
@@ -3153,7 +2796,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             return View();
         }
@@ -3171,26 +2813,9 @@ namespace searchworks.client.Controllers
             string entityName = trans.EntityName;
             Array moduleCodes = trans.ModuleCodes;
 
-            System.Diagnostics.Debug.WriteLine(entityName);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3200,13 +2825,6 @@ namespace searchworks.client.Controllers
             string action = "Entity Name: " + entityName + "; Entity Number: " + entityNumber + "; Enquiry Reason: " + enquiryReason + "; Enquiry Type: " + enquiryType + "; Module Codes: " + moduleCodes;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3221,6 +2839,7 @@ namespace searchworks.client.Controllers
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
+                System.Diagnostics.Debug.WriteLine("User needs to be logged out");
                 //exit with a warning
             }
 
@@ -3257,12 +2876,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             return View();
         }
@@ -3279,26 +2896,9 @@ namespace searchworks.client.Controllers
             string surname = trans.Surname;
             string refe = trans.Reference;
 
-            System.Diagnostics.Debug.WriteLine("ID: " + idNumber);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3308,13 +2908,6 @@ namespace searchworks.client.Controllers
             string action = "Surname: " + surname + "; ID Number: " + idNumber + "; Enquiry Reason: " + enquiryReason;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3353,9 +2946,7 @@ namespace searchworks.client.Controllers
                 Reference = us,//search reference: probably store in logs
                 EnquiryReason = enquiryReason,
                 IDNumber = idNumber,
-                Surname  = surname
-                
-
+                Surname = surname
             };
 
             //add parameters and token to request
@@ -3369,12 +2960,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "NotFound")
@@ -3399,30 +2988,12 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionConsumerIDVerificationResults(TransUnion search)
         {
-            
             string id = search.IDNumber;
             string refe = search.Reference;
-            
-            System.Diagnostics.Debug.WriteLine(id);
 
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3432,13 +3003,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3476,10 +3040,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = authtoken,//search reference: probably store in logs
                 IDNumber = id,
-                
-
-
-
             };
 
             //add parameters and token to request
@@ -3493,12 +3053,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -3514,11 +3072,8 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
                 //ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
-                
-
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
 
                 ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
                 ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
@@ -3535,8 +3090,6 @@ namespace searchworks.client.Controllers
 
                 ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
                 ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-                System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-                System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
 
                 //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
                 //{
@@ -3555,7 +3108,6 @@ namespace searchworks.client.Controllers
                 //{
                 //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
                 //}
-                //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
                 //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                 //extract list of companies returned
 
@@ -3584,26 +3136,9 @@ namespace searchworks.client.Controllers
             string dob = trans.DateOfBirth;
             string refe = trans.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3613,13 +3148,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id + "; First Name: " + firstName + "; Surname: " + surname + "; Contact Name: " + conName + "; Contact Number: " + conNumber + "; Passport Number: " + passport + "; Date Of Birth: " + dob;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3677,56 +3205,34 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Datttaaa");
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
-
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-            ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-            System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
-            ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
-            ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
-            ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-            ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-            ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-            ViewData["VerificationStatus"] = rootObject.ResponseObject.PersonInformation.VerificationStatus;
-            ViewData["EnquiryResultID"] = rootObject.ResponseObject.PersonInformation.EnquiryResultID;
-            ViewData["Reference"] = rootObject.ResponseObject.PersonInformation.Reference;
-            ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-            ViewData["DeceasedDate"] = rootObject.ResponseObject.PersonInformation.DeceasedDate;
-            ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-            ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
-
-            ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
-            ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-
-            //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
-            //{
-            //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
-            //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
-
-            // ViewData["AddressLine3"] =
-            // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-            // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
-
-            //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
-            //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
-            //}
-
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
-            //}
-            //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
-            //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
-            //extract list of companies returned
-
-            //PersonInformation lst = getIndividualList(response);
+            try
+            {
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+                ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
+                ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
+                ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
+                ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
+                ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
+                ViewData["VerificationStatus"] = rootObject.ResponseObject.PersonInformation.VerificationStatus;
+                ViewData["EnquiryResultID"] = rootObject.ResponseObject.PersonInformation.EnquiryResultID;
+                ViewData["Reference"] = rootObject.ResponseObject.PersonInformation.Reference;
+                ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
+                ViewData["DeceasedDate"] = rootObject.ResponseObject.PersonInformation.DeceasedDate;
+                ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
+                ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
+                ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "An error occured, please check the entered values.";
+            }
 
             return View();
         }
@@ -3751,28 +3257,11 @@ namespace searchworks.client.Controllers
 
             traceType = "ID";
 
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (traceType == "enquiryID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -3782,13 +3271,6 @@ namespace searchworks.client.Controllers
                 string action = "Equiry ID: " + enquiryID + "; Equiry Result ID: " + enquiryResultID + "; Search Description: " + seaDesc;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3842,29 +3324,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (traceType == "ID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -3874,13 +3340,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                //System.Diagnostics.Debug.WriteLine(date_add);
-                //System.Diagnostics.Debug.WriteLine(time_add);
-                //System.Diagnostics.Debug.WriteLine(page);
-                //System.Diagnostics.Debug.WriteLine(action);
-                //System.Diagnostics.Debug.WriteLine(user_id);
-                //System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3931,12 +3390,10 @@ namespace searchworks.client.Controllers
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
-                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
                 if (mes == "NotFound")
@@ -3951,13 +3408,9 @@ namespace searchworks.client.Controllers
                     //ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
                     ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                        var name = ViewData["FirstName"].ToString();
-                    System.Diagnostics.Debug.WriteLine(name);
-                   
-                   
-                    
+                    var name = ViewData["FirstName"].ToString();
+
                     ViewData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    System.Diagnostics.Debug.WriteLine(ViewData["DateOfBirth"].ToString());
 
                     ViewData["MiddleName1"] = rootObject.ResponseObject[0].PersonInformation.MiddleName1;
                     ViewData["PassportNumber"] = rootObject.ResponseObject[0].PersonInformation.PassportNumber;
@@ -3971,9 +3424,6 @@ namespace searchworks.client.Controllers
                     ViewData["DeceasedDate"] = rootObject.ResponseObject[0].PersonInformation.DeceasedDate;
                     ViewData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
                     ViewData["EnquiryID"] = rootObject.ResponseObject[0].PersonInformation.EnquiryID;
-
-
-                    
 
                     //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
                     //{
@@ -3992,7 +3442,6 @@ namespace searchworks.client.Controllers
                     //{
                     //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
                     //}
-                    //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
                     //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                     //extract list of companies returned
 
@@ -4003,24 +3452,9 @@ namespace searchworks.client.Controllers
             }
             else if (traceType == "mobile")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -4030,13 +3464,6 @@ namespace searchworks.client.Controllers
                 string action = "Mobile Number: " + mobile;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4088,29 +3515,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (traceType == "surname")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -4120,13 +3531,6 @@ namespace searchworks.client.Controllers
                 string action = "Surname: " + surname + "; Date Of Birth: " + dob;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4179,29 +3583,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (traceType == "tele")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -4211,13 +3599,6 @@ namespace searchworks.client.Controllers
                 string action = "Telephone Number: " + tele;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4270,7 +3651,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
 
@@ -4292,26 +3672,9 @@ namespace searchworks.client.Controllers
             string accNumber = veri.accountNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4321,13 +3684,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id + "; Surname: " + surname + "; Initials: " + initials + "; Account Type: " + accType + "; Account Number: " + accNumber + "; Branch Code: " + branchCode;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4388,11 +3744,10 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-            System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
+
             ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
             ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
             ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
@@ -4408,8 +3763,6 @@ namespace searchworks.client.Controllers
 
             ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
             ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
 
             //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
             //{
@@ -4428,7 +3781,6 @@ namespace searchworks.client.Controllers
             //{
             //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
             //}
-            //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
             //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
             //extract list of companies returned
 
@@ -4447,28 +3799,10 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string enquiryReason = veri.EnquiryReason;
             string refe = veri.Reference;
-         
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4478,13 +3812,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id + "; Enquiry Reason: " + enquiryReason;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4523,9 +3850,6 @@ namespace searchworks.client.Controllers
                 Reference = authtoken,//search reference: probably store in logs
                 IDNumber = id,
                 EnquiryReason = enquiryReason,
-               
-
-
             };
 
             //add parameters and token to request
@@ -4544,7 +3868,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -4558,7 +3881,7 @@ namespace searchworks.client.Controllers
             else
             {
                 ViewData["Message"] = "good";
-             
+
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
                 ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
@@ -4571,10 +3894,6 @@ namespace searchworks.client.Controllers
 
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
-                
-
-
-              
 
                 //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
                 //{
@@ -4593,7 +3912,6 @@ namespace searchworks.client.Controllers
                 //{
                 //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
                 //}
-                //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
                 //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                 //extract list of companies returned
 
@@ -4614,26 +3932,9 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4643,13 +3944,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4705,7 +3999,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             var mes = ViewData["ResponseMessage"].ToString();
@@ -4721,7 +4014,6 @@ namespace searchworks.client.Controllers
 
                 //PersonInformation
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
@@ -4752,26 +4044,9 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4781,13 +4056,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4843,12 +4111,10 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             var mes = ViewData["ResponseMessage"].ToString();
 
-            System.Diagnostics.Debug.WriteLine("Message " + mes);
             if (mes == "NotFound")
             {
                 ViewData["Message"] = "Not Found";
@@ -4860,7 +4126,7 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
 
                 //PersonInformation
-                ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;                
+                ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
                 ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
                 ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
@@ -4898,26 +4164,9 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4927,13 +4176,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4989,15 +4231,12 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            System.Diagnostics.Debug.WriteLine("Reponse Message:" + ViewData["ResponseMessage"]);
 
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             var mes = ViewData["ResponseMessage"].ToString();
 
-            System.Diagnostics.Debug.WriteLine("Message " + mes);
             if (mes == "NotFound" || mes == "Invalid sessionToken")
             {
                 ViewData["Message"] = "Not Found";
@@ -5009,7 +4248,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
 
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Initials"] = rootObject.ResponseObject.PersonInformation.Initials;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
@@ -5043,30 +4281,12 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredPersonVerificationByIDNumberResults(VeriCred search)
         {
-            
             string id = search.idNumber;
             string refe = search.Reference;
-            
-            System.Diagnostics.Debug.WriteLine(id);
 
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -5076,13 +4296,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5120,9 +4333,6 @@ namespace searchworks.client.Controllers
                 SessionToken = authtoken,
                 Reference = authtoken,//search reference: probably store in logs
                 idNumber = id,
-                
-
-
             };
 
             //add parameters and token to request
@@ -5141,13 +4351,11 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             var mes = ViewData["ResponseMessage"].ToString();
 
-            System.Diagnostics.Debug.WriteLine("Message " + mes);
             if (mes == "NotFound")
             {
                 ViewData["Message"] = "Not Found";
@@ -5159,7 +4367,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
 
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Initials"] = rootObject.ResponseObject.PersonInformation.Initials;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
@@ -5183,14 +4390,6 @@ namespace searchworks.client.Controllers
                 return View();
             }
 
-            
-            
-            
-
-
-
-
-
             return View();
         }
 
@@ -5210,28 +4409,11 @@ namespace searchworks.client.Controllers
             string name = xds.FirstName;
             string sur = xds.Surname;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (type == "photo")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5241,13 +4423,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5304,7 +4479,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                // System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -5362,24 +4536,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "enquiryID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5389,13 +4548,6 @@ namespace searchworks.client.Controllers
                 string action = "Equiry ID: " + enquiryID + "; Equiry Result ID: " + enquiryResultID + "; Search Description: " + seaDesc;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5454,29 +4606,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5486,13 +4622,6 @@ namespace searchworks.client.Controllers
                 string action = "Name: " + name + "; Surname: " + sur + "; ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5551,11 +4680,8 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
-
-                System.Diagnostics.Debug.WriteLine("message: " + mes);
 
                 if (mes == "ServiceOffline")
                 {
@@ -5630,30 +4756,11 @@ namespace searchworks.client.Controllers
 
             string id = xds.IDNumber;
 
-            System.Diagnostics.Debug.WriteLine(name);
-            System.Diagnostics.Debug.WriteLine(surname);
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (type == "address")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5663,13 +4770,6 @@ namespace searchworks.client.Controllers
                 string action = "Suburb: " + suburb + "; Street Number: " + streetNumber + "; Street Name: " + streetName + "; City: " + city + "; Province: " + province;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5730,7 +4830,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
                 ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
@@ -5744,7 +4843,6 @@ namespace searchworks.client.Controllers
                 ViewData["Reference"] = rootObject.ResponseObject[0].PersonInformation.Reference;
                 ViewData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
                 ViewData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                System.Diagnostics.Debug.WriteLine(ViewData["MaritalStatus"]);
                 //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                 //extract list of companies returned
 
@@ -5752,24 +4850,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "enquiryID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5779,13 +4862,6 @@ namespace searchworks.client.Controllers
                 string action = "Equiry ID: " + enquiryID + "; Equiry Result ID: " + enquiryResultID + "; Search Description: " + seaDesc;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5844,29 +4920,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (type == "ID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5876,13 +4936,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5939,7 +4992,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -5986,24 +5038,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "name")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -6013,13 +5050,6 @@ namespace searchworks.client.Controllers
                 string action = "First Name: " + name + "; Surname: " + surname + "; Date Of Birth: " + dob;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -6078,11 +5108,9 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                
+
                 var mes = ViewData["ResponseMessage"].ToString();
-                System.Diagnostics.Debug.WriteLine("Message: " + mes);
                 if (mes == "ServiceOffline")
                 {
                     ViewData["Message"] = "Service is offline";
@@ -6126,25 +5154,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "passport")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
-
                 DateTime time = DateTime.Now;
 
                 string date_add = DateTime.Today.ToShortDateString();
@@ -6153,13 +5165,6 @@ namespace searchworks.client.Controllers
                 string action = "Passport Number: " + passport;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -6216,7 +5221,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -6279,24 +5283,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "tele")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -6306,13 +5295,6 @@ namespace searchworks.client.Controllers
                 string action = "Surname: " + surname + "; Telephone Code: " + teleCode + "; Telephone Number: " + teleNumber;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -6371,7 +5353,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();

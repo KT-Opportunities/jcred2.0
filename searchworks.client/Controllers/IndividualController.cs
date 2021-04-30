@@ -1,33 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
 using searchworks.client.Individual;
-using ServiceStack.Text.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using searchworks.client.Models;
-using searchworks.client.Report;
-using MySql.Data.MySqlClient;
-
+using System.Data;
+using System.Configuration;
 
 namespace searchworks.client.Controllers
 {
     public class IndividualController : Controller
     {
-        string serverIp = "localhost";
-        string username = "root";
-        string password = "";
-        string databaseName = "jcred";
-
-        //string serverIp = "197.242.148.16";
-        //string username = "cykgxznt_admin";
-        //string password = "jcred123";
-        //string databaseName = "cykgxznt_jcred";
         public string GetLoginToken(string api_username, string api_password)
         {
             string loginToken = "";
@@ -81,6 +69,11 @@ namespace searchworks.client.Controllers
             string eqType = csi.eqType;
             string refe = csi.Reference;
 
+            System.Diagnostics.Debug.WriteLine(name, sur);
+            if (!string.IsNullOrEmpty(name))
+            {
+                System.Diagnostics.Debug.WriteLine("Its empty");
+            }
             var url = "";
             var client = new RestClient();
             var request = new RestRequest();
@@ -97,7 +90,8 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine("EQ: " + eqType);
             System.Diagnostics.Debug.WriteLine("SE: " + seaType);
 
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
@@ -124,256 +118,263 @@ namespace searchworks.client.Controllers
             dynamic rootObject;
             JObject o;
             JToken token;
-            switch (seaType + "|" + eqType)
+            try
             {
-                case "idnumber|trace":
-                    url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
-                    client = new RestClient(url);
-                    request = new RestRequest(Method.POST);
-                    var apiIdTrace = new
-                    {
-                        SessionToken = authtoken,
-                        Reference = us,//search reference: probably store in logs
-                        IDNumber = id,
-                    };
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiIdTrace), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-                    //make the API request and get a response
-                    response = client.Execute<RootObject>(request);
-                    rootObject = JObject.Parse(response.Content);
-                    //JObject o = JObject.Parse(response.Content);
-                    o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    token = JToken.Parse(response.Content);
-                    TempData["SearchType"] = seaType;
-                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                    TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                    TempData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                    TempData["Title"] = rootObject.ResponseObject.PersonInformation.Title;
-                    TempData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-                    TempData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                    TempData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                    TempData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                    TempData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
-                    TempData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                    TempData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                    TempData["Quality"] = rootObject.ResponseObject.PersonInformation.Quality;
-                    TempData.Keep();
-                    return View();
+                switch (seaType + "|" + eqType)
+                {
+                    case "idnumber|trace":
+                        url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
+                        client = new RestClient(url);
+                        request = new RestRequest(Method.POST);
+                        var apiIdTrace = new
+                        {
+                            SessionToken = authtoken,
+                            Reference = us,//search reference: probably store in logs
+                            IDNumber = id,
+                        };
+                        request.Parameters.Clear();
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(apiIdTrace), ParameterType.RequestBody);
+                        request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                        //ApiResponse is a class to model the data we want from the API response
+                        //make the API request and get a response
+                        response = client.Execute<RootObject>(request);
+                        rootObject = JObject.Parse(response.Content);
+                        //JObject o = JObject.Parse(response.Content);
+                        o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                        token = JToken.Parse(response.Content);
+                        TempData["SearchType"] = seaType;
+                        TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                        TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                        TempData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+                        TempData["Title"] = rootObject.ResponseObject.PersonInformation.Title;
+                        TempData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
+                        TempData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
+                        TempData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
+                        TempData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+                        TempData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
+                        TempData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                        TempData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
+                        TempData["Quality"] = rootObject.ResponseObject.PersonInformation.Quality;
+                        TempData.Keep();
+                        return View();
 
-                case "name|trace":
+                    case "name|trace":
 
-                    Debug.WriteLine("name|trace");
+                        Debug.WriteLine("name|trace");
 
-                    url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
-                    client = new RestClient(url);
-                    request = new RestRequest(Method.POST);
-                    var apinameTrace = new
-                    {
-                        sessionToken = authtoken,
-                        reference = us,//search reference: probably store in logs
-                        firstName = name,
-                        surname = sur
-                    };
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apinameTrace), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-                    //make the API request and get a response
-                    response = client.Execute<RootObject>(request);
-                    rootObject = JObject.Parse(response.Content);
-                    o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    token = JToken.Parse(response.Content);
-                    System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-                    TempData["SearchType"] = seaType;
-                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                    TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                    TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                    TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
-                    TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
-                    TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
-                    TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
-                    TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
-                    TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
-                    TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
-                    TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                    TempData.Keep();
-                    //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
-                    //extract list of companies returned
+                        client = new RestClient(url);
+                        request = new RestRequest(Method.POST);
+                        var apinameTrace = new
+                        {
+                            sessionToken = authtoken,
+                            reference = us,//search reference: probably store in logs
+                            firstName = name,
+                            surname = sur
+                        };
+                        //add parameters and token to request
+                        request.Parameters.Clear();
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(apinameTrace), ParameterType.RequestBody);
+                        request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                        //ApiResponse is a class to model the data we want from the API response
+                        //make the API request and get a response
+                        response = client.Execute<RootObject>(request);
+                        rootObject = JObject.Parse(response.Content);
+                        o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                        token = JToken.Parse(response.Content);
+                        System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                        TempData["SearchType"] = seaType;
+                        TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                        TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                        TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+                        TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
+                        TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
+                        TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
+                        TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
+                        TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
+                        TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
+                        TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
+                        TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
+                        TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
+                        TempData.Keep();
+                        //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
+                        //extract list of companies returned
 
-                    //PersonInformation lst = getIndividualList(response);
-                    return View();
+                        //PersonInformation lst = getIndividualList(response);
+                        return View();
 
-                case "nameandidnumber|trace":
-                    Debug.WriteLine("nameandidnumber|trace");
-                    url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
-                    client = new RestClient(url);
-                    request = new RestRequest(Method.POST);
+                    case "nameandidnumber|trace":
+                        Debug.WriteLine("nameandidnumber|trace");
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        client = new RestClient(url);
+                        request = new RestRequest(Method.POST);
 
-                    var apinameidTrace = new
-                    {
-                        sessionToken = authtoken,
-                        reference = us,//search reference: probably store in logs
-                        idNumber = id,
-                        firstName = name,
-                        surname = sur
-                    };
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apinameidTrace), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-                    //make the API request and get a response
-                    response = client.Execute<RootObject>(request);
-                    rootObject = JObject.Parse(response.Content);
-                    o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    token = JToken.Parse(response.Content);
-                    System.Diagnostics.Debug.WriteLine(response.Content);
-                    TempData["SearchType"] = seaType;
-                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                    TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                    TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                    TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
-                    TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
-                    TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
-                    TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
-                    TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
-                    TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
-                    TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
-                    TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                    TempData.Keep();
+                        var apinameidTrace = new
+                        {
+                            sessionToken = authtoken,
+                            reference = us,//search reference: probably store in logs
+                            idNumber = id,
+                            firstName = name,
+                            surname = sur
+                        };
+                        //add parameters and token to request
+                        request.Parameters.Clear();
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(apinameidTrace), ParameterType.RequestBody);
+                        request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                        //ApiResponse is a class to model the data we want from the API response
+                        //make the API request and get a response
+                        response = client.Execute<RootObject>(request);
+                        rootObject = JObject.Parse(response.Content);
+                        o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                        token = JToken.Parse(response.Content);
+                        System.Diagnostics.Debug.WriteLine(response.Content);
+                        TempData["SearchType"] = seaType;
+                        TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                        TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                        TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+                        TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
+                        TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
+                        TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
+                        TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
+                        TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
+                        TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
+                        TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
+                        TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
+                        TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
+                        TempData.Keep();
 
-                    return View();
+                        return View();
 
-                case "idnumber|verification":
-                    //company search API call
-                    url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
-                    //create RestSharp client and POST request object
-                    client = new RestClient(url);
-                    request = new RestRequest(Method.POST);
-                    //object containing input parameter data for company() API method
-                    var apiIdVeri = new
-                    {
-                        sessionToken = authtoken,
-                        reference = us,//search reference: probably store in logs
-                        idNumber = id,
-                    };
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiIdVeri), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-                    //make the API request and get a response
-                    response = client.Execute<RootObject>(request);
-                    rootObject = JObject.Parse(response.Content);
-                    //JObject o = JObject.Parse(response.Content);
-                    o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    token = JToken.Parse(response.Content);
-                    System.Diagnostics.Debug.WriteLine(response.Content);
-                    TempData["SearchType"] = seaType;
-                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                    TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                    TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                    TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
-                    TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
-                    TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
-                    TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
-                    TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
-                    TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
-                    TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
-                    TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                    TempData.Keep();
+                    case "idnumber|verification":
+                        //company search API call
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
+                        //create RestSharp client and POST request object
+                        client = new RestClient(url);
+                        request = new RestRequest(Method.POST);
+                        //object containing input parameter data for company() API method
+                        var apiIdVeri = new
+                        {
+                            sessionToken = authtoken,
+                            reference = us,//search reference: probably store in logs
+                            idNumber = id,
+                        };
+                        //add parameters and token to request
+                        request.Parameters.Clear();
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(apiIdVeri), ParameterType.RequestBody);
+                        request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                        //ApiResponse is a class to model the data we want from the API response
+                        //make the API request and get a response
+                        response = client.Execute<RootObject>(request);
+                        rootObject = JObject.Parse(response.Content);
+                        //JObject o = JObject.Parse(response.Content);
+                        o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                        token = JToken.Parse(response.Content);
+                        System.Diagnostics.Debug.WriteLine(response.Content);
+                        TempData["SearchType"] = seaType;
+                        TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                        TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                        TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+                        TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
+                        TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
+                        TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
+                        TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
+                        TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
+                        TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
+                        TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
+                        TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
+                        TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
+                        TempData.Keep();
 
-                    return View();
+                        return View();
 
-                case "name|verification":
-                    Debug.WriteLine("name|verification");
+                    case "name|verification":
+                        Debug.WriteLine("name|verification");
 
-                    url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
-                    client = new RestClient(url);
-                    request = new RestRequest(Method.POST);
-                    var apinameVeri = new
-                    {
-                        sessionToken = authtoken,
-                        reference = us,//search reference: probably store in logs
-                        firstName = name,
-                        surname = sur
-                    };
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apinameVeri), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-                    //make the API request and get a response
-                    response = client.Execute<RootObject>(request);
-                    rootObject = JObject.Parse(response.Content);
-                    o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    token = JToken.Parse(response.Content);
-                    System.Diagnostics.Debug.WriteLine(response.Content);
-                    TempData["SearchType"] = seaType;
-                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                    TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                    TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                    TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
-                    TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
-                    TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
-                    TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
-                    TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
-                    TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
-                    TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
-                    TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                    TempData.Keep();
+                        client = new RestClient(url);
+                        request = new RestRequest(Method.POST);
+                        var apinameVeri = new
+                        {
+                            sessionToken = authtoken,
+                            reference = us,//search reference: probably store in logs
+                            firstName = name,
+                            surname = sur
+                        };
+                        //add parameters and token to request
+                        request.Parameters.Clear();
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(apinameVeri), ParameterType.RequestBody);
+                        request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                        //ApiResponse is a class to model the data we want from the API response
+                        //make the API request and get a response
+                        response = client.Execute<RootObject>(request);
+                        rootObject = JObject.Parse(response.Content);
+                        o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                        token = JToken.Parse(response.Content);
+                        System.Diagnostics.Debug.WriteLine(response.Content);
+                        TempData["SearchType"] = seaType;
+                        TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                        TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                        TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+                        TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
+                        TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
+                        TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
+                        TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
+                        TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
+                        TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
+                        TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
+                        TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
+                        TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
+                        TempData.Keep();
 
-                    return View();
+                        return View();
 
-                case "nameandidnumber|verification":
-                    Debug.WriteLine("nameandidnumber|verification");
-                    url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
-                    client = new RestClient(url);
-                    request = new RestRequest(Method.POST);
+                    case "nameandidnumber|verification":
+                        Debug.WriteLine("nameandidnumber|verification");
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        client = new RestClient(url);
+                        request = new RestRequest(Method.POST);
 
-                    var apinameidVeri = new
-                    {
-                        sessionToken = authtoken,
-                        reference = us,//search reference: probably store in logs
-                        idNumber = id,
-                        firstName = name,
-                        surname = sur
-                    };
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apinameidVeri), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-                    //make the API request and get a response
-                    response = client.Execute<RootObject>(request);
-                    rootObject = JObject.Parse(response.Content);
-                    o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    token = JToken.Parse(response.Content);
-                    System.Diagnostics.Debug.WriteLine(response.Content);
-                    TempData["SearchType"] = seaType;
-                    TempData["ResponseMessage"] = rootObject.ResponseMessage;
-                    TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                    TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                    TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
-                    TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
-                    TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
-                    TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
-                    TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
-                    TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
-                    TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
-                    TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                    TempData.Keep();
-                    return View();
+                        var apinameidVeri = new
+                        {
+                            sessionToken = authtoken,
+                            reference = us,//search reference: probably store in logs
+                            idNumber = id,
+                            firstName = name,
+                            surname = sur
+                        };
+                        //add parameters and token to request
+                        request.Parameters.Clear();
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(apinameidVeri), ParameterType.RequestBody);
+                        request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                        //ApiResponse is a class to model the data we want from the API response
+                        //make the API request and get a response
+                        response = client.Execute<RootObject>(request);
+                        rootObject = JObject.Parse(response.Content);
+                        o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                        token = JToken.Parse(response.Content);
+                        System.Diagnostics.Debug.WriteLine(response.Content);
+                        TempData["SearchType"] = seaType;
+                        TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                        TempData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                        TempData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+                        TempData["Title"] = rootObject.ResponseObject[0].PersonInformation.Title;
+                        TempData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
+                        TempData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
+                        TempData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
+                        TempData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
+                        TempData["MaritalStatus"] = rootObject.ResponseObject[0].PersonInformation.MaritalStatus;
+                        TempData["Gender"] = rootObject.ResponseObject[0].PersonInformation.Gender;
+                        TempData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
+                        TempData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
+                        TempData.Keep();
+                        return View();
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "An error occured, please check the entered values.";
             }
 
             return View();
@@ -438,7 +439,7 @@ namespace searchworks.client.Controllers
             elements1 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
             //totalElements = rootObject.ResponseObject;
             //System.Diagnostics.Debug.WriteLine(totalElements);
-            ViewData["TheCount"] = elements1.Count;
+            //ViewData["TheCount"] = elements1.Count;
 
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
@@ -557,7 +558,7 @@ namespace searchworks.client.Controllers
             string LastUpdatedDate1 = "";
             List<EmploymentHistory> empH;
 
-            if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName != null)
+            if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Count > 0)
             {
                 empH = new List<EmploymentHistory>();
 
@@ -721,7 +722,7 @@ namespace searchworks.client.Controllers
             //extract list of companies returned
             List<DeedsInformation> lst = getCompanyList(response);
 
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -772,10 +773,5 @@ namespace searchworks.client.Controllers
 
             return lst;
         }
-
-        //public ActionResult DOTSRecords()
-        //{
-        //    return View();
-        //}
     }
 }

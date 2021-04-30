@@ -1,0 +1,151 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Company.CompanyInformation>
+
+@{
+    ViewBag.Title = "TransUnion";
+}
+
+
+
+<div class="col-md-10 col-sm-10 con">
+    <div class="seaTab">
+        <div class="col-md-6 col-sm-6">
+            <div class="sea">
+
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6">
+            <div class="sea">
+                <div class="opt1">
+                    <div class="exp">Export List </div>
+                    <div class="create">Create Group</div>
+                    <div class="history"><i class="fa fa-history"></i>History</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="seaTable form-style-9">
+        <form action="" method="POST">
+            <h3 class="Trans">TransUnion </h3>
+
+            <ul>
+                <li>
+                    <input type="text" id="ref" name="ref" class="field-style field-split align-left" placeholder="Reference" />
+                    <input type="text" id="comCon" name="comCon" class="field-style field-split align-right" placeholder="Contact Name" />
+                </li>
+                <li>
+                    <input type="text" id="comNum" name="comNum" class="field-style field-split align-right" placeholder="Contact Number" />
+                    <select class="sea-input field-style field-split align-left" id="DeedsOffice" style="height: 36px;" name="EnquiryReason">
+                        <option value="0" selected>Enqiury Reason</option>
+                        <option value="Fraud, Corruption, or Theft Investigation
+Fraud Detect">
+                            Fraud, Corruption, or Theft Investigation
+                            Fraud Detect
+                        </option>
+                        <option value="Fraud Detection and Fraud Prevention">Fraud Detection and Fraud Prevention</option>
+                        <option value="Setting limit for Goods / Utility / Service">Setting limit for Goods / Utility / Service</option>
+                        <option value="Unclaimed Funds Distribution">Unclaimed Funds Distribution</option>
+
+
+                    </select>
+                </li>
+                <li>
+                    <input type="text" id="comID" name="IDnum" class="field-style field-split align-left" placeholder="ID Number" />
+                    <input type="text" id="fisrtName" name="firstName" class="field-style field-split align-right" placeholder="First Name" />
+                </li>
+                <li>
+                    <input type="text" id="surName" name="surName" class="field-style field-split align-left" placeholder="Surname" />
+                    <input type="text" id="passportNum" name="passportNum" class="field-style field-split align-right" placeholder="Passport Number" />
+                </li>
+                <li>
+                    <input type="text" id="dob" name="dob" class="field-style field-split align-left" placeholder="Date Of Birth" />
+                </li>
+                <br>
+
+                <li>
+                    <input type="submit" name="TransUnionConProSubmit" value="Search" />
+                </li>
+            </ul>
+
+
+
+
+
+        </form>
+    </div>
+
+    
+</div>
+</div>
+
+<script>
+    function Search() {
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("GetCompanyResults", "Home")',
+                                data: {
+                                    companyName: $('#comName').val(),
+
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Account Created </div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+
+
+
+
+                            },
+                                success: function (result) {
+
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+                                    //alert(result.user_type);
+
+                                    debugger;
+
+
+
+                          if (result.status == true) {
+
+                                        if (result.user_type === "client") {
+
+                                            console.log(result);
+
+                                            window.location.href = '@Url.Action("SubmissionStep2", "Checks")';
+
+                                        }
+                                        else if (result.user_type === "admin") {
+                                             window.location.href = '@Url.Action("Admin_S", "Dashboard")';
+                                        }
+
+
+                            }
+                            else {
+
+                                var alertMessage = '<div class="alert alert-danger" role="alert">'
+                                    + 'Invalid Usename/Password</div>';
+
+                                $(".resturn-message").html(alertMessage)
+
+                                alert(result.message);
+                            }
+                            }
+                        });
+                        }
+
+</script>
