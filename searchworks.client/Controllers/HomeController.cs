@@ -305,7 +305,31 @@ namespace searchworks.client.Controllers
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             //extract list of companies returned
-            List<CompanyInformation> lst = getCompanyList(response);
+            //List<CompanyInformation> lst = getCompanyList(response);
+
+            //foreach (ResponseObject responseObject in rawList)
+            //{
+            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+            //    //res.SearchInformation = responseObject.SearchInformation;
+            //    lst.Add(responseObject.CompanyInformation);
+            //}
+            //try
+            //{
+            //    dynamic respContent = JObject.Parse(response.Content);
+            //    List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+
+            //    foreach (ResponseObject responseObject in rawList)
+            //    {
+            //        //ResponseObject res = responseObject.ToObject<ResponseObject>;
+            //        //res.SearchInformation = responseObject.SearchInformation;
+            //        lst.Add(responseObject.CompanyInformation);
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    TempData["msg"] = "An error occured, please check the entered values.";
+            //}
+
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
@@ -331,6 +355,23 @@ namespace searchworks.client.Controllers
             var cmd2 = new MySqlCommand(query_uid, conn);
 
             var reader2 = cmd2.ExecuteReader();
+            List<CompanyInformation> lst = new List<CompanyInformation>();
+            dynamic respContent = JObject.Parse(response.Content);
+
+            try
+            {
+                List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+                foreach (ResponseObject responseObject in rawList)
+                {
+                    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+                    //res.SearchInformation = responseObject.SearchInformation;
+                    lst.Add(responseObject.CompanyInformation);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "An error occured, please check the entered values.";
+            }
 
             conn.Close();
 
@@ -1097,22 +1138,18 @@ namespace searchworks.client.Controllers
         {
             List<CompanyInformation> lst = new List<CompanyInformation>();
 
-            try
-            {
-                dynamic respContent = JObject.Parse(response.Content);
-                List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            dynamic respContent = JObject.Parse(response.Content);
+            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
 
-                foreach (ResponseObject responseObject in rawList)
-                {
-                    //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                    //res.SearchInformation = responseObject.SearchInformation;
-                    lst.Add(responseObject.CompanyInformation);
-                }
-            }
-            catch (Exception e)
+            foreach (ResponseObject responseObject in rawList)
             {
-                TempData["msg"] = "An error occured, please check the entered values.";
+                //ResponseObject res = responseObject.ToObject<ResponseObject>;
+                //res.SearchInformation = responseObject.SearchInformation;
+                lst.Add(responseObject.CompanyInformation);
             }
+
+            //TempData["msg"] = "An error occured, please check the entered values.";
+
             return lst;
         }
 

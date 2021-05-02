@@ -454,28 +454,24 @@ namespace searchworks.client.Controllers
             ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
             ViewData["Quality"] = rootObject.ResponseObject.PersonInformation.Quality;
 
-            foreach (object element in elements)
-            {
-                //ViewData["DirectorName"] = rootObject.ResponseObject.Directors[0].DirectorID;
-                //System.Diagnostics.Debug.WriteLine("element: "+element);
-
-                // JObject.Parse(element);
-                //System.Diagnostics.Debug.WriteLine("element: " + element["Gender"]);
-                //System.Diagnostics.Debug.WriteLine(JsonConvert.DeserializeObject<System.Collections.ArrayList>(element));
-
-                //ViewData["DirectorName"] = element.DirectorID;
-                //System.Diagnostics.Debug.WriteLine(ViewData["DirectorName"]);
-            };
             string TypeDescription = "";
             string TypeCode = "";
             string Number = "";
             string LastUpdatedDate = "";
             List<TelephoneHistory> telH;
-            //Debug.WriteLine(rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription != null);
-            if (rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription != null)
+            telH = new List<TelephoneHistory>();
+
+            bool TelephoneHistoryExists = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null;
+            bool AddressHistoryExists = rootObject.ResponseObject.HistoricalInformation.AddressHistory != null;
+            bool EmploymentHistoryExists = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null;
+
+            System.Diagnostics.Debug.WriteLine(TelephoneHistoryExists);
+            System.Diagnostics.Debug.WriteLine(AddressHistoryExists);
+            System.Diagnostics.Debug.WriteLine(EmploymentHistoryExists);
+
+            if (TelephoneHistoryExists == true)
 
             {
-                telH = new List<TelephoneHistory>();
 
                 for (int count = 0; count < (elements.Count); count++)
                 {
@@ -552,15 +548,24 @@ namespace searchworks.client.Controllers
                 //    System.Diagnostics.Debug.WriteLine( item.Key, item.Value);
                 //}
             }
-
+            else
+            {
+                telH.Add(new TelephoneHistory
+                {
+                    TypeDescription = "None",
+                    TypeCode = "None",
+                    Number = "None",
+                });
+                ViewData["empH"] = telH;
+            }
             string EmployerName = "";
             string Designation = "";
             string LastUpdatedDate1 = "";
             List<EmploymentHistory> empH;
+            empH = new List<EmploymentHistory>();
 
-            if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Count > 0)
+            if (EmploymentHistoryExists == true)
             {
-                empH = new List<EmploymentHistory>();
 
                 for (int count = 0; count < (elements1.Count); count++)
                 {
@@ -612,11 +617,9 @@ namespace searchworks.client.Controllers
                     });
 
                     ViewData["ArrayList1"] = arrayList1;
-                    Debug.WriteLine(arrayList1.GetType());
-                    Debug.WriteLine("itssss uhh", EmployerName, Designation, LastUpdatedDate1);
                     ViewData["thatlist1"] = thatlist1;
-                    MianArrayList1.Add(count, arrayList1);
                     ViewData["MianArrayList"] = MianArrayList;
+                    MianArrayList1.Add(count, arrayList1);
                     //ViewData["MianArrayList"] = MianArrayList;
                     //ViewData["elements"] = elements;
                     //ViewData["elementsType"] = elements;
@@ -639,10 +642,23 @@ namespace searchworks.client.Controllers
                 //    });
                 //}
                 ViewData["empH"] = empH;
+
+                 
+               
                 //foreach (KeyValuePair<string, string> item in arrayList1)
                 //{
                 //    System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                 //}
+            }
+            else
+            {
+                empH.Add(new EmploymentHistory
+                {
+                    EmployerName = "None",
+                    Designation = "None",
+                    LastUpdatedDate = "None",
+                });
+                ViewData["empH"] = empH;
             }
 
             if (rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus != null)
@@ -653,8 +669,6 @@ namespace searchworks.client.Controllers
                 ViewData["VerifiedDate"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedDate;
                 ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus;
             }
-
-            //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
 
             return View();
         }

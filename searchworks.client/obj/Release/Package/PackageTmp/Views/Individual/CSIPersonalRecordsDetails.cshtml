@@ -141,6 +141,32 @@
                     </tbody>
                 </table>
             </div>
+            @*<div id="notification" class="seaRes">
+                ADDRESS HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+
+            <div class="plusEmpHis">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Type Description</th>
+                            <th>Type Code</th>
+                            <th>Number</th>
+                            <th class="last">Last Updated Date</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in @ViewBag.telH)
+                    {
+        <tr>
+            <td>@item.TypeDescription</td>
+            <td>@item.TypeCode</td>
+            <td>@item.Number</td>
+            <td>@item.LastUpdatedDate</td>
+        </tr>
+}
+                </table>
+            </div>*@
 
             <div id="notification" class="seaRes">
                 TELEPHONE HISTORY <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
@@ -157,14 +183,14 @@
                     </thead>
 
                     @foreach (var item in @ViewBag.telH)
-                        {
-                        <tr>
-                            <td>@item.TypeDescription</td>
-                            <td>@item.TypeCode</td>
-                            <td>@item.Number</td>
-                            <td>@item.LastUpdatedDate</td>
-                        </tr>
-                        }
+                    {
+        <tr>
+            <td>@item.TypeDescription</td>
+            <td>@item.TypeCode</td>
+            <td>@item.Number</td>
+            <td>@item.LastUpdatedDate</td>
+        </tr>
+}
                 </table>
             </div>
 
@@ -184,23 +210,23 @@
                     </thead>
 
                     @foreach (var item in @ViewBag.empH)
-                      {
-                    <tr>
+                    {
+        <tr>
 
-                        <td>@item.EmployerName</td>
-                        <td>@item.Designation</td>
-                        <td>@item.LastUpdatedDate</td>
-                    </tr>
-                      }
+            <td>@item.EmployerName</td>
+            <td>@item.Designation</td>
+            <td>@item.LastUpdatedDate</td>
+        </tr>
+}
 
                     @*<tr>*@
                     @* @foreach (EmploymentHistory item in @ViewBag.ArrayList1)*@
                     @*@foreach (KeyValuePair<string, string> item in @ViewBag.ArrayList1)
-                        {
+                {
 
-                            <td> @item.Value </td>*@
+                    <td> @item.Value </td>*@
                     @*<td> @item.Value[1] </td>
-                        <td> @item.Value[2] </td>*@
+                <td> @item.Value[2] </td>*@
 
                     @*  }*@
 
@@ -208,25 +234,25 @@
                 </table>
 
                 @*<table>
-                        <thead>
-                            <tr>
-                                <th>Employer Name</th>
-                                <th>Designation</th>
-                                <th class="last">Last Updated Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @{ foreach (KeyValuePair<string, string> item in (ViewBag.MianArrayList[0]))
+                <thead>
+                    <tr>
+                        <th>Employer Name</th>
+                        <th>Designation</th>
+                        <th class="last">Last Updated Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @{ foreach (KeyValuePair<string, string> item in (ViewBag.MianArrayList[0]))
 
-                                    {
-                                        <td> @item.Value</td>
-                                    }
+                            {
+                                <td> @item.Value</td>
+                            }
 
-                                }
-                            </tr>
-                        </tbody>
-                    </table>*@
+                        }
+                    </tr>
+                </tbody>
+            </table>*@
             </div>
         </div>
     </div>

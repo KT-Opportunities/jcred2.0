@@ -2,12 +2,282 @@
     ViewBag.Title = "TransUnionConsumerProfileResults";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (TempData["msg"] != null)
-{
-    <div>@TempData["msg"] </div>
-    <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>}
-else
-{
-    <h2>TransUnionConsumerProfileResults</h2>
+<div class="col-md-10 col-sm-10">
+    <div class="sea act">SEARCH RESULTS</div>
+    <div class="sea act">@TempData["SearchType"]</div>
 
-}
+    <div class="con2">
+        @if (TempData["msg"] != null)
+        {
+        <div>@TempData["msg"] </div>
+        <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>}
+        else
+        {
+        <div class="left_col">
+         <div class="results">
+              <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+              <p>@TempData["ResponseCount"]</p>
+              </div>
+                 <p class="num">@TempData["Fullname"]</p>
+                <p class="num2">TransUnion Consumer Profile Results</p>
+
+                <div class="multi act">
+                    Multiple Results
+                </div>
+                <div class="multi non">
+                    Detailed Information
+                </div>
+
+                <div class="seaInfo">
+                    Search Information
+                </div>
+
+                <div class="userInfo">
+                    <p class="">User:<span>@TempData["user"]</span></p>
+                    <p class="">Date:<span>@TempData["date"]</span></p>
+                    <p class="">Reference:<span>@TempData["ref"]</span></p>
+                    <p class="">Request:<span>@TempData["ResponseMessage"]</span></p>
+                </div>
+        </div>
+        <div class="right_col">
+                <div id="notification" class="seaRes">
+                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="not">
+                    Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
+                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                    <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                </div>
+                <div id="notification" class="seaRes">
+                    PERSONAL INFORMATION <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Information Date</td>
+                            <td>yoooo<a class="seaMore" href="#">View more</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PersonID</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>Title</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>DateOfBirth</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>FirstName</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>FirstName</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>Surname</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>Fullname</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>IDNumber</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>   
+                        <tr>
+                            <td>IDNumber_Alternate</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>MaritalStatus</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>
+                            <td>Age</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>MiddleName1</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>MiddleName2</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>SpouseFirstName</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>SpouseSurname</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>NumberOfDependants</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>Remarks</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>HasProperties</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>MiddleName1</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                        <tr>    
+                            <td>AlsoKnownAs</td>
+                            <td>Ayyyy <a class="seaMore" href="#">View more</a>
+                            </td>                          
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <div id="notification" class="seaRes">
+                HOME AFFAIRS INFORMATION <span id="plusHomeInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHomeInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+
+
+        </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".not").hide();
+        $("#minusNot").hide();
+
+        $('#plusNot').on('click', function () {
+            $(".not").show();
+            $("#minusNot").show();
+            $("#plusNot").hide();
+
+        });
+
+        $('#minusNot').on('click', function () {
+            $("#minusNot").hide();
+            $("#plusNot").show();
+            $(".not").hide();
+
+        });
+
+        $("#minusSeaInfo").hide();
+        $(".SeaInfo").hide();
+
+        $('#plusSeaInfo').on('click', function () {
+            $(".SeaInfo").show();
+            $("#minusSeaInfo").show();
+            $("#plusSeaInfo").hide();
+
+        });
+
+        $('#minusSeaInfo').on('click', function () {
+            $("#minusSeaInfo").hide();
+            $("#plusSeaInfo").show();
+            $(".SeaInfo").hide();
+        });
+
+        $("#minusPerInfo").hide();
+        $(".PerInfo").hide();
+
+        $('#plusPerInfo').on('click', function () {
+            $(".PerInfo").show();
+            $("#minusPerInfo").show();
+            $("#plusPerInfo").hide();
+
+        });
+
+        $('#minusPerInfo').on('click', function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+        });
+
+        $("#minusHomeInfo").hide();
+        $(".HomeInfo").hide();
+
+        $('#plusHomeInfo').on('click', function () {
+            $(".HomeInfo").show();
+            $("#minusHomeInfo").show();
+            $("#plusHomeInfo").hide();
+
+        });
+
+        $('#minusHomeInfo').on('click', function () {
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+        });
+
+        $("#minusTeleHis").hide();
+        $(".TeleHis").hide();
+
+        $('#plusTeleHis').on('click', function () {
+            $(".TeleHis").show();
+            $("#minusTeleHis").show();
+            $("#plusTeleHis").hide();
+
+        });
+
+        $('#minusTeleHis').on('click', function () {
+            $("#minusTeleHis").hide();
+            $("#plusTeleHis").show();
+            $(".TeleHis").hide();
+        });
+
+        $("#minusEmpHis").hide();
+        $(".EmpHis").hide();
+
+        $('#plusEmpHis').on('click', function () {
+            $(".EmpHis").show();
+            $("#minusEmpHis").show();
+            $("#plusEmpHis").hide();
+
+        });
+
+        $('#minusEmpHis').on('click', function () {
+            $("#minusEmpHis").hide();
+            $("#plusEmpHis").show();
+            $(".EmpHis").hide();
+        });
+
+    });
+</script>
