@@ -132,6 +132,15 @@ namespace searchworks.client.Credit
         public string EnquiredByContact { get; set; }
     }
 
+    public class InternalEnquiryHistory
+    {
+        public string CompanyName { get; set; }
+        public string IntEnquiryDate { get; set; }
+        public string ContactPerson { get; set; }
+        public string PhoneNumber { get; set; }
+        public string EmailAddress { get; set; }
+    }
+
     public class AddressHistory
     {
         public string TypeDescription { get; set; }

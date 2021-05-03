@@ -3153,12 +3153,13 @@ namespace searchworks.client.Controllers
             string time_add = time.ToString("T");
             string page = "TransUnion Consumer ID Verification";
             string action = "ID: " + id + "; First Name: " + firstName + "; Surname: " + surname + "; Contact Name: " + conName + "; Contact Number: " + conNumber + "; Passport Number: " + passport + "; Date Of Birth: " + dob;
+            System.Diagnostics.Debug.WriteLine(Session["ID"].ToString());
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
+            TempData["user"] = Session["Name"].ToString();
+            TempData["date"] = DateTime.Today.ToShortDateString();
+            TempData["ref"] = refe;
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3218,10 +3219,24 @@ namespace searchworks.client.Controllers
             JToken token = JToken.Parse(response.Content);
             try
             {
+                //PersonalInfroamtion
+                ViewData["AkaName"] = rootObject.ResponseObject.PersonInformation.AlsoKnownAs[0].AkaName;
+                ViewData["ConsumerID"] = rootObject.ResponseObject.PersonInformation.AlsoKnownAs[0].ConsumerID;
+                ViewData["InformationDate"] = rootObject.ResponseObject.PersonInformation.InformationDate;
+                ViewData["PersonID"] = rootObject.ResponseObject.PersonInformation.PersonID;
+                ViewData["PersonTitle"] = rootObject.ResponseObject.PersonInformation.Title;
+                ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+                ViewData["IDNumber_Alternate"] = rootObject.ResponseObject.PersonInformation.IDNumber_Alternate;
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                 ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
+                ViewData["MiddleName2"] = rootObject.ResponseObject.PersonInformation.MiddleName2;
+                ViewData["NumberOfDependants"] = rootObject.ResponseObject.PersonInformation.NumberOfDependants;
+                ViewData["Remarks"] = rootObject.ResponseObject.PersonInformation.Remarks;
+                ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
+                ViewData["SpouseFirstName"] = rootObject.ResponseObject.PersonInformation.SpouseFirstName;
+                ViewData["SpouseSurname"] = rootObject.ResponseObject.PersonInformation.SpouseFirstName;
                 ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
@@ -3235,6 +3250,194 @@ namespace searchworks.client.Controllers
                 ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
                 ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
                 ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
+
+                //HomeAffairsInformation
+                ViewData["FirstName"] = rootObject.ResponseObject.HomeAffairsInformation.FirstName;
+                ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
+                ViewData["IDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
+                ViewData["SurnameVerified"] = rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified;
+                ViewData["Warnings"] = rootObject.ResponseObject.HomeAffairsInformation.Warnings;
+
+                //CreditInformation
+                ViewData["Accounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Accounts;
+                ViewData["Enquires"] = rootObject.ResponseObject.CreditInformation.DataCounts.Enquires;
+                ViewData["Judgments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Judgments;
+                ViewData["Notices"] = rootObject.ResponseObject.CreditInformation.DataCounts.Notices;
+                ViewData["BankDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults;
+                ViewData["Collections"] = rootObject.ResponseObject.CreditInformation.DataCounts.Collections;
+                ViewData["Directors"] = rootObject.ResponseObject.CreditInformation.DataCounts.Directors;
+                ViewData["Addresses"] = rootObject.ResponseObject.CreditInformation.DataCounts.Addresses;
+                ViewData["Telephones"] = rootObject.ResponseObject.CreditInformation.DataCounts.Telephones;
+                ViewData["Occupants"] = rootObject.ResponseObject.CreditInformation.DataCounts.Occupants;
+                ViewData["Employers"] = rootObject.ResponseObject.CreditInformation.DataCounts.Employers;
+                ViewData["TraceAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts;
+                ViewData["PaymentProfiles"] = rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles;
+                ViewData["OwnEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries;
+                ViewData["AdminOrders"] = rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders;
+                ViewData["PossibleMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
+                ViewData["Loans"] = rootObject.ResponseObject.CreditInformation.DataCounts.Loans;
+                ViewData["FraudAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts;
+                ViewData["Companies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
+                ViewData["Properties"] = rootObject.ResponseObject.CreditInformation.DataCounts.Properties;
+                ViewData["Documents"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
+                ViewData["DemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
+                ViewData["Trusts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Trusts;
+                ViewData["BondsBonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.BondsBonds;
+                ViewData["PublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
+                ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
+
+                //DebtReviewStatus
+                ViewData["StatusDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDate;
+                ViewData["StatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+                //EnquiryHistory
+                List<EnquiryHistory> EnqHIst;
+                Newtonsoft.Json.Linq.JArray elements4 = new Newtonsoft.Json.Linq.JArray();
+                elements4 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                String EnquiryDate = "";
+                String EnquiredBy = "";
+                String EnquiredByContact = "";
+                EnqHIst = new List<EnquiryHistory>();
+                for (int count = 0; count < (elements4.Count); count++)
+                {
+                    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                    EnqHIst.Add(new EnquiryHistory
+                    {
+                        EnquiryDate = EnquiryDate,
+                        EnquiredBy = EnquiredBy,
+                        EnquiredByContact = EnquiredByContact
+                    });
+                }
+                ViewData["EnqHIst"] = EnqHIst;
+
+                List<InternalEnquiryHistory> IntEnqHistory;
+                List<AddressHistory> AddressHist;
+                List<TelephoneHistory> TelHist;
+                List<EmploymentHistory> EmpHist;
+                Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3, elements5 = new Newtonsoft.Json.Linq.JArray();
+                elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
+                elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                elements5 = rootObject.ResponseObject.InternalEnquiryHistory;
+                //AddressHIstoryValues
+                String TypeDescription = "";
+                String Line1 = "";
+                String Line2 = "";
+                String Line3 = "";
+                String PostalCode = "";
+                String FullAddress = "";
+                String LastUpdatedDate = "";
+                //TelephoneHIstory
+                String TypeDescriptionTel = "";
+                String DialCode = "";
+                String Number = "";
+                String FullNumber = "";
+                String LastUpdatedDateTel = "";
+                //EmploymentHistory
+                String EmployerName = "";
+                String Designation = "";
+                //InternalEnquiryHistory
+                string CompanyName = "";
+                string IntEnquiryDate = "";
+                string ContactPerson = "";
+                string PhoneNumber = "";
+                string EmailAddress = "";
+
+                EnqHIst = new List<EnquiryHistory>();
+                AddressHist = new List<AddressHistory>();
+                TelHist = new List<TelephoneHistory>();
+                EmpHist = new List<EmploymentHistory>();
+                IntEnqHistory = new List<InternalEnquiryHistory>();
+
+                for (int count = 0; count < (elements.Count); count++)
+                {
+                    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                    EnqHIst.Add(new EnquiryHistory
+                    {
+                        EnquiryDate = EnquiryDate,
+                        EnquiredBy = EnquiredBy,
+                        EnquiredByContact = EnquiredByContact
+                    });
+                }
+                for (int count = 0; count < (elements1.Count); count++)
+                {
+                    TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                    Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                    Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                    Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                    PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                    FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+
+                    AddressHist.Add(new AddressHistory
+                    {
+                        TypeDescription = TypeDescription,
+                        Line1 = Line1,
+                        Line2 = Line2,
+                        Line3 = Line3,
+                        PostalCode = PostalCode,
+                        FullAddress = FullAddress,
+                        LastUpdatedDate = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements2.Count); count++)
+                {
+                    TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                    DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                    Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                    FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                    LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+
+                    TelHist.Add(new TelephoneHistory
+                    {
+                        TypeDescriptionTel = TypeDescriptionTel,
+                        DialCode = DialCode,
+                        Number = Number,
+                        FullNumber = FullNumber,
+                        LastUpdatedDateTel = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements3.Count); count++)
+                {
+                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                    Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+
+                    EmpHist.Add(new EmploymentHistory
+                    {
+                        EmployerName = EmployerName,
+                        Designation = Designation,
+                    });
+                }
+
+                for (int count = 0; count < (elements5.Count); count++)
+                {
+                    CompanyName = rootObject.ResponseObject.InternalEnquiryHistory[count].CompanyName;
+                    IntEnquiryDate = rootObject.ResponseObject.InternalEnquiryHistory[count].EnquiryDate;
+                    ContactPerson = rootObject.ResponseObject.InternalEnquiryHistory[count].ContactPerson;
+                    PhoneNumber = rootObject.ResponseObject.InternalEnquiryHistory[count].PhoneNumber;
+                    EmailAddress = rootObject.ResponseObject.InternalEnquiryHistory[count].EmailAddress;
+
+                    IntEnqHistory.Add(new InternalEnquiryHistory
+                    {
+                        CompanyName = CompanyName,
+                        IntEnquiryDate = IntEnquiryDate,
+                        ContactPerson = ContactPerson,
+                        PhoneNumber = PhoneNumber,
+                        EmailAddress = EmailAddress,
+                    });
+                }
+
+                ViewData["EnqHIst"] = EnqHIst;
+                ViewData["AddressHist"] = AddressHist;
+                ViewData["TelHist"] = TelHist;
+                ViewData["EmpHist"] = EmpHist;
+                ViewData["IntEnqHistory"] = IntEnqHistory;
             }
             catch (Exception e)
             {
