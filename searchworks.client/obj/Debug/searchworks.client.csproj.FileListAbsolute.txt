@@ -1434,6 +1434,9 @@ C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csproj.CopyComplete
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.dll
 C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.pdb
+C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.dll
+C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.xml
+C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\searchworks.client.dll.config
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\searchworks.client.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\searchworks.client.pdb
@@ -1625,6 +1628,7 @@ C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Microso
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Microsoft.Owin.Security.Twitter.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.dll
+C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.EntityFramework.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Newtonsoft.Json.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\NgrokAspNetCore.Lib.dll
@@ -1689,6 +1693,7 @@ C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Microso
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.xml
+C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.xml
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.EntityFramework.xml
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Newtonsoft.Json.xml
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\Renci.SshNet.xml
@@ -1716,9 +1721,4 @@ C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\s
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csproj.CopyComplete
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.dll
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.pdb
-C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.dll
-C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.xml
-C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.dll
-C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\bin\MySql.Data.Entity.EF6.xml
-C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache
 C:\Users\Raymo\OneDrive\Documents\GitHub\jcred2.0\searchworks.client\obj\Debug\searchworks.client.csprojAssemblyReference.cache

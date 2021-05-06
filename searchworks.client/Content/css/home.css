@@ -121,13 +121,26 @@
 }
 
 .con {
-    position: relative;
-    top: 50px;
-    width: 91.5%;
-   align-self:center;
-   margin-left:20px;
-    height: 600px;
+    width: 96.5%;
+    align-self: center;
+    margin-left: 36px;
+    margin-right: 36px;
+    height: 426px;
+    padding-top: 9px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.con1 {
+    width: 96.5%;
+    align-self: center;
+    margin-left: 36px;
+    margin-right: 36px;
+    height: 55px;
+    padding-top: 9px;
+    background: #212529 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 10px;
     opacity: 1;
@@ -264,6 +277,59 @@
     opacity: 1;
     padding-left: 12px;
     font-size: 12px;
+}
+
+.cus-input {
+    width: 352px;
+    height: 32px;
+    background: #E8E8E8 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    border: none;
+    opacity: 1;
+    padding-left: 12px;
+    font-size: 12px;
+}
+
+.com-form {
+    display: flex;
+    justify-content: center;
+    position: relative;
+   /* display: inline-block;*/
+ /*   top: 31px;*/
+    left: 30px;
+    width: 544px;
+    height: 367px;
+    padding-top: 10px;
+    background: #F7F7F7 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    opacity: 1;
+}
+
+.com-btn {
+    /* position: absolute;
+    top: 376px;
+    left: 290px;*/
+    /* width: 152px;
+    height: 32px;
+    background: #00B46F 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    opacity: 1;
+    color: white;
+    font-family: 'Poppins-Bold';
+    font-size: 12px;*/
+
+    float: right;
+    width: 152px;
+    height: 32px;
+    background: #00B46F 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    opacity: 1;
+    color: white;
+    font-family: 'Poppins-Bold';
+    font-size: 12px;
+    margin-top: 44px;
+    position: relative;
+    left: 95px;
 }
 
 #eqtype,
@@ -794,7 +860,7 @@ top: 10px;
 }
 
 .ro {
-    margin-left: 28px !important;
+    margin-left: 14px !important;
 }
 
 .btns-active {
@@ -848,6 +914,7 @@ top: 10px;
     margin-right: 36px;
     border-radius: 10px;
     /* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
+    height: 62px;
 }
 
 .com-p {
@@ -877,3 +944,182 @@ top: 10px;
     margin-left: 36px;
     margin-right: 36px;
 }
+
+.ro-3 {
+    margin-top: 15px;
+}
+
+.ro-2 {
+    margin-top: 17px;
+}
+
+td, th {
+    vertical-align: middle;
+}
+
+.inp {
+    position: relative;
+    left: 29%;
+}
+
+
+.custom-control.ios-switch {
+    --color: #4cd964;
+    padding-left: 0;
+}
+
+    .custom-control.ios-switch .ios-switch-control-input {
+        display: none;
+    }
+
+        .custom-control.ios-switch .ios-switch-control-input:active ~ .ios-switch-control-indicator::after {
+            width: 20px;
+        }
+
+        .custom-control.ios-switch .ios-switch-control-input:checked ~ .ios-switch-control-indicator {
+            border: 10px solid var(--color);
+        }
+
+            .custom-control.ios-switch .ios-switch-control-input:checked ~ .ios-switch-control-indicator::after {
+                top: -8px;
+                left: 4px;
+            }
+
+        .custom-control.ios-switch .ios-switch-control-input:checked:active ~ .ios-switch-control-indicator::after {
+            left: 0px;
+        }
+
+        .custom-control.ios-switch .ios-switch-control-input:disabled ~ .ios-switch-control-indicator {
+            opacity: .4;
+        }
+
+    .custom-control.ios-switch .ios-switch-control-indicator {
+        display: inline-block;
+        position: relative;
+        margin: 0 10px;
+        top: 4px;
+        width: 32px;
+        height: 20px;
+        background: #fff;
+        border-radius: 16px;
+        -webkit-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s;
+        border: 2px solid #ddd;
+    }
+
+        .custom-control.ios-switch .ios-switch-control-indicator::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 16px;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+            top: 0px;
+            left: 0px;
+            background: #fff;
+            -webkit-box-shadow: 0 0 2px #aaa, 0 2px 5px #999;
+            box-shadow: 0 0 2px #aaa, 0 2px 5px #999;
+        }
+
+        .color{
+            color: white !important;
+        }
+
+        th, td {
+            float: left;
+            text-align: center;
+            width: 11.6% !important;
+        }
+
+
+        .t-row {
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .t-col {
+            display: flex;
+            justify-content: center;
+            align-self: flex-end;
+        }
+
+      /*  .scrl {
+            overflow: scroll;
+            height: 424px;
+        }
+*/
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 400px;
+    overflow: auto;
+}
+
+.inp-b {
+    position: relative;
+    display: inline-block;
+    padding-left: 10px;
+    border: none;
+    width: 184px;
+    height: 32px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    opacity: 1;
+}
+
+.btn-b {
+    position: relative;
+    left: 14px;
+    width: 72px;
+    height: 32px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background: #6B92E8 0% 0% no-repeat padding-box;
+    opacity: 1;
+    font-family: 'Poppins-Bold';
+    font-size: 12px;
+}
+
+.btn-b2 {
+    position: relative;
+    left: -15px;
+    width: 117px;
+    height: 32px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background: #00b46f 0% 0% no-repeat padding-box;
+    opacity: 1;
+    font-family: 'Poppins-Bold';
+    font-size: 12px;
+    float: right;
+}
+
+.search-b {
+    display: flex;
+    align-items: center;
+}
+
+.in-mar {
+    margin-left: 20px;
+    position: relative;
+    top: 6px;
+}
+
+.my-form-inline {
+    display: flex;
+    flex-wrap: nowrap !important;
+}
+
+.search-label {
+    position: relative;
+    top: 6px;
+    font-weight: bold;
+}
+
+
