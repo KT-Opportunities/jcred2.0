@@ -16,8 +16,23 @@ namespace searchworks.client.Controllers
 {
     public class IndividualController : Controller
     {
+        public RedirectToRouteResult CheckLoginState()
+        {
+            try
+            {
+                string user_id = Session["ID"].ToString();
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return (null);
+        }
+
         public string GetLoginToken(string api_username, string api_password)
         {
+            CheckLoginState();
+
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
@@ -56,11 +71,15 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecords()
         {
+            CheckLoginState();
+
             return View();
         }
 
         public ActionResult CSIPersonalRecordsResults(CSI csi)
         {
+            CheckLoginState();
+
             var arraylist = new ArrayList();
             string name = csi.FirstName;
             string sur = csi.Surname;
@@ -69,11 +88,6 @@ namespace searchworks.client.Controllers
             string eqType = csi.eqType;
             string refe = csi.Reference;
 
-            System.Diagnostics.Debug.WriteLine(name, sur);
-            if (!string.IsNullOrEmpty(name))
-            {
-                System.Diagnostics.Debug.WriteLine("Its empty");
-            }
             var url = "";
             var client = new RestClient();
             var request = new RestRequest();
@@ -84,11 +98,17 @@ namespace searchworks.client.Controllers
             string time_add = time.ToString("T");
             string page = "CSI Person " + eqType + "By " + seaType;
             string action = "Name:" + name + "; Surname:" + sur;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
+            string user_id;
+            try
+            {
+                user_id = Session["ID"].ToString();
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            System.Diagnostics.Debug.WriteLine("EQ: " + eqType);
-            System.Diagnostics.Debug.WriteLine("SE: " + seaType);
+            string us = Session["Name"].ToString();
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
@@ -382,6 +402,8 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecordsDetails(string indiID)
         {
+            CheckLoginState();
+
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
@@ -472,7 +494,6 @@ namespace searchworks.client.Controllers
             if (TelephoneHistoryExists == true)
 
             {
-
                 for (int count = 0; count < (elements.Count); count++)
                 {
                     TypeDescription = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
@@ -566,7 +587,6 @@ namespace searchworks.client.Controllers
 
             if (EmploymentHistoryExists == true)
             {
-
                 for (int count = 0; count < (elements1.Count); count++)
                 {
                     EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
@@ -643,8 +663,6 @@ namespace searchworks.client.Controllers
                 //}
                 ViewData["empH"] = empH;
 
-                 
-               
                 //foreach (KeyValuePair<string, string> item in arrayList1)
                 //{
                 //    System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
@@ -685,6 +703,8 @@ namespace searchworks.client.Controllers
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
+            CheckLoginState();
+
             string name = deed.Firstname;
             string deeds = deed.DeedsOffice;
             string sur = deed.Surname;

@@ -5,10 +5,8 @@
 @model IEnumerable<searchworks.client.Credit.VeriCred>
 
 @{
-    ViewBag.Title = "VeriCred Consume rProfile";
+    ViewBag.Title = "VeriCred Consumer Profile";
 }
-
-
 
 <div class="col-md-10 col-sm-10">
     <div class="sea">SEARCH RESULTS</div>
@@ -16,6 +14,7 @@
     <div class="sea_bar">
         <label>Search History</label>
         <input name="search" />
+        @*<a href="~/Views/Credit/VeriCredConsumerProfile.cshtml">~/Views/Credit/VeriCredConsumerProfile.cshtml</a>*@
         <button>RESET</button>
     </div>
     <div class="con" style="height: 700px">
@@ -46,19 +45,15 @@
                       new SelectListItem { Text = "Debt Counselling", Value = "13"},
                       new SelectListItem { Text = "Consumer Enquiry", Value = "14"},
                       new SelectListItem { Text = "Alternative Dispute Resolution", Value = "15"},
-                      
+
                 }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
                 </div>
-
 
                 <div class="firstname" style=" margin-top: -62px;">
                     <label>ID Number</label><br>
 
                     @Html.TextBox("idNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
                 </div>
-                
-
-         
 
                 <div class="tc" style=" margin-top: 150px;">
                     <div>
@@ -69,11 +64,7 @@
 
                 <button id="combinedComSearch" class="btn" name="combinedComSearch" style=" margin-top: 162px;">Perform Search</button>
 
-
             }
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
@@ -102,10 +93,6 @@
 
                                     $(".resturn-message").html(alertMessage)
 
-
-
-
-
                             },
                                 success: function (result) {
 
@@ -117,8 +104,6 @@
                                     //alert(result.user_type);
 
                                     debugger;
-
-
 
                           if (result.status == true) {
 
@@ -133,7 +118,6 @@
                                              window.location.href = '@Url.Action("Admin_S", "Dashboard")';
                                         }
 
-
                             }
                             else {
 
@@ -147,5 +131,4 @@
                             }
                         });
                         }
-
 </script>

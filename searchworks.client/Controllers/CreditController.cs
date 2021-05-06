@@ -4021,6 +4021,7 @@ namespace searchworks.client.Controllers
             string page = "VeriCred Consumer Profile";
             string action = "ID: " + id + "; Enquiry Reason: " + enquiryReason;
             string user_id = Session["ID"].ToString();
+            System.Diagnostics.Debug.WriteLine(user_id);
             string us = Session["Name"].ToString();
 
             ViewData["user"] = Session["Name"].ToString();
@@ -4078,6 +4079,8 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -4092,44 +4095,166 @@ namespace searchworks.client.Controllers
             {
                 ViewData["Message"] = "good";
 
+                //PersonalInformation
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
                 ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
 
+                //CreditInformation
+                ViewData["DelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
                 ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
                 ViewData["RiskColour"] = rootObject.ResponseObject.CreditInformation.RiskColour;
+
+                //~~~ConsumerStatistics~~~//
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+                List<CPA_Accounts> CPAACCOUNTS;
+                List<CPA_Accounts> CPATitles;
 
-                ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
-                ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
+                Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
+                elements1 = rootObject.ResponseObject.CreditInformation.CPA_Accounts;
 
-                //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
-                //{
-                //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
-                //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
+                String Account_ID = "";
+                String SubscriberCode = "";
+                String SubscriberName = "";
+                String AccountNO = "";
+                String OpenDate = "";
+                String LastPaymentDate = "";
+                String OpenBalance = "";
+                String CurrentBalance = "";
+                String OverdueAmount = "";
+                String InstalmentAmount = "";
+                String StatusCodeDesc = "";
+                String StatusDate = "";
+                String IndustryType = "";
+                String PaymentHistoryChartURL = "";
+                Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails = new Newtonsoft.Json.Linq.JArray();
+                CPAACCOUNTS = new List<CPA_Accounts>();
+                CPATitles = new List<CPA_Accounts>();
 
-                // ViewData["AddressLine3"] =
-                // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-                // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+                for (int count = 0; count < (elements1.Count); count++)
+                {
+                    Account_ID = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].Account_ID;
+                    SubscriberCode = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberCode;
+                    SubscriberName = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberName;
+                    AccountNO = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].AccountNO;
+                    OpenDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenDate;
+                    LastPaymentDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].LastPaymentDate;
+                    OpenBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenBalance;
+                    CurrentBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].CurrentBalance;
+                    OverdueAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OverdueAmount;
+                    InstalmentAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].InstalmentAmount;
+                    StatusCodeDesc = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusCodeDesc;
+                    StatusDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusDate;
+                    IndustryType = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].IndustryType;
+                    PaymentHistoryChartURL = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryChartURL;
+                    PaymentHistoryAccountDetails = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryAccountDetails;
+                    CPAACCOUNTS.Add(new CPA_Accounts
+                    {
+                        Account_ID = Account_ID,
+                        SubscriberCode = SubscriberCode,
+                        SubscriberName = SubscriberName,
+                        AccountNO = AccountNO,
+                        OpenDate = OpenDate,
+                        LastPaymentDate = LastPaymentDate,
+                        OpenBalance = OpenBalance,
+                        CurrentBalance = CurrentBalance,
+                        OverdueAmount = OverdueAmount,
+                        InstalmentAmount = InstalmentAmount,
+                        StatusCodeDesc = StatusCodeDesc,
+                        StatusDate = StatusDate,
+                        IndustryType = IndustryType,
+                        PaymentHistoryChartURL = PaymentHistoryChartURL,
+                        PaymentHistoryAccountDetails = PaymentHistoryAccountDetails,
+                    });
+                }
 
-                //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
-                //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
-                //}
+                ViewData["CPAACCOUNTS"] = CPAACCOUNTS;
 
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
-                //}
-                //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
-                //extract list of companies returned
+                //HistoricalInformation
+                List<AddressHistory> AddressHist;
+                List<TelephoneHistory> TelHist;
+                List<EmploymentHistory> EmpHist;
+                Newtonsoft.Json.Linq.JArray element1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+                element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                //AddressHIstoryValues
+                String TypeDescription = "";
+                String Line1 = "";
+                String Line2 = "";
+                String Line3 = "";
+                String PostalCode = "";
+                String FullAddress = "";
+                String LastUpdatedDate = "";
+                //TelephoneHIstory
+                String TypeDescriptionTel = "";
+                String DialCode = "";
+                String Number = "";
+                String FullNumber = "";
+                String LastUpdatedDateTel = "";
+                //EmploymentHistory
+                String EmployerName = "";
+                String Designation = "";
+                AddressHist = new List<AddressHistory>();
+                TelHist = new List<TelephoneHistory>();
+                EmpHist = new List<EmploymentHistory>();
+                for (int count = 0; count < (element1.Count); count++)
+                {
+                    TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                    Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                    Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                    Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                    PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                    FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                //PersonInformation lst = getIndividualList(response);
+                    AddressHist.Add(new AddressHistory
+                    {
+                        TypeDescription = TypeDescription,
+                        Line1 = Line1,
+                        Line2 = Line2,
+                        Line3 = Line3,
+                        PostalCode = PostalCode,
+                        FullAddress = FullAddress,
+                        LastUpdatedDate = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements2.Count); count++)
+                {
+                    TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                    DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                    Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                    FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                    LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+
+                    TelHist.Add(new TelephoneHistory
+                    {
+                        TypeDescriptionTel = TypeDescriptionTel,
+                        DialCode = DialCode,
+                        Number = Number,
+                        FullNumber = FullNumber,
+                        LastUpdatedDateTel = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements3.Count); count++)
+                {
+                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
+
+                    EmpHist.Add(new EmploymentHistory
+                    {
+                        EmployerName = EmployerName,
+                        LastUpdatedDate = LastUpdatedDate,
+                    });
+                }
+                ViewData["AddressHist"] = AddressHist;
+                ViewData["TelHist"] = TelHist;
+                ViewData["EmpHist"] = EmpHist;
                 return View();
             }
-
-            return View();
         }
 
         public ActionResult VeriCredContactInfoByIDNumber()
