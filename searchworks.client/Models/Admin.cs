@@ -1,45 +1,50 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
 namespace searchworks.client.Models
 {
     public class Admin
     {
 
-        [Required]
-        [Display(Name = "Email")]
-        public string email { get; set; }
+            [Required]
+            [Display(Name = "Email")]
+            public string email { get; set; }
 
-        [Required]
-        [Display(Name = "Password")]
-        public string password { get; set; }
+            [Required]
+            [Display(Name = "Password")]
+            public string password { get; set; }
 
-        [Required]
-        [Display(Name = "Fullname")]
-        public string fullname { get; set; }
+            [Required]
+            [Display(Name = "Fullname")]
+            public string fullname { get; set; }
 
-        [Required]
-        [Display(Name = "date_added")]
-        public string date_added { get; set; }
+            [Required]
+            [Display(Name = "date_added")]
+            public string date_added { get; set; }
 
-        [Required]
-        [Display(Name = "dob")]
-        public string dob { get; set; }
+            [Required]
+            [Display(Name = "dob")]
+            public string dob { get; set; }
 
-        [Required]
-        [Display(Name = "gender")]
-        public string gender { get; set; }
+            [Required]
+            [Display(Name = "gender")]
+            public string gender { get; set; }
 
-        [Required]
-        [Display(Name = "phone")]
-        public string phone { get; set; }
+            [Required]
+            [Display(Name = "phone")]
+            public string phone { get; set; }
 
-        [Required]
-        [Display(Name = "type")]
-        public string type { get; set; }
+            [Required]
+            [Display(Name = "type")]
+            public string type { get; set; }
 
-        [Required]
-        [Display(Name = "org")]
-        public string org { get; set; }
+            [Required]
+            [Display(Name = "org")]
+            public string org { get; set; }
 
 
 

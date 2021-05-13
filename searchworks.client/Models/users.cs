@@ -31,7 +31,7 @@
 
         [StringLength(255)]
         public string password { get; set; }
-
+        
 
 
     }

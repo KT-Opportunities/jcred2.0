@@ -1,33 +1,24 @@
-﻿using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using searchworks.client.Credit;
+using searchworks.client.Models;
+using ServiceStack.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace searchworks.client.Controllers
 {
     public class CreditController : Controller
     {
-        private string serverIp = "localhost";
-        private string username = "root";
-        private string password = "";
-        private string databaseName = "jcred";
-
-        //string serverIp = "197.242.148.16";
-        //string username = "cykgxznt_admin";
-        //string password = "Jcred123@";
-        //string databaseName = "cykgxznt_jcred";
-
-        //string serverIp = "jcred-azpoc.mysql.database.azure.com";
-        //string username = "jcredadmin@jcred-azpoc";
-        //string password = "vVHBF2XdhPfWsC";
-        //string databaseName = "jcred";
-
         public string GetLoginToken(string api_username, string api_password)
         {
+            string user_id = Session["ID"].ToString();
+            System.Diagnostics.Debug.WriteLine(user_id);
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
@@ -54,7 +45,6 @@ namespace searchworks.client.Controllers
             //return View(members);
             dynamic respContent = JObject.Parse(response.Content);
             loginToken = respContent.ResponseMessage;
-            System.Diagnostics.Debug.WriteLine("Login Token: " + loginToken);
 
             return loginToken;
         }
@@ -81,27 +71,9 @@ namespace searchworks.client.Controllers
             string refe = search.Reference;
             ViewData["refe"] = name + " " + sur;
 
-            //System.Diagnostics.Debug.WriteLine(id);
-            //System.Diagnostics.Debug.WriteLine(er);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -111,13 +83,6 @@ namespace searchworks.client.Controllers
             string action = "Name:" + name + "; Surname: " + sur + "; Equiry Reason:" + er + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -171,12 +136,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -188,339 +151,335 @@ namespace searchworks.client.Controllers
             }
             else
             {
-                ViewData["Message"] = "good";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation["CompuScan"];
-                //System.Diagnostics.Debug.WriteLine(ViewData["CompuScanMessage"]);
-                ViewData["ExperianMessage"] = rootObject.ResponseObject.CombinedCreditInformation.Experian;
-                ViewData["TransUnion"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
-                ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
-
-                if (ViewData["CompuScanMessage"].ToString() == "CONSUMER MATCH")
+                try
                 {
-                    //personaInformantion
-                    ViewData["ComDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.DateOfBirth;
-                    ViewData["ComFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.FirstName;
-                    ViewData["ComSurname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Surname;
-                    ViewData["ComIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.IDNumber;
-                    ViewData["ComGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Gender;
-                    ViewData["ComAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Age;
-                    ViewData["ComVerificationStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus;
+                    ViewData["Message"] = "good";
+                    ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
-                    //CreditInformation
-                    ViewData["ComDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScore;
-                    ViewData["ComRisk"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.Risk;
-                    ViewData["ComDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScoreChartURL;
+                    ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation["CompuScan"];
+                    ViewData["ExperianMessage"] = rootObject.ResponseObject.CombinedCreditInformation.Experian;
+                    ViewData["TransUnion"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
+                    ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
 
-                    ViewData["ComAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Accounts;
-                    ViewData["ComEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Enquiries;
-                    ViewData["ComJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Judgments;
-                    ViewData["ComNotices"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Notices;
-                    ViewData["ComBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.BankDefaults;
-                    ViewData["ComDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Defaults;
-                    ViewData["ComCollections"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Collections;
-                    ViewData["ComDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Directors;
-                    ViewData["ComAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Addresses;
-                    ViewData["ComTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Telephones;
-                    ViewData["ComOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Occupants;
-                    ViewData["ComEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Employers;
-                    ViewData["ComTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.TraceAlerts;
-                    ViewData["ComPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PaymentProfiles;
-                    ViewData["ComOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.OwnEnquiries;
-
-                    ViewData["ComAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.AdminOrders;
-                    ViewData["ComPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PossibleMatches;
-                    ViewData["ComDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DefiniteMatches;
-                    ViewData["ComLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Loans;
-                    ViewData["ComFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.FraudAlerts;
-                    ViewData["ComCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Companies;
-                    ViewData["ComProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Properties;
-                    ViewData["ComDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Documents;
-                    ViewData["ComDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DemandLetters;
-                    ViewData["ComTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Trusts;
-                    ViewData["ComBondsBonds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.BondsBonds;
-                    ViewData["ComDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Deeds;
-                    ViewData["ComPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PublicDefaults;
-                    ViewData["ComNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.NLRAccounts;
-                    ViewData["ComApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
-
-                    //ConsumerStatistics
-                    ViewData["ComHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
-                    ViewData["ComRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
-                    ViewData["ComInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
-                    ViewData["ComOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
-                    ViewData["ComAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
-
-                    //NLRStats
-                    ViewData["ComNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
-                    ViewData["ComNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
-                    ViewData["ComNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
-                    ViewData["ComNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
-                    ViewData["ComNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-
-                    //CCAStats
-                    ViewData["ComCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
-                    ViewData["ComCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
-                    ViewData["ComCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
-                    ViewData["ComCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
-                    ViewData["ComCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-
-                    //NLR12Months
-                    ViewData["ComNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
-                    ViewData["ComNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
-                    ViewData["ComNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
-                    ViewData["ComNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-
-                    //NLR24Months
-                    ViewData["ComNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
-                    ViewData["ComNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
-                    ViewData["ComNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
-                    ViewData["ComNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
-
-                    //NLR36Months
-                    ViewData["ComNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
-                    ViewData["ComNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
-                    ViewData["ComNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
-                    ViewData["ComNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-
-                    //CCA12Months
-                    ViewData["ComCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
-                    ViewData["ComCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
-                    ViewData["ComCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
-                    ViewData["ComCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
-
-                    //CCA24Months
-                    ViewData["ComCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
-                    ViewData["ComCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
-                    ViewData["ComCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
-                    ViewData["ComCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
-
-                    //CCA36Months
-                    ViewData["ComCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
-                    ViewData["ComCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
-                    ViewData["ComCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
-                    ViewData["ComCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-                }
-                else
-                {
-                    ViewData["CompuScanMessage"] = "No Match";
-                }
-
-                if (ViewData["ExperianMessage"].ToString() == "CONSUMER MATCH")
-                {
-                    //PersonInformation
-                    ViewData["ExDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.DateOfBirth;
-                    ViewData["ExFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.FirstName;
-                    ViewData["ExSurname"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Surname;
-                    ViewData["ExIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.IDNumber;
-                    ViewData["ExGender"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Gender;
-                    ViewData["ExAge"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Age;
-                    ViewData["ExMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.MaritalStatus;
-                    ViewData["ExMiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.MiddleName1;
-                    ViewData["ExReference"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Reference;
-                    //ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress;
-
-                    //HomeAffairsInformation
-                    ViewData["ExIDVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.IDVerified;
-                    ViewData["ExSurnameVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.SurnameVerified;
-                    ViewData["ExInitialsVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.InitialsVerified;
-
-                    //CreditInformation
-                    ViewData["ExDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScoreChartURL;
-                    ViewData["ExDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScore;
-                    ViewData["ExFlagCount"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagCount;
-                    ViewData["ExFlagDetails"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagDetails;
-
-                    ViewData["ExAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Accounts;
-                    ViewData["ExEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Enquiries;
-                    ViewData["ExJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Judgments;
-                    ViewData["ExNotices"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Notices;
-                    ViewData["ExBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.BankDefaults;
-                    ViewData["ExDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Defaults;
-                    ViewData["ExCollections"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Collections;
-                    ViewData["ExDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Directors;
-                    ViewData["ExAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Addresses;
-                    ViewData["ExTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Telephones;
-                    ViewData["ExOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Occupants;
-                    ViewData["ExEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Employers;
-                    ViewData["ExTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.TraceAlerts;
-                    ViewData["ExPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PaymentProfiles;
-                    ViewData["ExOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.OwnEnquiries;
-
-                    ViewData["ExAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.AdminOrders;
-                    ViewData["ExPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PossibleMatches;
-                    ViewData["ExDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.DefiniteMatches;
-                    ViewData["ExLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Loans;
-                    ViewData["ExFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.FraudAlerts;
-                    ViewData["ExCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Companies;
-                    ViewData["ExProperties"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Properties;
-                    ViewData["ExDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Documents;
-                    ViewData["ExDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.DemandLetters;
-                    ViewData["ExTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Trusts;
-                    ViewData["ExBondsBonds"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.BondsBonds;
-                    ViewData["ExDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Deeds;
-                    ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PublicDefaults;
-                    ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.NLRAccounts;
-                    ViewData["ExApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
-
-                    //ConsumerStatistics
-                    ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
-                    ViewData["ExRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
-                    ViewData["ExInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
-                    ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
-                    ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
-                    ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
-
-                    //NLRStats
-                    ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
-                    ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
-                    ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
-                    ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
-                    ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-
-                    //CCAStats
-                    ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
-                    ViewData["ExCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
-                    ViewData["ExCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
-                    ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
-                    ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-
-                    //NLR12Months
-                    ViewData["ExNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
-                    ViewData["ExNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
-                    ViewData["ExNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
-                    ViewData["ExNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-
-                    //NLR24Months
-                    ViewData["ExNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
-                    ViewData["ExNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
-                    ViewData["ExNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
-                    ViewData["ExNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
-
-                    //NLR36Months
-                    ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
-                    ViewData["ExNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
-                    ViewData["ExNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
-                    ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-
-                    //CCA12Months
-                    ViewData["ExCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
-                    ViewData["ExCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
-                    ViewData["ExCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
-                    ViewData["ExCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
-
-                    //CCA24Months
-                    ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
-                    ViewData["ExCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
-                    ViewData["ExCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
-                    ViewData["ExCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
-
-                    //CCA36Months
-                    ViewData["ExCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
-                    ViewData["ExCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
-                    ViewData["ExCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
-                    ViewData["ExCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-                }
-                else
-                {
-                    ViewData["Experian"] = "No Match";
-                }
-
-                if (rootObject.ResponseObject.CombinedCreditInformation.TransUnion == "CONSUMER MATCH")
-                {
-                }
-                else
-                {
-                    ViewData["TransUnion"] = "No Match";
-                }
-
-                if (ViewData["XDSMessage"].ToString() == "CONSUMER MATCH")
-                {
-                    //System.Diagnostics.Debug.WriteLine(ViewData["CompuScan"]);
-                    //System.Diagnostics.Debug.WriteLine(ViewData["Experian"]);
-                    //System.Diagnostics.Debug.WriteLine(ViewData["TransUnion"]);
-
-                    //System.Diagnostics.Debug.WriteLine(ViewData["BuyerName"]);
-
-                    //Person Information:
-                    ViewData["PersonID"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.PersonID;
-                    ViewData["Title"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Title;
-                    ViewData["DateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.DateOfBirth;
-                    ViewData["Initials"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Initials;
-                    ViewData["IDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.IDNumber;
-                    ViewData["MaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MaritalStatus;
-                    ViewData["Gender"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Gender;
-                    ViewData["MiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MiddleName1;
-                    ViewData["Fullname"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Fullname;
-
-                    //System.Diagnostics.Debug.WriteLine(ViewData["PersonID"]);
-
-                    //COntact Information:
-                    //ViewData["EmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress;
-                    //ViewData["MobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.MobileNumber;
-                    ViewData["PhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PhysicalAddress;
-                    ViewData["PostalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PostalAddress;
-
-                    //HomeAffairs Information:
-                    ViewData["DeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedStatus;
-                    ViewData["DeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate;
-                    ViewData["VerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus;
-
-                    //FraudIndicatorSummary:
-                    ViewData["SAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing;
-                    ViewData["EmployerFraudVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification;
-                    ViewData["ProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
-
-                    if (rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyName != null)
+                    if (ViewData["CompuScanMessage"].ToString() == "CONSUMER MATCH")
                     {
-                        //DirectorshipInformation242px;
-                        ViewData["CompanyName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyName;
-                        ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyRegistrationNumber;
-                        ViewData["AppointmentDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].AppointmentDate;
-                        ViewData["PhysicalAddressD"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].PhysicalAddress;
+                        //personaInformantion
+                        ViewData["ComDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.DateOfBirth;
+                        ViewData["ComFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.FirstName;
+                        ViewData["ComSurname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Surname;
+                        ViewData["ComIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.IDNumber;
+                        ViewData["ComGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Gender;
+                        ViewData["ComAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Age;
+                        ViewData["ComVerificationStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus;
 
-                        //System.Diagnostics.Debug.WriteLine(ViewData["CompanyName"]);
+                        //CreditInformation
+                        ViewData["ComDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScore;
+                        ViewData["ComRisk"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.Risk;
+                        ViewData["ComDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScoreChartURL;
 
-                        //PropertyInformation
-                        ViewData["BuyerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.Fullname;
-                        ViewData["BuyerIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.IDNumber;
-                        ViewData["BuyerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.MaritalStatus;
-                        ViewData["BuyerPropertySharePercentage"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.PropertySharePercentage;
+                        ViewData["ComAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Accounts;
+                        ViewData["ComEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Enquiries;
+                        ViewData["ComJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Judgments;
+                        ViewData["ComNotices"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Notices;
+                        ViewData["ComBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.BankDefaults;
+                        ViewData["ComDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Defaults;
+                        ViewData["ComCollections"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Collections;
+                        ViewData["ComDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Directors;
+                        ViewData["ComAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Addresses;
+                        ViewData["ComTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Telephones;
+                        ViewData["ComOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Occupants;
+                        ViewData["ComEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Employers;
+                        ViewData["ComTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.TraceAlerts;
+                        ViewData["ComPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PaymentProfiles;
+                        ViewData["ComOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.OwnEnquiries;
 
-                        ViewData["SellerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.Fullname;
-                        ViewData["SellerIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.IDNumber;
-                        ViewData["SellerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.MaritalStatus;
+                        ViewData["ComAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.AdminOrders;
+                        ViewData["ComPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PossibleMatches;
+                        ViewData["ComDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DefiniteMatches;
+                        ViewData["ComLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Loans;
+                        ViewData["ComFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.FraudAlerts;
+                        ViewData["ComCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Companies;
+                        ViewData["ComProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Properties;
+                        ViewData["ComDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Documents;
+                        ViewData["ComDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DemandLetters;
+                        ViewData["ComTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Trusts;
+                        ViewData["ComBondsBonds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.BondsBonds;
+                        ViewData["ComDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Deeds;
+                        ViewData["ComPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PublicDefaults;
+                        ViewData["ComNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.NLRAccounts;
+                        ViewData["ComApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
 
-                        ViewData["Institution"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.Institution;
-                        ViewData["BondNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.BondNumber;
-                        ViewData["BondAmount"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.BondAmount;
+                        //ConsumerStatistics
+                        ViewData["ComHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
+                        ViewData["ComRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
+                        ViewData["ComInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
+                        ViewData["ComOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
+                        ViewData["ComAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
 
-                        //TransferInformation
-                        ViewData["AttorneyFirmNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.AttorneyFirmNumber;
-                        ViewData["AttorneyFileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.AttorneyFileNumber;
-                        ViewData["TitleDeedFeeAmount"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TitleDeedFeeAmount;
-                        ViewData["TransferDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TransferDate;
-                        ViewData["PurchaseDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.PurchaseDate;
-                        ViewData["PurchasePrice"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.PurchasePrice;
-                        ViewData["TitleDeedNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TitleDeedNumber;
+                        //NLRStats
+                        ViewData["ComNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
+                        ViewData["ComNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
+                        ViewData["ComNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
+                        ViewData["ComNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
+                        ViewData["ComNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
 
-                        //GeneralInformation
-                        ViewData["Municipality"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.Municipality;
-                        ViewData["Township"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.Township;
-                        ViewData["CityName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.CityName;
-                        ViewData["StreetName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.StreetName;
-                        ViewData["StreetNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.StreetNumber;
-                        ViewData["RegisteredSize"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.RegisteredSize;
-                        ViewData["DeedsOfficeName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.DeedsOfficeName;
-                        ViewData["OldTitleDeedNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.OldTitleDeedNumber;
-                        ViewData["PhysicalAddressG"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.PhysicalAddress;
-                        ViewData["StandNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.StandNumber;
+                        //CCAStats
+                        ViewData["ComCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
+                        ViewData["ComCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
+                        ViewData["ComCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
+                        ViewData["ComCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
+                        ViewData["ComCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+
+                        //NLR12Months
+                        ViewData["ComNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+                        ViewData["ComNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+                        ViewData["ComNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+                        ViewData["ComNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+
+                        //NLR24Months
+                        ViewData["ComNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
+                        ViewData["ComNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
+                        ViewData["ComNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
+                        ViewData["ComNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
+
+                        //NLR36Months
+                        ViewData["ComNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
+                        ViewData["ComNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
+                        ViewData["ComNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
+                        ViewData["ComNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
+
+                        //CCA12Months
+                        ViewData["ComCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
+                        ViewData["ComCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
+                        ViewData["ComCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
+                        ViewData["ComCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
+
+                        //CCA24Months
+                        ViewData["ComCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
+                        ViewData["ComCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
+                        ViewData["ComCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
+                        ViewData["ComCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
+
+                        //CCA36Months
+                        ViewData["ComCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
+                        ViewData["ComCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
+                        ViewData["ComCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
+                        ViewData["ComCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
+                    }
+                    else
+                    {
+                        ViewData["CompuScanMessage"] = "No Match";
+                    }
+
+                    if (ViewData["ExperianMessage"].ToString() == "CONSUMER MATCH")
+                    {
+                        //PersonInformation
+                        ViewData["ExDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.DateOfBirth;
+                        ViewData["ExFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.FirstName;
+                        ViewData["ExSurname"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Surname;
+                        ViewData["ExIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.IDNumber;
+                        ViewData["ExGender"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Gender;
+                        ViewData["ExAge"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Age;
+                        ViewData["ExMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.MaritalStatus;
+                        ViewData["ExMiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.MiddleName1;
+                        ViewData["ExReference"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Reference;
+                        //ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress;
+
+                        //HomeAffairsInformation
+                        ViewData["ExIDVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.IDVerified;
+                        ViewData["ExSurnameVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.SurnameVerified;
+                        ViewData["ExInitialsVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.InitialsVerified;
+
+                        //CreditInformation
+                        ViewData["ExDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScoreChartURL;
+                        ViewData["ExDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScore;
+                        ViewData["ExFlagCount"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagCount;
+                        ViewData["ExFlagDetails"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagDetails;
+
+                        ViewData["ExAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Accounts;
+                        ViewData["ExEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Enquiries;
+                        ViewData["ExJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Judgments;
+                        ViewData["ExNotices"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Notices;
+                        ViewData["ExBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.BankDefaults;
+                        ViewData["ExDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Defaults;
+                        ViewData["ExCollections"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Collections;
+                        ViewData["ExDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Directors;
+                        ViewData["ExAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Addresses;
+                        ViewData["ExTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Telephones;
+                        ViewData["ExOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Occupants;
+                        ViewData["ExEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Employers;
+                        ViewData["ExTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.TraceAlerts;
+                        ViewData["ExPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PaymentProfiles;
+                        ViewData["ExOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.OwnEnquiries;
+
+                        ViewData["ExAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.AdminOrders;
+                        ViewData["ExPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PossibleMatches;
+                        ViewData["ExDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.DefiniteMatches;
+                        ViewData["ExLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Loans;
+                        ViewData["ExFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.FraudAlerts;
+                        ViewData["ExCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Companies;
+                        ViewData["ExProperties"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Properties;
+                        ViewData["ExDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Documents;
+                        ViewData["ExDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.DemandLetters;
+                        ViewData["ExTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Trusts;
+                        ViewData["ExBondsBonds"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.BondsBonds;
+                        ViewData["ExDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Deeds;
+                        ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PublicDefaults;
+                        ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.NLRAccounts;
+                        ViewData["ExApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
+
+                        //ConsumerStatistics
+                        ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
+                        ViewData["ExRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
+                        ViewData["ExInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
+                        ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
+                        ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
+                        ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
+
+                        //NLRStats
+                        ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
+                        ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
+                        ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
+                        ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
+                        ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
+
+                        //CCAStats
+                        ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
+                        ViewData["ExCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
+                        ViewData["ExCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
+                        ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
+                        ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+
+                        //NLR12Months
+                        ViewData["ExNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+                        ViewData["ExNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+                        ViewData["ExNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+                        ViewData["ExNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+
+                        //NLR24Months
+                        ViewData["ExNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
+                        ViewData["ExNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
+                        ViewData["ExNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
+                        ViewData["ExNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
+
+                        //NLR36Months
+                        ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
+                        ViewData["ExNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
+                        ViewData["ExNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
+                        ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
+
+                        //CCA12Months
+                        ViewData["ExCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
+                        ViewData["ExCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
+                        ViewData["ExCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
+                        ViewData["ExCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
+
+                        //CCA24Months
+                        ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
+                        ViewData["ExCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
+                        ViewData["ExCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
+                        ViewData["ExCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
+
+                        //CCA36Months
+                        ViewData["ExCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
+                        ViewData["ExCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
+                        ViewData["ExCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
+                        ViewData["ExCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
+                    }
+                    else
+                    {
+                        ViewData["Experian"] = "No Match";
+                    }
+
+                    if (rootObject.ResponseObject.CombinedCreditInformation.TransUnion == "CONSUMER MATCH")
+                    {
+                    }
+                    else
+                    {
+                        ViewData["TransUnion"] = "No Match";
+                    }
+
+                    if (ViewData["XDSMessage"].ToString() == "CONSUMER MATCH")
+                    {
+                        //Person Information:
+                        ViewData["PersonID"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.PersonID;
+                        ViewData["Title"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Title;
+                        ViewData["DateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.DateOfBirth;
+                        ViewData["Initials"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Initials;
+                        ViewData["IDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.IDNumber;
+                        ViewData["MaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MaritalStatus;
+                        ViewData["Gender"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Gender;
+                        ViewData["MiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MiddleName1;
+                        ViewData["Fullname"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Fullname;
+
+                        //COntact Information:
+                        //ViewData["EmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress;
+                        //ViewData["MobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.MobileNumber;
+                        ViewData["PhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PhysicalAddress;
+                        ViewData["PostalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PostalAddress;
+
+                        //HomeAffairs Information:
+                        ViewData["DeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedStatus;
+                        ViewData["DeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate;
+                        ViewData["VerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus;
+
+                        //FraudIndicatorSummary:
+                        ViewData["SAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing;
+                        ViewData["EmployerFraudVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification;
+                        ViewData["ProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
+
+                        if (rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyName != null)
+                        {
+                            //DirectorshipInformation242px;
+                            ViewData["CompanyName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyName;
+                            ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyRegistrationNumber;
+                            ViewData["AppointmentDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].AppointmentDate;
+                            ViewData["PhysicalAddressD"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].PhysicalAddress;
+
+                            //PropertyInformation
+                            ViewData["BuyerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.Fullname;
+                            ViewData["BuyerIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.IDNumber;
+                            ViewData["BuyerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.MaritalStatus;
+                            ViewData["BuyerPropertySharePercentage"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BuyerInformation.PropertySharePercentage;
+
+                            ViewData["SellerName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.Fullname;
+                            ViewData["SellerIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.IDNumber;
+                            ViewData["SellerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].SellerInformation.MaritalStatus;
+
+                            ViewData["Institution"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.Institution;
+                            ViewData["BondNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.BondNumber;
+                            ViewData["BondAmount"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].BondInformation.BondAmount;
+
+                            //TransferInformation
+                            ViewData["AttorneyFirmNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.AttorneyFirmNumber;
+                            ViewData["AttorneyFileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.AttorneyFileNumber;
+                            ViewData["TitleDeedFeeAmount"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TitleDeedFeeAmount;
+                            ViewData["TransferDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TransferDate;
+                            ViewData["PurchaseDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.PurchaseDate;
+                            ViewData["PurchasePrice"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.PurchasePrice;
+                            ViewData["TitleDeedNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].TransferInformation.TitleDeedNumber;
+
+                            //GeneralInformation
+                            ViewData["Municipality"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.Municipality;
+                            ViewData["Township"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.Township;
+                            ViewData["CityName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.CityName;
+                            ViewData["StreetName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.StreetName;
+                            ViewData["StreetNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.StreetNumber;
+                            ViewData["RegisteredSize"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.RegisteredSize;
+                            ViewData["DeedsOfficeName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.DeedsOfficeName;
+                            ViewData["OldTitleDeedNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.OldTitleDeedNumber;
+                            ViewData["PhysicalAddressG"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.PhysicalAddress;
+                            ViewData["StandNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[0].GeneralInformation.StandNumber;
+                        }
+                    }
+                    else
+                    {
+                        ViewData["XDS"] = "No Match";
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    ViewData["XDS"] = "No Match";
+                    TempData["msg"] = "An error occured, please check the entered values.";
                 }
             }
 
@@ -541,28 +500,12 @@ namespace searchworks.client.Controllers
         {
             string id = comp.IDNumber;
             string refe = comp.Reference;
-            System.Diagnostics.Debug.WriteLine(id);
 
             ViewData["refe"] = id;
 
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -572,13 +515,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -635,7 +571,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -648,8 +583,6 @@ namespace searchworks.client.Controllers
             {
                 ViewData["Message"] = "good";
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                System.Diagnostics.Debug.WriteLine(ViewData["ResponseMessage"]);
 
                 ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScan;
                 ViewData["TransUnionMessage"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
@@ -706,12 +639,6 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Telephone
@@ -730,12 +657,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -754,12 +675,6 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
 
@@ -818,14 +733,7 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
                     }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
-                    }
-
                     // Telephone
                     Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
                     Telelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
@@ -842,12 +750,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -866,12 +768,6 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
 
@@ -932,12 +828,6 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Telephone
@@ -956,12 +846,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -980,12 +864,6 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
 
@@ -1035,12 +913,6 @@ namespace searchworks.client.Controllers
                         arrayList.Add(count + "_PostalCode", PostalCode);
                         arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["ArrayList"] = arrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " arrayList: " + arrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in arrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Telephone
@@ -1059,12 +931,6 @@ namespace searchworks.client.Controllers
                         TelarrayList.Add(count + "_Numnber", Number);
                         TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["TelArrayList"] = TelarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " TelarrayList: " + TelarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in TelarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Key = {0}, Value = {1}", item.Key, item.Value);
                     }
 
                     // Employment
@@ -1083,12 +949,6 @@ namespace searchworks.client.Controllers
                         EMarrayList.Add(count + "_Designation", Designation);
                         EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
                         ViewData["EMArrayList"] = EMarrayList;
-                        System.Diagnostics.Debug.WriteLine(count + " EMarrayList: " + EMarrayList);
-                    }
-
-                    foreach (KeyValuePair<string, string> item in EMarrayList)
-                    {
-                        System.Diagnostics.Debug.WriteLine("EMKey = {0}, EMValue = {1}", item.Key, item.Value);
                     }
                 }
                 else
@@ -1116,26 +976,9 @@ namespace searchworks.client.Controllers
             string terms = comp.terms;
             int reportType = comp.ReportType;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -1145,13 +988,6 @@ namespace searchworks.client.Controllers
             string action = "Client Name:" + clientName + "; Bank Name: " + bankName + "; Branch Code:" + branchCode + "; Branch Name: " + branchName + "; Account Number:" + accountNumber + "; Amount:" + amount + "; Terms:" + terms + "; Report Type" + reportType;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1211,7 +1047,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             return View();
         }
@@ -1225,26 +1060,9 @@ namespace searchworks.client.Controllers
         {
             string id = comp.IDNumber;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -1254,13 +1072,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1312,7 +1123,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -1340,26 +1150,9 @@ namespace searchworks.client.Controllers
             string firstname = comp.FirstName;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -1369,13 +1162,6 @@ namespace searchworks.client.Controllers
             string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -1430,7 +1216,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
 
@@ -1445,8 +1230,9 @@ namespace searchworks.client.Controllers
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
                 ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation["DateOfBirth"];
+
                 ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation["DelphiScore"];
-                ViewData["DirectorshipInformationMessage"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
+                //ViewData["DirectorshipInformationMessage"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
                 ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
 
                 if (ViewData["PersonInformationMessage"].ToString() != "")
@@ -1519,7 +1305,8 @@ namespace searchworks.client.Controllers
                     ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
 
                     //DebtReviewStatus
-                    ViewData["ApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
+                    ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
+                    ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
 
                     //ConsumerStatistics
                     ViewData["HighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
@@ -1739,28 +1526,11 @@ namespace searchworks.client.Controllers
             string traceType = comp.TraceType;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (traceType == "ID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -1770,13 +1540,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -1829,10 +1592,8 @@ namespace searchworks.client.Controllers
                 //JObject o = JObject.Parse(response.Content);
 
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -1926,24 +1687,9 @@ namespace searchworks.client.Controllers
             }
             else if (traceType == "tele")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -1953,13 +1699,6 @@ namespace searchworks.client.Controllers
                 string action = "Telephone Number: " + tele;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2015,7 +1754,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -2050,24 +1788,9 @@ namespace searchworks.client.Controllers
             }
             else if (traceType == "teleID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -2077,13 +1800,6 @@ namespace searchworks.client.Controllers
                 string action = "TelephoneID: " + tele;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2139,7 +1855,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             return View();
@@ -2158,26 +1873,9 @@ namespace searchworks.client.Controllers
             string firstname = comp.FirstName;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2187,13 +1885,6 @@ namespace searchworks.client.Controllers
             string action = "First Name: " + firstname + "; Surname: " + surname + "; Passport: " + passport + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2247,12 +1938,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -2329,26 +2018,9 @@ namespace searchworks.client.Controllers
             string surname = comp.Surname;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2358,13 +2030,6 @@ namespace searchworks.client.Controllers
             string action = "First Name: " + firstname + "; Surname: " + surname + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2422,7 +2087,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -2486,26 +2150,9 @@ namespace searchworks.client.Controllers
             string id = comp.IDNumber;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2515,13 +2162,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2577,7 +2217,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline" || mes == "NotFound")
@@ -2592,7 +2231,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
 
                 ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                System.Diagnostics.Debug.WriteLine("PersonalMessage: " + ViewData["PersonInformationMessage"].ToString());
                 //ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
                 //ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
 
@@ -2626,26 +2264,9 @@ namespace searchworks.client.Controllers
             string id = comp.IDNumber;
             string refe = comp.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2655,13 +2276,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -2717,7 +2331,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "ServiceOffline")
@@ -2790,28 +2403,9 @@ namespace searchworks.client.Controllers
             string passport = exp.passportNumber;
             string refe = exp.reference;
 
-            System.Diagnostics.Debug.WriteLine("exp ID: " + id);
-            System.Diagnostics.Debug.WriteLine("exp reason: " + enquiryReason);
-            System.Diagnostics.Debug.WriteLine("exp ref: " + refe);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -2821,14 +2415,6 @@ namespace searchworks.client.Controllers
             string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; Passport: " + passport + "; ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
-
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
             ViewData["ref"] = refe;
@@ -2882,12 +2468,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -2905,18 +2489,18 @@ namespace searchworks.client.Controllers
                 {
                     //PersonInformation
                     ViewData["ExDateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-
-                    System.Diagnostics.Debug.WriteLine("DATEofBiRTH: " + ViewData["ExDateOfBirth"]);
-
+                    ViewData["ExTitle"] = rootObject.ResponseObject.PersonInformation.Title;
                     ViewData["ExFirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                     ViewData["ExSurname"] = rootObject.ResponseObject.PersonInformation.Surname;
+                    ViewData["ExFullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
                     ViewData["ExIDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
                     ViewData["ExGender"] = rootObject.ResponseObject.PersonInformation.Gender;
                     ViewData["ExAge"] = rootObject.ResponseObject.PersonInformation.Age;
                     ViewData["ExMaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
                     ViewData["ExMiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
                     ViewData["ExReference"] = rootObject.ResponseObject.PersonInformation.Reference;
-                    //ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress;
+                    ViewData["ExHasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
+                    ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
 
                     //HomeAffairsInformation
                     ViewData["ExIDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
@@ -2959,7 +2543,7 @@ namespace searchworks.client.Controllers
                     ViewData["ExDeeds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Deeds;
                     ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
                     ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
-                    ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
+                    //ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
 
                     //ConsumerStatistics
                     ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
@@ -2967,8 +2551,115 @@ namespace searchworks.client.Controllers
                     ViewData["ExInstalmentAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.InstalmentAccounts;
                     ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
                     ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts;
-                    ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
+                    ViewData["ExPercent0ArrearsLast12Histories"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.Percent0ArrearsLast12Histories;
+                    ViewData["ExMonthsOldestOpenedPPSEver"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.MonthsOldestOpenedPPSEver;
+                    ViewData["ExNumberPPSLast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NumberPPSLast12Months;
+                    ViewData["ExNLRMicroloansPast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months;
 
+                    //DebtReviewStatus
+                    ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
+                    ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+
+                    List<EnquiryHistory> EnqHIst;
+                    List<AddressHistory> AddressHist;
+                    List<TelephoneHistory> TelHist;
+                    List<EmploymentHistory> EmpHist;
+                    Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+                    elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
+                    elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                    elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                    elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                    //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                    String EnquiryDate = "";
+                    String EnquiredBy = "";
+                    String EnquiredByContact = "";
+                    //AddressHIstoryValues
+                    String TypeDescription = "";
+                    String Line1 = "";
+                    String Line2 = "";
+                    String Line3 = "";
+                    String PostalCode = "";
+                    String FullAddress = "";
+                    String LastUpdatedDate = "";
+                    //TelephoneHIstory
+                    String TypeDescriptionTel = "";
+                    String DialCode = "";
+                    String Number = "";
+                    String FullNumber = "";
+                    String LastUpdatedDateTel = "";
+                    //EmploymentHistory
+                    String EmployerName = "";
+                    String Designation = "";
+                    EnqHIst = new List<EnquiryHistory>();
+                    AddressHist = new List<AddressHistory>();
+                    TelHist = new List<TelephoneHistory>();
+                    EmpHist = new List<EmploymentHistory>();
+                    for (int count = 0; count < (elements.Count); count++)
+                    {
+                        EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                        EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                        EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                        EnqHIst.Add(new EnquiryHistory
+                        {
+                            EnquiryDate = EnquiryDate,
+                            EnquiredBy = EnquiredBy,
+                            EnquiredByContact = EnquiredByContact
+                        });
+                    }
+                    for (int count = 0; count < (elements1.Count); count++)
+                    {
+                        TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                        Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                        Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                        Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                        PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                        FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+
+                        AddressHist.Add(new AddressHistory
+                        {
+                            TypeDescription = TypeDescription,
+                            Line1 = Line1,
+                            Line2 = Line2,
+                            Line3 = Line3,
+                            PostalCode = PostalCode,
+                            FullAddress = FullAddress,
+                            LastUpdatedDate = LastUpdatedDate,
+                        });
+                    }
+                    for (int count = 0; count < (elements2.Count); count++)
+                    {
+                        TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                        DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                        Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                        FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                        LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+
+                        TelHist.Add(new TelephoneHistory
+                        {
+                            TypeDescriptionTel = TypeDescriptionTel,
+                            DialCode = DialCode,
+                            Number = Number,
+                            FullNumber = FullNumber,
+                            LastUpdatedDateTel = LastUpdatedDate,
+                        });
+                    }
+                    for (int count = 0; count < (elements3.Count); count++)
+                    {
+                        EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                        Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+
+                        EmpHist.Add(new EmploymentHistory
+                        {
+                            EmployerName = EmployerName,
+                            Designation = Designation,
+                        });
+                    }
+                    ViewData["EnqHIst"] = EnqHIst;
+                    ViewData["AddressHist"] = AddressHist;
+                    ViewData["TelHist"] = TelHist;
+                    ViewData["EmpHist"] = EmpHist;
                     //NLRStats
                     ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                     ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
@@ -3046,26 +2737,9 @@ namespace searchworks.client.Controllers
             string companyID = trans.CompanyID;
             Array moduleCodes = trans.ModuleCodes;
 
-            System.Diagnostics.Debug.WriteLine(companyID);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3075,13 +2749,6 @@ namespace searchworks.client.Controllers
             string action = "Company ID: " + companyID + "; Search Description: " + searchDesc + "; Enquiry Reason: " + enquiryReason + "; Module Codes: " + moduleCodes;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3136,7 +2803,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             return View();
         }
@@ -3154,26 +2820,9 @@ namespace searchworks.client.Controllers
             string entityName = trans.EntityName;
             Array moduleCodes = trans.ModuleCodes;
 
-            System.Diagnostics.Debug.WriteLine(entityName);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3183,13 +2832,6 @@ namespace searchworks.client.Controllers
             string action = "Entity Name: " + entityName + "; Entity Number: " + entityNumber + "; Enquiry Reason: " + enquiryReason + "; Enquiry Type: " + enquiryType + "; Module Codes: " + moduleCodes;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3204,6 +2846,7 @@ namespace searchworks.client.Controllers
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
+                System.Diagnostics.Debug.WriteLine("User needs to be logged out");
                 //exit with a warning
             }
 
@@ -3240,12 +2883,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             return View();
         }
@@ -3262,26 +2903,9 @@ namespace searchworks.client.Controllers
             string surname = trans.Surname;
             string refe = trans.Reference;
 
-            System.Diagnostics.Debug.WriteLine("ID: " + idNumber);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3291,13 +2915,6 @@ namespace searchworks.client.Controllers
             string action = "Surname: " + surname + "; ID Number: " + idNumber + "; Enquiry Reason: " + enquiryReason;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3350,12 +2967,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             var mes = ViewData["ResponseMessage"].ToString();
             if (mes == "NotFound")
@@ -3383,26 +2998,9 @@ namespace searchworks.client.Controllers
             string id = search.IDNumber;
             string refe = search.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3412,13 +3010,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            //System.Diagnostics.Debug.WriteLine(date_add);
-            //System.Diagnostics.Debug.WriteLine(time_add);
-            //System.Diagnostics.Debug.WriteLine(page);
-            //System.Diagnostics.Debug.WriteLine(action);
-            //System.Diagnostics.Debug.WriteLine(user_id);
-            //System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3469,12 +3060,10 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -3492,7 +3081,6 @@ namespace searchworks.client.Controllers
 
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
 
                 ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
                 ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
@@ -3509,8 +3097,6 @@ namespace searchworks.client.Controllers
 
                 ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
                 ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-                System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-                System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
 
                 //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
                 //{
@@ -3529,7 +3115,6 @@ namespace searchworks.client.Controllers
                 //{
                 //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
                 //}
-                //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
                 //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                 //extract list of companies returned
 
@@ -3558,26 +3143,9 @@ namespace searchworks.client.Controllers
             string dob = trans.DateOfBirth;
             string refe = trans.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -3585,19 +3153,13 @@ namespace searchworks.client.Controllers
             string time_add = time.ToString("T");
             string page = "TransUnion Consumer ID Verification";
             string action = "ID: " + id + "; First Name: " + firstName + "; Surname: " + surname + "; Contact Name: " + conName + "; Contact Number: " + conNumber + "; Passport Number: " + passport + "; Date Of Birth: " + dob;
+            System.Diagnostics.Debug.WriteLine(Session["ID"].ToString());
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
-
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
+            TempData["user"] = Session["Name"].ToString();
+            TempData["date"] = DateTime.Today.ToShortDateString();
+            TempData["ref"] = refe;
 
             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3651,56 +3213,236 @@ namespace searchworks.client.Controllers
 
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Datttaaa");
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
+            try
+            {
+                //PersonalInfroamtion
+                ViewData["AkaName"] = rootObject.ResponseObject.PersonInformation.AlsoKnownAs[0].AkaName;
+                ViewData["ConsumerID"] = rootObject.ResponseObject.PersonInformation.AlsoKnownAs[0].ConsumerID;
+                ViewData["InformationDate"] = rootObject.ResponseObject.PersonInformation.InformationDate;
+                ViewData["PersonID"] = rootObject.ResponseObject.PersonInformation.PersonID;
+                ViewData["PersonTitle"] = rootObject.ResponseObject.PersonInformation.Title;
+                ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+                ViewData["IDNumber_Alternate"] = rootObject.ResponseObject.PersonInformation.IDNumber_Alternate;
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+                ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
+                ViewData["MiddleName2"] = rootObject.ResponseObject.PersonInformation.MiddleName2;
+                ViewData["NumberOfDependants"] = rootObject.ResponseObject.PersonInformation.NumberOfDependants;
+                ViewData["Remarks"] = rootObject.ResponseObject.PersonInformation.Remarks;
+                ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
+                ViewData["SpouseFirstName"] = rootObject.ResponseObject.PersonInformation.SpouseFirstName;
+                ViewData["SpouseSurname"] = rootObject.ResponseObject.PersonInformation.SpouseFirstName;
+                ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
+                ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
+                ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
+                ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
+                ViewData["VerificationStatus"] = rootObject.ResponseObject.PersonInformation.VerificationStatus;
+                ViewData["EnquiryResultID"] = rootObject.ResponseObject.PersonInformation.EnquiryResultID;
+                ViewData["Reference"] = rootObject.ResponseObject.PersonInformation.Reference;
+                ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
+                ViewData["DeceasedDate"] = rootObject.ResponseObject.PersonInformation.DeceasedDate;
+                ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
+                ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
+                ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-            ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-            System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
-            ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
-            ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
-            ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-            ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-            ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-            ViewData["VerificationStatus"] = rootObject.ResponseObject.PersonInformation.VerificationStatus;
-            ViewData["EnquiryResultID"] = rootObject.ResponseObject.PersonInformation.EnquiryResultID;
-            ViewData["Reference"] = rootObject.ResponseObject.PersonInformation.Reference;
-            ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-            ViewData["DeceasedDate"] = rootObject.ResponseObject.PersonInformation.DeceasedDate;
-            ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-            ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
+                //HomeAffairsInformation
+                ViewData["FirstName"] = rootObject.ResponseObject.HomeAffairsInformation.FirstName;
+                ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
+                ViewData["IDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
+                ViewData["SurnameVerified"] = rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified;
+                ViewData["Warnings"] = rootObject.ResponseObject.HomeAffairsInformation.Warnings;
 
-            ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
-            ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
+                //CreditInformation
+                ViewData["Accounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Accounts;
+                ViewData["Enquires"] = rootObject.ResponseObject.CreditInformation.DataCounts.Enquires;
+                ViewData["Judgments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Judgments;
+                ViewData["Notices"] = rootObject.ResponseObject.CreditInformation.DataCounts.Notices;
+                ViewData["BankDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults;
+                ViewData["Collections"] = rootObject.ResponseObject.CreditInformation.DataCounts.Collections;
+                ViewData["Directors"] = rootObject.ResponseObject.CreditInformation.DataCounts.Directors;
+                ViewData["Addresses"] = rootObject.ResponseObject.CreditInformation.DataCounts.Addresses;
+                ViewData["Telephones"] = rootObject.ResponseObject.CreditInformation.DataCounts.Telephones;
+                ViewData["Occupants"] = rootObject.ResponseObject.CreditInformation.DataCounts.Occupants;
+                ViewData["Employers"] = rootObject.ResponseObject.CreditInformation.DataCounts.Employers;
+                ViewData["TraceAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts;
+                ViewData["PaymentProfiles"] = rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles;
+                ViewData["OwnEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries;
+                ViewData["AdminOrders"] = rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders;
+                ViewData["PossibleMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
+                ViewData["Loans"] = rootObject.ResponseObject.CreditInformation.DataCounts.Loans;
+                ViewData["FraudAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts;
+                ViewData["Companies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
+                ViewData["Properties"] = rootObject.ResponseObject.CreditInformation.DataCounts.Properties;
+                ViewData["Documents"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
+                ViewData["DemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
+                ViewData["Trusts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Trusts;
+                ViewData["BondsBonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.BondsBonds;
+                ViewData["PublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
+                ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
 
-            //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
-            //{
-            //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
-            //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
+                //DebtReviewStatus
+                ViewData["StatusDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDate;
+                ViewData["StatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+                //EnquiryHistory
+                List<EnquiryHistory> EnqHIst;
+                Newtonsoft.Json.Linq.JArray elements4 = new Newtonsoft.Json.Linq.JArray();
+                elements4 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                String EnquiryDate = "";
+                String EnquiredBy = "";
+                String EnquiredByContact = "";
+                EnqHIst = new List<EnquiryHistory>();
+                for (int count = 0; count < (elements4.Count); count++)
+                {
+                    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
 
-            // ViewData["AddressLine3"] =
-            // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-            // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+                    EnqHIst.Add(new EnquiryHistory
+                    {
+                        EnquiryDate = EnquiryDate,
+                        EnquiredBy = EnquiredBy,
+                        EnquiredByContact = EnquiredByContact
+                    });
+                }
+                ViewData["EnqHIst"] = EnqHIst;
 
-            //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
-            //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
-            //}
+                List<InternalEnquiryHistory> IntEnqHistory;
+                List<AddressHistory> AddressHist;
+                List<TelephoneHistory> TelHist;
+                List<EmploymentHistory> EmpHist;
+                Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3, elements5 = new Newtonsoft.Json.Linq.JArray();
+                elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
+                elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                elements5 = rootObject.ResponseObject.InternalEnquiryHistory;
+                //AddressHIstoryValues
+                String TypeDescription = "";
+                String Line1 = "";
+                String Line2 = "";
+                String Line3 = "";
+                String PostalCode = "";
+                String FullAddress = "";
+                String LastUpdatedDate = "";
+                //TelephoneHIstory
+                String TypeDescriptionTel = "";
+                String DialCode = "";
+                String Number = "";
+                String FullNumber = "";
+                String LastUpdatedDateTel = "";
+                //EmploymentHistory
+                String EmployerName = "";
+                String Designation = "";
+                //InternalEnquiryHistory
+                string CompanyName = "";
+                string IntEnquiryDate = "";
+                string ContactPerson = "";
+                string PhoneNumber = "";
+                string EmailAddress = "";
 
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
-            //}
-            //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
-            //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
-            //extract list of companies returned
+                EnqHIst = new List<EnquiryHistory>();
+                AddressHist = new List<AddressHistory>();
+                TelHist = new List<TelephoneHistory>();
+                EmpHist = new List<EmploymentHistory>();
+                IntEnqHistory = new List<InternalEnquiryHistory>();
 
-            //PersonInformation lst = getIndividualList(response);
+                for (int count = 0; count < (elements.Count); count++)
+                {
+                    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                    EnqHIst.Add(new EnquiryHistory
+                    {
+                        EnquiryDate = EnquiryDate,
+                        EnquiredBy = EnquiredBy,
+                        EnquiredByContact = EnquiredByContact
+                    });
+                }
+                for (int count = 0; count < (elements1.Count); count++)
+                {
+                    TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                    Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                    Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                    Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                    PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                    FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+
+                    AddressHist.Add(new AddressHistory
+                    {
+                        TypeDescription = TypeDescription,
+                        Line1 = Line1,
+                        Line2 = Line2,
+                        Line3 = Line3,
+                        PostalCode = PostalCode,
+                        FullAddress = FullAddress,
+                        LastUpdatedDate = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements2.Count); count++)
+                {
+                    TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                    DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                    Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                    FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                    LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+
+                    TelHist.Add(new TelephoneHistory
+                    {
+                        TypeDescriptionTel = TypeDescriptionTel,
+                        DialCode = DialCode,
+                        Number = Number,
+                        FullNumber = FullNumber,
+                        LastUpdatedDateTel = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements3.Count); count++)
+                {
+                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                    Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+
+                    EmpHist.Add(new EmploymentHistory
+                    {
+                        EmployerName = EmployerName,
+                        Designation = Designation,
+                    });
+                }
+
+                for (int count = 0; count < (elements5.Count); count++)
+                {
+                    CompanyName = rootObject.ResponseObject.InternalEnquiryHistory[count].CompanyName;
+                    IntEnquiryDate = rootObject.ResponseObject.InternalEnquiryHistory[count].EnquiryDate;
+                    ContactPerson = rootObject.ResponseObject.InternalEnquiryHistory[count].ContactPerson;
+                    PhoneNumber = rootObject.ResponseObject.InternalEnquiryHistory[count].PhoneNumber;
+                    EmailAddress = rootObject.ResponseObject.InternalEnquiryHistory[count].EmailAddress;
+
+                    IntEnqHistory.Add(new InternalEnquiryHistory
+                    {
+                        CompanyName = CompanyName,
+                        IntEnquiryDate = IntEnquiryDate,
+                        ContactPerson = ContactPerson,
+                        PhoneNumber = PhoneNumber,
+                        EmailAddress = EmailAddress,
+                    });
+                }
+
+                ViewData["EnqHIst"] = EnqHIst;
+                ViewData["AddressHist"] = AddressHist;
+                ViewData["TelHist"] = TelHist;
+                ViewData["EmpHist"] = EmpHist;
+                ViewData["IntEnqHistory"] = IntEnqHistory;
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "An error occured, please check the entered values.";
+            }
 
             return View();
         }
@@ -3725,28 +3467,11 @@ namespace searchworks.client.Controllers
 
             traceType = "ID";
 
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (traceType == "enquiryID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -3756,13 +3481,6 @@ namespace searchworks.client.Controllers
                 string action = "Equiry ID: " + enquiryID + "; Equiry Result ID: " + enquiryResultID + "; Search Description: " + seaDesc;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3816,29 +3534,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (traceType == "ID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -3848,13 +3550,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                //System.Diagnostics.Debug.WriteLine(date_add);
-                //System.Diagnostics.Debug.WriteLine(time_add);
-                //System.Diagnostics.Debug.WriteLine(page);
-                //System.Diagnostics.Debug.WriteLine(action);
-                //System.Diagnostics.Debug.WriteLine(user_id);
-                //System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -3905,12 +3600,10 @@ namespace searchworks.client.Controllers
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
-                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
                 if (mes == "NotFound")
@@ -3926,10 +3619,8 @@ namespace searchworks.client.Controllers
 
                     ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
                     var name = ViewData["FirstName"].ToString();
-                    System.Diagnostics.Debug.WriteLine(name);
 
                     ViewData["DateOfBirth"] = rootObject.ResponseObject[0].PersonInformation.DateOfBirth;
-                    System.Diagnostics.Debug.WriteLine(ViewData["DateOfBirth"].ToString());
 
                     ViewData["MiddleName1"] = rootObject.ResponseObject[0].PersonInformation.MiddleName1;
                     ViewData["PassportNumber"] = rootObject.ResponseObject[0].PersonInformation.PassportNumber;
@@ -3961,7 +3652,6 @@ namespace searchworks.client.Controllers
                     //{
                     //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
                     //}
-                    //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
                     //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                     //extract list of companies returned
 
@@ -3972,24 +3662,9 @@ namespace searchworks.client.Controllers
             }
             else if (traceType == "mobile")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -3999,13 +3674,6 @@ namespace searchworks.client.Controllers
                 string action = "Mobile Number: " + mobile;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4057,29 +3725,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (traceType == "surname")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -4089,13 +3741,6 @@ namespace searchworks.client.Controllers
                 string action = "Surname: " + surname + "; Date Of Birth: " + dob;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4148,29 +3793,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (traceType == "tele")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -4180,13 +3809,6 @@ namespace searchworks.client.Controllers
                 string action = "Telephone Number: " + tele;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -4239,7 +3861,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
 
@@ -4261,26 +3882,9 @@ namespace searchworks.client.Controllers
             string accNumber = veri.accountNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4290,13 +3894,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id + "; Surname: " + surname + "; Initials: " + initials + "; Account Type: " + accType + "; Account Number: " + accNumber + "; Branch Code: " + branchCode;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4357,11 +3954,10 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-            System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
+
             ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
             ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
             ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
@@ -4377,8 +3973,6 @@ namespace searchworks.client.Controllers
 
             ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
             ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
-            System.Diagnostics.Debug.WriteLine(ViewData["IDNumber"]);
 
             //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
             //{
@@ -4397,7 +3991,6 @@ namespace searchworks.client.Controllers
             //{
             //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
             //}
-            //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
             //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
             //extract list of companies returned
 
@@ -4417,26 +4010,9 @@ namespace searchworks.client.Controllers
             string enquiryReason = veri.EnquiryReason;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4445,14 +4021,8 @@ namespace searchworks.client.Controllers
             string page = "VeriCred Consumer Profile";
             string action = "ID: " + id + "; Enquiry Reason: " + enquiryReason;
             string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
             System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
+            string us = Session["Name"].ToString();
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4509,7 +4079,8 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -4524,45 +4095,166 @@ namespace searchworks.client.Controllers
             {
                 ViewData["Message"] = "good";
 
+                //PersonalInformation
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
                 ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
 
+                //CreditInformation
+                ViewData["DelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
                 ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
                 ViewData["RiskColour"] = rootObject.ResponseObject.CreditInformation.RiskColour;
+
+                //~~~ConsumerStatistics~~~//
                 ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+                List<CPA_Accounts> CPAACCOUNTS;
+                List<CPA_Accounts> CPATitles;
 
-                ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
-                ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Account_ID;
+                Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
+                elements1 = rootObject.ResponseObject.CreditInformation.CPA_Accounts;
 
-                //if (rootObject.ResponseObject.HistoricalInformation.AddressHistory !=null)
-                //{
-                //    ViewData["AddressLine2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].FullAddress;
-                //    ViewData["AddressDate2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[1].LastUpdatedDate;
+                String Account_ID = "";
+                String SubscriberCode = "";
+                String SubscriberName = "";
+                String AccountNO = "";
+                String OpenDate = "";
+                String LastPaymentDate = "";
+                String OpenBalance = "";
+                String CurrentBalance = "";
+                String OverdueAmount = "";
+                String InstalmentAmount = "";
+                String StatusCodeDesc = "";
+                String StatusDate = "";
+                String IndustryType = "";
+                String PaymentHistoryChartURL = "";
+                Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails = new Newtonsoft.Json.Linq.JArray();
+                CPAACCOUNTS = new List<CPA_Accounts>();
+                CPATitles = new List<CPA_Accounts>();
 
-                // ViewData["AddressLine3"] =
-                // rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].FullAddress;
-                // ViewData["AddressDate3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[2].LastUpdatedDate;
+                for (int count = 0; count < (elements1.Count); count++)
+                {
+                    Account_ID = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].Account_ID;
+                    SubscriberCode = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberCode;
+                    SubscriberName = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberName;
+                    AccountNO = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].AccountNO;
+                    OpenDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenDate;
+                    LastPaymentDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].LastPaymentDate;
+                    OpenBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenBalance;
+                    CurrentBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].CurrentBalance;
+                    OverdueAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OverdueAmount;
+                    InstalmentAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].InstalmentAmount;
+                    StatusCodeDesc = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusCodeDesc;
+                    StatusDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusDate;
+                    IndustryType = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].IndustryType;
+                    PaymentHistoryChartURL = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryChartURL;
+                    PaymentHistoryAccountDetails = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryAccountDetails;
+                    CPAACCOUNTS.Add(new CPA_Accounts
+                    {
+                        Account_ID = Account_ID,
+                        SubscriberCode = SubscriberCode,
+                        SubscriberName = SubscriberName,
+                        AccountNO = AccountNO,
+                        OpenDate = OpenDate,
+                        LastPaymentDate = LastPaymentDate,
+                        OpenBalance = OpenBalance,
+                        CurrentBalance = CurrentBalance,
+                        OverdueAmount = OverdueAmount,
+                        InstalmentAmount = InstalmentAmount,
+                        StatusCodeDesc = StatusCodeDesc,
+                        StatusDate = StatusDate,
+                        IndustryType = IndustryType,
+                        PaymentHistoryChartURL = PaymentHistoryChartURL,
+                        PaymentHistoryAccountDetails = PaymentHistoryAccountDetails,
+                    });
+                }
 
-                //    ViewData["AddressLine4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].FullAddress;
-                //    ViewData["AddressDate4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[3].LastUpdatedDate;
-                //}
+                ViewData["CPAACCOUNTS"] = CPAACCOUNTS;
 
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    Console.WriteLine(rootObject.ResponseObject.HistoricalInformation.AddressHistory[i].Line3);
-                //}
-                //    System.Diagnostics.Debug.WriteLine(ViewData["Address"]);
-                //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
-                //extract list of companies returned
+                //HistoricalInformation
+                List<AddressHistory> AddressHist;
+                List<TelephoneHistory> TelHist;
+                List<EmploymentHistory> EmpHist;
+                Newtonsoft.Json.Linq.JArray element1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+                element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                //AddressHIstoryValues
+                String TypeDescription = "";
+                String Line1 = "";
+                String Line2 = "";
+                String Line3 = "";
+                String PostalCode = "";
+                String FullAddress = "";
+                String LastUpdatedDate = "";
+                //TelephoneHIstory
+                String TypeDescriptionTel = "";
+                String DialCode = "";
+                String Number = "";
+                String FullNumber = "";
+                String LastUpdatedDateTel = "";
+                //EmploymentHistory
+                String EmployerName = "";
+                String Designation = "";
+                AddressHist = new List<AddressHistory>();
+                TelHist = new List<TelephoneHistory>();
+                EmpHist = new List<EmploymentHistory>();
+                for (int count = 0; count < (element1.Count); count++)
+                {
+                    TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                    Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                    Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                    Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                    PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                    FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                //PersonInformation lst = getIndividualList(response);
+                    AddressHist.Add(new AddressHistory
+                    {
+                        TypeDescription = TypeDescription,
+                        Line1 = Line1,
+                        Line2 = Line2,
+                        Line3 = Line3,
+                        PostalCode = PostalCode,
+                        FullAddress = FullAddress,
+                        LastUpdatedDate = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements2.Count); count++)
+                {
+                    TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                    DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                    Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                    FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                    LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+
+                    TelHist.Add(new TelephoneHistory
+                    {
+                        TypeDescriptionTel = TypeDescriptionTel,
+                        DialCode = DialCode,
+                        Number = Number,
+                        FullNumber = FullNumber,
+                        LastUpdatedDateTel = LastUpdatedDate,
+                    });
+                }
+                for (int count = 0; count < (elements3.Count); count++)
+                {
+                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
+
+                    EmpHist.Add(new EmploymentHistory
+                    {
+                        EmployerName = EmployerName,
+                        LastUpdatedDate = LastUpdatedDate,
+                    });
+                }
+                ViewData["AddressHist"] = AddressHist;
+                ViewData["TelHist"] = TelHist;
+                ViewData["EmpHist"] = EmpHist;
                 return View();
             }
-
-            return View();
         }
 
         public ActionResult VeriCredContactInfoByIDNumber()
@@ -4575,26 +4267,9 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4604,13 +4279,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4666,7 +4334,6 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             var mes = ViewData["ResponseMessage"].ToString();
@@ -4682,7 +4349,6 @@ namespace searchworks.client.Controllers
 
                 //PersonInformation
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
@@ -4713,26 +4379,9 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4742,13 +4391,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4804,12 +4446,10 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             var mes = ViewData["ResponseMessage"].ToString();
 
-            System.Diagnostics.Debug.WriteLine("Message " + mes);
             if (mes == "NotFound")
             {
                 ViewData["Message"] = "Not Found";
@@ -4859,26 +4499,9 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string refe = veri.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -4888,13 +4511,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -4950,15 +4566,12 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            System.Diagnostics.Debug.WriteLine("Reponse Message:" + ViewData["ResponseMessage"]);
 
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             var mes = ViewData["ResponseMessage"].ToString();
 
-            System.Diagnostics.Debug.WriteLine("Message " + mes);
             if (mes == "NotFound" || mes == "Invalid sessionToken")
             {
                 ViewData["Message"] = "Not Found";
@@ -4970,7 +4583,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
 
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Initials"] = rootObject.ResponseObject.PersonInformation.Initials;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
@@ -5007,26 +4619,9 @@ namespace searchworks.client.Controllers
             string id = search.idNumber;
             string refe = search.Reference;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
-            //string serverIp = "localhost";
-            //string username = "root";
-            //string password = "";
-            //string databaseName = "jcred";
-
-            //string serverIp = "197.242.148.16";
-            ////string username = "cykgxznt_user";
-            //string username = "cykgxznt_admin";
-            //string password = "jcred123";
-            //string databaseName = "cykgxznt_jcred";
-            //string port = "3306";
-
-            string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //System.Diagnostics.Debug.WriteLine(log.Email);
-            //System.Diagnostics.Debug.WriteLine(log.Password);
 
             DateTime time = DateTime.Now;
 
@@ -5036,13 +4631,6 @@ namespace searchworks.client.Controllers
             string action = "ID: " + id;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
-
-            System.Diagnostics.Debug.WriteLine(date_add);
-            System.Diagnostics.Debug.WriteLine(time_add);
-            System.Diagnostics.Debug.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine(action);
-            System.Diagnostics.Debug.WriteLine(user_id);
-            System.Diagnostics.Debug.WriteLine(us);
 
             ViewData["user"] = Session["Name"].ToString();
             ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5098,13 +4686,11 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
-            System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             var mes = ViewData["ResponseMessage"].ToString();
 
-            System.Diagnostics.Debug.WriteLine("Message " + mes);
             if (mes == "NotFound")
             {
                 ViewData["Message"] = "Not Found";
@@ -5116,7 +4702,6 @@ namespace searchworks.client.Controllers
                 ViewData["Message"] = "good";
 
                 ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                System.Diagnostics.Debug.WriteLine(ViewData["FirstName"]);
                 ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
                 ViewData["Initials"] = rootObject.ResponseObject.PersonInformation.Initials;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
@@ -5159,28 +4744,11 @@ namespace searchworks.client.Controllers
             string name = xds.FirstName;
             string sur = xds.Surname;
 
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (type == "photo")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5190,13 +4758,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5253,7 +4814,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                // System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -5311,24 +4871,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "enquiryID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5338,13 +4883,6 @@ namespace searchworks.client.Controllers
                 string action = "Equiry ID: " + enquiryID + "; Equiry Result ID: " + enquiryResultID + "; Search Description: " + seaDesc;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5403,29 +4941,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5435,13 +4957,6 @@ namespace searchworks.client.Controllers
                 string action = "Name: " + name + "; Surname: " + sur + "; ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5500,11 +5015,8 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
-
-                System.Diagnostics.Debug.WriteLine("message: " + mes);
 
                 if (mes == "ServiceOffline")
                 {
@@ -5579,30 +5091,11 @@ namespace searchworks.client.Controllers
 
             string id = xds.IDNumber;
 
-            System.Diagnostics.Debug.WriteLine(name);
-            System.Diagnostics.Debug.WriteLine(surname);
-            System.Diagnostics.Debug.WriteLine(id);
-
             if (type == "address")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5612,13 +5105,6 @@ namespace searchworks.client.Controllers
                 string action = "Suburb: " + suburb + "; Street Number: " + streetNumber + "; Street Name: " + streetName + "; City: " + city + "; Province: " + province;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5679,7 +5165,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
                 ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
@@ -5693,7 +5178,6 @@ namespace searchworks.client.Controllers
                 ViewData["Reference"] = rootObject.ResponseObject[0].PersonInformation.Reference;
                 ViewData["Age"] = rootObject.ResponseObject[0].PersonInformation.Age;
                 ViewData["Quality"] = rootObject.ResponseObject[0].PersonInformation.Quality;
-                System.Diagnostics.Debug.WriteLine(ViewData["MaritalStatus"]);
                 //ViewData["FirstName1"] = (Array)o.SelectToken("ResponseObject");
                 //extract list of companies returned
 
@@ -5701,24 +5185,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "enquiryID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5728,13 +5197,6 @@ namespace searchworks.client.Controllers
                 string action = "Equiry ID: " + enquiryID + "; Equiry Result ID: " + enquiryResultID + "; Search Description: " + seaDesc;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5793,29 +5255,13 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
             else if (type == "ID")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5825,13 +5271,6 @@ namespace searchworks.client.Controllers
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -5888,7 +5327,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -5935,24 +5373,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "name")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -5962,13 +5385,6 @@ namespace searchworks.client.Controllers
                 string action = "First Name: " + name + "; Surname: " + surname + "; Date Of Birth: " + dob;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -6027,11 +5443,9 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
-                System.Diagnostics.Debug.WriteLine("Message: " + mes);
                 if (mes == "ServiceOffline")
                 {
                     ViewData["Message"] = "Service is offline";
@@ -6075,25 +5489,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "passport")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
-
                 DateTime time = DateTime.Now;
 
                 string date_add = DateTime.Today.ToShortDateString();
@@ -6102,13 +5500,6 @@ namespace searchworks.client.Controllers
                 string action = "Passport Number: " + passport;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -6165,7 +5556,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();
@@ -6228,24 +5618,9 @@ namespace searchworks.client.Controllers
             }
             else if (type == "tele")
             {
-                //string serverIp = "localhost";
-                //string username = "root";
-                //string password = "";
-                //string databaseName = "jcred";
-
-                //string serverIp = "197.242.148.16";
-                ////string username = "cykgxznt_user";
-                //string username = "cykgxznt_admin";
-                //string password = "jcred123";
-                //string databaseName = "cykgxznt_jcred";
-                //string port = "3306";
-
-                string dbConnectionString = string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                //System.Diagnostics.Debug.WriteLine(log.Email);
-                //System.Diagnostics.Debug.WriteLine(log.Password);
 
                 DateTime time = DateTime.Now;
 
@@ -6255,13 +5630,6 @@ namespace searchworks.client.Controllers
                 string action = "Surname: " + surname + "; Telephone Code: " + teleCode + "; Telephone Number: " + teleNumber;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
-
-                System.Diagnostics.Debug.WriteLine(date_add);
-                System.Diagnostics.Debug.WriteLine(time_add);
-                System.Diagnostics.Debug.WriteLine(page);
-                System.Diagnostics.Debug.WriteLine(action);
-                System.Diagnostics.Debug.WriteLine(user_id);
-                System.Diagnostics.Debug.WriteLine(us);
 
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
@@ -6320,7 +5688,6 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
 
-                //System.Diagnostics.Debug.WriteLine(o["ResponseObject"].ToString());
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 var mes = ViewData["ResponseMessage"].ToString();

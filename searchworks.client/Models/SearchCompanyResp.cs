@@ -2,6 +2,18 @@
 
 namespace searchworks.client.Company
 {
+    public class CapitalInformation
+    {
+        public string CapitalType { get; set; }
+        public string CompanyCapitalID { get; set; }
+        public string CompanyID { get; set; }
+        public string CompanyRegistrationNumber { get; set; }
+        public string NoShares { get; set; }
+        public string ParriValue { get; set; }
+        public string Premium { get; set; }
+        public string ShareAmount { get; set; }
+    }
+
     public class SearchInformation
     {
         public string SearchUserName { get; set; }
@@ -68,7 +80,7 @@ namespace searchworks.client.Company
         public string Type { get; set; }
         public string AppointmentDate { get; set; }
         public string ResignationDate { get; set; }
-        public string MemberContribution { get; set; }
+        public string MemberContribution{ get; set; }
         public string MemberSize { get; set; }
         public string ResidentialAddress1 { get; set; }
         public string ResidentialAddress2 { get; set; }
@@ -87,13 +99,14 @@ namespace searchworks.client.Company
 
     }
 
-    public class ResponseObject
+        public class ResponseObject
     {
         public SearchInformation SearchInformation { get; set; }
         public CompanyInformation CompanyInformation { get; set; }
-        //public Directors Directors { get; set; }
-    }
+        public Directors Directors { get; set; }
+        public CapitalInformation CapitalInformation { get; set; }
 
+    }
     public class RootObject
     {
         public string ResponseMessage { get; set; }
@@ -103,14 +116,14 @@ namespace searchworks.client.Company
 
     public class Search
     {
-        public string CipcSearchBy { get; set; }
-        public string CompanyName { get; set; }
-        public string RegistrationNumber { get; set; }
+         public string CipcSearchBy { get; set; }
+         public string CompanyName { get; set; }
+         public string RegistrationNumber { get; set; }
         public string CompanyID { get; set; }
         public string PDF { get; set; }
         public string seaType { get; set; }
         public string Reference { get; set; }
-
+        
 
 
 
