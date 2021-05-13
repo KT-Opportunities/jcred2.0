@@ -11,7 +11,8 @@ using MySql.Data.Entity;
 
 namespace searchworks.client.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    // You can add profile data for the user by adding more properties to your ApplicationUser
+    // class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -27,7 +28,7 @@ namespace searchworks.client.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("MySqlConnection", throwIfV1Schema: false)
         {
         }
 
@@ -36,7 +37,6 @@ namespace searchworks.client.Models
             DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             return new ApplicationDbContext();
         }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
