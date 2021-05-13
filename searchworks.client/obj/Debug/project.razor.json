@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\Raymo\\OneDrive\\Documents\\GitHub\\jcred2.0\\searchworks.client\\searchworks.client.csproj",
+  "FilePath": "c:\\Users\\emman\\Documents\\KTO Work Projects\\jcred2.0\\searchworks.client\\searchworks.client.csproj",
   "Configuration": {
     "ConfigurationName": "UnsupportedRazor",
     "LanguageVersion": "1.0",
@@ -11,7 +11,7 @@
   },
   "ProjectWorkspaceState": {
     "TagHelpers": [],
-    "CSharpLanguageVersion": 703
+    "CSharpLanguageVersion": 900
   },
   "RootNamespace": null,
   "Documents": [],

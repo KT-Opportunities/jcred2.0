@@ -26,60 +26,58 @@
 
                     @Html.TextBox("Reference", null, new { @id = "Ref" })
                 </div>
-            <div class="eqType">
-                <label>Enquiry Type</label><br>
+                <div class="eqType">
+                    <label>Enquiry Type</label><br>
 
+                    @Html.DropDownList("eqtype", new List<SelectListItem>
+                {
 
-                @Html.DropDownList("eqtype", new List<SelectListItem>
-            {
+                      new SelectListItem { Text = "Person Trace", Value = "trace"},
+                      new SelectListItem { Text = "Person Verification", Value = "verification"},
 
-                
-                  new SelectListItem { Text = "Person Trace", Value = "trace"},
-                  new SelectListItem { Text = "Person Verification", Value = "verification"},
-              
             }, new { @id = "eqtype", required = "required" })
-            </div>
-            <div class="seaType">
-                <label>Search Criteria</label><br>
-
-                @Html.DropDownList("seatype", new List<SelectListItem>
-            {
-
-                  new SelectListItem { Text = "Name", Value = "name"},
-                  new SelectListItem { Text = "ID Number", Value = "idnumber"},
-                  new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
-
-            }, "Please Select", new { @id = "seatype", required = "required" })
-            </div>
-            <div class="firstname">
-                <label>First Name</label><br>
-
-                @Html.TextBox("FirstName", null, new { @id = "FirstName", minlength = "3", maxlength = "30" })
-            </div>
-            <div class="surname">
-                <label>Surname</label><br>
-
-                @Html.TextBox("Surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
-            </div>
-
-            <div class="idnumber">
-                <label>ID Number</label><br>
-
-                @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
-            </div>
-
-            <div class="tc">
-                <div>
-                    I accept the <a href="#">terms and conditions</a>
-                    <input id="tc" type="checkbox" value="tc" required />
                 </div>
-            </div>
+                <div class="seaType">
+                    <label>Search Criteria</label><br>
 
-            <button onclick="Search()" id="individualSearch" class="btn" name="individualSearch">Perform Search</button>
+                    @Html.DropDownList("seatype", new List<SelectListItem>
+                {
+
+                      new SelectListItem { Text = "Name", Value = "name"},
+                      new SelectListItem { Text = "ID Number", Value = "idnumber"},
+                      new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
+
+                }, "Please Select", new { @id = "seatype", required = "required" })
+                </div>
+                <div class="firstname">
+                    <label>First Name</label><br>
+
+                    @Html.TextBox("FirstName", null, new { @id = "FirstName", minlength = "3", maxlength = "30" })
+                </div>
+                <div class="surname">
+                    <label>Surname</label><br>
+
+                    @Html.TextBox("Surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                </div>
+
+                <div class="idnumber">
+                    <label>ID Number</label><br>
+
+                    @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
+                </div>
+
+                <div class="tc">
+                    <div>
+                        I accept the <a href="#">terms and conditions</a>
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </div>
+                </div>
+
+                <button onclick="Search()" id="individualSearch" class="btn" name="individualSearch">Perform Search</button>
 
             }
         </div>
-            
+
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
                 Obtain the consumer trace details of an individual comprising of address, contact or employment history.
@@ -91,71 +89,70 @@
 </div>
 
 @*<script>
-    function Search(event) {
-        event.preventDefault();
+        function Search(event) {
+            event.preventDefault();
 
-  $("#load").addClass("loader"); // to animate when successfull
+      $("#load").addClass("loader"); // to animate when successfull
 
-  var Firstname = document.getElementById("Firstname").value;
-  var Surname = document.getElementById("Surname").value;
-  var ID = document.getElementById("IDNumber").value;
+      var Firstname = document.getElementById("Firstname").value;
+      var Surname = document.getElementById("Surname").value;
+      var ID = document.getElementById("IDNumber").value;
 
-  if ((Firstname === "" && Surname === "") || ID === "") {
-    var alertMessage =
-      '<div class="alert alert-danger" role="alert">' +
-      "Please fill in details to search!</div>";
-
-    $(".resturn-message").html(alertMessage);
-  } else if (Firstname === "") {
-    var alertMessage =
-      '<div class="alert alert-danger" role="alert">' +
-      "Please fill in First Name to search!</div>";
-
-    $(".resturn-message").html(alertMessage);
-  } else if (Surname === "") {
-    var alertMessage =
-      '<div class="alert alert-danger" role="alert">' +
-      "Please fill in Surname to search!</div>";
-
-    $(".resturn-message").html(alertMessage);
-  } else if (ID === "") {
-    var alertMessage =
-      '<div class="alert alert-danger" role="alert">' +
-      "Please fill in ID Number to search!</div>";
-
-    $(".resturn-message").html(alertMessage);
-  } else {
-    $.ajax({
-      type: "POST",
-      url: '@Url.Action("CSIPersonalRecordsResults", "Individual")',
-      data: {
-        FirstName: $("#FirstName").val(),
-        Surname: $("#Surname").val(),
-        IDNumber: $("#IDNumber").val(),
-      },
-      dataType: "text",
-      error: function (result) {
-        alertMessage =
-          '<div class="alert alert-success" role="alert">' +
-          "Account Created </div>";
-
-        $(".resturn-message").html(alertMessage);
-      },
-      success: function (result) {
+      if ((Firstname === "" && Surname === "") || ID === "") {
         var alertMessage =
-          '<div class="alert alert-success" role="alert">' + "Search.../div>";
+          '<div class="alert alert-danger" role="alert">' +
+          "Please fill in details to search!</div>";
 
         $(".resturn-message").html(alertMessage);
+      } else if (Firstname === "") {
+        var alertMessage =
+          '<div class="alert alert-danger" role="alert">' +
+          "Please fill in First Name to search!</div>";
 
-        //alert(result.user_type);
+        $(".resturn-message").html(alertMessage);
+      } else if (Surname === "") {
+        var alertMessage =
+          '<div class="alert alert-danger" role="alert">' +
+          "Please fill in Surname to search!</div>";
 
-        debugger;
-      },
-    });
-  }
-}
+        $(".resturn-message").html(alertMessage);
+      } else if (ID === "") {
+        var alertMessage =
+          '<div class="alert alert-danger" role="alert">' +
+          "Please fill in ID Number to search!</div>";
 
-</script>*@
+        $(".resturn-message").html(alertMessage);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: '@Url.Action("CSIPersonalRecordsResults", "Individual")',
+          data: {
+            FirstName: $("#FirstName").val(),
+            Surname: $("#Surname").val(),
+            IDNumber: $("#IDNumber").val(),
+          },
+          dataType: "text",
+          error: function (result) {
+            alertMessage =
+              '<div class="alert alert-success" role="alert">' +
+              "Account Created </div>";
+
+            $(".resturn-message").html(alertMessage);
+          },
+          success: function (result) {
+            var alertMessage =
+              '<div class="alert alert-success" role="alert">' + "Search.../div>";
+
+            $(".resturn-message").html(alertMessage);
+
+            //alert(result.user_type);
+
+            debugger;
+          },
+        });
+      }
+    }
+    </script>*@
 
 <script>
     $(document).ready(function () {
@@ -238,5 +235,4 @@
             {}
         )
     );
-
 </script>

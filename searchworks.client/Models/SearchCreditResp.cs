@@ -63,6 +63,7 @@ namespace searchworks.client.Credit
     {
         public string EmployerName { get; set; }
         public string Designation { get; set; }
+        public string LastUpdatedDate { get; set; }
     }
 
     public class ResponseObject
@@ -139,6 +140,33 @@ namespace searchworks.client.Credit
         public string ContactPerson { get; set; }
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
+    }
+
+    public class CPA_Accounts
+
+    {
+        public string Account_ID { get; set; }
+        public string SubscriberCode { get; set; }
+        public string SubscriberName { get; set; }
+        public string AccountNO { get; set; }
+        public string OpenDate { get; set; }
+        public string LastPaymentDate { get; set; }
+        public string OpenBalance { get; set; }
+        public string CurrentBalance { get; set; }
+        public string OverdueAmount { get; set; }
+        public string InstalmentAmount { get; set; }
+        public string StatusCodeDesc { get; set; }
+        public string StatusDate { get; set; }
+        public string IndustryType { get; set; }
+        public string PaymentHistoryChartURL { get; set; }
+        public Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails { get; set; }
+    }
+
+    public class PaymentHistoryAccountDetails
+    {
+        public string LastPaymentDate { get; set; }
+        public string PaymentHistory { get; set; }
+        public string IsEstimated { get; set; }
     }
 
     public class AddressHistory
