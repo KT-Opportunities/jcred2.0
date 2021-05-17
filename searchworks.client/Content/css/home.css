@@ -173,7 +173,8 @@ border-color:red;
     align-self: center;
     margin-left: 36px;
     margin-right: 36px;
-    height: 426px;
+    /* height: 523px;*/
+    padding-bottom: 9px;
     padding-top: 9px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000029;
@@ -436,7 +437,7 @@ font-size: 12px;*/
     font-size: 12px;
     margin-top: 44px;
     position: relative;
-    left: 95px;
+    left: 80px;
 }
 
 #eqtype,
@@ -1004,7 +1005,7 @@ margin-bottom: 20px;*/
 
 .active {
     border-radius: 10px;
-    background-color: #00BECE;
+ /*   background-color: #00BECE;*/
     width: 100%;
     height: 100%;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -1023,10 +1024,19 @@ margin-bottom: 20px;*/
 .btn-row {
     padding-right: 125px;
     padding-left: 19px;
+
 }
 
-.btns :focus {
+.btns:focus {
     outline: 0 !important;
+    background: #00BECE;
+    outline: none;
+}
+
+#btns-sel {
+    outline: 0 !important;
+    background: #00BECE;
+    outline: none;
 }
 
 .btns-active :focus {
@@ -1184,7 +1194,7 @@ height: 424px;
 
 .my-custom-scrollbar {
     position: relative;
-    height: 400px;
+    height: 418px;
     overflow: auto;
 }
 
@@ -1275,4 +1285,83 @@ margin-top:40%
     position: relative;
     top: 6px;
     font-weight: bold;
+}
+
+.modal-body textarea {
+    height: 100px !important;
+}
+
+.ap {
+    margin-top: 46px;
+    margin-right: 46px;
+    margin-bottom: 14px;
+    margin-left: 54px;
+}
+
+.rad {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 8px;
+    margin-top: 23px;
+    margin-left: 16px;
+    border: 1px solid #E8E8E8;
+    width: 349px;
+    height: 32px;
+    align-items: baseline;
+    border-radius: 5px;
+}
+
+.rad-lab {
+    position: relative;
+    bottom: 13px;
+    font-weight: 600;
+}
+
+.addr {
+    width: 90% !important;
+    margin-bottom: 11px;
+}
+
+.con2 {
+    width: 100.5%;
+    align-self: center;
+    margin-left: 36px;
+    margin-right: 36px;
+    height: 476px;
+    padding-bottom: 9px;
+    padding-top: 9px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+#listBox {
+    height: 100%;
+    border: none;
+}
+
+.jc {
+    display: block;
+    width: 103.5%;
+}
+
+.rad2 {
+    position: relative;
+    bottom: 62px;
+    left: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 8px;
+    margin-top: 23px;
+    margin-left: 16px;
+    /* border: 1px solid #E8E8E8; */
+    width: 349px;
+    height: 32px;
+    align-items: baseline;
+    border-radius: 5px;
 }
