@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="server=localhost;port=3306;userid=root;password=password;database=testdatabase;persistsecurityinfo=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="MySqlConnection-Web.config Connection String" description="MySqlConnection Connection String used in web.config by the application to access the database." defaultValue="Server=svr-jcred-prod-zanorth-001.mysql.database.azure.com;user id=ktodev@svr-jcred-prod-zanorth-001;password=mrGw59Q8mdysGG; persist security info=True;database=j-creddb-dev" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MySqlConnection']/@connectionString" />
+  </parameter>
+  <parameter name="LocalMySqlServer-Web.config Connection String" description="LocalMySqlServer Connection String used in web.config by the application to access the database." defaultValue="BGcheck" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='LocalMySqlServer']/@connectionString" />
+  </parameter>
+  <parameter name="bgcheckDB-Web.config Connection String" description="bgcheckDB Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='bgcheckDB']/@connectionString" />
+  </parameter>
+  <parameter name="History-Web.config Connection String" description="History Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='History']/@connectionString" />
+  </parameter>
+  <parameter name="S_history-Web.config Connection String" description="S_history Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='S_history']/@connectionString" />
+  </parameter>
+  <parameter name="search_history-Web.config Connection String" description="search_history Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='search_history']/@connectionString" />
+  </parameter>
+  <parameter name="checkss-Web.config Connection String" description="checkss Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='checkss']/@connectionString" />
+  </parameter>
+  <parameter name="check_list-Web.config Connection String" description="check_list Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='check_list']/@connectionString" />
+  </parameter>
+  <parameter name="checks-Web.config Connection String" description="checks Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred;Convert Zero Datetime=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='checks']/@connectionString" />
+  </parameter>
+  <parameter name="check-Web.config Connection String" description="check Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred;Convert Zero Datetime=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='check']/@connectionString" />
+  </parameter>
+  <parameter name="dbChecks-Web.config Connection String" description="dbChecks Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred;Convert Zero Datetime=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='dbChecks']/@connectionString" />
+  </parameter>
+  <parameter name="checkList-Web.config Connection String" description="checkList Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='checkList']/@connectionString" />
+  </parameter>
+  <parameter name="users-Web.config Connection String" description="users Connection String used in web.config by the application to access the database." defaultValue="server=localhost;user id=root;database=jcred" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\emman\\Documents\\KTO\ Work\ Projects\\jcred2\.0\\searchworks\.client\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='users']/@connectionString" />
+  </parameter>
+</parameters>

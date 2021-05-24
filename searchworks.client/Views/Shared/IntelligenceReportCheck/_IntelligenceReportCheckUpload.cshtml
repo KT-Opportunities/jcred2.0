@@ -1,0 +1,206 @@
+﻿@model searchworks.client.Models.Check
+    @{
+
+        var checkWithFile = new List<string>()
+{
+"ID Verification",
+"Matric - Pre 1992 (DOE)",
+"Matric - Post 1992 (Umalusi)",
+"N-Levels",
+"Academic Qualification (SA)",
+"Academic Qualification (SA) - (Wits Only)",
+"Academic Qualification (Africa)",
+"Academic Qualification (Global)",
+
+};
+
+        var checkWithInfo = new List<string>()
+{
+"Professional Association Membership (SA)",
+"Professional Association Membership (Global)",
+"Credit Checks - Experian",
+"Credit Checks - XDS",
+     "SA Work Permit",
+"Permanent Residency",
+     "Drivers License",
+"Professional Driving Permit(PrDP)",
+};
+
+        List<SelectListItem> CheckList = new List<SelectListItem>();
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Select Check",
+            Value = ""
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "ID / Passport Verification",
+            Value = "ID / Passport Verification | 22.04"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Professional Driving Permit(PrDP)",
+            Value = "Professional Driving Permit(PrDP) | 79.52",
+
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Driver’s License",
+            Value = "Drivers License | 76.49",
+
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Citizenship",
+            Value = "Citizenship | 137.47"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Permanent Residency",
+            Value = "Permanent Residency | 81.57"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "SA Work Permit",
+            Value = "SA Work Permit | 107.53"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Fraud Listing",
+            Value = "Fraud Listing | 65.21"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Criminal Record Check (Standard)",
+            Value = "Criminal Record Check (Standard) | 200.00"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Criminal Record Check (Premium)",
+            Value = "Criminal Record Check (Premium) | 250.00"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Credit Checks - XDS",
+            Value = "Credit Checks - XDS | 42.17"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Credit Checks - Experian",
+            Value = "Credit Checks - Experian | 42.17"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Matric - Pre 1992 (DOE)",
+            Value = "Matric - Pre 1992 (DOE) | 136.99"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Matric - Post 1992 (Umalusi)",
+            Value = "Matric - Post 1992 (Umalusi) | 92.09"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "N-Levels",
+            Value = "N-Levels | 80.71"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Academic Qualification (SA)",
+            Value = "Academic Qualification (SA) | 84.40"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Academic Qualification (SA) - (Wits Only)",
+            Value = "Academic Qualification (SA) - (Wits Only) |  183.43"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Academic Qualification (Africa)",
+            Value = "Academic Qualification (Africa) | 259.44"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Academic Qualification (Global)",
+            Value = "Academic Qualification (Global) | 397.44"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Professional Association Membership (SA)",
+            Value = "Professional Association Membership (SA) | 43.26",
+
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Professional Association Membership (Global)",
+            Value = "Professional Association Membership (Global) | 440.29"
+        });
+
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Professional Association Membership (Global)",
+            Value = "Professional Association Membership (Global) | 440.29"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Vehicle Registration",
+            Value = "Vehicle Registration | 440.29"
+        });
+        CheckList.Add(new SelectListItem
+        {
+            Text = "Deeds Records",
+            Value = "Deeds Records | 440.29"
+        });
+    }
+
+    <tr class="editorRow">
+        @using (Html.BeginCollectionItem("Check"))
+        {
+            <td>
+                @Html.DropDownListFor(a => a.CheckType, CheckList, new { @class = "form-control form-control-sm col-md-9 col-md-10 list", @onchange = "ChangeCheck(this)" })
+                <span class="field-validation-valid" data-valmsg-for="CheckType" data-valmsg-replace="true"></span>
+            </td>
+            <td class="check-pricing"><b>R</b>@Model.CheckPrice</td>
+
+            if (Model.CheckType != null && checkWithFile.Contains(Model.CheckType.Split('|')[0].Trim()))
+            {
+                <td>
+                    <input type="file" name="@Html.NameFor(a => a.CheckDocument)" id="@Html.IdFor(a=>a.CheckDocument)" accept="application/pdf" required />
+                    <span class="field-validation-valid" data-valmsg-for="CheckDocument" data-valmsg-replace="true"></span>
+                </td>
+            }
+            else if (Model.CheckType != null && checkWithInfo.Contains(Model.CheckType.Split('|')[0].Trim()))
+            {
+                var placeHolder = "";
+
+                if (Model.CheckType.Split('|')[0] == "Professional Association Membership (SA) " || Model.CheckType.Split('|')[0] == "Professional Association Membership (Global) ")
+                {
+                    placeHolder = "Name of Association & Year";
+
+                }
+                else if (Model.CheckType.Split('|')[0] == "Credit Checks - Experian " || Model.CheckType.Split('|')[0] == "Credit Checks - XDS ")
+                {
+                    placeHolder = "Enquiry Reason";
+                }
+                else if (Model.CheckType.Split('|')[0] == "SA Work Permit " || Model.CheckType.Split('|')[0] == "Permanent Residency ")
+                {
+                    placeHolder = "Permit Number";
+                }
+                else
+                {
+                    placeHolder = "License Number";
+                }
+
+                <td>
+                    <input type="text" name="@Html.NameFor(a => a.CheckInfo)" id="@Html.IdFor(a=>a.CheckInfo)" required placeholder="@placeHolder" class="form-control form-control-sm" />
+                    <span class="field-validation-valid" data-valmsg-for="CheckDocument" data-valmsg-replace="true"></span>
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
+
+            <td> <a href="#" class="deleteRow btn btn-primary btn-sm" onclick="DeleteRow(this)">Delete</a></td>
+        }
+    </tr>

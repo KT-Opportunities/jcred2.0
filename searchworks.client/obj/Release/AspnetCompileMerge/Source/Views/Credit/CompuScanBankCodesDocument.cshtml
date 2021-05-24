@@ -1,0 +1,190 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Credit.CompuScan>
+
+@{
+    ViewBag.Title = "Bank Codes Document";
+}
+
+
+
+    <div class="col-md-10 col-sm-10">
+        <div class="sea">SEARCH RESULTS</div>
+        <div class="sea act">Bank Codes Document</div>
+        <div class="sea_bar">
+            <label>Search History</label>
+            <input name="search" />
+            <button>RESET</button>
+        </div>
+        <div class="con" style="height:700px;">
+            <div class="col-md-6 col-sm-6 left" style="height:650px;">
+                @using (Html.BeginForm("CompuScanBankCodesDocumentResults", "Credit", FormMethod.Post))
+                {
+                    <div class="ref">
+                        <label>Reference</label><br>
+
+                        @Html.TextBox("reference", null, new { @id = "Ref" })
+                    </div>
+                    @*<div class="eqType">
+                        <label>CIPC Search By</label><br>
+
+                        @Html.DropDownList("CipcSearchBy", new List<SelectListItem>
+                    {
+
+                          new SelectListItem { Text = "Exact Matcht", Value = "1"},
+                          new SelectListItem { Text = "Contains", Value = "2"},
+                          new SelectListItem { Text = "Starts With", Value = "3"},
+                          new SelectListItem { Text = "By Registration Number", Value = "4"}
+                    }, " Select CIPC Search Parameter", new { @id = "eqtype", required = "required" })
+                    </div>*@
+                    @*<div class="seaType">
+                        <label>Search Criteria</label><br>
+
+                        @Html.DropDownList("seatype", new List<SelectListItem>
+                    {
+
+                          new SelectListItem { Text = "Name", Value = "name"},
+                          new SelectListItem { Text = "ID Number", Value = "idnumber"},
+                          new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
+
+                    }, "Please Select", new { @id = "seatype", required = "required" })
+
+                    </div>*@
+                    <div class="firstname" style="top: 80px;">
+                        <label>ID Number</label><br>
+
+                        @Html.TextBox("idNumber", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
+                    </div>
+                    <div class="surname">
+                        <label>Client Number</label><br>
+
+                        @Html.TextBox("clientName", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                    </div>
+                    <div class="firstname" style="top: 140px;">
+                        <label>Bank Name</label><br>
+
+                        @Html.TextBox("bankName", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
+                    </div>
+                    <div class="surname" style="top: 200px;">
+                        <label>Branch Code</label><br>
+
+                        @Html.TextBox("branchCode", null, new { @id = "Surname", minlength = "3", maxlength = "13" })
+                    </div>
+                    <div class="idnumber">
+                        <label>Branch Name</label><br>
+
+                        @Html.TextBox("branchName", null, new { @id = "Surname", minlength = "3", maxlength = "13" })
+                    </div>
+                    <div class="idnumber" style="top: 374px;">
+                        <label>Account Number</label><br>
+
+                        @Html.TextBox("accountNumber", null, new { @id = "Surname", minlength = "13", maxlength = "13" })
+                    </div>
+                <div class="idnumber" style="top: 427px;">
+                        <label>Amount</label><br>
+
+                        @Html.TextBox("amount", null, new { @id = "Surname", minlength = "13", maxlength = "13" })
+                    </div>
+                   <div class="idnumber" style="top: 479px;">
+                        <label>Report Type</label><br>
+
+                       @* @Html.TextBox("ReportType", null, new { @id = "Surname", minlength = "13", maxlength = "13" }) *@
+                       @Html.DropDownList("ReportType", new List<SelectListItem>
+                    {
+
+                          new SelectListItem { Text = "Express", Value = "0"},
+                          new SelectListItem { Text = "24 Hour", Value = "1"},
+                          new SelectListItem { Text = "Report", Value = "2"}
+                    }, " Select Report Type", new { @id = "eqtype", required = "required" })
+                    </div>
+                    <div class="tc" style="top: 564px;">
+                        <div>
+                            I accept the <a href="#">terms and conditions</a>
+                            <input id="tc" type="checkbox" value="tc" required />
+                        </div>
+                    </div>
+
+                    <button id="combinedComSearch" class="btn" name="combinedComSearch"  style="top:585px;">Perform Search</button>
+
+
+                }
+
+
+
+            </div>
+            <div class="col-md-6 col-sm-6 right">
+                <div class="cen_text">
+                    Obtain the consumer trace details of an individual comprising of address, contact or employment history.
+                    For more information about this repost please download the sample report. <br><br>
+                    Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function Search() {
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("GetCompanyResults", "Home")',
+                                data: {
+                                    companyName: $('#comName').val(),
+
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Account Created </div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+
+
+
+
+                            },
+                                success: function (result) {
+
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+                                    //alert(result.user_type);
+
+                                    debugger;
+
+
+
+                          if (result.status == true) {
+
+                                        if (result.user_type === "client") {
+
+                                            console.log(result);
+
+                                            window.location.href = '@Url.Action("SubmissionStep2", "Checks")';
+
+                                        }
+                                        else if (result.user_type === "admin") {
+                                             window.location.href = '@Url.Action("Admin_S", "Dashboard")';
+                                        }
+
+
+                            }
+                            else {
+
+                                var alertMessage = '<div class="alert alert-danger" role="alert">'
+                                    + 'Invalid Usename/Password</div>';
+
+                                $(".resturn-message").html(alertMessage)
+
+                                alert(result.message);
+                            }
+                            }
+                        });
+                        }
+
+</script>
