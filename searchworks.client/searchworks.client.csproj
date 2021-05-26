@@ -2,7 +2,6 @@
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -29,7 +28,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -41,6 +40,19 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>SecurityRules.ruleset</CodeAnalysisRuleSet>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,8 +67,8 @@
     <Reference Include="BeginCollectionItem, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
     </Reference>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.10.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.10\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
@@ -85,6 +97,9 @@
     <Reference Include="K4os.Hash.xxHash, Version=1.0.6.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
+    <Reference Include="MailKit, Version=2.12.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.2.12.0\lib\net46\MailKit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -108,9 +123,6 @@
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.Configuration, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -176,6 +188,9 @@
     <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
+    <Reference Include="MimeKit, Version=2.12.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.2.12.0\lib\net46\MimeKit.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.20.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.20\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
@@ -200,19 +215,83 @@
     <Reference Include="ServiceStack.Text, Version=5.0.0.0, Culture=neutral, PublicKeyToken=02c12cbda47e6587, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Text.5.8.0\lib\net45\ServiceStack.Text.dll</HintPath>
     </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_green, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a84b7dcfb1391f7f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.2\lib\net45\SQLitePCLRaw.batteries_green.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.2\lib\net45\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.core.1.1.2\lib\net45\SQLitePCLRaw.core.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9c301db686d0bd12, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.provider.e_sqlite3.net45.1.1.2\lib\net45\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+    </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Convention.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Hosting.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Runtime.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.TypedParts.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Diagnostics.FileVersionInfo, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.FileVersionInfo.4.3.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IO.Pipelines, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.4.7.0\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
     </Reference>
@@ -227,17 +306,53 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.4.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.7.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Thread, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Thread.4.3.0\lib\net46\System.Threading.Thread.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -280,6 +395,26 @@
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XmlDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XPath, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XPath.4.3.0\lib\net46\System.Xml.XPath.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XPath.XDocument.4.3.0\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ubiety.Dns.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.20\lib\net452\Ubiety.Dns.Core.dll</HintPath>
     </Reference>
@@ -328,6 +463,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\al.cs" />
+    <Compile Include="Models\OrgCategory.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\users.cs" />
     <Compile Include="Models\check_list.cs" />
@@ -1181,16 +1317,21 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.targets'))" />
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets'))" />
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets'))" />
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
   <Import Project="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" />
   <Import Project="..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.16.9.1050\build\Microsoft.VSSDK.BuildTools.targets')" />
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" />
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
