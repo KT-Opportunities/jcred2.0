@@ -13,5 +13,12 @@ namespace searchworks.client.Controllers
         {
             return View();
         }
+
+        public ActionResult SearchHistory()
+        {
+            return View();
+        }
+
+
     }
 }
