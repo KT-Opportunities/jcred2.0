@@ -17,22 +17,104 @@ using searchworks.client.Report;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.Net.Mail;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
 namespace searchworks.client.Controllers
 {
+    //[Authorize]
     public class HomeController : Controller
     {
+        public bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
+        //[AllowAnonymous]
         public ActionResult Login(Login log)
         {
             string dbConnectionString = "";
             dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            if (ModelState.IsValid)
+            {
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var authManager = HttpContext.GetOwinContext().Authentication;
+
+                ApplicationUser  user = userManager.Find(log.Email, log.Password);
+                if (user != null)
+                {
+                    var ident = userManager.CreateIdentity(user,
+                        DefaultAuthenticationTypes.ApplicationCookie);
+                    //use the instance that has been created. 
+                    authManager.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
+
+
+                    //return Redirect(login.ReturnUrl ?? Url.Action("Index", "Home"));
+
+                    Session["UserName"] = log.Email;
+                    Session["ID"] = ident.GetUserId();// reader2["uid"].ToString();
+                    Session["Name"] = log.Email;//reader2["fullname"].ToString();
+
+                    //if (userEmail == log.Email && userPass == log.Password)
+                    if(ident.IsAuthenticated)
+                    {
+                        //conn.Close();
+                        DateTime time = DateTime.Now;
+
+                        string date_add = DateTime.Today.ToShortDateString();
+                        string time_add = time.ToString("T");
+                        string page = "Login";
+                        string action = "Email:" + log.Email;
+                        string user_id = Session["ID"].ToString();
+                        string us = Session["Name"].ToString();
+
+                        try
+                        {
+                            string query_uidd = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+                            conn.Open();
+                            var cmd22 = new MySqlCommand(query_uidd, conn);
+                            var reader22 = cmd22.ExecuteReader();
+                            conn.Close();
+
+                            return RedirectToAction("Landing", "Home");
+                        }
+                        catch (Exception err)
+                        {
+                            conn.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password");
+                    TempData["Message"] = "Invalid username or password";
+                    //return View("Index");
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            
+
+            return RedirectToAction("Index", "Home");
+            /*
             string query_uid = "SELECT * FROM users WHERE email = '" + log.Email + "' && password = '" + log.Password + "'";
 
             conn.Open();
@@ -82,6 +164,7 @@ namespace searchworks.client.Controllers
                 conn.Close();
                 return View("Index");
             }
+            */
         }
 
         public ActionResult Logs()

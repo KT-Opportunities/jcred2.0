@@ -137,7 +137,7 @@ namespace searchworks.client.Controllers
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JToken token = JToken.Parse(response.Content);
 
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
@@ -568,7 +568,6 @@ namespace searchworks.client.Controllers
             //JObject o = JObject.Parse(response.Content);
 
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
             JToken token = JToken.Parse(response.Content);
 
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
@@ -2471,7 +2470,7 @@ namespace searchworks.client.Controllers
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
-
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -2569,7 +2568,7 @@ namespace searchworks.client.Controllers
                     elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
                     elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
                     elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
-                    //System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
                     String EnquiryDate = "";
                     String EnquiredBy = "";
                     String EnquiredByContact = "";
@@ -3603,7 +3602,7 @@ namespace searchworks.client.Controllers
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
                 JToken token = JToken.Parse(response.Content);
-
+                System.Diagnostics.Debug.WriteLine(JToken.Parse(response.Content));
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 var mes = ViewData["ResponseMessage"].ToString();
                 if (mes == "NotFound")
