@@ -15,20 +15,149 @@ namespace searchworks.client.Controllers
 {
     public class CreditController : Controller
     {
+        public void saveSearchHistory(int searchID, string searchUserName, string reportDate, string reference, string searchToken, string callerModule, string dataSupplier, string searchType, string SearchDescription)
+        {
+            string query_uid = "INSERT INTO searchhistory (searchID,searchUserName,reportDate,reference,searchToken,callerModule,dataSupplier,searchType,SearchDescription) VALUES('" + searchID + "','" + searchUserName + "','" + reportDate + "','" + reference + "','" + searchToken + "','" + callerModule + "','" + dataSupplier + "','" + searchType + "','" + SearchDescription + "')";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void savePersonInformation(int SearchToken, string Reference, string searchID, string InformationDate, string PersonID, string Title, string DateOfBirth, string FirstName, string Surname, string Fullname, string IDNumber, string IDNumber_Alternate, string MaritalStatus, string Gender, string Age, string MiddleName1, string MiddleName2, string SpouseFirstName, string SpouseSurname, string NumberOfDependants, string Remarks, string CurrentEmployer, string VerificationStatus, bool HasProperties)
+        {
+            string query_uid = "INSERT INTO personinformation (SearchToken,Reference,searchID,InformationDate,PersonID,Title,DateOfBirth,FirstName,Surname,Fullname,IDNumber,IDNumber_Alternate,MaritalStatus,Gender,Age,MiddleName1,MiddleName2,SpouseFirstName,SpouseSurname,NumberOfDependants,Remarks,CurrentEmployer,VerificationStatus,HasProperties) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + InformationDate + "','" + PersonID + "','" + Title + "','" + DateOfBirth + "','" + FirstName + "','" + Surname + "','" + Fullname + "','" + IDNumber + "','" + IDNumber_Alternate + "','" + MaritalStatus + "','" + Gender + "','" + Age + "','" + MiddleName1 + "','" + MiddleName2 + "','" + SpouseFirstName + "','" + SpouseSurname + "','" + NumberOfDependants + "','" + Remarks + "','" + CurrentEmployer + "','" + VerificationStatus + "','" + HasProperties + "' )";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void saveCreditInformation(int SearchToken, string Reference, string searchID, string CreditSummaryChartURL, string DelphiScore, string DelphiScoreChartURL, string RiskColour, string FlagCount, string FlagDetails, string TotalInstallmentAmountCPAAccounts_CompuScan, string TotalInstallmentAmountNLRAccounts_CompuScan, string TotalNumberCPAAccounts_CompuScan, string TotalNumberNLRAccounts_CompuScan, string TotalNumberActiveCPAAccounts_CompuScan, string TotalNumberActiveNLRAccounts_CompuScan, string TotalNumberClosedCPAAccounts_CompuScan, string TotalNumberClosedNLRAccounts_CompuScan)
+        {
+            string query_uid = "INSERT INTO creditinformation (SearchToken,Reference,searchID,CreditSummaryChartURL,DelphiScore,DelphiScoreChartURL,RiskColour,FlagCount,FlagDetails,TotalInstallmentAmountCPAAccounts_CompuScan,TotalInstallmentAmountNLRAccounts_CompuScan,TotalNumberCPAAccounts_CompuScan,TotalNumberNLRAccounts_CompuScan,TotalNumberActiveCPAAccounts_CompuScan,TotalNumberActiveNLRAccounts_CompuScan,TotalNumberClosedCPAAccounts_CompuScan,TotalNumberClosedNLRAccounts_CompuScan) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + CreditSummaryChartURL + "','" + DelphiScore + "','" + DelphiScoreChartURL + "','" + RiskColour + "','" + FlagCount + "','" + FlagDetails + "','" + TotalInstallmentAmountCPAAccounts_CompuScan + "','" + TotalInstallmentAmountNLRAccounts_CompuScan + "','" + TotalNumberCPAAccounts_CompuScan + "','" + TotalNumberNLRAccounts_CompuScan + "','" + TotalNumberActiveCPAAccounts_CompuScan + "','" + TotalNumberActiveNLRAccounts_CompuScan + "','" + TotalNumberClosedCPAAccounts_CompuScan + "','" + TotalNumberClosedNLRAccounts_CompuScan + "' )";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void saveCreditDeclineReason(int SearchToken, string Reference, string searchID, string ReasonCode, string ReasonDescription)
+        {
+            string query_uid = "INSERT INTO creditdeclinereason (SearchToken,Reference,searchID,ReasonCode, ReasonDescription) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + ReasonCode + "','" + ReasonDescription + "')";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void saveDataCounts(int SearchToken, string Reference, string searchID, string Accounts, string Enquiries, string Judgments, string Notices, string BankDefaults, string Defaults, string Collections, string Directors, string Addresses, string Telephones, string Occupants, string Employers, string TraceAlerts, string PaymentProfiles, string OwnEnquiries, string AdminOrders, string PossibleMatches, string DefiniteMatches, string Loans, string FraudAlerts, string Companies, string Properties, string Documents, string DemandLetters, string Trusts, string Bonds, string Deeds, string PublicDefaults, string NLRAccounts)
+        {
+            string query_uid = "INSERT INTO datacounts (SearchToken,Reference,searchID,Accounts, Enquiries,Judgments,Notices,BankDefaults,Defaults,Collections,Directors,Addresses,Telephones,Occupants,Employers,TraceAlerts,PaymentProfiles,OwnEnquiries,AdminOrders,PossibleMatches,DefiniteMatches,Loans,FraudAlerts,Companies,Properties,Documents,DemandLetters,Trusts,Bonds,Deeds,PublicDefaults,NLRAccounts) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + Accounts + "','" + Enquiries + "','" + Judgments + "','" + Notices + "','" + BankDefaults + "','" + Defaults + "','" + Collections + "','" + Directors + "','" + Addresses + "','" + Telephones + "','" + Occupants + "','" + Employers + "','" + TraceAlerts + "','" + PaymentProfiles + "','" + OwnEnquiries + "','" + AdminOrders + "','" + PossibleMatches + "','" + DefiniteMatches + "','" + Loans + "','" + FraudAlerts + "','" + Companies + "','" + Properties + "','" + Documents + "','" + DemandLetters + "','" + Trusts + "','" + Bonds + "','" + Deeds + "','" + PublicDefaults + "','" + NLRAccounts + "')";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void saveDebtReviewStatus(int SearchToken, string Reference, string searchID, string StatusDate, string StatusDescription, string ApplicationDate)
+        {
+            string query_uid = "INSERT INTO debtreviewstatus (SearchToken,Reference,searchID,StatusDate, StatusDescription,ApplicationDate) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + StatusDate + "','" + StatusDescription + "','" + ApplicationDate + "')";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void saveConsumerStatistics(int SearchToken, string Reference, string searchID, string HighestJudgment, string RevolvingAccounts, string InstalmentAccounts, string OpenAccounts, string AdverseAccounts, string Percent0ArrearsLast12Histories, string MonthsOldestOpenedPPSEver, string NumberPPSLast12Months, string NLRMicroloansPast12Months)
+        {
+            string query_uid = "INSERT INTO consumerstatistics (SearchToken,Reference,searchID,HighestJudgment,RevolvingAccounts,InstalmentAccounts,OpenAccounts,AdverseAccounts,Percent0ArrearsLast12Histories,MonthsOldestOpenedPPSEver,NumberPPSLast12Months,NLRMicroloansPast12Months) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + HighestJudgment + "','" + RevolvingAccounts + "','" + InstalmentAccounts + "','" + OpenAccounts + "','" + AdverseAccounts + "','" + Percent0ArrearsLast12Histories + "','" + MonthsOldestOpenedPPSEver + "','" + NumberPPSLast12Months + "','" + NLRMicroloansPast12Months + "')";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
+        public void saveNLRStats(int SearchToken, string Reference, string searchID, string ActiveAccounts, string ClosedAccounts, string WorstMonthArrears, string WorstArrearsStatus, string BalanceExposure, string CumulativeArrears)
+        {
+            string query_uid = "INSERT INTO nlrstats (SearchToken,Reference,searchID,ActiveAccounts, ClosedAccounts,WorstMonthArrears,WorstArrearsStatus,BalanceExposure,CumulativeArrears) VALUES('" + SearchToken + "','" + Reference + "','" + searchID + "','" + ActiveAccounts + "','" + ClosedAccounts + "','" + WorstMonthArrears + "','" + WorstArrearsStatus + "','" + BalanceExposure + "','" + CumulativeArrears + "')";
+        }
+
+        public void saveNLRStats12()
+        {
+        }
+
         public string GetLoginToken(string api_username, string api_password)
+
         {
             string user_id = Session["ID"].ToString();
-            System.Diagnostics.Debug.WriteLine(user_id);
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
-            var host = "https://uatrest.searchworks.co.za/auth/login/";
+            var host = "https://rest.searchworks.co.za/auth/login/";
             var body_credentials = new
             {
                 Username = api_username,
                 Password = api_password
             };
-            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
+            //string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }"; //Change Back
+            string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
             //var request = new RestRequest("login", Method.POST);
@@ -105,7 +234,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/combinedreport/consumer/";
+            var url = "https://rest.searchworks.co.za/credit/combinedreport/consumer/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -140,6 +269,21 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             JToken token = JToken.Parse(response.Content);
 
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            //saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+            //savePersonInformation(09867565, "Reference", "searchID", "InformationDate", "PersonID", "Title", "DateOfBirth", "FirstName", "Surname", "Fullname", "IDNumber", "IDNumber_Alternate", "MaritalStatus", "Gender", "Age", "MiddleName1", "MiddleName2", "SpouseFirstName", "SpouseSurname", "NumberOfDependants", "Remarks", "CurrentEmployer", "VerificationStatus", true);
+            //saveCreditInformation(4556434, "Reference0", "8787", "jshdksjdjkks", "DelphiScore", "DelphiscoreuRL", "RiskColor", "FLagCount", "FlagDetails", "TotalInstallmentAmountCPAAccounts_CompuScan", "TotalInstallmentAmountNLRAccounts_CompuScan", "TotalNumberCPAAccounts_CompuScan", "TotalNumberNLRAccounts_CompuScan", "TotalNumberActiveCPAAccounts_CompuScan", "TotalNumberActiveNLRAccounts_CompuScan", "TotalNumberClosedCPAAccounts_CompuScan", "TotalNumberClosedNLRAccounts_CompuScan");
+            saveCreditDeclineReason(888, "ref", "737373", "rCode", "rDescription");
+            saveDataCounts(999, "ref", "737373", "Accounts", "Enquiries", "Judgments", "Notices", "BankDefaults", "Defaults", "Collections", "Directors", "Addresses", "Telephones", "Occupants", "Employers", "TraceAlerts", "PaymentProfiles", "OwnEnquiries", "AdminOrders", "PossibleMatches", "DefiniteMatches", "Loans", "FraudAlerts", "Companies", "Properties", "Documents", "DemandLetters", "Trusts", "Bonds", "Deeds", "PublicDefaults", "NLRAccounts");
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -538,7 +682,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/combinedreport/trace/";
+            var url = "https://rest.searchworks.co.za/credit/combinedreport/trace/"; // Live API CHange Back to Uat....
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -569,6 +713,20 @@ namespace searchworks.client.Controllers
 
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
             JToken token = JToken.Parse(response.Content);
+
+            //Save Data to SearchHistory
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
@@ -2435,7 +2593,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/experian/consumerprofile/";
+            var url = "https://rest.searchworks.co.za/credit/experian/consumerprofile/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -2471,6 +2629,18 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
             System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
             var mes = ViewData["ResponseMessage"].ToString();
@@ -3063,6 +3233,20 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
@@ -3214,6 +3398,19 @@ namespace searchworks.client.Controllers
             //JObject o = JObject.Parse(response.Content);
             System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Datttaaa");
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
             JToken token = JToken.Parse(response.Content);
             try
@@ -3532,6 +3729,20 @@ namespace searchworks.client.Controllers
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
                 JToken token = JToken.Parse(response.Content);
+
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+                saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             }
@@ -3953,6 +4164,20 @@ namespace searchworks.client.Controllers
 
             JToken token = JToken.Parse(response.Content);
 
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
@@ -4044,7 +4269,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/vericred/consumerprofile/";
+            var url = "https://rest.searchworks.co.za/credit/vericred/consumerprofile/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -4079,6 +4304,18 @@ namespace searchworks.client.Controllers
             JToken token = JToken.Parse(response.Content);
 
             System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
@@ -4329,6 +4566,20 @@ namespace searchworks.client.Controllers
             dynamic rootObject = JObject.Parse(response.Content);
             //JObject o = JObject.Parse(response.Content);
 
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
             JToken token = JToken.Parse(response.Content);
@@ -4442,6 +4693,20 @@ namespace searchworks.client.Controllers
             //JObject o = JObject.Parse(response.Content);
 
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
             JToken token = JToken.Parse(response.Content);
 
@@ -4563,6 +4828,20 @@ namespace searchworks.client.Controllers
 
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+
             JToken token = JToken.Parse(response.Content);
 
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
@@ -4682,6 +4961,20 @@ namespace searchworks.client.Controllers
             //JObject o = JObject.Parse(response.Content);
 
             JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+            saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
             JToken token = JToken.Parse(response.Content);
 
@@ -4808,6 +5101,20 @@ namespace searchworks.client.Controllers
 
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
+
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+                saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
@@ -5163,6 +5470,20 @@ namespace searchworks.client.Controllers
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
                 JToken token = JToken.Parse(response.Content);
+
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+                saveSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;

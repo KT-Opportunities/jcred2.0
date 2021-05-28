@@ -39,4 +39,42 @@ namespace searchworks.client.Models
         [StringLength(255)]
         public string region { get; set; }
     }
+
+    public class SearchInformation
+    {
+        [Required]
+        public int searchID { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string searchUserName { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string reportDate { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string reference { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string searchToken { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string callerModule { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string dataSupplier { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string searchType { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string searchDescription { get; set; }
+    }
 }
