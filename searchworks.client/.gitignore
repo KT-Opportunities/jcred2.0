@@ -1,0 +1,37 @@
+
+.vs/searchworks/config/applicationhost.config
+.vs/searchworks/v16/.suo
+*.dll
+*.pdb
+*.cache
+*.cache
+*.txt
+*.cache
+*.cache
+*.dll
+*.pdb
+.vs/searchworks/v16/.suo
+*.dll
+*.pdb
+*.cache
+searchworks.client/bin/searchworks.client.dll
+searchworks.client/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+*.cache
+searchworks.client/obj/Debug/searchworks.client.csproj.GenerateResource.cache
+*.cache
+searchworks.client/obj/Debug/searchworks.client.csprojAssemblyReference.cache
+searchworks.client/obj/Debug/searchworks.client.dll
+searchworks.client/obj/Debug/searchworks.client.pdb
+.vs/searchworks/v16/.suo
+<<<<<<< Updated upstream
+.vs/searchworks/v16/.suo
+.vs/searchworks/v16/.suo
+*.cache~emmanuelbranch
+=======
+packages/MySql.Data.Entity.6.10.9/lib/net452/MySql.Data.Entity.EF6.dll
+searchworks.client/bin/MySql.Data.Entity.EF6.dll
+searchworks.client/obj/Release/Package/PackageTmp/bin/searchworks.client.dll
+searchworks.client/obj/Release/Package/PackageTmp/bin/searchworks.client.pdb
+searchworks.client/obj/Release/_WPPLastBuildInfo.txt
+searchworks.client/obj/Release/searchworks.client.csprojAssemblyReference.cache
+>>>>>>> Stashed changes

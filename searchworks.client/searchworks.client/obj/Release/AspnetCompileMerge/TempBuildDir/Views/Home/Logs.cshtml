@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Search Activity Logs Page";
+}
+
+
+
+    <div class="col-md-10 col-sm-10 con">
+        <div class="seaTab">
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+                    <form action="" method="POST">
+                        <label>Search For: </label><input type="text" class="sea-input" id="search" name="searchterm">
+                        <div class="opt">
+                            <button type="submit" class="reset" id="btnS" name="submit">Submit</button>
+                            <div class="filter"><i class="fas fa-filter"></i></div>
+                            <div class="cal"><i class="fas fa-calendar-alt"></i></div>
+
+                        </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+                    <div class="opt1">
+                        <div class="exp">Export List </div>
+                        <div class="create">Create Group</div>
+                        <div class="history"><i class="fa fa-history"></i>History</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="seaTable form-style-9">
+            
+            <h3>Activity Search Logs</h3>
+            
+
+        </div>
+
+        <div class="seaTable">
+           
+            <div class="thatrow">
+                <div class="block" style="width:100%">
+
+                <div class="col_header4">User</div>
+                <div class="col_header4">Page</div>
+                <div class="col_header4">Action</div>
+                <div class="col_header4">Date</div>
+                <div  class="col_header4">Time</div>
+               
+                    </div>
+
+
+
+
+                @foreach (var key in ViewBag.ArrayList)
+                {
+                    <div class="colspace4"> @key</div>
+                }
+            </div>
+        </div>
+
+    </div>
+    <script>
+    var arrayList = new Object;
+    arrayList = @ViewData["ArrayList"];
+
+    for (var i in arrayList) {
+        console.log("i:       "+i);
+    }
+
+
+    </script>
