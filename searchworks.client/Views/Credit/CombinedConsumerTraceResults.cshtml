@@ -13,10 +13,14 @@
     <div class="sea non">Combined Consumer Trace</div>
     <div class="sea act">@ViewData["refe"]</div>
     <div class="con2">
-        @if (@ViewData["Message"].ToString() == "Service is offline")
+        @if (@ViewData["Message"].ToString() == "Service is offline" || 
+            @ViewData["Message"].ToString() == "Branch defined search limit has been reached.")
         {
-            <div>Service is offline</div>
-            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>}
+        <div>@ViewData["Message"].ToString()</div>
+         <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+            
+            
+            }
         else
         {
             <div class="left_col">

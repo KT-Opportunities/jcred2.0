@@ -32,7 +32,7 @@ namespace searchworks.client.Controllers
 
         public void saveSearchHistory(dynamic SearchID, dynamic searchUserName, dynamic ResponseType, dynamic Name, dynamic reportDate, dynamic reference, dynamic searchToken, dynamic callerModule, dynamic dataSupplier, dynamic searchType, dynamic SearchDescription)
         {
-            string query_uid = "INSERT INTO searchhistory (SearchID,searchUserName,ResponseType,Name,reportDate,reference,searchToken,callerModule,dataSupplier,searchType,SearchDescription,created_at) VALUES('" + SearchID + "','" + searchUserName + "','" + ResponseType + "','" + Name + "','" + reportDate + "','" + reference + "','" + searchToken + "','" + callerModule + "','" + dataSupplier + "','" + searchType + "','" + SearchDescription + "')";
+            string query_uid = "INSERT INTO searchhistory (SearchID,searchUserName,ResponseType,Name,reportDate,reference,searchToken,callerModule,dataSupplier,searchType,SearchDescription) VALUES('" + SearchID + "','" + searchUserName + "','" + ResponseType + "','" + Name + "','" + reportDate + "','" + reference + "','" + searchToken + "','" + callerModule + "','" + dataSupplier + "','" + searchType + "','" + SearchDescription + "')";
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
@@ -492,7 +492,7 @@ namespace searchworks.client.Controllers
                 Username = api_username,
                 Password = api_password
             };
-            //string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }"; //Change Back
+            /* string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }"; *///Change Back
             string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
@@ -631,16 +631,16 @@ namespace searchworks.client.Controllers
                 {
                     int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                     string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                    DateTime ReportDate = DateTime.Now;
-                    string ResponseType = rootObject.ResponseMessage;
-                    string Name = Session["Name"].ToString();
+                    string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                    string ResponseType = rootObject.ResponseMessage; ;
+                    string Name = ViewData["user"].ToString();
                     string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                     string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                     string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
                     string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
                     string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
                     string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                    saveSearchHistory(SearchID, SearchUserName, ResponseType.ToString(), ViewData["user"].ToString(), ReportDate.ToString(), Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+                    saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
                     if (ViewData["CompuScanMessage"].ToString() == "CONSUMER MATCH")
                     {
@@ -741,7 +741,7 @@ namespace searchworks.client.Controllers
                         ViewData["ComCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
                         ViewData["ComCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
                         ViewData["ComCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
-                        saveCCA12Months(SearchToken, Reference, SearchID, ViewData["ComCCA12MonthsEnquiriesByClient"].ToString(), ViewData["ComNLR12MonthsEnquirComCCA12MonthsEnquiriesByOtheriesByOther"].ToString(), ViewData["ComCCA12MonthsPositiveLoans"].ToString(), ViewData["ComCCA12MonthsHighestMonthsInArrears"].ToString(), time.ToString());
+                        saveCCA12Months(SearchToken, Reference, SearchID, ViewData["ComCCA12MonthsEnquiriesByClient"].ToString(), ViewData["ComCCA12MonthsEnquiriesByOther"].ToString(), ViewData["ComCCA12MonthsPositiveLoans"].ToString(), ViewData["ComCCA12MonthsHighestMonthsInArrears"].ToString(), time.ToString());
 
                         //CCA24Months
                         ViewData["ComCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
@@ -1060,7 +1060,8 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/combinedreport/trace/"; // Live API CHange Back to Uat....
+            var url = "https://rest.searchworks.co.za/credit/combinedreport/trace/";
+            //var url = "https://uatrest.searchworks.co.za/credit/combinedreport/trace/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -1100,13 +1101,20 @@ namespace searchworks.client.Controllers
 
                 return View();
             }
+
+            if (rootObject.ResponseMessage == "Error updating search request.")
+            {
+                ViewData["Message"] = "Error updating search request.";
+
+                return View();
+            }
             else
             {
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -1146,9 +1154,9 @@ namespace searchworks.client.Controllers
                     ViewData["CompuScanMiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].MiddleName1;
                     ViewData["CompuScanMiddleName2"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].MiddleName2;
                     ViewData["CompuScanHasProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].HasProperties;
-                    savePersonInformation(SearchToken, Reference, SearchID, null, null, null, ViewData["CompuScanDateOfBirth"].ToString(), ViewData["CompuScanFirstName"].ToString(), ViewData["CompuScanSurname"].ToString(),
-                         ViewData["CompuScanFullname"].ToString(), ViewData["CompuScanIDNumber"].ToString(), null, null, null, null, ViewData["CompuScanGender"].ToString(), ViewData["CompuScanAge"].ToString(), ViewData["CompuScanMiddleName1"].ToString(), ViewData["CompuScanMiddleName2"].ToString(), null, null, null, null, null, ViewData["ComVerificationStatus"].ToString(),
-                         ViewData["CompuScanHasProperties"].ToString(), time.ToString());
+                    //savePersonInformation(SearchToken, Reference, SearchID, null, null, null, ViewData["CompuScanDateOfBirth"].ToString(), ViewData["CompuScanFirstName"].ToString(), ViewData["CompuScanSurname"].ToString(),
+                    //     ViewData["CompuScanFullname"].ToString(), ViewData["CompuScanIDNumber"].ToString(), null, null, null, null, ViewData["CompuScanGender"].ToString(), ViewData["CompuScanAge"].ToString(), ViewData["CompuScanMiddleName1"].ToString(), ViewData["CompuScanMiddleName2"].ToString(), null, null, null, null, null, null,
+                    //     ViewData["CompuScanHasProperties"].ToString(), time.ToString());
 
                     //Home Affairs Information
                     saveHomeAffairsInformation(SearchToken, Reference, SearchID,
@@ -1318,13 +1326,13 @@ namespace searchworks.client.Controllers
                     ViewData["TransUnionInfoSpouseSurname"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["PersonInformation"].SpouseSurname;
                     ViewData["TransUnionInfoNumberOfDependants"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["PersonInformation"].NumberOfDependants;
                     ViewData["TransUnionInfoHasProperties"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["PersonInformation"].HasProperties;
-                    savePersonInformation(SearchToken, Reference, SearchID, ViewData["TransUnionInfoInformationDate"].ToString(), ViewData["TransUnionInfoPersonID"].ToString(), ViewData["TransUnionInfoTitle"].ToString(),
-                        ViewData["TransUnionInfoDateOfBirth"].ToString(), ViewData["TransUnionInfoFirstName"].ToString(), ViewData["TransUnionInfoSurname"].ToString(),
-                        ViewData["TransUnionInfoFullname"].ToString(), ViewData["TransUnionInfoIDNumber"].ToString(), null, null, null, ViewData["TransUnionInfoMaritalStatus"].ToString(),
-                        ViewData["TransUnionInfoGender"].ToString(), ViewData["TransUnionInfoAge"].ToString(), ViewData["TransUnionInfoMiddleName1"].ToString(), ViewData["TransUnionInfoMiddleName2"].ToString(),
-                          ViewData["TransUnionInfoSpouseFirstName"].ToString(),
-                         ViewData["TransUnionInfoSpouseSurname"].ToString(), ViewData["TransUnionInfoNumberOfDependants"].ToString(), null, null, ViewData["ComVerificationStatus"].ToString(),
-                        ViewData["TransUnionInfoHasProperties"].ToString(), time.ToString());
+                    //savePersonInformation(SearchToken, Reference, SearchID, ViewData["TransUnionInfoInformationDate"].ToString(), ViewData["TransUnionInfoPersonID"].ToString(), ViewData["TransUnionInfoTitle"].ToString(),
+                    //    ViewData["TransUnionInfoDateOfBirth"].ToString(), ViewData["TransUnionInfoFirstName"].ToString(), ViewData["TransUnionInfoSurname"].ToString(),
+                    //    ViewData["TransUnionInfoFullname"].ToString(), ViewData["TransUnionInfoIDNumber"].ToString(), null, null, null, ViewData["TransUnionInfoMaritalStatus"].ToString(),
+                    //    ViewData["TransUnionInfoGender"].ToString(), ViewData["TransUnionInfoAge"].ToString(), ViewData["TransUnionInfoMiddleName1"].ToString(), ViewData["TransUnionInfoMiddleName2"].ToString(),
+                    //      ViewData["TransUnionInfoSpouseFirstName"].ToString(),
+                    //     ViewData["TransUnionInfoSpouseSurname"].ToString(), ViewData["TransUnionInfoNumberOfDependants"].ToString(), null, null, ViewData["ComVerificationStatus"].ToString(),
+                    //    ViewData["TransUnionInfoHasProperties"].ToString(), time.ToString());
                     //Contact Information
                     ViewData["TransUnionInfoEmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].EmailAddress;
                     ViewData["TransUnionInfoMobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].MobileNumber;
@@ -1464,13 +1472,13 @@ namespace searchworks.client.Controllers
                     ViewData["XDSInfoMiddleName2"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PersonInformation"].MiddleName2;
                     ViewData["XDSInfoReference"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PersonInformation"].Reference;
                     ViewData["XDSInfoHasProperties"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PersonInformation"].HasProperties;
-                    savePersonInformation(SearchToken, Reference, SearchID, null, ViewData["XDSInfoPersonID"].ToString(), ViewData["XDSInfoTitle"].ToString(),
-                        ViewData["XDSInfoDateOfBirth"].ToString(), ViewData["XDSInfoFirstName"].ToString(), ViewData["XDSInfoSurname"].ToString(),
-                        ViewData["XDSInfoFullname"].ToString(), ViewData["XDSInfoIDNumber"].ToString(), null, ViewData["XDSInfoPassportNumber"].ToString(), ViewData["XDSInfoReference"].ToString(), ViewData["XDSInfoMaritalStatus"].ToString(),
-                        ViewData["XDSInfoGender"].ToString(), ViewData["XDSInfoAge"].ToString(), ViewData["XDSInfoMiddleName1"].ToString(), ViewData["XDSInfoMiddleName2"].ToString(),
-                          null,
-                         null, null, null, null, null,
-                        ViewData["XDSInfoHasProperties"].ToString(), time.ToString());
+                    //savePersonInformation(SearchToken, Reference, SearchID, null, ViewData["XDSInfoPersonID"].ToString(), ViewData["XDSInfoTitle"].ToString(),
+                    //    ViewData["XDSInfoDateOfBirth"].ToString(), ViewData["XDSInfoFirstName"].ToString(), ViewData["XDSInfoSurname"].ToString(),
+                    //    ViewData["XDSInfoFullname"].ToString(), ViewData["XDSInfoIDNumber"].ToString(), null, ViewData["XDSInfoPassportNumber"].ToString(), ViewData["XDSInfoReference"].ToString(), ViewData["XDSInfoMaritalStatus"].ToString(),
+                    //    ViewData["XDSInfoGender"].ToString(), ViewData["XDSInfoAge"].ToString(), ViewData["XDSInfoMiddleName1"].ToString(), ViewData["XDSInfoMiddleName2"].ToString(),
+                    //      null,
+                    //     null, null, null, null, null,
+                    //    ViewData["XDSInfoHasProperties"].ToString(), time.ToString());
                     //Home Affairs Information
                     ViewData["XDSInfoDeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].DeceasedStatus;
                     ViewData["XDSInfoDeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].DeceasedDate;
@@ -1818,9 +1826,9 @@ namespace searchworks.client.Controllers
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
             string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-            string ReportDate = ViewData["date"].ToString();
-            string ResponseType = rootObject.ResponseMessage;
-            string Name = Session["Name"].ToString();
+            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            string ResponseType = rootObject.ResponseMessage; ;
+            string Name = ViewData["user"].ToString();
             string Reference = rootObject.ResponseObject.SearchInformation.Reference;
             string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
             string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -1916,9 +1924,9 @@ namespace searchworks.client.Controllers
             {
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -2024,9 +2032,9 @@ namespace searchworks.client.Controllers
 
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -2406,9 +2414,9 @@ namespace searchworks.client.Controllers
                 {
                     int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                     string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                    string ReportDate = ViewData["date"].ToString();
-                    string ResponseType = rootObject.ResponseMessage;
-                    string Name = Session["Name"].ToString();
+                    string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                    string ResponseType = rootObject.ResponseMessage; ;
+                    string Name = ViewData["user"].ToString();
                     string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                     string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                     string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -2579,9 +2587,9 @@ namespace searchworks.client.Controllers
                 {
                     int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                     string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                    string ReportDate = ViewData["date"].ToString();
-                    string ResponseType = rootObject.ResponseMessage;
-                    string Name = Session["Name"].ToString();
+                    string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                    string ResponseType = rootObject.ResponseMessage; ;
+                    string Name = ViewData["user"].ToString();
                     string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                     string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                     string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -2779,9 +2787,9 @@ namespace searchworks.client.Controllers
             {
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -2937,9 +2945,9 @@ namespace searchworks.client.Controllers
             {
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -3082,9 +3090,9 @@ namespace searchworks.client.Controllers
             {
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -3208,9 +3216,9 @@ namespace searchworks.client.Controllers
             {
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = ViewData["date"].ToString();
-                string ResponseType = rootObject.ResponseMessage;
-                string Name = Session["Name"].ToString();
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
@@ -4217,14 +4225,14 @@ namespace searchworks.client.Controllers
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
                 string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
                 string ResponseType = ViewData["ResponseMessage"].ToString();
-                string Name = ViewData["user"].ToString();
+                string Name = TempData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
                 string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
                 string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
                 string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
                 string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
+                saveSearchHistory(SearchID, SearchUserName, ResponseType, TempData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription);
 
                 //PersonalInfroamtion
                 ViewData["AkaName"] = rootObject.ResponseObject.PersonInformation.AlsoKnownAs[0].AkaName;
@@ -4257,10 +4265,10 @@ namespace searchworks.client.Controllers
                 ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
                 ViewData["AddressLine1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
                 ViewData["AddressDate1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-                savePersonInformation(SearchToken, Reference, SearchID, ViewData["InformationDate"].ToString(), ViewData["PersonID"].ToString(), null, ViewData["DateOfBirth"].ToString(), ViewData["FirstName"].ToString(), ViewData["Surname"].ToString(), ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(),
-                    ViewData["IDNumber_Alternate"].ToString(), ViewData["PassportNumber"].ToString(), ViewData["Reference"].ToString(), ViewData["MaritalStatus"].ToString(), ViewData["Gender"].ToString(), ViewData["Age"].ToString(),
-                   ViewData["MiddleName1"].ToString(), ViewData["MiddleName2"].ToString(), ViewData["SpouseFirstName"].ToString(), ViewData["SpouseSurname"].ToString(), ViewData["NumberOfDependants"].ToString(), ViewData["Remarks"].ToString()
-                   , null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"], time);
+                //savePersonInformation(SearchToken, Reference, SearchID, ViewData["InformationDate"].ToString(), ViewData["PersonID"].ToString(), null, ViewData["DateOfBirth"].ToString(), ViewData["FirstName"].ToString(), ViewData["Surname"].ToString(), ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(),
+                //    ViewData["IDNumber_Alternate"].ToString(), ViewData["PassportNumber"].ToString(), ViewData["Reference"].ToString(), ViewData["MaritalStatus"].ToString(), ViewData["Gender"].ToString(), ViewData["Age"].ToString(),
+                //   ViewData["MiddleName1"].ToString(), ViewData["MiddleName2"].ToString(), ViewData["SpouseFirstName"].ToString(), ViewData["SpouseSurname"].ToString(), ViewData["NumberOfDependants"].ToString(), ViewData["Remarks"].ToString()
+                //   , null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"], time);
 
                 //HomeAffairsInformation
                 ViewData["FirstName"] = rootObject.ResponseObject.HomeAffairsInformation.FirstName;
