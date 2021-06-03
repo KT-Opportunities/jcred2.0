@@ -487,9 +487,7 @@ namespace searchworks.client.Controllers
             bool AddressHistoryExists = rootObject.ResponseObject.HistoricalInformation.AddressHistory != null;
             bool EmploymentHistoryExists = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null;
 
-            System.Diagnostics.Debug.WriteLine(TelephoneHistoryExists);
-            System.Diagnostics.Debug.WriteLine(AddressHistoryExists);
-            System.Diagnostics.Debug.WriteLine(EmploymentHistoryExists);
+         
 
             if (TelephoneHistoryExists == true)
 

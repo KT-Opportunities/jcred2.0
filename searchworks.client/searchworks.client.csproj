@@ -1247,6 +1247,9 @@
     <Content Include="Views\Credit\TransUnionCompanyProfileResults.cshtml" />
     <Content Include="Views\Credit\TransUnionConsumerProfileResults.cshtml" />
     <Content Include="Views\UserManagement\SearchHistory.cshtml" />
+    <Content Include="Views\Credit\CombinedConsumerTraceDbResults.cshtml" />
+    <Content Include="Views\Credit\CompuScanBankCodesDocumentResults.cshtml" />
+    <Content Include="Views\Credit\CompuScanBankOnFileResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

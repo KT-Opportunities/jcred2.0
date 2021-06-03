@@ -2,7 +2,6 @@
     ViewBag.Title = "SearchHistory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- 
 
 <div class="col-md-10 col-sm-10">
     <div class="row btn-row">
@@ -44,7 +43,7 @@
             <div class="con1">
                 <table class="table table-borderless custom-table">
                     <thead>
-                        <tr>
+                        <tr class="justify-content-around" style="display:flex">
                             <th scope="col" class="color">
                                 <label class="control control--checkbox">
                                     <input type="checkbox" class="js-check-all" />
@@ -67,360 +66,45 @@
             <div class="con">
                 <div class="table-responsive my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
 
-                    <table class="table table-borderless table-hover custom-table">
+                    <table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
                         <tbody>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    CSI Person Trace
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    093478374637823
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    NCR Auto Deletion
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    1
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    John Doe
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    2021/12/31 17:56
-                                </td>
-                            </tr>
+                            @foreach (var item in @ViewBag.ArrayList)
+                            {
+
+                                <tr scope="row" class="justify-content-around t-row " style="cursor:pointer;display:flex" onclick="Redirect();">
+                                    <td style="">
+                                        <label class="control control--checkbox">
+                                            <input type="checkbox" />
+                                            <div class="control__indicator"></div>
+                                        </label>
+                                    </td>
+                                    <td style="display:flex;text-wrap:normal"  data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        @item.callerModule
+                                    </td>
+                                    <td style="" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        @item.searchDescription
+                                    </td>
+                                    <td style="display:flex;word-break: break-all"   data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        @item.ResponseType
+                                    </td>
+                                    <td style="display:flex;word-break: break-all" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                            @item.reference
+                                    </td>
+                                    <td style="display:flex;word-break: break-all" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        @item.Name
+                                    </td>
+                                    <td style="" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        @item.reportDate
+                                    </td>
+                                </tr>
+
+                            }
                             </tr>
                         </tbody>
                     </table>
@@ -508,3 +192,8 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function Redirect() {
+        location.href = "../Credit/CombinedConsumerTraceDbResults";
+    }
+</script>

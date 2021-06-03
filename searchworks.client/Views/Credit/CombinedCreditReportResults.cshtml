@@ -6,6 +6,7 @@
 
 @{
     ViewBag.Title = "Combined Credit Report";
+    System.Diagnostics.Debug.WriteLine(@ViewData["Message"], "you rdataa ");
 }
 
 <div class="col-md-10 col-sm-10">
@@ -14,10 +15,11 @@
     <div class="sea act">@ViewData["refe"]</div>
     <div class="con2">
 
-        @if (TempData["msg"] != null)
+        @if (@ViewData["Message"].ToString() == "Service is offline")
         {
-            <div>@TempData["msg"] </div>
-            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>}
+            <div> "Service is offline"</div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+        }
         else
         {
 

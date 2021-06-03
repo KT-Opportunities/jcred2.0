@@ -59,14 +59,13 @@ namespace searchworks.client.Controllers
                 var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var authManager = HttpContext.GetOwinContext().Authentication;
 
-                ApplicationUser  user = userManager.Find(log.Email, log.Password);
+                ApplicationUser user = userManager.Find(log.Email, log.Password);
                 if (user != null)
                 {
                     var ident = userManager.CreateIdentity(user,
                         DefaultAuthenticationTypes.ApplicationCookie);
-                    //use the instance that has been created. 
+                    //use the instance that has been created.
                     authManager.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
-
 
                     //return Redirect(login.ReturnUrl ?? Url.Action("Index", "Home"));
 
@@ -75,7 +74,7 @@ namespace searchworks.client.Controllers
                     Session["Name"] = log.Email;//reader2["fullname"].ToString();
 
                     //if (userEmail == log.Email && userPass == log.Password)
-                    if(ident.IsAuthenticated)
+                    if (ident.IsAuthenticated)
                     {
                         //conn.Close();
                         DateTime time = DateTime.Now;
@@ -111,7 +110,6 @@ namespace searchworks.client.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            
 
             return RedirectToAction("Index", "Home");
             /*
@@ -309,7 +307,9 @@ namespace searchworks.client.Controllers
                 Username = api_username,
                 Password = api_password
             };
-            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
+            //string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";//change back
+            string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
+
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
             //var request = new RestRequest("login", Method.POST);
@@ -348,14 +348,14 @@ namespace searchworks.client.Controllers
             string strCompanyName = name;
             string refe = search.Reference;
 
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            string authtoken = GetLoginToken("api@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/cipc/company/";
+            var url = "https://rest.searchworks.co.za";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);

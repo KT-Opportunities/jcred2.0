@@ -3,6 +3,21 @@ using System.Collections.Generic;
 
 namespace searchworks.client.Credit
 {
+    public class SearchHistoryModel
+    {
+        public string searchID { get; set; }
+        public string searchUserName { get; set; }
+        public string ResponseType { get; set; }
+        public string Name { get; set; }
+        public string reportDate { get; set; }
+        public string reference { get; set; }
+        public string searchToken { get; set; }
+        public string callerModule { get; set; }
+        public string dataSupplier { get; set; }
+        public string searchType { get; set; }
+        public string searchDescription { get; set; }
+    }
+
     public class SearchInformation
     {
         public string SearchUserName { get; set; }
@@ -171,10 +186,12 @@ namespace searchworks.client.Credit
 
     public class AddressHistory
     {
+        public string AddressID { get; set; }
         public string TypeDescription { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string Line3 { get; set; }
+        public string Line4 { get; set; }
         public string PostalCode { get; set; }
         public string FullAddress { get; set; }
         public string LastUpdatedDate { get; set; }
