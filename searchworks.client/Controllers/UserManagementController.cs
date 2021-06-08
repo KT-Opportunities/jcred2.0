@@ -30,38 +30,41 @@ namespace searchworks.client.Controllers
 
             conn.Open();
 
-            List<string> thatlist = new List<string>();
             var cmd2 = new MySqlCommand(query_uid, conn);
             var reader2 = cmd2.ExecuteReader();
 
             System.Collections.Generic.List<SearchHistoryModel> arrObjects = new System.Collections.Generic.List<SearchHistoryModel>();
-            int searchID = reader2.GetOrdinal("searchID");
-            int searchUserName = reader2.GetOrdinal("searchUserName");
-            int searchType = reader2.GetOrdinal("searchType");
-            int searchDescription = reader2.GetOrdinal("searchDescription");
-            int ResponseType = reader2.GetOrdinal("ResponseType");
+            int SearchToken = reader2.GetOrdinal("SearchToken");
             int Reference = reader2.GetOrdinal("Reference");
+            int SearchID = reader2.GetOrdinal("SearchID");
+            int SearchUserName = reader2.GetOrdinal("SearchUserName");
+            int SearchType = reader2.GetOrdinal("SearchType");
+            int SearchDescription = reader2.GetOrdinal("SearchDescription");
+            int ResponseType = reader2.GetOrdinal("ResponseType");
             int Name = reader2.GetOrdinal("Name");
-            int reportDate = reader2.GetOrdinal("reportDate");
-            int callerMOdule = reader2.GetOrdinal("callerMOdule");
+            int ReportDate = reader2.GetOrdinal("ReportDate");
+            int CallerModule = reader2.GetOrdinal("CallerModule");
+            int typeOfSearch = reader2.GetOrdinal("typeOfSearch");
             if (reader2.Read())
             {
                 while (reader2.Read())
                 {
                     SearchHistoryModel obj = new SearchHistoryModel();
-
-                    obj.searchType = (reader2[searchType] != Convert.DBNull) ? reader2[searchType].ToString() : null;
-                    obj.searchDescription = (reader2[searchDescription] != Convert.DBNull) ? reader2[searchDescription].ToString() : null;
+                    obj.SearchToken = (reader2[SearchToken] != Convert.DBNull) ? reader2[SearchToken].ToString() : null;
+                    obj.SearchID = (reader2[SearchID] != Convert.DBNull) ? reader2[SearchID].ToString() : null;
+                    obj.SearchType = (reader2[SearchType] != Convert.DBNull) ? reader2[SearchType].ToString() : null;
+                    obj.SearchDescription = (reader2[SearchDescription] != Convert.DBNull) ? reader2[SearchDescription].ToString() : null;
                     obj.ResponseType = (reader2[ResponseType] != Convert.DBNull) ? reader2[ResponseType].ToString() : null;
-                    obj.reference = (reader2[Reference] != Convert.DBNull) ? reader2[Reference].ToString() : null;
+                    obj.Reference = (reader2[Reference] != Convert.DBNull) ? reader2[Reference].ToString() : null;
                     obj.Name = (reader2[Name] != Convert.DBNull) ? reader2[Name].ToString() : null;
-                    obj.reportDate = (reader2[reportDate] != Convert.DBNull) ? reader2[reportDate].ToString() : null;
-                    obj.callerModule = (reader2[callerMOdule] != Convert.DBNull) ? reader2[callerMOdule].ToString() : null;
+                    obj.ReportDate = (reader2[ReportDate] != Convert.DBNull) ? reader2[ReportDate].ToString() : null;
+                    obj.CallerModule = (reader2[CallerModule] != Convert.DBNull) ? reader2[CallerModule].ToString() : null;
+                    obj.typeOfSearch = (reader2[typeOfSearch] != Convert.DBNull) ? reader2[typeOfSearch].ToString() : null;
+
                     arrObjects.Add(obj);
                 }
 
                 ViewData["ArrayList"] = arrObjects;
-
                 conn.Close();
                 return View();
             }

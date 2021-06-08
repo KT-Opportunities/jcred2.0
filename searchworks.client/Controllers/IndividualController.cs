@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Data;
 using System.Configuration;
+using ServiceStack.Text.Json;
 
 namespace searchworks.client.Controllers
 {
@@ -31,18 +32,17 @@ namespace searchworks.client.Controllers
 
         public string GetLoginToken(string api_username, string api_password)
         {
-            CheckLoginState();
-
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
-            var host = "https://uatrest.searchworks.co.za/auth/login/";
+            var host = "https://rest.searchworks.co.za/auth/login/";
             var body_credentials = new
             {
                 Username = api_username,
                 Password = api_password
             };
-            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
+            /* string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }"; *///Change Back
+            string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
             //var request = new RestRequest("login", Method.POST);
@@ -71,15 +71,11 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecords()
         {
-            CheckLoginState();
-
             return View();
         }
 
         public ActionResult CSIPersonalRecordsResults(CSI csi)
         {
-            CheckLoginState();
-
             var arraylist = new ArrayList();
             string name = csi.FirstName;
             string sur = csi.Surname;
@@ -99,14 +95,7 @@ namespace searchworks.client.Controllers
             string page = "CSI Person " + eqType + "By " + seaType;
             string action = "Name:" + name + "; Surname:" + sur;
             string user_id;
-            try
-            {
-                user_id = Session["ID"].ToString();
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            user_id = Session["ID"].ToString();
 
             string us = Session["Name"].ToString();
 
@@ -114,7 +103,7 @@ namespace searchworks.client.Controllers
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + "date_add" + "','" + "time_add" + "','" + "page" + "','" + "action" + "','" + "user_id" + "','" + "us" + "')";
 
             TempData["user"] = Session["Name"].ToString();
             TempData["date"] = DateTime.Today.ToShortDateString();
@@ -133,17 +122,20 @@ namespace searchworks.client.Controllers
             //request headers
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-Type", "application/json");
-
             IRestResponse response = client.Execute<RootObject>(request);
             dynamic rootObject;
             JObject o;
             JToken token;
+            System.Diagnostics.Debug.WriteLine(csi.FirstName, csi.Surname, csi.IDNumber, csi.seaType, csi.eqType, csi.Reference);
+
             try
             {
                 switch (seaType + "|" + eqType)
                 {
                     case "idnumber|trace":
-                        url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
+                        Debug.WriteLine("idnumber|trace");
+
+                        url = "https://rest.searchworks.co.za/individual/csipersontrace/idnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
                         var apiIdTrace = new
@@ -182,7 +174,7 @@ namespace searchworks.client.Controllers
 
                         Debug.WriteLine("name|trace");
 
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -226,7 +218,7 @@ namespace searchworks.client.Controllers
 
                     case "nameandidnumber|trace":
                         Debug.WriteLine("nameandidnumber|trace");
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
 
@@ -268,7 +260,7 @@ namespace searchworks.client.Controllers
 
                     case "idnumber|verification":
                         //company search API call
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
+                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
                         //create RestSharp client and POST request object
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -311,7 +303,7 @@ namespace searchworks.client.Controllers
                     case "name|verification":
                         Debug.WriteLine("name|verification");
 
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -352,7 +344,7 @@ namespace searchworks.client.Controllers
 
                     case "nameandidnumber|verification":
                         Debug.WriteLine("nameandidnumber|verification");
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
 
@@ -402,8 +394,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecordsDetails(string indiID)
         {
-            CheckLoginState();
-
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
@@ -411,7 +401,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
+            var url = "https://rest.searchworks.co.za/individual/csipersontrace/idnumber/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -486,8 +476,6 @@ namespace searchworks.client.Controllers
             bool TelephoneHistoryExists = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null;
             bool AddressHistoryExists = rootObject.ResponseObject.HistoricalInformation.AddressHistory != null;
             bool EmploymentHistoryExists = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null;
-
-         
 
             if (TelephoneHistoryExists == true)
 
@@ -701,8 +689,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
-            CheckLoginState();
-
             string name = deed.Firstname;
             string deeds = deed.DeedsOffice;
             string sur = deed.Surname;
@@ -716,8 +702,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/deedsoffice/person/";
-
+            var url = "https://rest.searchworks.co.za/deedsoffice/crossdeeds/person/";
             //create RestSharp client and POST request object
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
@@ -725,16 +710,29 @@ namespace searchworks.client.Controllers
             //request headers
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-Type", "application/json");
+            System.Diagnostics.Debug.WriteLine(authtoken, deed, sur, name, id, "here");
+
             //object containing input parameter data for company() API method
+            //var apiInput = new
+            //{
+            //    SessionToken = authtoken,
+            //    DeedsOffice = deed,//company name contains: See documentation
+            //    Reference = authtoken,//search reference: probably store in logs
+            //    Surname = sur,
+            //    Firstname = name,
+            //    IDNumber = id,
+            //    Sequestration = "false",
+            //};
+
             var apiInput = new
             {
                 SessionToken = authtoken,
-                DeedsOffice = deed,//company name contains: See documentation
-                Reference = authtoken,//search reference: probably store in logs
-                Surname = sur,
-                Firstname = name,
-                IDNumber = id,
-                Sequestration = "false",
+                DeedsOfficeIDs = "3",//company name contains: See documentation
+                Reference = "",//search reference: probably store in logs
+                Surname = "Thoriso",
+                Firstname = "Rangata",
+                IDNumber = "9303195109086",
+                Sequestration = "false"
             };
 
             //add parameters and token to request
@@ -745,11 +743,10 @@ namespace searchworks.client.Controllers
 
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Response");
+            //dynamic rootObject = JObject.Parse(response.Content);
+            //ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+            //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
             //extract list of companies returned
             List<DeedsInformation> lst = getCompanyList(response);
@@ -788,20 +785,21 @@ namespace searchworks.client.Controllers
         private List<DeedsInformation> getCompanyList(IRestResponse response)
         {
             List<DeedsInformation> lst = new List<DeedsInformation>();
-
+            //IRestResponse response = client.Execute<RootObject>(request);
             dynamic respContent = JObject.Parse(response.Content);
 
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            System.Diagnostics.Debug.WriteLine("YList: " + rawList);
+            JObject rawList = respContent;
+            System.Diagnostics.Debug.WriteLine("YList: " + JObject.Parse(response.Content), rawList);
             //var rawList = respContent.ResponseObject;
 
             //foreach (JObject responseObject in rawList)
-            foreach (ResponseObject responseObject in rawList)
-            {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
-                lst.Add(responseObject.DeedsInformation);
-            }
+            ////foreach (ResponseObject responseObject in rawList)
+            //{
+            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
+            //    //res.SearchInformation = responseObject.SearchInformation;
+            //    System.Diagnostics.Debug.WriteLine("ANother 1", responseObject);
+            //    //lst.Add(responseObject.DeedsInformation);
+            //}
 
             return lst;
         }

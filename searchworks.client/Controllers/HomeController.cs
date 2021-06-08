@@ -301,7 +301,7 @@ namespace searchworks.client.Controllers
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
-            var host = "https://uatrest.searchworks.co.za/auth/login/";
+            var host = "https://rest.searchworks.co.za/auth/login/";
             var body_credentials = new
             {
                 Username = api_username,
@@ -355,7 +355,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za";
+            var url = "https://rest.searchworks.co.za/cipc/company/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -470,7 +470,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/cipc/company/companyid/";
+            var url = "https://rest.searchworks.co.za/cipc/company/companyid/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -644,7 +644,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyname/";
+                    var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/companyname/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -736,7 +736,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+                    var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/companyid/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -827,7 +827,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
+                    var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -899,7 +899,7 @@ namespace searchworks.client.Controllers
             {
                 //exit with a warning
             }
-            var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+            var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/companyid/";
 
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);

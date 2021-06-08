@@ -8,8 +8,6 @@
     ViewBag.Title = "CIPC Company Search";
 }
 
-
-
 <div class="col-md-10 col-sm-10">
     <div class="sea act">SEARCH RESULTS</div>
     <div class="con2">
@@ -37,9 +35,7 @@
                 <p class="">Date:<span>@ViewData["date"]</span></p>
                 <p class="">Reference:<span>@ViewData["ref"]</span></p>
                 <p class="">Request:<span> @ViewData["ResponseMessage"]</span></p>
-
             </div>
-
         </div>
         <div class="right_col">
             <div class="seaRes">
@@ -59,46 +55,42 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                   
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CompanyID)
-                            </td>
-                            <td>
+                @*<tbody>
 
-                                @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CompanyName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CompanyTranslatedName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RegistrationDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CompanyStatusCode)
-                            </td>
-                            <td class="last">
-                                @Html.DisplayFor(modelItem => item.CompanyStatus)
-                            </td>
-                            <td>
-                               
-                                @Html.ActionLink("Search more", "CIPCCompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var item in DeedsInformation)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanyID)
+                                </td>
+                                <td>
 
-                </tbody>
+                                    @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanyName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanyTranslatedName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanyStatusCode)
+                                </td>
+                                <td class="last">
+                                    @Html.DisplayFor(modelItem => item.CompanyStatus)
+                                </td>
+                                <td>
+
+                                    @Html.ActionLink("Search more", "CIPCCompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>*@
             </table>
-
         </div>
-
-
     </div>
 </div>
 
@@ -115,8 +107,6 @@
         var CIPCSearch = document.getElementById("CIPCSearch").value;
         var Reg = document.getElementById("Reg").value;
 
-
-
         if (comName === "" && CIPCSearch === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in details to search!</div>';
@@ -130,9 +120,7 @@
 
             $(".resturn-message").html(alertMessage);
 
-
         }
-
 
         else if (CIPCSearch === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
@@ -140,13 +128,9 @@
 
             $(".resturn-message").html(alertMessage);
 
-
         }
 
         else  {
-
-
-
 
         $.ajax(
             {
@@ -160,10 +144,6 @@
                 error: function (result) {
                     alert(data);
 
-
-
-
-
                 },
                 success: function (result) {
 
@@ -174,14 +154,8 @@
 
                     //alert(result.user_type);
 
-
-
-
-
                 }
             });
     }
                         }
-
 </script>
-

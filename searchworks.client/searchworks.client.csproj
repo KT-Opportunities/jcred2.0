@@ -1177,8 +1177,8 @@
     <Content Include="Views\Shared\IntelligenceReportCheck\_IntelligenceReportCheckUpload.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Individual\CSIPersonalRecordsResults.cshtml" />
-    <Content Include="Views\Credit\CombinedCreditReport.cshtml" />
-    <Content Include="Views\Credit\CombinedCreditReportResults.cshtml" />
+    <Content Include="Views\Credit\CombinedConsumerCreditReport.cshtml" />
+    <Content Include="Views\Credit\CombinedConsumerCreditReportResults.cshtml" />
     <Content Include="Views\Credit\TransUnionID.cshtml" />
     <Content Include="Views\Credit\TransUnionIDResults.cshtml" />
     <Content Include="Views\Credit\VeriCredID.cshtml" />
@@ -1250,6 +1250,12 @@
     <Content Include="Views\Credit\CombinedConsumerTraceDbResults.cshtml" />
     <Content Include="Views\Credit\CompuScanBankCodesDocumentResults.cshtml" />
     <Content Include="Views\Credit\CompuScanBankOnFileResults.cshtml" />
+    <Content Include="Views\Credit\ExperianConsumerProfileDatabase.cshtml" />
+    <Content Include="Views\Credit\CombinedConsumerCreditReportDatabase.cshtml" />
+    <Content Include="Views\Credit\CombinedConsumerTraceDatabase.cshtml" />
+    <Content Include="Views\Credit\VeriCredConsumerProfileDatabase.cshtml" />
+    <Content Include="Views\Credit\CompuScanConsumerProfileDatabase.cshtml" />
+    <Content Include="Views\Credit\TransUnionConsumerProfileDatabase.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

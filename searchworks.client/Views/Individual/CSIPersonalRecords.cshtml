@@ -88,7 +88,7 @@
     </div>
 </div>
 
-@*<script>
+<script>
         function Search(event) {
             event.preventDefault();
       $("#load").addClass("loader"); // to animate when successfull
@@ -108,7 +108,7 @@
       } else if (Surname === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
-          "Please fill in Surname to search!</div>";
+          "Please fill in Surname to search!</div>";x
         $(".resturn-message").html(alertMessage);
       } else if (ID === "") {
         var alertMessage =
@@ -141,7 +141,7 @@
         });
       }
     }
-    </script>*@
+</script>
 
 <script>
     $(document).ready(function () {

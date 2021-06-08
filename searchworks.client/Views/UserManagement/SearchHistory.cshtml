@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "SearchHistory";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <div class="col-md-10 col-sm-10">
@@ -56,6 +57,7 @@
                             <th scope="col" class="color">Reference</th>
                             <th scope="col" class="color">Name</th>
                             <th scope="col" class="color">Time Searched</th>
+                            <th scope="col" class="color"></th>
                         </tr>
                     </thead>
                 </table>
@@ -71,28 +73,33 @@
                             @foreach (var item in @ViewBag.ArrayList)
                             {
 
-                                <tr scope="row" class="justify-content-around t-row " style="cursor:pointer;display:flex" onclick="Redirect();">
+                                string ID = @item.SearchID;
+                                string Token = @item.SearchToken;
+                                string Ref = @item.Reference;
+                                string Type = @item.ResponseType;
+
+                                <tr scope="row" class="justify-content-around t-row " style="display:flex">
                                     <td style="">
                                         <label class="control control--checkbox">
                                             <input type="checkbox" />
                                             <div class="control__indicator"></div>
                                         </label>
                                     </td>
-                                    <td style="display:flex;text-wrap:normal"  data-toggle="modal"
+                                    <td style="display:flex;text-wrap:normal" data-toggle="modal"
                                         data-target="#exampleModal">
-                                        @item.callerModule
+                                        @item.CallerModule
                                     </td>
                                     <td style="" data-toggle="modal"
                                         data-target="#exampleModal">
-                                        @item.searchDescription
+                                        @item.SearchDescription
                                     </td>
-                                    <td style="display:flex;word-break: break-all"   data-toggle="modal"
+                                    <td style="display:flex;word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.ResponseType
                                     </td>
                                     <td style="display:flex;word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
-                                            @item.reference
+                                        @item.Reference
                                     </td>
                                     <td style="display:flex;word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
@@ -100,8 +107,10 @@
                                     </td>
                                     <td style="" data-toggle="modal"
                                         data-target="#exampleModal">
-                                        @item.reportDate
+                                        @item.ReportDate
                                     </td>
+
+                                    <td>@Html.ActionLink("View", Type + "Database", "Credit",new {id=ID,token=Token,refe =Ref,type = Type }, null)</td>
                                 </tr>
 
                             }
@@ -192,8 +201,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function Redirect() {
-        location.href = "../Credit/CombinedConsumerTraceDbResults";
-    }
-</script>
