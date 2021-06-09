@@ -11,8 +11,12 @@
 
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea">SEARCH RESULTS</div>
-    <div class="sea act">Experian Consumer Profile</div>
+    <div class="row tabs-row" id="tabs-div">
+
+
+        @*</div><span class="none" id="tabs-close">x</span>*@
+
+    </div>
     <div class="sea_bar">
         <label>Search History</label>
         <input name="search" />
@@ -30,37 +34,37 @@
                 <div class="eqType">
                     <label>Enquiry Reason</label><br>
 
-                        @Html.DropDownList("enquiryReason", new List<SelectListItem>
-                    {
+                    @Html.DropDownList("enquiryReason", new List<SelectListItem>
+                {
 
-                          new SelectListItem { Text = "Credit Assessment", Value = "Credit Assessment"},
-                          new SelectListItem { Text = "SAPS or State Agency", Value = "SAPS or State Agency"},
-                          new SelectListItem { Text = "Employment Screening", Value = "Employment Screening"},
-                          new SelectListItem { Text = "Account Limit Determination", Value = "Account Limit Determination"},
-                          new SelectListItem { Text = "Application for Insurance", Value = "Application for Insurance"},
-                          new SelectListItem { Text = "Employment Verification", Value = "Employment Verification"},
-                          new SelectListItem { Text = "Affordability Assessment", Value = "Affordability Assessment"},
-                          new SelectListItem { Text = "Debt Review Applications", Value = "Debt Review Applications"},
-                    }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
-                    </div>
-        
-                    
+                      new SelectListItem { Text = "Credit Assessment", Value = "Credit Assessment"},
+                      new SelectListItem { Text = "SAPS or State Agency", Value = "SAPS or State Agency"},
+                      new SelectListItem { Text = "Employment Screening", Value = "Employment Screening"},
+                      new SelectListItem { Text = "Account Limit Determination", Value = "Account Limit Determination"},
+                      new SelectListItem { Text = "Application for Insurance", Value = "Application for Insurance"},
+                      new SelectListItem { Text = "Employment Verification", Value = "Employment Verification"},
+                      new SelectListItem { Text = "Affordability Assessment", Value = "Affordability Assessment"},
+                      new SelectListItem { Text = "Debt Review Applications", Value = "Debt Review Applications"},
+                }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
+                </div>
+
+
                 <div class="firstname" style="">
                     <label>ID Number</label><br>
 
                     @Html.TextBox("iDNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
                 </div>
                 <div class="surname">
-                        <label>Surname</label><br>
+                    <label>Surname</label><br>
 
-                        @Html.TextBox("surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
-                    </div>
+                    @Html.TextBox("surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                </div>
 
                 <div class="idnumber">
-                        <label>First Name </label><br>
+                    <label>First Name </label><br>
 
-                        @Html.TextBox("firstName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
-                    </div>
+                    @Html.TextBox("firstName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                </div>
 
                 <div class="tc">
                     <div class="checkBoxDiv">
@@ -152,6 +156,143 @@
                             }
                             }
                         });
-                        }
+    }
+
+
+     var tab = [];
+    // removing duplicates
+
+    function removeDup(data) {
+        return data.filter((value, index) => data.indexOf(value) === index);
+    }
+
+    // Parse the serialized data back into an array of objects
+
+    tab = JSON.parse(localStorage.getItem('tabs')) || [];
+
+
+
+    // push the new data into the array
+
+
+    tab.push('Experian Consumer Profile');
+
+
+
+    tab = removeDup(tab);
+
+
+    // Re-serialize the array back into a string and store it in localStorage
+
+    localStorage.setItem('tabs', JSON.stringify(tab));
+
+
+    var container = document.getElementById('tabs-div');
+
+    console.log('test');
+
+    for (var i = 0; i < tab.length; i++) {
+       const txt = tab[i];
+       console.log('txt: ', txt);
+       const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
+       container.insertAdjacentHTML("beforeend", new_tabs);
+    };
+
+
+    function tes() {
+
+        tab_d = $(event.target).text();
+        if (tab_d === "CSI Person Records") {
+
+            window.location.href = "@Url.Action("CSIPersonalRecords", "Individual")";
+        } else if (tab_d === "CIPC Company Search") {
+
+                window.location.href = "@Url.Action("CIPCCompany", "Home")";
+        } else if (tab_d === "Deeds Office Records Individual") {
+
+              window.location.href = "@Url.Action("DeedsOfficeRecordsIndividual", "Individual")";
+       } else if (tab_d === "CSI Company Records") {
+            window.location.href = "@Url.Action("CSICompanyRecords", "Home")";
+
+        } else if (tab_d === "Combined Consumer Trace") {
+
+            window.location.href = "@Url.Action("CombinedConsumerTrace", "Credit")";
+        } else if (tab_d === "Combined Credit Report") {
+
+            window.location.href = "@Url.Action("CombinedCreditReport", "Credit")";
+
+//// ====  CompuScan  =====////
+        } else if (tab_d === "Bank Codes Document") {
+             window.location.href = "@Url.Action("CompuScanBankCodesDocument", "Credit")";
+        } else if (tab_d === "Bank On File") {
+
+            window.location.href = "@Url.Action("CompuScanBankOnFile", "Credit")";
+        } else if (tab_d === "Consumer Profile") {
+
+            window.location.href = "@Url.Action("CompuScanConsumerProfile", "Credit")";
+        } else if (tab_d === "Consumer Trace") {
+            window.location.href = "@Url.Action("CompuScanConsumerTrace", "Credit")";
+
+        } else if (tab_d === "Contact Information") {
+
+            window.location.href = "@Url.Action("CompuScanContactInformation", "Credit")";
+        } else if (tab_d === "Employment Confidence Index") {
+
+            window.location.href = "@Url.Action("CompuScanEmploymentConfidenceIndex", "Credit")";
+        } else if (tab_d === "Gross Monthly Income By ID Number") {
+            window.location.href = "@Url.Action("CompuScanGrossMonthlyIncomeByIDNumber", "Credit")";
+
+        } else if (tab_d === "ID Photo Verification") {
+
+         window.location.href = "@Url.Action("CompuScanIDPhotoVerification", "Credit")";
+        } else if (tab_d === "Experian Consumer Profile") {
+           // window.location.href = "@Url.Action("ExperianConsumerProfile", "Credit")";
+//// ====  TransUnion   =====////
+        } else if (tab_d === "TransUnion Company Profile") {
+
+            window.location.href = "@Url.Action("TransUnionCompanyProfile", "Credit")";
+        } else if (tab_d === "TransUnion Consumer Contact Information") {
+
+            window.location.href = "@Url.Action("TransUnionConsumerContactInformation", "Credit")";
+        } else if (tab_d === "TransUnion Consumer ID Verification") {
+
+            window.location.href = "@Url.Action("TransUnionConsumerIDVerification", "Credit")";
+        } else if (tab_d === "TransUnion Consumer Profile") {
+             window.location.href = "@Url.Action("TransUnionConsumerProfile", "Credit")";
+        } else if (tab_d === "TransUnion Consumer Trace") {
+
+            window.location.href = "@Url.Action("TransUnionConsumerTrace", "Credit")";
+//// ====  veriCred   =====////
+        } else if (tab_d === "VeriCred Account Verification") {
+
+            window.location.href = "@Url.Action("VeriCredAccountVerification", "Credit")";
+        } else if (tab_d === "VeriCred Consumer Profile") {
+            window.location.href = "@Url.Action("VeriCredConsumerProfile", "Credit")";
+
+        } else if (tab_d === "VeriCred Contact Info By ID Number") {
+
+            window.location.href = "@Url.Action("VeriCredContactInfoByIDNumber", "Credit")";
+        } else if (tab_d === "VeriCred ID Photo Verification") {
+
+            window.location.href = "@Url.Action("VeriCredIDPhotoVerification", "Credit")";
+        } else if (tab_d === "VeriCred Income Estimate By ID Number") {
+             window.location.href = "@Url.Action("VeriCredIncomeEstimateByIDNumber", "Credit")";
+        } else if (tab_d === "VeriCred Person Verification By ID Number") {
+            window.location.href = "@Url.Action("VeriCredPersonVerificationByIDNumber", "Credit")";
+//// ==== XDS   =====////
+        } else if (tab_d === "XDS Consumer ID Verification") {
+             window.location.href = "@Url.Action("XDSConsumerIDVerification", "Credit")";
+        } else if (tab_d === "XDS Consumer Trace") {
+             window.location.href = "@Url.Action("XDSConsumerTrace", "Credit")";
+//// ==== Search   =====////
+        } else if (tab_d === "SEARCH HISTORY") {
+             window.location.href = "@Url.Action("SearchHistory", "UserManagement")";
+        } else if (tab_d === "USER MANAGEMENT") {
+             window.location.href = "@Url.Action("UserManagementHome", "UserManagement")";
+        }
+
+        console.log($(event.target).text());
+    };
+
 
 </script>
