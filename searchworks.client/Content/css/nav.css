@@ -31,14 +31,15 @@
 
 body {
     background: #EFEFEF;
+    height:10000px;
 }
 
 .sidenav {
     position: relative;
-    top: 10px;
+    margin-top: 10px;
     left: 10px;
-    width: 192px;
-    height: 664px;
+    height: 730px;
+   /* width:200px;*/
     background: transparent linear-gradient(180deg, #09182F 0%, #011A44 100%) 0% 0% no-repeat padding-box;
     border-radius: 20px;
     opacity: 1;

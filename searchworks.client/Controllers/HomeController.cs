@@ -353,112 +353,92 @@ namespace searchworks.client.Controllers
             {
                 //exit with a warning
             }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/cipc/company/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                SessionToken = authtoken,
-                CipcSearchBy = 2,//company name contains: See documentation
-                Reference = authtoken,//search reference: probably store in logs
-                CompanyName = strCompanyName,
-                RegistrationNumber = ""
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            TempData["ResponseMessage"] = rootObject.ResponseMessage;
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-
-            //extract list of companies returned
-            //List<CompanyInformation> lst = getCompanyList(response);
-
-            //foreach (ResponseObject responseObject in rawList)
-            //{
-            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
-            //    //res.SearchInformation = responseObject.SearchInformation;
-            //    lst.Add(responseObject.CompanyInformation);
-            //}
-            //try
-            //{
-            //    dynamic respContent = JObject.Parse(response.Content);
-            //    List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-
-            //    foreach (ResponseObject responseObject in rawList)
-            //    {
-            //        //ResponseObject res = responseObject.ToObject<ResponseObject>;
-            //        //res.SearchInformation = responseObject.SearchInformation;
-            //        lst.Add(responseObject.CompanyInformation);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    TempData["msg"] = "An error occured, please check the entered values.";
-            //}
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CIPC Company Records";
-            string action = "Company Name:" + name;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            TempData["user"] = Session["Name"].ToString();
-            TempData["date"] = DateTime.Today.ToShortDateString();
-            TempData["ref"] = refe;
-            TempData["ComName"] = name;
-            TempData.Keep();
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-            List<CompanyInformation> lst = new List<CompanyInformation>();
-            dynamic respContent = JObject.Parse(response.Content);
-
             try
             {
-                List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-                foreach (ResponseObject responseObject in rawList)
+                //company search API call
+                var url = "https://rest.searchworks.co.za/cipc/company/";
+
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
+
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                //object containing input parameter data for company() API method
+                var apiInput = new
                 {
-                    //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                    //res.SearchInformation = responseObject.SearchInformation;
-                    lst.Add(responseObject.CompanyInformation);
+                    SessionToken = authtoken,
+                    CipcSearchBy = 2,//company name contains: See documentation
+                    Reference = authtoken,//search reference: probably store in logs
+                    CompanyName = strCompanyName,
+                    RegistrationNumber = ""
+                };
+
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
+
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+                DateTime time = DateTime.Now;
+
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "CIPC Company Records";
+                string action = "Company Name:" + name;
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
+
+                TempData["user"] = Session["Name"].ToString();
+                TempData["date"] = DateTime.Today.ToShortDateString();
+                TempData["ref"] = refe;
+                TempData["ComName"] = name;
+                TempData.Keep();
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                conn.Open();
+
+                var cmd2 = new MySqlCommand(query_uid, conn);
+
+                var reader2 = cmd2.ExecuteReader();
+                List<CompanyInformation> lst = new List<CompanyInformation>();
+                dynamic respContent = JObject.Parse(response.Content);
+
+                try
+                {
+                    List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+                    foreach (ResponseObject responseObject in rawList)
+                    {
+                        //ResponseObject res = responseObject.ToObject<ResponseObject>;
+                        //res.SearchInformation = responseObject.SearchInformation;
+                        lst.Add(responseObject.CompanyInformation);
+                    }
                 }
+                catch (Exception e)
+                {
+                    TempData["msg"] = "An error occured, please check the entered values.";
+                }
+
+                conn.Close();
+                return View(lst);
             }
             catch (Exception e)
             {
-                TempData["msg"] = "An error occured, please check the entered values.";
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return View();
             }
-
-            conn.Close();
-
-            return View(lst);
         }
 
         public ActionResult CIPCCompanyDetails(string comID)

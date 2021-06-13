@@ -8,44 +8,32 @@
     ViewBag.Title = "Consumer Profile Results";
 }
 
-    <div class="col-md-10 col-sm-10">
-
-        <div class="sea_bar">
-            <label>Search History</label>
-            <input name="search" />
-            <button>RESET</button>
-        </div>
-        <div class="con" style="height: 515px;">
-            <div class="col-md-6 col-sm-6 left">
-                @using (Html.BeginForm("CompuScanConsumerProfileResults", "Credit", FormMethod.Post))
-                {
-                    <div class="ref">
-                        <label>Reference</label><br>
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
         @*</div><span class="none" id="tabs-close">x</span>*@
     </div>
-
     <div class="sea_bar">
         <label>Search History</label>
         <input name="search" />
         <button>RESET</button>
     </div>
+
+
     <div class="con" style="height: 515px;">
         <div class="col-md-6 col-sm-6 left">
             @using (Html.BeginForm("CompuScanConsumerProfileResults", "Credit", FormMethod.Post))
             {
-                <div class="ref">
-                    <label>Reference</label><br>
+<div class="ref">
+    <label>Reference</label><br>
 
-                    @Html.TextBox("reference", null, new { @id = "Ref" })
-                </div>
+    @Html.TextBox("reference", null, new { @id = "Ref" })
+</div>
                 <div class="eqType">
                     <label>Enquiry Reason</label><br>
 
                     @Html.DropDownList("enquiryReason", new List<SelectListItem>
-                {
+                                {
 
                       new SelectListItem { Text = "Fraud Investigation", Value = "1"},
                       new SelectListItem { Text = "Fraud Prevention", Value = "2"},
@@ -66,8 +54,7 @@
                       new SelectListItem { Text = "Consumer Enquiry", Value = "19"},
                       new SelectListItem { Text = "Other", Value = "19"}
                 }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
-                </div>
-                @*<div class="seaType">
+                </div> @*<div class="seaType">
                         <label>Search Criteria</label><br>
 
                         @Html.DropDownList("seatype", new List<SelectListItem>
@@ -80,32 +67,30 @@
                     }, "Please Select", new { @id = "seatype", required = "required" })
                     </div>*@
 
-                <div class="surname">
-                    <label>Firstname</label><br>
+                                <div class="surname">
+                                    <label>Firstname</label><br>
 
-                    @Html.TextBox("firstname", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
-                </div>
-                <div class="firstname" style="top: 140px;">
-                    <label>ID Number</label><br>
+                                    @Html.TextBox("firstname", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
+                                </div>
+                                                <div class="firstname" style="top: 140px;">
+                                                    <label>ID Number</label><br>
 
-                    @Html.TextBox("idNumber", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
-                </div>
-                <div class="surname" style="top: 200px;">
-                    <label>Surname</label><br>
+                                                    @Html.TextBox("idNumber", null, new { @id = "FirstName", minlength = "3", maxlength = "13" })
+                                                </div>
+                                                                <div class="surname" style="top: 200px;">
+                                                                    <label>Surname</label><br>
 
-                    @Html.TextBox("surname", null, new { @id = "Surname", minlength = "3", maxlength = "13" })
-                </div>
+                                                                    @Html.TextBox("surname", null, new { @id = "Surname", minlength = "3", maxlength = "13" })
+                                                                </div>
 
-                <div class="tc">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
-                        <input id="tc" type="checkbox" value="tc" required />
-                    </div>
-                </div>
+                                                                                <div class="tc">
+                                                                                    <div>
+                                                                                        I accept the <a href="#">terms and conditions</a>
+                                                                                        <input id="tc" type="checkbox" value="tc" required />
+                                                                                    </div>
+                                                                                </div>
 
-                <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
-
-            }
+                                                                                                <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>}
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">

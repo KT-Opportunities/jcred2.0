@@ -2370,708 +2370,133 @@ namespace searchworks.client.Controllers
                     return View();
                 }
             }
-            catch () { }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return View();
+            }
         }
-    }
 
-    public ActionResult CompuScanConsumerProfileDatabase(DatabaseSearch DbSearch)
-    {
-        ViewData["id"] = DbSearch.id.ToString();
-        ViewData["token"] = DbSearch.token.ToString();
-        ViewData["refe"] = DbSearch.refe;
-        ViewData["type"] = DbSearch.type;
-
-        //public ActionResult CompuScanConsumerProfileDatabase(DatabaseSearch DbSearch)
-        //{
-        //    System.Collections.Generic.List<PersonInformation> personInfoList = new System.Collections.Generic.List<PersonInformation>();
-        //    System.Collections.Generic.List<HomeAffairsInformation> homeAffairsInformationList = new System.Collections.Generic.List<HomeAffairsInformation>();
-        //    System.Collections.Generic.List<CreditInformation> creditInformationList = new System.Collections.Generic.List<CreditInformation>();
-        //    System.Collections.Generic.List<DataCounts> dataCountsList = new System.Collections.Generic.List<DataCounts>();
-        //    System.Collections.Generic.List<DebtReviewStatus> debtReviewStatusList = new System.Collections.Generic.List<DebtReviewStatus>();
-        //    System.Collections.Generic.List<ConsumerStatistics> consumerstatsList = new System.Collections.Generic.List<ConsumerStatistics>();
-        //    System.Collections.Generic.List<nlrstats> nlrstatsList = new System.Collections.Generic.List<nlrstats>();
-        //    System.Collections.Generic.List<ccastats> ccastatsList = new System.Collections.Generic.List<ccastats>();
-        //    System.Collections.Generic.List<months> monthsLists = new System.Collections.Generic.List<months>();
-        //    System.Collections.Generic.List<cca24months> cca24monthsList = new System.Collections.Generic.List<cca24months>();
-        //    System.Collections.Generic.List<cca36months> cca36monthsList = new System.Collections.Generic.List<cca36months>();
-        //    System.Collections.Generic.List<months> monthsLists = new System.Collections.Generic.List<months>();
-        //    System.Collections.Generic.List<months> monthsLists = new System.Collections.Generic.List<months>();
-        //    System.Collections.Generic.List<nlr36months> nlr12monthsList = new System.Collections.Generic.List<nlr36months>();
-        //    System.Collections.Generic.List<EnquiryHistory> enquiryInformationList = new System.Collections.Generic.List<EnquiryHistory>();
-        //    System.Collections.Generic.List<AddressHistory> addressInformationList = new System.Collections.Generic.List<AddressHistory>();
-        //    System.Collections.Generic.List<EmploymentHistory> employmentInformationList = new System.Collections.Generic.List<EmploymentHistory>();
-        //    System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
-        //    System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
-        //    //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
-
-        // ViewData["id"] = DbSearch.id.ToString(); ViewData["token"] = DbSearch.token.ToString();
-        // ViewData["refe"] = DbSearch.refe; ViewData["type"]
-        // = DbSearch.type;
-
-        // //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference =
-        // 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile' string
-        // dbConnectionString =
-        // ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
-        // serverIp, username, password, databaseName); //string query_uid = $"SELECT * FROM
-        // personinformation,homeaffairsinformation,creditinformation,datacounts,debtreviewstatus,addresshistory,telephonehistory,consumerstatistics,nlrstats,ccastats,months,cca24months,cca36months,enquiryhistory,employmenthistory,months,months,nlr36months,cpa_accounts
-        // WHERE personinformation.SearchToken = '{DbSearch.token}'"; //Add TABLE paymenthistoryaccountdetails!!!!
-
-        // using (var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString)) { conn.Open();
-
-        // //**************************************************** personal info***********// string
-        // query_uid_personinformation = $"SELECT * FROM personinformation as a WHERE a.SearchToken
-        // = '{DbSearch.token}'"; using (var cmd = new MySqlCommand(query_uid_personinformation,
-        // conn)) try { using (var reader = cmd.ExecuteReader()) { int DateOfBirth =
-        // reader.GetOrdinal("DateOfBirth"); int Title = reader.GetOrdinal("Title"); int FirstName =
-        // reader.GetOrdinal("FirstName"); int Surname = reader.GetOrdinal("Surname"); int Fullname
-        // = reader.GetOrdinal("Fullname"); int IDNumber = reader.GetOrdinal("IDNumber"); int Gender
-        // = reader.GetOrdinal("Gender"); int Age = reader.GetOrdinal("Age"); int MaritalStatus =
-        // reader.GetOrdinal("MaritalStatus"); int MiddleName1 = reader.GetOrdinal("MiddleName1");
-        // int Reference = reader.GetOrdinal("Reference"); int HasProperties = reader.GetOrdinal("HasProperties");
-
-        // //PersonInformation
-
-        // PersonInformation personInformation = new PersonInformation();
-        // personInformation.DateOfBirth = (reader[DateOfBirth] != Convert.DBNull) ?
-        // reader[DateOfBirth].ToString() : null; personInformation.Title = (reader[Title] !=
-        // Convert.DBNull) ? reader[Title].ToString() : null; personInformation.FirstName =
-        // (reader[FirstName] != Convert.DBNull) ? reader[FirstName].ToString() : null;
-        // personInformation.Surname = (reader[Surname] != Convert.DBNull) ?
-        // reader[Surname].ToString() : null; personInformation.Fullname = (reader[Fullname] !=
-        // Convert.DBNull) ? reader[Fullname].ToString() : null; personInformation.IDNumber =
-        // (reader[IDNumber] != Convert.DBNull) ? reader[IDNumber].ToString() : null;
-        // personInformation.Gender = (reader[Gender] != Convert.DBNull) ? reader[Gender].ToString()
-        // : null; personInformation.Age = (reader[Age] != Convert.DBNull) ? reader[Age].ToString()
-        // : null; personInformation.MaritalStatus = (reader[MaritalStatus] != Convert.DBNull) ?
-        // reader[MaritalStatus].ToString() : null; personInformation.MiddleName1 =
-        // (reader[MiddleName1] != Convert.DBNull) ? reader[MiddleName1].ToString() : null;
-        // personInformation.Reference = (reader[Reference] != Convert.DBNull) ?
-        // reader[Reference].ToString() : null; personInformation.HasProperties =
-        // (reader[HasProperties] != Convert.DBNull) ? Convert.ToBoolean(reader[HasProperties]) :
-        // false; //add to the list personInfoList.Add(personInformation); }
-        // ViewData["PersonInfoList"] = personInfoList; ViewData["PersonInfoListCount"] =
-        // personInfoList.Count; } catch (Exception err) { //console.log }
-        // //*****************************************END personal info***********//
-
-        // //**************************************************** homeaffairsinformation
-        // info***********// string query_uid_homeaffairsinformation = $"SELECT * FROM
-        // homeaffairsinformation as a WHERE a.SearchToken = '{DbSearch.token}'"; using (var cmd =
-        // new MySqlCommand(query_uid_homeaffairsinformation, conn)) try { using (var reader =
-        // cmd.ExecuteReader()) { //HomeAffairsInformation HomeAffairsInformation
-        // homeAffairsInformation = new HomeAffairsInformation(); int ExFirstName =
-        // reader.GetOrdinal("FirstName"); int DeceasedDate = reader.GetOrdinal("DeceasedDate"); int
-        // IDVerified = reader.GetOrdinal("IDVerified"); int SurnameVerified =
-        // reader.GetOrdinal("SurnameVerified"); int Warnings = reader.GetOrdinal("Warnings"); int
-        // DeceasedStatus = reader.GetOrdinal("DeceasedStatus"); int VerifiedStatus =
-        // reader.GetOrdinal("VerifiedStatus"); int InitialsVerified =
-        // reader.GetOrdinal("InitialsVerified"); int CauseOfDeath =
-        // reader.GetOrdinal("CauseOfDeath"); int VerifiedDate = reader.GetOrdinal("VerifiedDate");
-
-        // homeAffairsInformation.FirstName = (reader[ExFirstName] != Convert.DBNull) ?
-        // reader[ExFirstName].ToString() : null; homeAffairsInformation.IDVerified =
-        // (reader[IDVerified] != Convert.DBNull) ? reader[IDVerified].ToString() : null;
-        // homeAffairsInformation.SurnameVerified = (reader[SurnameVerified] != Convert.DBNull) ?
-        // reader[SurnameVerified].ToString() : null; homeAffairsInformation.Warnings =
-        // (reader[Warnings] != Convert.DBNull) ? reader[Warnings].ToString() : null;
-        // homeAffairsInformation.DeceasedDate = (reader[DeceasedDate] != Convert.DBNull) ?
-        // reader[DeceasedDate].ToString() : null; homeAffairsInformation.DeceasedStatus =
-        // (reader[DeceasedStatus] != Convert.DBNull) ? reader[DeceasedStatus].ToString() : null;
-        // homeAffairsInformation.VerifiedStatus = (reader[VerifiedStatus] != Convert.DBNull) ?
-        // reader[VerifiedStatus].ToString() : null; homeAffairsInformation.InitialsVerified =
-        // (reader[InitialsVerified] != Convert.DBNull) ? reader[InitialsVerified].ToString() :
-        // null; homeAffairsInformation.CauseOfDeath = (reader[CauseOfDeath] != Convert.DBNull) ?
-        // reader[CauseOfDeath].ToString() : null; homeAffairsInformation.VerifiedDate =
-        // (reader[VerifiedDate] != Convert.DBNull) ? reader[VerifiedDate].ToString() : null; //add
-        // to the list homeAffairsInformationList.Add(homeAffairsInformation); }
-
-        // //add list to the viewbagviewdata ViewData["HomeAffairsInfoList"] =
-        // homeAffairsInformationList; ViewData["HomeAffairsInfoListCount"] =
-        // homeAffairsInformationList.Count; } catch (Exception err) { } }
-
-        // //var cmd2 = new MySqlCommand(query_uid, conn); //var reader2 = cmd2.ExecuteReader();
-
-        // //PersonInformation //int DateOfBirth = reader2.GetOrdinal("DateOfBirth"); //int Title =
-        // reader2.GetOrdinal("Title"); //int FirstName = reader2.GetOrdinal("FirstName"); //int
-        // Surname = reader2.GetOrdinal("Surname"); //int Fullname = reader2.GetOrdinal("Fullname");
-        // //int IDNumber = reader2.GetOrdinal("IDNumber"); //int Gender =
-        // reader2.GetOrdinal("Gender"); //int Age = reader2.GetOrdinal("Age"); //int MaritalStatus
-        // = reader2.GetOrdinal("MaritalStatus"); //int MiddleName1 =
-        // reader2.GetOrdinal("MiddleName1"); //int Reference = reader2.GetOrdinal("Reference");
-        // //int HasProperties = reader2.GetOrdinal("HasProperties");
-
-        // //HomeAffairsInformation //int ExFirstName = reader2.GetOrdinal("FirstName"); //int
-        // DeceasedDate = reader2.GetOrdinal("DeceasedDate"); //int IDVerified =
-        // reader2.GetOrdinal("IDVerified"); //int SurnameVerified =
-        // reader2.GetOrdinal("SurnameVerified"); //int Warnings = reader2.GetOrdinal("Warnings");
-        // //int DeceasedStatus = reader2.GetOrdinal("DeceasedStatus"); //int VerifiedStatus =
-        // reader2.GetOrdinal("VerifiedStatus"); //int InitialsVerified =
-        // reader2.GetOrdinal("InitialsVerified"); //int CauseOfDeath =
-        // reader2.GetOrdinal("CauseOfDeath"); //int VerifiedDate = reader2.GetOrdinal("VerifiedDate");
-
-        // //CreditInformation //int DelphiScore = reader2.GetOrdinal("DelphiScore"); //int
-        // FlagCount = reader2.GetOrdinal("FlagCount"); //int FlagDetails = reader2.GetOrdinal("FlagDetails");
-
-        // ////DataCOunts //int Accounts = reader2.GetOrdinal("Accounts"); //int Enquiries =
-        // reader2.GetOrdinal("Enquiries"); ////int Judgements = reader2.GetOrdinal("Judgements");
-        // //int Notices = reader2.GetOrdinal("Notices"); //int BankDefaults =
-        // reader2.GetOrdinal("BankDefaults"); //int Defaults = reader2.GetOrdinal("Defaults");
-        // //int Collections = reader2.GetOrdinal("Collections"); //int Directors =
-        // reader2.GetOrdinal("Directors"); //int Addresses = reader2.GetOrdinal("Addresses"); //int
-        // Telephones = reader2.GetOrdinal("Telephones"); //int Occupants =
-        // reader2.GetOrdinal("Occupants"); //int Employers = reader2.GetOrdinal("Employers"); //int
-        // TraceAlerts = reader2.GetOrdinal("TraceAlerts"); //int PaymentProfiles =
-        // reader2.GetOrdinal("PaymentProfiles"); //int OwnEnquiries =
-        // reader2.GetOrdinal("OwnEnquiries"); //int AdminOrders =
-        // reader2.GetOrdinal("AdminOrders"); //int PossibleMatches =
-        // reader2.GetOrdinal("PossibleMatches"); //int DefiniteMatches =
-        // reader2.GetOrdinal("DefiniteMatches"); //int Loans = reader2.GetOrdinal("Loans"); //int
-        // FraudAlerts = reader2.GetOrdinal("FraudAlerts"); //int Companies =
-        // reader2.GetOrdinal("Companies"); //int Properties = reader2.GetOrdinal("Properties");
-        // //int Documents = reader2.GetOrdinal("Documents"); //int DemandLetters =
-        // reader2.GetOrdinal("DemandLetters"); //int Trusts = reader2.GetOrdinal("Trusts"); //int
-        // Bonds = reader2.GetOrdinal("Bonds"); //int Deeds = reader2.GetOrdinal("Deeds"); //int
-        // PublicDefaults = reader2.GetOrdinal("PublicDefaults"); //int NLRAccounts = reader2.GetOrdinal("NLRAccounts");
-
-        // ////DebtReviewStatus //int StatusCode = reader2.GetOrdinal("StatusCode"); //int
-        // StatusDate = reader2.GetOrdinal("StatusDate"); //int StatusDescription
-        // = reader2.GetOrdinal("StatusDescription"); //int ApplicationDate = reader2.GetOrdinal("ApplicationDate");
-
-        // ////Consumer Statistics //int HighestJudgment = reader2.GetOrdinal("HighestJudgment");
-        // //int RevolvingAccounts = reader2.GetOrdinal("RevolvingAccounts"); //int
-        // InstalmentAccounts = reader2.GetOrdinal("InstalmentAccounts"); //int OpenAccounts =
-        // reader2.GetOrdinal("OpenAccounts"); //int AdverseAccounts =
-        // reader2.GetOrdinal("AdverseAccounts"); //int Percent0ArrearsLast12Histories =
-        // reader2.GetOrdinal("Percent0ArrearsLast12Histories"); //int MonthsOldestOpenedPPSEver =
-        // reader2.GetOrdinal("MonthsOldestOpenedPPSEver"); //int NumberPPSLast12Months =
-        // reader2.GetOrdinal("NumberPPSLast12Months"); //int NLRMicroloansPast12Months = reader2.GetOrdinal("NLRMicroloansPast12Months");
-
-        // ////nlr stats //int nlrActiveAccounts = reader2.GetOrdinal("ActiveAccounts"); //int
-        // nlrClosedAccounts = reader2.GetOrdinal("ClosedAccounts"); //int nlrWorstMonthArrears =
-        // reader2.GetOrdinal("WorstMonthArrears"); //int nlrWorstArrearsStatus =
-        // reader2.GetOrdinal("WorstArrearsStatus"); //int nlrMonthlyInstalment =
-        // reader2.GetOrdinal("MonthlyInstalment"); //int nlrCumulativeArrears =
-        // reader2.GetOrdinal("CumulativeArrears"); //int nlrBalanceExposure = reader2.GetOrdinal("BalanceExposure");
-
-        // ////ccastats //int ccaActiveAccounts = reader2.GetOrdinal("ActiveAccounts"); //int
-        // ccaClosedAccounts = reader2.GetOrdinal("ClosedAccounts"); //int ccaWorstMonthArrears =
-        // reader2.GetOrdinal("WorstMonthArrears"); //int ccaWorstArrearsStatus =
-        // reader2.GetOrdinal("WorstArrearsStatus"); //int ccaMonthlyInstalment =
-        // reader2.GetOrdinal("MonthlyInstalment"); //int ccaCumulativeArrears =
-        // reader2.GetOrdinal("CumulativeArrears"); //int ccaBalanceExposure = reader2.GetOrdinal("BalanceExposure");
-
-        // ////months //int EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); //int
-        // EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); //int PositiveLoans =
-        // reader2.GetOrdinal("PositiveLoans"); //int HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // ////cca24months //int cca24EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient");
-        // //int cca24EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); //int
-        // cca24PositiveLoans = reader2.GetOrdinal("PositiveLoans"); //int
-        // cca24HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // ////cca36months //int cca36EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient");
-        // //int cca36EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); //int
-        // cca36PositiveLoans = reader2.GetOrdinal("PositiveLoans"); //int
-        // cca36HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // ////months //int EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); //int
-        // EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); //int PositiveLoans =
-        // reader2.GetOrdinal("PositiveLoans"); //int HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // ////months //int EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); //int
-        // EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); //int PositiveLoans =
-        // reader2.GetOrdinal("PositiveLoans"); //int HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // ////nlr36months //int nlr36EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient");
-        // //int nlr36EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); //int
-        // nlr36PositiveLoans = reader2.GetOrdinal("PositiveLoans"); //int
-        // nlr36HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // ////EnquiryHistory //int EnquiryDate = reader2.GetOrdinal("EnquiryDate"); //int
-        // EnquiredBy = reader2.GetOrdinal("EnquiredBy"); //int EnquiredByContact
-        // = reader2.GetOrdinal("EnquiredByContact"); //int EnquiredByType =
-        // reader2.GetOrdinal("EnquiredByType"); //int ReasonForEnquiry = reader2.GetOrdinal("ReasonForEnquiry");
-
-        // ////AddressHistory //int AddressID = reader2.GetOrdinal("AddressID"); //int
-        // TypeDescription = reader2.GetOrdinal("TypeDescription"); //int Line1 =
-        // reader2.GetOrdinal("Line1"); //int Line2 = reader2.GetOrdinal("Line2"); //int Line3 =
-        // reader2.GetOrdinal("Line3"); //int Line4 = reader2.GetOrdinal("Line4"); //int PostalCode
-        // = reader2.GetOrdinal("PostalCode"); //int FullAddress =
-        // reader2.GetOrdinal("FullAddress"); //int AddressLastUpdatedDate = reader2.GetOrdinal("LastUpdatedDate");
-
-        // ////Telephone History //int TypeDescriptionTel =
-        // reader2.GetOrdinal("TypeDescriptionTel"); //int DialCode =
-        // reader2.GetOrdinal("DialCode"); //int Number = reader2.GetOrdinal("Number"); //int
-        // FullNumber = reader2.GetOrdinal("FullNumber"); //int LastUpdatedDateTel
-        // = reader2.GetOrdinal("LastUpdatedDateTel");
-
-        // ////Employment History //int EmployerName = reader2.GetOrdinal("EmployerName"); //int
-        // Designation = reader2.GetOrdinal("Designation"); //int EmployLastUpdatedDate = reader2.GetOrdinal("LastUpdatedDate");
-
-        // ////cpaAccounts //int Account_ID = reader2.GetOrdinal("Account_ID"); //int SubscriberCode
-        // = reader2.GetOrdinal("SubscriberCode"); //int SubscriberName =
-        // reader2.GetOrdinal("SubscriberName"); //int AccountNO = reader2.GetOrdinal("AccountNO");
-        // //int SubAccountNO = reader2.GetOrdinal("SubAccountNO"); //int OwnershipType =
-        // reader2.GetOrdinal("OwnershipType"); //int OwnershipTypeDescription =
-        // reader2.GetOrdinal("OwnershipTypeDescription"); //int Reason =
-        // reader2.GetOrdinal("Reason"); //int ReasonDescription =
-        // reader2.GetOrdinal("ReasonDescription"); //int PaymentType =
-        // reader2.GetOrdinal("PaymentType"); //int PaymentTypeDescription =
-        // reader2.GetOrdinal("PaymentTypeDescription"); //int AccountType =
-        // reader2.GetOrdinal("AccountType"); //int AccountTypeDescription =
-        // reader2.GetOrdinal("AccountTypeDescription"); //int OpenDate =
-        // reader2.GetOrdinal("OpenDate"); //int DeferredPaymentDate =
-        // reader2.GetOrdinal("DeferredPaymentDate"); //int LastPaymentDate =
-        // reader2.GetOrdinal("LastPaymentDate"); //int OpenBalance =
-        // reader2.GetOrdinal("OpenBalance"); //int OpenBalanceIND =
-        // reader2.GetOrdinal("OpenBalanceIND"); //int CurrentBalance =
-        // reader2.GetOrdinal("CurrentBalance"); //int CurrentBalanceIND =
-        // reader2.GetOrdinal("CurrentBalanceIND"); //int OverdueAmount =
-        // reader2.GetOrdinal("OverdueAmount"); //int InstalmentAmount =
-        // reader2.GetOrdinal("InstalmentAmount"); //int ArrearsPeriod =
-        // reader2.GetOrdinal("ArrearsPeriod"); //int RepaymentFrequencyDescription =
-        // reader2.GetOrdinal("RepaymentFrequencyDescription"); //int Terms =
-        // reader2.GetOrdinal("Terms"); //int CPAStatusCode = reader2.GetOrdinal("StatusCode");
-        // //int StatusCodeDesc = reader2.GetOrdinal("StatusCodeDesc"); //int IndustryType =
-        // reader2.GetOrdinal("IndustryType"); //int PaymentHistoryChartURL =
-        // reader2.GetOrdinal("PaymentHistoryChartURL"); //int CPAStatusDate =
-        // reader2.GetOrdinal("StatusDate"); //int ThirdPartyName =
-        // reader2.GetOrdinal("ThirdPartyName"); //int ThirdPartySold =
-        // reader2.GetOrdinal("ThirdPartySold"); //int ThirdPartySoldDescription =
-        // reader2.GetOrdinal("ThirdPartySoldDescription"); //int JointLoanParticipants
-        // = reader2.GetOrdinal("JointLoanParticipants"); //int PaymentHistory =
-        // reader2.GetOrdinal("PaymentHistory"); //int PaymentHistoryStatus =
-        // reader2.GetOrdinal("PaymentHistoryStatus"); //int PaymentHistoryChart =
-        // reader2.GetOrdinal("PaymentHistoryChart"); //int MonthEndDate =
-        // reader2.GetOrdinal("MonthEndDate"); //int DateCreated = reader2.GetOrdinal("DateCreated");
-
-        // //paymentHistoryAccountDetails
-
-        // //int PayHistLastPaymentDate = reader2.GetOrdinal("LastPaymentDate"); //int
-        // PayHistPaymentHistory = reader2.GetOrdinal("PaymentHistory"); //int IsEstimated = reader2.GetOrdinal("IsEstimated");
-
-        // //while (reader2.Read()) //{ // PersonInformation PersonInfo = new PersonInformation();
-        // // PersonInfo.DateOfBirth = (reader2[DateOfBirth] != Convert.DBNull) ? //
-        // reader2[DateOfBirth].ToString() : null; PersonInfo.Title
-        // = (reader2[Title] != // Convert.DBNull) ? reader2[Title].ToString() : null;
-        // PersonInfo.FirstName = // (reader2[FirstName] != Convert.DBNull) ?
-        // reader2[FirstName].ToString() : null; // PersonInfo.Surname = (reader2[Surname] !=
-        // Convert.DBNull) ? // reader2[Surname].ToString() : null; PersonInfo.Fullname =
-        // (reader2[Fullname] != // Convert.DBNull) ? reader2[Fullname].ToString() : null;
-        // PersonInfo.IDNumber = // (reader2[IDNumber] != Convert.DBNull) ?
-        // reader2[IDNumber].ToString() : null; // PersonInfo.Gender = (reader2[Gender] !=
-        // Convert.DBNull) ? reader2[Gender].ToString() // : null; PersonInfo.Age = (reader2[Age] !=
-        // Convert.DBNull) ? reader2[Age].ToString() : // null; PersonInfo.MaritalStatus
-        // = (reader2[MaritalStatus] != Convert.DBNull) ? // reader2[MaritalStatus].ToString() :
-        // null; PersonInfo.MiddleName1 = // (reader2[MiddleName1] != Convert.DBNull) ?
-        // reader2[MiddleName1].ToString() : null; // PersonInfo.Reference = (reader2[Reference] !=
-        // Convert.DBNull) ? // reader2[Reference].ToString() : null; PersonInfo.HasProperties = //
-        // (reader2[HasProperties] != Convert.DBNull) ? // Convert.ToBoolean(reader2[HasProperties])
-        // : false;
-
-        // // personInfoList.Add(PersonInfo);
-
-        // // HomeAffairsInformation HomeAffairsInfo = new HomeAffairsInformation();
-
-        // // HomeAffairsInfo.FirstName = (reader2[ExFirstName] != Convert.DBNull) ? //
-        // reader2[ExFirstName].ToString() : null; HomeAffairsInfo.IDVerified = //
-        // (reader2[IDVerified] != Convert.DBNull) ? reader2[IDVerified].ToString() : null; //
-        // HomeAffairsInfo.SurnameVerified = (reader2[SurnameVerified] != Convert.DBNull) ? //
-        // reader2[SurnameVerified].ToString() : null; HomeAffairsInfo.Warnings = //
-        // (reader2[Warnings] != Convert.DBNull) ? reader2[Warnings].ToString() : null; //
-        // HomeAffairsInfo.DeceasedDate = (reader2[DeceasedDate] != Convert.DBNull) ? //
-        // reader2[DeceasedDate].ToString() : null; HomeAffairsInfo.DeceasedStatus = //
-        // (reader2[DeceasedStatus] != Convert.DBNull) ? reader2[DeceasedStatus].ToString() : //
-        // null; HomeAffairsInfo.VerifiedStatus
-        // = (reader2[VerifiedStatus] != Convert.DBNull) ? // reader2[VerifiedStatus].ToString() :
-        // null; HomeAffairsInfo.InitialsVerified = // (reader2[InitialsVerified] != Convert.DBNull)
-        // ? reader2[InitialsVerified].ToString() // : null; HomeAffairsInfo.CauseOfDeath
-        // = (reader2[CauseOfDeath] != Convert.DBNull) ? // reader2[CauseOfDeath].ToString() : null;
-        // HomeAffairsInfo.VerifiedDate = // (reader2[VerifiedDate] != Convert.DBNull) ?
-        // reader2[VerifiedDate].ToString() : null;
-
-        // // homeAffairsInformationList.Add(HomeAffairsInfo);
-
-        // // CreditInformation CreditInfo = new CreditInformation();
-
-        // // CreditInfo.DelphiScore = (reader2[DelphiScore] != Convert.DBNull) ? //
-        // reader2[DelphiScore].ToString() : null; CreditInfo.FlagCount = (reader2[FlagCount] != //
-        // Convert.DBNull) ? reader2[FlagCount].ToString() : null; CreditInfo.FlagDetails = //
-        // (reader2[FlagDetails] != Convert.DBNull) ? reader2[FlagDetails].ToString() : null;
-
-        // // creditInformationList.Add(CreditInfo);
-
-        // // DataCounts DataCountInfo = new DataCounts();
-
-        // // DataCountInfo.Accounts = (reader2[Accounts] != Convert.DBNull) ? //
-        // reader2[Accounts].ToString() : null; DataCountInfo.Enquiries = (reader2[Enquiries] != //
-        // Convert.DBNull) ? reader2[Enquiries].ToString() : null; //DataCountInfo.Judgements = //
-        // (reader2[Judgements] != Convert.DBNull) ? reader2[Judgements].ToString() : null; //
-        // DataCountInfo.Notices = (reader2[Notices] != Convert.DBNull) ? //
-        // reader2[Notices].ToString() : null; DataCountInfo.BankDefaults = //
-        // (reader2[BankDefaults] != Convert.DBNull) ? reader2[BankDefaults].ToString() : null; //
-        // DataCountInfo.Defaults = (reader2[Defaults] != Convert.DBNull) ? //
-        // reader2[Defaults].ToString() : null; DataCountInfo.Collections = // (reader2[Collections]
-        // != Convert.DBNull) ? reader2[Collections].ToString() : null; // DataCountInfo.Directors =
-        // (reader2[Directors] != Convert.DBNull) ? // reader2[Directors].ToString() : null;
-        // DataCountInfo.Addresses = (reader2[Addresses] // != Convert.DBNull) ?
-        // reader2[Addresses].ToString() : null; DataCountInfo.Telephones = // (reader2[Telephones]
-        // != Convert.DBNull) ? reader2[Telephones].ToString() : null; // DataCountInfo.Occupants =
-        // (reader2[Occupants] != Convert.DBNull) ? // reader2[Occupants].ToString() : null;
-        // DataCountInfo.Employers = (reader2[Employers] // != Convert.DBNull) ?
-        // reader2[Employers].ToString() : null; DataCountInfo.TraceAlerts // =
-        // (reader2[TraceAlerts] != Convert.DBNull) ? reader2[TraceAlerts].ToString() : null; //
-        // DataCountInfo.PaymentProfiles = (reader2[PaymentProfiles] != Convert.DBNull) ? //
-        // reader2[PaymentProfiles].ToString() : null; DataCountInfo.OwnEnquiries = //
-        // (reader2[OwnEnquiries] != Convert.DBNull) ? reader2[OwnEnquiries].ToString() : null; //
-        // DataCountInfo.AdminOrders = (reader2[AdminOrders] != Convert.DBNull) ? //
-        // reader2[AdminOrders].ToString() : null; DataCountInfo.PossibleMatches = //
-        // (reader2[PossibleMatches] != Convert.DBNull) ? reader2[PossibleMatches].ToString() : //
-        // null; DataCountInfo.DefiniteMatches = (reader2[DefiniteMatches] != Convert.DBNull) ? //
-        // reader2[DefiniteMatches].ToString() : null; DataCountInfo.Loans = (reader2[Loans] != //
-        // Convert.DBNull) ? reader2[Loans].ToString() : null; DataCountInfo.FraudAlerts = //
-        // (reader2[FraudAlerts] != Convert.DBNull) ? reader2[FraudAlerts].ToString() : null; //
-        // DataCountInfo.Companies = (reader2[Companies] != Convert.DBNull) ? //
-        // reader2[Companies].ToString() : null; DataCountInfo.Properties = (reader2[Properties] //
-        // != Convert.DBNull) ? reader2[Properties].ToString() : null; DataCountInfo.Documents = //
-        // (reader2[Documents] != Convert.DBNull) ? reader2[Documents].ToString() : null; //
-        // DataCountInfo.DemandLetters = (reader2[DemandLetters] != Convert.DBNull) ? //
-        // reader2[DemandLetters].ToString() : null; DataCountInfo.Trusts = (reader2[Trusts] != //
-        // Convert.DBNull) ? reader2[Trusts].ToString() : null; DataCountInfo.Bonds = //
-        // (reader2[Bonds] != Convert.DBNull) ? reader2[Bonds].ToString() : null; // DataCountInfo.Deeds
-        // = (reader2[Deeds] != Convert.DBNull) ? reader2[Deeds].ToString() // : null;
-        // DataCountInfo.PublicDefaults = (reader2[PublicDefaults] != Convert.DBNull) ? //
-        // reader2[PublicDefaults].ToString() : null; DataCountInfo.NLRAccounts = //
-        // (reader2[NLRAccounts] != Convert.DBNull) ? reader2[NLRAccounts].ToString() : null;
-
-        // // dataCountsList.Add(DataCountInfo);
-
-        // // DebtReviewStatus DebtReviewInfo = new DebtReviewStatus();
-
-        // // DebtReviewInfo.StatusCode = (reader2[StatusCode] != Convert.DBNull) ? //
-        // reader2[StatusCode].ToString() : null; DebtReviewInfo.StatusDate = //
-        // (reader2[StatusDate] != Convert.DBNull) ? reader2[StatusDate].ToString() : null; //
-        // DebtReviewInfo.StatusDescription = (reader2[StatusDescription] != Convert.DBNull) ? //
-        // reader2[StatusDescription].ToString() : null; DebtReviewInfo.ApplicationDate = //
-        // (reader2[ApplicationDate] != Convert.DBNull) ? reader2[ApplicationDate].ToString() : null;
-
-        // // debtReviewStatusList.Add(DebtReviewInfo);
-
-        // // ConsumerStatistics ConsumerStatsInfo = new ConsumerStatistics();
-
-        // // ConsumerStatsInfo.HighestJudgment = (reader2[HighestJudgment] != Convert.DBNull) ? //
-        // reader2[HighestJudgment].ToString() : null; ConsumerStatsInfo.RevolvingAccounts = //
-        // (reader2[RevolvingAccounts] != Convert.DBNull) ? // reader2[RevolvingAccounts].ToString()
-        // : null; ConsumerStatsInfo.InstalmentAccounts = // (reader2[InstalmentAccounts] !=
-        // Convert.DBNull) ? // reader2[InstalmentAccounts].ToString() : null;
-        // ConsumerStatsInfo.OpenAccounts = // (reader2[OpenAccounts] != Convert.DBNull) ?
-        // reader2[OpenAccounts].ToString() : null; // ConsumerStatsInfo.AdverseAccounts =
-        // (reader2[AdverseAccounts] != Convert.DBNull) ? // reader2[AdverseAccounts].ToString() :
-        // null; // ConsumerStatsInfo.Percent0ArrearsLast12Histories = //
-        // (reader2[Percent0ArrearsLast12Histories] != Convert.DBNull) ? //
-        // reader2[Percent0ArrearsLast12Histories].ToString() : null; //
-        // ConsumerStatsInfo.MonthsOldestOpenedPPSEver = (reader2[MonthsOldestOpenedPPSEver] != //
-        // Convert.DBNull) ? reader2[MonthsOldestOpenedPPSEver].ToString() : null; //
-        // ConsumerStatsInfo.NumberPPSLast12Months = (reader2[NumberPPSLast12Months] != //
-        // Convert.DBNull) ? reader2[NumberPPSLast12Months].ToString() : null; //
-        // ConsumerStatsInfo.NLRMicroloansPast12Months = (reader2[NLRMicroloansPast12Months] != //
-        // Convert.DBNull) ? reader2[NLRMicroloansPast12Months].ToString() : null;
-
-        // // consumerstatsList.Add(ConsumerStatsInfo);
-
-        // // nlrstats nlrstatsInfo = new nlrstats();
-
-        // // nlrstatsInfo.ActiveAccounts = (reader2[nlrActiveAccounts] != Convert.DBNull) ? //
-        // reader2[nlrActiveAccounts].ToString() : null; nlrstatsInfo.ClosedAccounts = //
-        // (reader2[nlrClosedAccounts] != Convert.DBNull) ? // reader2[nlrClosedAccounts].ToString()
-        // : null; nlrstatsInfo.WorstMonthArrears = // (reader2[nlrWorstMonthArrears] !=
-        // Convert.DBNull) ? // reader2[nlrWorstMonthArrears].ToString() : null;
-        // nlrstatsInfo.WorstArrearsStatus = // (reader2[nlrWorstArrearsStatus] != Convert.DBNull) ?
-        // // reader2[nlrWorstArrearsStatus].ToString() : null; nlrstatsInfo.MonthlyInstalment = //
-        // (reader2[nlrMonthlyInstalment] != Convert.DBNull) ? //
-        // reader2[nlrMonthlyInstalment].ToString() : null; nlrstatsInfo.CumulativeArrears = //
-        // (reader2[nlrCumulativeArrears] != Convert.DBNull) ? //
-        // reader2[nlrCumulativeArrears].ToString() : null; nlrstatsInfo.BalanceExposure = //
-        // (reader2[nlrBalanceExposure] != Convert.DBNull) ? //
-        // reader2[nlrBalanceExposure].ToString() : null;
-
-        // // nlrstatsList.Add(nlrstatsInfo);
-
-        // // //CCA Stats ccastats ccastatsInfo = new ccastats();
-
-        // // ccastatsInfo.ActiveAccounts = (reader2[ccaActiveAccounts] != Convert.DBNull) ? //
-        // reader2[ccaActiveAccounts].ToString() : null; ccastatsInfo.ClosedAccounts = //
-        // (reader2[ccaClosedAccounts] != Convert.DBNull) ? // reader2[ccaClosedAccounts].ToString()
-        // : null; ccastatsInfo.WorstMonthArrears = // (reader2[ccaWorstMonthArrears] !=
-        // Convert.DBNull) ? // reader2[ccaWorstMonthArrears].ToString() : null;
-        // ccastatsInfo.WorstArrearsStatus = // (reader2[ccaWorstArrearsStatus] != Convert.DBNull) ?
-        // // reader2[ccaWorstArrearsStatus].ToString() : null; ccastatsInfo.MonthlyInstalment = //
-        // (reader2[ccaMonthlyInstalment] != Convert.DBNull) ? //
-        // reader2[ccaMonthlyInstalment].ToString() : null; ccastatsInfo.CumulativeArrears = //
-        // (reader2[ccaCumulativeArrears] != Convert.DBNull) ? //
-        // reader2[ccaCumulativeArrears].ToString() : null; ccastatsInfo.BalanceExposure = //
-        // (reader2[ccaBalanceExposure] != Convert.DBNull) ? //
-        // reader2[ccaBalanceExposure].ToString() : null;
-
-        // // ccastatsList.Add(ccastatsInfo); //,cca24,cca36 months monthInfo = new months();
-
-        // // monthInfo.EnquiriesByClient = (reader2[EnquiriesByClient] != // Convert.DBNull) ?
-        // reader2[EnquiriesByClient].ToString() : null; // monthInfo.EnquiriesByOther =
-        // (reader2[EnquiriesByOther] != Convert.DBNull) // ? reader2[EnquiriesByOther].ToString() :
-        // null; monthInfo.PositiveLoans = // (reader2[PositiveLoans] != Convert.DBNull) ? //
-        // reader2[PositiveLoans].ToString() : null; monthInfo.HighestMonthsInArrears //
-        // = (reader2[HighestMonthsInArrears] != Convert.DBNull) ? //
-        // reader2[HighestMonthsInArrears].ToString() : null;
-
-        // // monthsLists.Add(monthInfo);
-
-        // // cca24months cca24monthInfo = new cca24months();
-
-        // // cca24monthInfo.EnquiriesByClient = (reader2[cca24EnquiriesByClient] != //
-        // Convert.DBNull) ? reader2[cca24EnquiriesByClient].ToString() : null; //
-        // cca24monthInfo.EnquiriesByOther = (reader2[cca24EnquiriesByOther] != Convert.DBNull) // ?
-        // reader2[cca24EnquiriesByOther].ToString() : null; cca24monthInfo.PositiveLoans = //
-        // (reader2[cca24PositiveLoans] != Convert.DBNull) ? //
-        // reader2[cca24PositiveLoans].ToString() : null; cca24monthInfo.HighestMonthsInArrears // =
-        // (reader2[cca24HighestMonthsInArrears] != Convert.DBNull) ? //
-        // reader2[cca24HighestMonthsInArrears].ToString() : null;
-
-        // // cca24monthsList.Add(cca24monthInfo);
-
-        // // cca36months cca36monthInfo = new cca36months();
-
-        // // cca36monthInfo.EnquiriesByClient = (reader2[cca36EnquiriesByClient] != //
-        // Convert.DBNull) ? reader2[cca36EnquiriesByClient].ToString() : null; //
-        // cca36monthInfo.EnquiriesByOther = (reader2[cca36EnquiriesByOther] != Convert.DBNull) // ?
-        // reader2[cca36EnquiriesByOther].ToString() : null; cca36monthInfo.PositiveLoans = //
-        // (reader2[cca36PositiveLoans] != Convert.DBNull) ? //
-        // reader2[cca36PositiveLoans].ToString() : null; cca36monthInfo.HighestMonthsInArrears // =
-        // (reader2[cca36HighestMonthsInArrears] != Convert.DBNull) ? //
-        // reader2[cca36HighestMonthsInArrears].ToString() : null;
-
-        // // cca36monthsList.Add(cca36monthInfo);
-
-        // // months monthInfo = new months();
-
-        // // monthInfo.EnquiriesByClient = (reader2[EnquiriesByClient] != // Convert.DBNull) ?
-        // reader2[EnquiriesByClient].ToString() : null; // monthInfo.EnquiriesByOther =
-        // (reader2[EnquiriesByOther] != Convert.DBNull) // ? reader2[EnquiriesByOther].ToString() :
-        // null; monthInfo.PositiveLoans = // (reader2[PositiveLoans] != Convert.DBNull) ? //
-        // reader2[PositiveLoans].ToString() : null; monthInfo.HighestMonthsInArrears //
-        // = (reader2[HighestMonthsInArrears] != Convert.DBNull) ? //
-        // reader2[HighestMonthsInArrears].ToString() : null;
-
-        // // monthsLists.Add(monthInfo);
-
-        // // months monthInfo = new months();
-
-        // // monthInfo.EnquiriesByClient = (reader2[EnquiriesByClient] != // Convert.DBNull) ?
-        // reader2[EnquiriesByClient].ToString() : null; // monthInfo.EnquiriesByOther =
-        // (reader2[EnquiriesByOther] != Convert.DBNull) // ? reader2[EnquiriesByOther].ToString() :
-        // null; monthInfo.PositiveLoans = // (reader2[PositiveLoans] != Convert.DBNull) ? //
-        // reader2[PositiveLoans].ToString() : null; monthInfo.HighestMonthsInArrears //
-        // = (reader2[HighestMonthsInArrears] != Convert.DBNull) ? //
-        // reader2[HighestMonthsInArrears].ToString() : null;
-
-        // // monthsLists.Add(monthInfo);
-
-        // // nlr36months nlr36monthInfo = new nlr36months();
-
-        // // nlr36monthInfo.EnquiriesByClient = (reader2[nlr36EnquiriesByClient] != //
-        // Convert.DBNull) ? reader2[nlr36EnquiriesByClient].ToString() : null; //
-        // nlr36monthInfo.EnquiriesByOther = (reader2[nlr36EnquiriesByOther] != Convert.DBNull) // ?
-        // reader2[nlr36EnquiriesByOther].ToString() : null; nlr36monthInfo.PositiveLoans = //
-        // (reader2[nlr36PositiveLoans] != Convert.DBNull) ? //
-        // reader2[nlr36PositiveLoans].ToString() : null; nlr36monthInfo.HighestMonthsInArrears // =
-        // (reader2[nlr36HighestMonthsInArrears] != Convert.DBNull) ? //
-        // reader2[nlr36HighestMonthsInArrears].ToString() : null;
-
-        // // nlr12monthsList.Add(nlr36monthInfo);
-
-        // // EnquiryHistory EnquiryHistoryInfo = new EnquiryHistory();
-
-        // // EnquiryHistoryInfo.EnquiryDate = (reader2[EnquiryDate] != Convert.DBNull) ? //
-        // reader2[EnquiryDate].ToString() : null; EnquiryHistoryInfo.EnquiredBy = //
-        // (reader2[EnquiredBy] != Convert.DBNull) ? reader2[EnquiredBy].ToString() : null; //
-        // EnquiryHistoryInfo.EnquiredByContact = (reader2[EnquiredByContact] != Convert.DBNull) //
-        // ? reader2[EnquiredByContact].ToString() : null; EnquiryHistoryInfo.EnquiredByType = //
-        // (reader2[EnquiredByType] != Convert.DBNull) ? reader2[EnquiredByType].ToString() : //
-        // null; EnquiryHistoryInfo.ReasonForEnquiry = (reader2[ReasonForEnquiry] != //
-        // Convert.DBNull) ? reader2[ReasonForEnquiry].ToString() : null;
-
-        // // enquiryInformationList.Add(EnquiryHistoryInfo); //Enquiry History
-
-        // // //Address History AddressHistory AddressInfo = new AddressHistory();
-
-        // // AddressInfo.AddressID = (reader2[AddressID] != Convert.DBNull) ? //
-        // reader2[AddressID].ToString() : null; AddressInfo.TypeDescription = //
-        // (reader2[TypeDescription] != Convert.DBNull) ? reader2[TypeDescription].ToString() : //
-        // null; AddressInfo.Line1 = (reader2[Line1] != Convert.DBNull) ? //
-        // reader2[Line1].ToString() : null; AddressInfo.Line2 = (reader2[Line2] != //
-        // Convert.DBNull) ? reader2[Line2].ToString() : null; AddressInfo.Line3 = //
-        // (reader2[Line3] != Convert.DBNull) ? reader2[Line3].ToString() : null; //
-        // AddressInfo.Line4 = (reader2[Line4] != Convert.DBNull) ? reader2[Line4].ToString() : //
-        // null; AddressInfo.PostalCode = (reader2[PostalCode] != Convert.DBNull) ? //
-        // reader2[PostalCode].ToString() : null; AddressInfo.FullAddress = // (reader2[FullAddress]
-        // != Convert.DBNull) ? reader2[FullAddress].ToString() : null; //
-        // AddressInfo.LastUpdatedDate = (reader2[AddressLastUpdatedDate] != Convert.DBNull) ? //
-        // reader2[AddressLastUpdatedDate].ToString() : null;
-
-        // // addressInformationList.Add(AddressInfo); //Telephone History
-
-        // // TelephoneHistory TelephoneInfo = new TelephoneHistory();
-
-        // // TelephoneInfo.TypeDescriptionTel = (reader2[TypeDescriptionTel] != Convert.DBNull) ?
-        // // reader2[TypeDescriptionTel].ToString() : null; TelephoneInfo.DialCode = //
-        // (reader2[DialCode] != Convert.DBNull) ? reader2[DialCode].ToString() : null; //
-        // TelephoneInfo.Number = (reader2[Number] != Convert.DBNull) ? //
-        // reader2[Number].ToString() : null; TelephoneInfo.FullNumber = (reader2[FullNumber] != //
-        // Convert.DBNull) ? reader2[FullNumber].ToString() : null; //
-        // TelephoneInfo.LastUpdatedDateTel = (reader2[LastUpdatedDateTel] != Convert.DBNull) ? //
-        // reader2[LastUpdatedDateTel].ToString() : null;
-
-        // // telephoneInformationList.Add(TelephoneInfo);
-
-        // // //Employment History EmploymentHistory EmploymentInfo = new EmploymentHistory();
-
-        // // EmploymentInfo.EmployerName = (reader2[EmployerName] != Convert.DBNull) ? //
-        // reader2[EmployerName].ToString() : null; EmploymentInfo.Designation = //
-        // (reader2[Designation] != Convert.DBNull) ? reader2[Designation].ToString() : null; //
-        // EmploymentInfo.LastUpdatedDate = (reader2[EmployLastUpdatedDate] != Convert.DBNull) ? //
-        // reader2[EmployLastUpdatedDate].ToString() : null;
-
-        // // employmentInformationList.Add(EmploymentInfo);
-
-        // // CPAaccounts CPAaccountInfo = new CPAaccounts(); CPAaccountInfo.Account_ID
-        // = // (reader2[Account_ID] != Convert.DBNull) ? reader2[Account_ID].ToString() : null; //
-        // CPAaccountInfo.SubscriberCode = (reader2[SubscriberCode] != Convert.DBNull) ? //
-        // reader2[SubscriberCode].ToString() : null; CPAaccountInfo.SubscriberName = //
-        // (reader2[SubscriberName] != Convert.DBNull) ? reader2[SubscriberName].ToString() : //
-        // null; CPAaccountInfo.AccountNO = (reader2[AccountNO] != Convert.DBNull) ? //
-        // reader2[AccountNO].ToString() : null; CPAaccountInfo.SubAccountNO = //
-        // (reader2[SubAccountNO] != Convert.DBNull) ? reader2[SubAccountNO].ToString() : null; //
-        // CPAaccountInfo.OwnershipType = (reader2[OwnershipType] != Convert.DBNull) ? //
-        // reader2[OwnershipType].ToString() : null; CPAaccountInfo.OwnershipTypeDescription = //
-        // (reader2[OwnershipTypeDescription] != Convert.DBNull) ? //
-        // reader2[OwnershipTypeDescription].ToString() : null; CPAaccountInfo.Reason = //
-        // (reader2[Reason] != Convert.DBNull) ? reader2[Reason].ToString() : null; //
-        // CPAaccountInfo.ReasonDescription = (reader2[ReasonDescription] != Convert.DBNull) ? //
-        // reader2[ReasonDescription].ToString() : null; CPAaccountInfo.PaymentType = //
-        // (reader2[PaymentType] != Convert.DBNull) ? reader2[PaymentType].ToString() : null; //
-        // CPAaccountInfo.PaymentTypeDescription = (reader2[PaymentTypeDescription] != //
-        // Convert.DBNull) ? reader2[PaymentTypeDescription].ToString() : null; //
-        // CPAaccountInfo.AccountType = (reader2[AccountType] != Convert.DBNull) ? //
-        // reader2[AccountType].ToString() : null; CPAaccountInfo.AccountTypeDescription
-        // = // (reader2[AccountTypeDescription] != Convert.DBNull) ? //
-        // reader2[AccountTypeDescription].ToString() : null; CPAaccountInfo.OpenDate = //
-        // (reader2[OpenDate] != Convert.DBNull) ? reader2[OpenDate].ToString() : null; //
-        // CPAaccountInfo.DeferredPaymentDate = (reader2[DeferredPaymentDate] != Convert.DBNull) //
-        // ? reader2[DeferredPaymentDate].ToString() : null; CPAaccountInfo.LastPaymentDate = //
-        // (reader2[LastPaymentDate] != Convert.DBNull) ? reader2[LastPaymentDate].ToString() : //
-        // null; CPAaccountInfo.OpenBalance = (reader2[OpenBalance] != Convert.DBNull) ? //
-        // reader2[OpenBalance].ToString() : null; CPAaccountInfo.OpenBalanceIND = //
-        // (reader2[OpenBalanceIND] != Convert.DBNull) ? reader2[OpenBalanceIND].ToString() : //
-        // null; CPAaccountInfo.CurrentBalance = (reader2[CurrentBalance] != Convert.DBNull) ? //
-        // reader2[CurrentBalance].ToString() : null; CPAaccountInfo.CurrentBalanceIND = //
-        // (reader2[CurrentBalanceIND] != Convert.DBNull) ? // reader2[CurrentBalanceIND].ToString()
-        // : null; CPAaccountInfo.OverdueAmount = // (reader2[OverdueAmount] != Convert.DBNull) ?
-        // reader2[OverdueAmount].ToString() : // null; CPAaccountInfo.InstalmentAmount
-        // = (reader2[InstalmentAmount] != Convert.DBNull) // ? reader2[InstalmentAmount].ToString()
-        // : null; CPAaccountInfo.ArrearsPeriod = // (reader2[ArrearsPeriod] != Convert.DBNull) ?
-        // reader2[ArrearsPeriod].ToString() : // null; CPAaccountInfo.RepaymentFrequencyDescription
-        // = // (reader2[RepaymentFrequencyDescription] != Convert.DBNull) ? //
-        // reader2[RepaymentFrequencyDescription].ToString() : null; CPAaccountInfo.Terms = //
-        // (reader2[Terms] != Convert.DBNull) ? reader2[Terms].ToString() : null; //
-        // CPAaccountInfo.StatusCode = (reader2[StatusCode] != Convert.DBNull) ? //
-        // reader2[StatusCode].ToString() : null; CPAaccountInfo.StatusCodeDesc = //
-        // (reader2[StatusCodeDesc] != Convert.DBNull) ? reader2[StatusCodeDesc].ToString() : //
-        // null; CPAaccountInfo.IndustryType = (reader2[IndustryType] != Convert.DBNull) ? //
-        // reader2[IndustryType].ToString() : null; CPAaccountInfo.PaymentHistoryChartURL = //
-        // (reader2[PaymentHistoryChartURL] != Convert.DBNull) ? //
-        // reader2[PaymentHistoryChartURL].ToString() : null; CPAaccountInfo.StatusDate = //
-        // (reader2[StatusDate] != Convert.DBNull) ? reader2[StatusDate].ToString() : null; //
-        // CPAaccountInfo.ThirdPartyName = (reader2[ThirdPartyName] != Convert.DBNull) ? //
-        // reader2[ThirdPartyName].ToString() : null; CPAaccountInfo.ThirdPartySold = //
-        // (reader2[ThirdPartySold] != Convert.DBNull) ? reader2[ThirdPartySold].ToString() : //
-        // null; CPAaccountInfo.ThirdPartySoldDescription = (reader2[ThirdPartySoldDescription] //
-        // != Convert.DBNull) ? reader2[ThirdPartySoldDescription].ToString() : null; //
-        // CPAaccountInfo.JointLoanParticipants = (reader2[JointLoanParticipants] != //
-        // Convert.DBNull) ? reader2[JointLoanParticipants].ToString() : null; //
-        // CPAaccountInfo.PaymentHistory = (reader2[PaymentHistory] != Convert.DBNull) ? //
-        // reader2[PaymentHistory].ToString() : null; CPAaccountInfo.PaymentHistoryStatus = //
-        // (reader2[PaymentHistoryStatus] != Convert.DBNull) ? //
-        // reader2[PaymentHistoryStatus].ToString() : null; CPAaccountInfo.PaymentHistoryChart = //
-        // (reader2[PaymentHistoryChart] != Convert.DBNull) ? //
-        // reader2[PaymentHistoryChart].ToString() : null; CPAaccountInfo.MonthEndDate = //
-        // (reader2[MonthEndDate] != Convert.DBNull) ? reader2[MonthEndDate].ToString() : null; //
-        // CPAaccountInfo.DateCreated = (reader2[DateCreated] != Convert.DBNull) ? //
-        // reader2[DateCreated].ToString() : null;
-
-        // // cppaAccountsList.Add(CPAaccountInfo);
-
-        // // //PaymentHistoryAccountDetails PaymentHistoryInfo = new PaymentHistoryAccountDetails();
-
-        // // //PaymentHistoryInfo.LastPaymentDate = (reader2[PayHistLastPaymentDate] != //
-        // Convert.DBNull) ? reader2[PayHistLastPaymentDate].ToString() : null; //
-        // //PaymentHistoryInfo.PaymentHistory = (reader2[PayHistPaymentHistory] != //
-        // Convert.DBNull) ? reader2[PayHistPaymentHistory].ToString() : null; //
-        // //PaymentHistoryInfo.IsEstimated = (reader2[IsEstimated] != Convert.DBNull) ? //
-        // reader2[IsEstimated].ToString() : null;
-
-        // // //paymentHistoryAccountList.Add(PaymentHistoryInfo); //} //ViewData["PersonInfoList"]
-        // = personInfoList; //ViewData["PersonInfoListCount"] = personInfoList.Count;
-
-        // //ViewData["HomeAffairsInfoList"] = homeAffairsInformationList;
-        // //ViewData["HomeAffairsInfoListCount"] = homeAffairsInformationList.Count;
-
-        // //ViewData["CreditInfoList"] = creditInformationList; //ViewData["CreditInfoListCount"] = creditInformationList.Count;
-
-        // //ViewData["dataCountsList"] = dataCountsList; //ViewData["dataCountsListCount"] = dataCountsList.Count;
-
-        // //ViewData["debtReviewStatusList"] = debtReviewStatusList;
-        // //ViewData["debtReviewStatusListCount"] = debtReviewStatusList.Count;
-
-        // //ViewData["consumerstatsList"] = consumerstatsList; //ViewData["consumerstatsListCount"]
-        // = consumerstatsList.Count;
-
-        // //ViewData["nlrstatsList"] = nlrstatsList; //ViewData["nlrstatsListCount"] = nlrstatsList.Count;
-
-        // //ViewData["ccastatsList"] = ccastatsList; //ViewData["ccastatsListCount"] = ccastatsList.Count;
-
-        // //ViewData["monthsLists"] = monthsLists; //ViewData["monthsListsCount"] = monthsLists.Count;
-
-        // //ViewData["cca24monthsList"] = cca24monthsList; //ViewData["cca24monthsListsCount"] = cca24monthsList.Count;
-
-        // //ViewData["cca36monthsList"] = cca36monthsList; //ViewData["cca36monthsListsCount"] = cca36monthsList.Count;
-
-        // //ViewData["monthsLists"] = monthsLists; //ViewData["monthsListsCount"] = monthsLists.Count;
-
-        // //ViewData["monthsLists"] = monthsLists; //ViewData["monthsListsCount"] = monthsLists.Count;
-
-        // //ViewData["nlr12monthsList"] = nlr12monthsList; //ViewData["nlr36monthsListsCount"] = nlr12monthsList.Count;
-
-        // //ViewData["enquiryInformationList"] = enquiryInformationList;
-        // //ViewData["enquiryInformationListCount"] = enquiryInformationList.Count;
-
-        // //ViewData["addressInformationList"] = addressInformationList;
-        // //ViewData["addressInformationListCount"] = addressInformationList.Count;
-
-        // //ViewData["employmentInformationList"] = employmentInformationList;
-        // //ViewData["employmentInformationListCount"] = employmentInformationList.Count;
-
-        // //ViewData["addressInformationList"] = addressInformationList;
-        // //ViewData["addressInformationListCount"] = addressInformationList.Count;
-
-        // //ViewData["telephoneInformationList"] = telephoneInformationList;
-        // //ViewData["telephoneInformationListCount"] = telephoneInformationList.Count;
-
-        // //ViewData["cppaAccountsList"] = cppaAccountsList; //ViewData["cppaAccountsListCount"] = cppaAccountsList.Count;
-
-        // ////ViewData["paymentHistoryAccountList"] = paymentHistoryAccountList;
-        // ////ViewData["paymentHistoryAccountListCount"] = paymentHistoryAccountList.Count;
-
-        //    //conn.Close();
-        //    return View();
-        //}
+        public ActionResult CompuScanConsumerProfileDatabase(DatabaseSearch DbSearch)
+        {
+            System.Collections.Generic.List<PersonInformation> personInfoList = new System.Collections.Generic.List<PersonInformation>();
+            System.Collections.Generic.List<HomeAffairsInformation> homeAffairsInformationList = new System.Collections.Generic.List<HomeAffairsInformation>();
+            System.Collections.Generic.List<CreditInformation> creditInformationList = new System.Collections.Generic.List<CreditInformation>();
+            System.Collections.Generic.List<DataCounts> dataCountsList = new System.Collections.Generic.List<DataCounts>();
+            System.Collections.Generic.List<DebtReviewStatus> debtReviewStatusList = new System.Collections.Generic.List<DebtReviewStatus>();
+            System.Collections.Generic.List<ConsumerStatistics> consumerstatsList = new System.Collections.Generic.List<ConsumerStatistics>();
+            System.Collections.Generic.List<NLRStats> nlrstatsList = new System.Collections.Generic.List<NLRStats>();
+            System.Collections.Generic.List<CCAStats> ccastatsList = new System.Collections.Generic.List<CCAStats>();
+            System.Collections.Generic.List<CCA12months> cca12monthsLists = new System.Collections.Generic.List<CCA12months>();
+            System.Collections.Generic.List<CCA24months> cca24monthsList = new System.Collections.Generic.List<CCA24months>();
+            System.Collections.Generic.List<CCA36months> cca36monthsList = new System.Collections.Generic.List<CCA36months>();
+            System.Collections.Generic.List<NLR12months> nlr12monthsLists = new System.Collections.Generic.List<NLR12months>();
+            System.Collections.Generic.List<NLR24months> nlr24monthsLists = new System.Collections.Generic.List<NLR24months>();
+            System.Collections.Generic.List<NLR36months> nlr36monthsList = new System.Collections.Generic.List<NLR36months>();
+            System.Collections.Generic.List<EnquiryHistory> enquiryInformationList = new System.Collections.Generic.List<EnquiryHistory>();
+            System.Collections.Generic.List<AddressHistory> addressInformationList = new System.Collections.Generic.List<AddressHistory>();
+            System.Collections.Generic.List<EmploymentHistory> employmentInformationList = new System.Collections.Generic.List<EmploymentHistory>();
+            System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
+            System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
+            //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
+
+            ViewData["id"] = DbSearch.id.ToString(); ViewData["token"] = DbSearch.token.ToString();
+            ViewData["refe"] = DbSearch.refe; ViewData["type"] = DbSearch.type;
+
+            //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",         serverIp, username, password, databaseName);
+                                                                                                                   //string query_uid = $"SELECT * FROM personinformation,homeaffairsinformation,creditinformation,datacounts,debtreviewstatus,addresshistory,telephonehistory,consumerstatistics,nlrstats,ccastats,months,cca24months,cca36months,enquiryhistory,employmenthistory,months,months,nlr36months,cpa_accounts  WHERE personinformation.SearchToken = '{DbSearch.token}'"; //Add TABLE paymenthistoryaccountdetails!!!!
+
+            using (var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString))
+            {
+                conn.Open();
+
+                //**************************************************** personal info***********//
+                string query_uid_personinformation = $"SELECT * FROM personinformation as a WHERE a.SearchToken  = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_personinformation, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            int DateOfBirth = reader.GetOrdinal("DateOfBirth");
+                            int Title = reader.GetOrdinal("Title"); int FirstName = reader.GetOrdinal("FirstName"); int
+                            Surname = reader.GetOrdinal("Surname"); int Fullname
+                            = reader.GetOrdinal("Fullname"); int IDNumber = reader.GetOrdinal("IDNumber"); int Gender
+                            = reader.GetOrdinal("Gender"); int Age = reader.GetOrdinal("Age"); int MaritalStatus =
+                            reader.GetOrdinal("MaritalStatus"); int MiddleName1 = reader.GetOrdinal("MiddleName1"); int
+                            Reference = reader.GetOrdinal("Reference"); int HasProperties = reader.GetOrdinal("HasProperties");
+
+                            //PersonInformation
+
+                            PersonInformation personInformation = new PersonInformation(); personInformation.DateOfBirth
+                            = (reader[DateOfBirth] != Convert.DBNull) ? reader[DateOfBirth].ToString() : null;
+                            personInformation.Title = (reader[Title] != Convert.DBNull) ? reader[Title].ToString() : null;
+                            personInformation.FirstName = (reader[FirstName] != Convert.DBNull) ?
+                            reader[FirstName].ToString() : null; personInformation.Surname = (reader[Surname] !=
+                            Convert.DBNull) ? reader[Surname].ToString() : null; personInformation.Fullname =
+                            (reader[Fullname] != Convert.DBNull) ? reader[Fullname].ToString() : null;
+                            personInformation.IDNumber = (reader[IDNumber] != Convert.DBNull) ? reader[IDNumber].ToString() :
+                            null; personInformation.Gender = (reader[Gender] != Convert.DBNull) ? reader[Gender].ToString() :
+                            null; personInformation.Age = (reader[Age] != Convert.DBNull) ? reader[Age].ToString() : null;
+                            personInformation.MaritalStatus = (reader[MaritalStatus] != Convert.DBNull) ?
+                            reader[MaritalStatus].ToString() : null; personInformation.MiddleName1 = (reader[MiddleName1] !=
+                            Convert.DBNull) ? reader[MiddleName1].ToString() : null; personInformation.Reference =
+                            (reader[Reference] != Convert.DBNull) ? reader[Reference].ToString() : null;
+                            personInformation.HasProperties = (reader[HasProperties] != Convert.DBNull) ?
+                            Convert.ToBoolean(reader[HasProperties]) : false; //add to the list
+                            personInfoList.Add(personInformation);
+                        }
+                        ViewData["PersonInfoList"] = personInfoList;
+                        ViewData["PersonInfoListCount"] = personInfoList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        //console.log
+                    }
+                //*****************************************END personal info***********//
+                //**************************************************** homeaffairsinformation info***********//
+                string query_uid_homeaffairsinformation = $"SELECT * FROM homeaffairsinformation as a WHERE   a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_homeaffairsinformation, conn)) try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //HomeAffairsInformation
+                            HomeAffairsInformation homeAffairsInformation
+ = new HomeAffairsInformation(); int ExFirstName = reader.GetOrdinal("FirstName"); int
+ DeceasedDate = reader.GetOrdinal("DeceasedDate"); int IDVerified =
+ reader.GetOrdinal("IDVerified"); int SurnameVerified = reader.GetOrdinal("SurnameVerified"); int
+ Warnings = reader.GetOrdinal("Warnings"); int DeceasedStatus =
+ reader.GetOrdinal("DeceasedStatus"); int VerifiedStatus = reader.GetOrdinal("VerifiedStatus");
+                            int InitialsVerified = reader.GetOrdinal("InitialsVerified"); int CauseOfDeath =
+                            reader.GetOrdinal("CauseOfDeath"); int VerifiedDate = reader.GetOrdinal("VerifiedDate");
+
+                            homeAffairsInformation.FirstName = (reader[ExFirstName] != Convert.DBNull) ?
+                            reader[ExFirstName].ToString() : null; homeAffairsInformation.IDVerified = (reader[IDVerified] !=
+                            Convert.DBNull) ? reader[IDVerified].ToString() : null; homeAffairsInformation.SurnameVerified =
+                            (reader[SurnameVerified] != Convert.DBNull) ? reader[SurnameVerified].ToString() : null;
+                            homeAffairsInformation.Warnings = (reader[Warnings] != Convert.DBNull) ?
+                            reader[Warnings].ToString() : null; homeAffairsInformation.DeceasedDate = (reader[DeceasedDate]
+                            != Convert.DBNull) ? reader[DeceasedDate].ToString() : null;
+                            homeAffairsInformation.DeceasedStatus = (reader[DeceasedStatus] != Convert.DBNull) ?
+                            reader[DeceasedStatus].ToString() : null; homeAffairsInformation.VerifiedStatus =
+                            (reader[VerifiedStatus] != Convert.DBNull) ? reader[VerifiedStatus].ToString() : null;
+                            homeAffairsInformation.InitialsVerified = (reader[InitialsVerified] != Convert.DBNull) ?
+                            reader[InitialsVerified].ToString() : null; homeAffairsInformation.CauseOfDeath =
+                            (reader[CauseOfDeath] != Convert.DBNull) ? reader[CauseOfDeath].ToString() : null;
+                            homeAffairsInformation.VerifiedDate = (reader[VerifiedDate] != Convert.DBNull) ?
+                            reader[VerifiedDate].ToString() : null; //add to the list
+                            homeAffairsInformationList.Add(homeAffairsInformation);
+                        }
+
+                        //add list to the viewbagviewdata ViewData["HomeAffairsInfoList"] = homeAffairsInformationList;
+                        ViewData["HomeAffairsInfoListCount"] = homeAffairsInformationList.Count;
+                    }
+                    catch (Exception err)
+                    { System.Diagnostics.Debug.WriteLine(err.ToString()); }
+            }
+
+            return View();
+        }
 
         public ActionResult CompuScanConsumerTrace()
         {
@@ -5961,17 +5386,17 @@ namespace searchworks.client.Controllers
 
         // //PersonInformation int DateOfBirth = reader2.GetOrdinal("DateOfBirth"); int Title =
         // reader2.GetOrdinal("Title"); int FirstName = reader2.GetOrdinal("FirstName"); int Surname
-        // = reader2.GetOrdinal("Surname"); int Fullname = reader2.GetOrdinal("Fullname"); int
-        // IDNumber = reader2.GetOrdinal("IDNumber"); int Gender = reader2.GetOrdinal("Gender"); int
-        // Age = reader2.GetOrdinal("Age"); int MaritalStatus = reader2.GetOrdinal("MaritalStatus");
-        // int MiddleName1 = reader2.GetOrdinal("MiddleName1"); int Reference =
+        // = reader2.GetOrdinal("Surname"); int Fullname = reader2.GetOrdinal("Fullname"); int IDNumber
+        // = reader2.GetOrdinal("IDNumber"); int Gender = reader2.GetOrdinal("Gender"); int Age =
+        // reader2.GetOrdinal("Age"); int MaritalStatus = reader2.GetOrdinal("MaritalStatus"); int
+        // MiddleName1 = reader2.GetOrdinal("MiddleName1"); int Reference =
         // reader2.GetOrdinal("Reference"); int HasProperties = reader2.GetOrdinal("HasProperties");
 
-        // //HomeAffairsInformation int ExFirstName = reader2.GetOrdinal("FirstName"); int
-        // DeceasedDate = reader2.GetOrdinal("DeceasedDate"); int IDVerified =
-        // reader2.GetOrdinal("IDVerified"); int SurnameVerified =
-        // reader2.GetOrdinal("SurnameVerified"); int Warnings = reader2.GetOrdinal("Warnings"); int
-        // DeceasedStatus = reader2.GetOrdinal("DeceasedStatus"); int VerifiedStatus =
+        // //HomeAffairsInformation int ExFirstName = reader2.GetOrdinal("FirstName"); int DeceasedDate
+        // = reader2.GetOrdinal("DeceasedDate"); int IDVerified = reader2.GetOrdinal("IDVerified"); int
+        // SurnameVerified = reader2.GetOrdinal("SurnameVerified"); int Warnings =
+        // reader2.GetOrdinal("Warnings"); int DeceasedStatus =
+        // reader2.GetOrdinal("DeceasedStatus"); int VerifiedStatus =
         // reader2.GetOrdinal("VerifiedStatus"); int InitialsVerified =
         // reader2.GetOrdinal("InitialsVerified"); int CauseOfDeath =
         // reader2.GetOrdinal("CauseOfDeath"); int VerifiedDate = reader2.GetOrdinal("VerifiedDate");
@@ -6084,7 +5509,8 @@ namespace searchworks.client.Controllers
         // int MemberContribution = reader2.GetOrdinal("MemberContribution"); int
         // MemberContributionType = reader2.GetOrdinal("MemberContributionType"); int
         // ResignationDate = reader2.GetOrdinal("ResignationDate"); while (reader2.Read()) {
-        // PersonInformation PersonInfo = new PersonInformation();
+        // PersonInformation PersonInfo
+        // = new PersonInformation();
 
         // PersonInfo.DateOfBirth = (reader2[DateOfBirth] != Convert.DBNull) ?
         // reader2[DateOfBirth].ToString() : null; PersonInfo.Title = (reader2[Title] !=
@@ -6199,8 +5625,8 @@ namespace searchworks.client.Controllers
         // ConsumerStatsInfo.OpenAccounts = (reader2[OpenAccounts] != Convert.DBNull) ?
         // reader2[OpenAccounts].ToString() : null; ConsumerStatsInfo.AdverseAccounts =
         // (reader2[AdverseAccounts] != Convert.DBNull) ? reader2[AdverseAccounts].ToString() :
-        // null; ConsumerStatsInfo.Percent0ArrearsLast12Histories =
-        // (reader2[Percent0ArrearsLast12Histories] != Convert.DBNull) ?
+        // null; ConsumerStatsInfo.Percent0ArrearsLast12Histories
+        // = (reader2[Percent0ArrearsLast12Histories] != Convert.DBNull) ?
         // reader2[Percent0ArrearsLast12Histories].ToString() : null;
         // ConsumerStatsInfo.MonthsOldestOpenedPPSEver = (reader2[MonthsOldestOpenedPPSEver] !=
         // Convert.DBNull) ? reader2[MonthsOldestOpenedPPSEver].ToString() : null;
@@ -6342,8 +5768,8 @@ namespace searchworks.client.Controllers
         // : null; AddressInfo.Line2 = (reader2[Line2] != Convert.DBNull) ?
         // reader2[Line2].ToString() : null; AddressInfo.Line3 = (reader2[Line3] != Convert.DBNull)
         // ? reader2[Line3].ToString() : null; AddressInfo.Line4 = (reader2[Line4] !=
-        // Convert.DBNull) ? reader2[Line4].ToString() : null; AddressInfo.PostalCode =
-        // (reader2[PostalCode] != Convert.DBNull) ? reader2[PostalCode].ToString() : null;
+        // Convert.DBNull) ? reader2[Line4].ToString() : null; AddressInfo.PostalCode
+        // = (reader2[PostalCode] != Convert.DBNull) ? reader2[PostalCode].ToString() : null;
         // AddressInfo.FullAddress = (reader2[FullAddress] != Convert.DBNull) ?
         // reader2[FullAddress].ToString() : null; AddressInfo.LastUpdatedDate =
         // (reader2[AddressLastUpdatedDate] != Convert.DBNull) ?

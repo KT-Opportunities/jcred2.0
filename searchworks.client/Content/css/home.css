@@ -78,7 +78,10 @@
     display: inline-block;
     margin-right: 16px;
 }
-
+.container-fluid {
+    height: 100%;
+    margin-top:1.5%
+}
 .sea_bar {
     flex-basis: auto;
     flex-direction: row;
@@ -169,12 +172,30 @@
 .con {
     display: flex;
     margin-top: 4%;
-    align-self: center;
+    margin-left: 4%;
+    /*align-self: center;*/
     justify-content: space-evenly;
-    width: 96.5%;
+    width: 93%;
     align-self: center;
     height: 523px;
-    width: 100%;
+    width: 93%;
+    padding: 2.5%;
+    /*background: #FFFFFF 0% 0% no-repeat padding-box;*/
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.conSearchHistory {
+    display: flex;
+    margin-top: 1%;
+     
+    /*align-self: center;*/
+    justify-content: space-evenly;
+    width: 93%;
+    align-self: center;
+    height: 523px;
+    width: 93%;
     padding: 2.5%;
     /*background: #FFFFFF 0% 0% no-repeat padding-box;*/
     box-shadow: 0px 3px 6px #00000029;
@@ -495,12 +516,13 @@ font-size: 12px;*/
     top: 20px;
     left: 13px;
     width: 100%;
-    height: 600px;
+    /*height: 600px;*/
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 10px;
     opacity: 1;
     overflow: scroll;
+    padding:2%
 }
 
 .headingCon {
@@ -515,7 +537,8 @@ font-size: 12px;*/
     /*position: relative;
     display: inline-block;
     top: 10px;
-    left: 10px;*/
+    */
+    left: 10px;
     width: 184px;
     height: 580px;
     background: #EFEFEF 0% 0% no-repeat padding-box;
@@ -669,12 +692,12 @@ color: #fff;
         }
 
 .right_col {
-    position: absolute;
+    /*position: absolute;*/
     /*display: inline-block;*/
     top: 10px;
     left: 220px;
-    width: 80%;
-  
+    width: 100%;
+  margin:1%;
     opacity: 1;
 }
 
@@ -1042,8 +1065,8 @@ margin-bottom: 20px;*/
 }
 
 .btn-row {
-    padding-right: 125px;
-    padding-left: 19px;
+    /*padding-right: 125px;
+    padding-left: 19px;*/
 }
 
 .btns:focus {
@@ -1213,7 +1236,7 @@ height: 424px;
 
 .my-custom-scrollbar {
     position: relative;
-    height: 418px;
+    /*height: 418px;*/
     overflow: auto;
 }
 
@@ -1228,11 +1251,27 @@ height: 424px;
     border-radius: 5px;
     opacity: 1;
 }
+.row {
+/*display:flex;*/
+flex-wrap:nowrap;
+margin-right:0;
+margin-left:0;
+justify-content:flex-start;
+    width:100%
 
+}
+.rowTable {
+    display:flex;
+    flex-wrap: nowrap;
+    margin-right: 0;
+    margin-left: 0;
+    justify-content: center;
+    width: 100%
+}
 .btn-b {
     position: relative;
     left: 14px;
-    width: 72px;
+    /*width: 100px;*/
     height: 32px;
     border-radius: 5px;
     border: none;
@@ -1353,6 +1392,9 @@ height: 424px;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 10px;
     opacity: 1;
+    display:flex;
+    flex-direction:row
+
 }
 
 #listBox {
@@ -1409,7 +1451,7 @@ height: 424px;
 }
 
 .tabs-row {
-    margin-left: 13px;
+    margin-left: 40px;
 }
 
 #tabs-close {
