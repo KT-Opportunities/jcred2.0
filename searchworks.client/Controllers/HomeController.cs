@@ -94,7 +94,7 @@ namespace searchworks.client.Controllers
                             var reader22 = cmd22.ExecuteReader();
                             conn.Close();
 
-                            return RedirectToAction("Landing", "Home");
+                            return RedirectToAction("SearchHistory", "UserManagement");
                         }
                         catch (Exception err)
                         {

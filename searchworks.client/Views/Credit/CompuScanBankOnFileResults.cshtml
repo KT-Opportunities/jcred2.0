@@ -1,8 +1,16 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CompuScanBankOnFileResults";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (TempData["msg"] != null)
+{
 
-<h2>CompuScanBankOnFileResults</h2>
+    <div>@TempData["msg"] </div>
+    <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
 
+}
+else
+{
+
+    <h2>CompuScanBankOnFileResults is @ViewData["ResponseMessage"].ToString()</h2>
+}

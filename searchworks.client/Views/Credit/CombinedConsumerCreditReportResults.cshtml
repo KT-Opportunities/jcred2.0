@@ -14,9 +14,9 @@
     <div class="sea act">@ViewData["refe"]</div>
     <div class="con2">
 
-        @if (@ViewData["Message"].ToString() == "Service is offline")
+        @if (@ViewData["Message"].ToString() != "")
         {
-            <div> "Service is offline"</div>
+            <div>@ViewData["Message"].ToString()</div>
             <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
         }
         else

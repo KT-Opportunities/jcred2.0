@@ -8,14 +8,23 @@
     ViewBag.Title = "Consumer Profile Results";
 }
 
+    <div class="col-md-10 col-sm-10">
 
-
+        <div class="sea_bar">
+            <label>Search History</label>
+            <input name="search" />
+            <button>RESET</button>
+        </div>
+        <div class="con" style="height: 515px;">
+            <div class="col-md-6 col-sm-6 left">
+                @using (Html.BeginForm("CompuScanConsumerProfileResults", "Credit", FormMethod.Post))
+                {
+                    <div class="ref">
+                        <label>Reference</label><br>
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
 
     <div class="sea_bar">
@@ -69,7 +78,6 @@
                           new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
 
                     }, "Please Select", new { @id = "seatype", required = "required" })
-
                     </div>*@
 
                 <div class="surname">
@@ -97,11 +105,7 @@
 
                 <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
 
-
             }
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
@@ -130,10 +134,6 @@
 
                                     $(".resturn-message").html(alertMessage)
 
-
-
-
-
                             },
                                 success: function (result) {
 
@@ -145,8 +145,6 @@
                                     //alert(result.user_type);
 
                                     debugger;
-
-
 
                           if (result.status == true) {
 
@@ -160,7 +158,6 @@
                                         else if (result.user_type === "admin") {
                                              window.location.href = '@Url.Action("Admin_S", "Dashboard")';
                                         }
-
 
                             }
                             else {
@@ -187,22 +184,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('Consumer Profile');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -214,7 +204,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -310,6 +299,4 @@
 
         console.log($(event.target).text());
     };
-
-
 </script>

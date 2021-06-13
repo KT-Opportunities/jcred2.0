@@ -58,7 +58,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -742,6 +742,7 @@
     <Content Include="Content\img\Trust.png" />
     <Content Include="Content\img\vehicle.png" />
     <Content Include="Content\img\White logo.png" />
+    <Content Include="Content\js\html2pdf.bundle.min.js" />
     <Content Include="Content\js\sidenav.js" />
     <Content Include="Content\scroll.css" />
     <Content Include="favicon.ico" />
@@ -1117,6 +1118,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\Credit\ExperianConsumerProfileResults.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1215,7 +1217,6 @@
     <Content Include="Views\Credit\VeriCredIDPhotoVerification.cshtml" />
     <Content Include="Views\Credit\VeriCredIncomeEstimateByIDNumber.cshtml" />
     <Content Include="Views\Credit\VeriCredPersonVerificationByIDNumber.cshtml" />
-    <Content Include="Views\Credit\ExperianConsumerProfileResults.cshtml" />
     <Content Include="Views\Credit\CompuScanConsumerTrace.cshtml" />
     <Content Include="Views\Credit\CompuScanContactInformation.cshtml" />
     <Content Include="Views\Credit\CompuScanEmploymentConfidenceIndex.cshtml" />

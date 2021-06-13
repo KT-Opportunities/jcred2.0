@@ -142,9 +142,12 @@ namespace searchworks.client.Credit
 
         public string OverdueAmount { get; set; }
 
+        public string OverdueAmountIND { get; set; }
+
         public string InstalmentAmount { get; set; }
 
         public string ArrearsPeriod { get; set; }
+        public string RepaymentFrequency { get; set; }
 
         public string RepaymentFrequencyDescription { get; set; }
 
@@ -177,7 +180,115 @@ namespace searchworks.client.Credit
         public string MonthEndDate { get; set; }
 
         public string DateCreated { get; set; }
+        public Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails { get; set; }
     }
+
+    public class NLRaccounts
+    {
+        public string Account_ID { get; set; }
+
+        public string SubscriberCode { get; set; }
+
+        public string SubscriberName { get; set; }
+
+        public string AccountNO { get; set; }
+
+        public string SubAccountNO { get; set; }
+
+        public string OwnershipType { get; set; }
+
+        public string OwnershipTypeDescription { get; set; }
+
+        public string Reason { get; set; }
+
+        public string ReasonDescription { get; set; }
+
+        public string PaymentType { get; set; }
+
+        public string PaymentTypeDescription { get; set; }
+
+        public string AccountType { get; set; }
+
+        public string AccountTypeDescription { get; set; }
+
+        public string OpenDate { get; set; }
+
+        public string DeferredPaymentDate { get; set; }
+
+        public string LastPaymentDate { get; set; }
+
+        public string OpenBalance { get; set; }
+
+        public string OpenBalanceIND { get; set; }
+
+        public string CurrentBalance { get; set; }
+
+        public string CurrentBalanceIND { get; set; }
+
+        public string OverdueAmount { get; set; }
+
+        public string OverdueAmountIND { get; set; }
+
+        public string InstalmentAmount { get; set; }
+
+        public string ArrearsPeriod { get; set; }
+        public string RepaymentFrequency { get; set; }
+
+        public string RepaymentFrequencyDescription { get; set; }
+
+        public string Terms { get; set; }
+
+        public string StatusCode { get; set; }
+
+        public string StatusCodeDesc { get; set; }
+
+        public string IndustryType { get; set; }
+
+        public string PaymentHistoryChartURL { get; set; }
+
+        public string StatusDate { get; set; }
+
+        public string ThirdPartyName { get; set; }
+
+        public string ThirdPartySold { get; set; }
+
+        public string ThirdPartySoldDescription { get; set; }
+
+        public string JointLoanParticipants { get; set; }
+
+        public string PaymentHistory { get; set; }
+
+        public string PaymentHistoryStatus { get; set; }
+
+        public string PaymentHistoryChart { get; set; }
+
+        public string MonthEndDate { get; set; }
+
+        public string DateCreated { get; set; }
+        public Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails { get; set; }
+    }
+
+    //public class Directorship
+    //{
+    //    public string DesignationCode { get; set; }
+    //    public string AppointmentDate { get; set; }
+    //    public string DirectorStatus { get; set; }
+    //    public string DirectorStatusDate { get; set; }
+    //    public string CompanyName { get; set; }
+    //    public string CompanyType { get; set; }
+    //    public string CompanyStatus { get; set; }
+    //    public string CompanyStatusCode { get; set; }
+    //    public string CompanyRegistrationNumber { get; set; }
+    //    public string CompanyRegistrationDate { get; set; }
+    //    public string CompanyStartDate { get; set; }
+    //    public string CompanyTaxNumber { get; set; }
+    //    public string DirectorTypeCode { get; set; }
+    //    public string DirectorType { get; set; }
+    //    public string MemberSize { get; set; }
+    //    public string MemberContribution { get; set; }
+    //    public string MemberContributionType { get; set; }
+    //    public string ResignationDate { get; set; }
+    //}
 
     public class DataCounts
     {
@@ -220,6 +331,28 @@ namespace searchworks.client.Credit
         public string ApplicationDate { get; set; }
     }
 
+    public class Directorship
+    {
+        public string DesignationCode { get; set; }
+        public string AppointmentDate { get; set; }
+        public string DirectorStatus { get; set; }
+        public string DirectorStatusDate { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyType { get; set; }
+        public string CompanyStatus { get; set; }
+        public string CompanyStatusCode { get; set; }
+        public string CompanyRegistrationNumber { get; set; }
+        public string CompanyRegistrationDate { get; set; }
+        public string CompanyStartDate { get; set; }
+        public string CompanyTaxNumber { get; set; }
+        public string DirectorTypeCode { get; set; }
+        public string DirectorType { get; set; }
+        public string MemberSize { get; set; }
+        public string MemberContribution { get; set; }
+        public string MemberContributionType { get; set; }
+        public string ResignationDate { get; set; }
+    }
+
     public class ConsumerStatistics
     {
         public string HighestJudgment { get; set; }
@@ -233,7 +366,7 @@ namespace searchworks.client.Credit
         public string NLRMicroloansPast12Months { get; set; }
     }
 
-    public class nlrstats
+    public class NLRStats
     {
         public string ActiveAccounts { get; set; }
 
@@ -245,7 +378,7 @@ namespace searchworks.client.Credit
         public string BalanceExposure { get; set; }
     }
 
-    public class ccastats
+    public class CCAStats
     {
         public string ActiveAccounts { get; set; }
 
@@ -269,7 +402,7 @@ namespace searchworks.client.Credit
         public string VerifiedStatus { get; set; }
     }
 
-    public class cca12months
+    public class CCA12months
     {
         public string EnquiriesByClient { get; set; }
         public string EnquiriesByOther { get; set; }
@@ -277,7 +410,7 @@ namespace searchworks.client.Credit
         public string HighestMonthsInArrears { get; set; }
     }
 
-    public class cca24months
+    public class CCA24months
     {
         public string EnquiriesByClient { get; set; }
         public string EnquiriesByOther { get; set; }
@@ -285,7 +418,7 @@ namespace searchworks.client.Credit
         public string HighestMonthsInArrears { get; set; }
     }
 
-    public class cca36months
+    public class CCA36months
     {
         public string EnquiriesByClient { get; set; }
         public string EnquiriesByOther { get; set; }
@@ -293,7 +426,7 @@ namespace searchworks.client.Credit
         public string HighestMonthsInArrears { get; set; }
     }
 
-    public class nlr12months
+    public class NLR12months
     {
         public string EnquiriesByClient { get; set; }
         public string EnquiriesByOther { get; set; }
@@ -301,7 +434,7 @@ namespace searchworks.client.Credit
         public string HighestMonthsInArrears { get; set; }
     }
 
-    public class nlr24months
+    public class NLR24months
     {
         public string EnquiriesByClient { get; set; }
         public string EnquiriesByOther { get; set; }
@@ -309,7 +442,7 @@ namespace searchworks.client.Credit
         public string HighestMonthsInArrears { get; set; }
     }
 
-    public class nlr36months
+    public class NLR36months
     {
         public string EnquiriesByClient { get; set; }
         public string EnquiriesByOther { get; set; }

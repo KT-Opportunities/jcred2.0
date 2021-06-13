@@ -39,10 +39,6 @@
                             <button type="button" class="btn-b" data-toggle="modal" data-target="#adSearch">Advanced Search</button>
                         </form>
                     </div>
-
-                    <div class="col-6">
-                        <button class="btn-b2">Export List</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -54,7 +50,7 @@
                             <th scope="col" class="color">
                                 <label class="control control--checkbox">
                                     <input type="checkbox" class="js-check-all" />
-                                    <div class="control__indicator"></div>
+                                    @*<div class="control__indicator"></div>*@
                                 </label>
                             </th>
                             <th scope="col" class="color">Search Type</th>
@@ -88,7 +84,7 @@
                                     <td style="">
                                         <label class="control control--checkbox">
                                             <input type="checkbox" />
-                                            <div class="control__indicator"></div>
+                                            @*<div class="control__indicator"></div>*@
                                         </label>
                                     </td>
                                     <td style="display:flex;text-wrap:normal" data-toggle="modal"
@@ -116,11 +112,10 @@
                                         @item.ReportDate
                                     </td>
 
-                                    <td>@Html.ActionLink("View", Type + "Database", "Credit",new {id=ID,token=Token,refe =Ref,type = Type }, null)</td>
+                                    <td>@Html.ActionLink("View", Type + "Database", "Credit", new { id = ID, token = Token, refe = Ref, type = Type }, null)</td>
                                 </tr>
 
                             }
-                            </tr>
                         </tbody>
                     </table>
                 </div>

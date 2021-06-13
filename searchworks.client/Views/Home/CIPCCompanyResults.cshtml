@@ -11,15 +11,16 @@
 
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea act">SEARCH RESULTS</div>
+
     <div class="con2">
         @if (TempData["msg"] != null)
         {
-       
+
             <div>@TempData["msg"] </div>
             <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
-       
-           }
+
+        }
+
         else
         {
             <div class="left_col">
@@ -59,13 +60,12 @@
                     <thead>
                         <tr>
                             <th>Company ID</th>
-                            <th>Registration number</th>
+                            <th style="">Registration number</th>
                             <th>Company Name</th>
                             <th>Translated Name</th>
                             <th>Registration Date</th>
                             <th>Status Code</th>
                             <th class="last">Status</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,11 +104,16 @@
                     </tbody>
                 </table>
 
-            </div>}
-
-
+            </div>
+        }
 
     </div>
+
+
+
+
+
+
 </div>
 
 <script>

@@ -8,15 +8,11 @@
     ViewBag.Title = "Combined Credit Report";
 }
 
-
-
 <div class="col-md-10 col-sm-10">
 
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
 
     <div class="sea_bar">
@@ -67,7 +63,6 @@
                           new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
 
                     }, "Please Select", new { @id = "seatype", required = "required" })
-
                     </div>*@
                 <div class="firstname" style="top: 200px;">
                     <label>First Name</label><br>
@@ -96,11 +91,7 @@
 
                 <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
 
-
             }
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
@@ -112,7 +103,6 @@
     </div>
 </div>
 
-
 <script>
     function Search() {
         $('#load').addClass('loader'); // to animate when successfull
@@ -121,9 +111,6 @@
         var Surname = document.getElementById("Surname").value;
         var ID = document.getElementById("IDNumber").value;
         var EnquiryReason = document.getElementById("EnquiryReason").value;
-
-
-
 
         if (ID === "" && EnquiryReason === "" && Firstname === "" && Surname === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
@@ -138,16 +125,13 @@
 
             $(".resturn-message").html(alertMessage);
 
-
         }
-
 
         else if (Surname === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in Surname to search!</div>';
 
             $(".resturn-message").html(alertMessage);
-
 
         }
 
@@ -157,16 +141,13 @@
 
             $(".resturn-message").html(alertMessage);
 
-
         }
-
 
         else if (EnquiryReason === "") {
             var alertMessage = '<div class="alert alert-danger" role="alert">'
                 + 'Please fill in Enquiry Reasonto search!</div>';
 
             $(".resturn-message").html(alertMessage);
-
 
         }
 
@@ -189,10 +170,6 @@
 
                         $(".resturn-message").html(alertMessage)
 
-
-
-
-
                     },
                     success: function (result) {
 
@@ -204,7 +181,6 @@
                         //alert(result.user_type);
 
                         debugger;
-
 
                     }
                 });
@@ -222,22 +198,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('Combined Credit Report');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -249,7 +218,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -345,6 +313,4 @@
 
         console.log($(event.target).text());
     };
-
-
 </script>

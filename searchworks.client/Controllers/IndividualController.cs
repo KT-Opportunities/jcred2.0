@@ -122,11 +122,10 @@ namespace searchworks.client.Controllers
             //request headers
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-Type", "application/json");
-            IRestResponse response = client.Execute<RootObject>(request);
+            IRestResponse response;
             dynamic rootObject;
             JObject o;
             JToken token;
-            System.Diagnostics.Debug.WriteLine(csi.FirstName, csi.Surname, csi.IDNumber, csi.seaType, csi.eqType, csi.Reference);
 
             try
             {

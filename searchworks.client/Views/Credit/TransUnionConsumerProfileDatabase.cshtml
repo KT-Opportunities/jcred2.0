@@ -3,8 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="col-md-10 col-sm-10">
-    <div class="sea act">SEARCH RESULTS</div>
-    <div class="sea act">@TempData["SearchType"]</div>
+    <div class="col-6">
+        <button class="btn-b2">Export List</button>
+    </div>
 
     <div class="con2">
         @if (TempData["msg"] != null)
@@ -184,8 +185,8 @@
                                         @item.ConsumerID  <a class="seaMore" href="#">View more</a>
                                     </td>
                                 </tr>
-                                }
-                            </tbody>
+                            }
+                        </tbody>
                     </table>
                 </div>
                 <div id="notification" class="seaRes">
@@ -227,7 +228,7 @@
                                     </td>
                                 </tr>
                             }
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
 
@@ -248,176 +249,176 @@
                             {
                                 <tr>
                                     <td colspan="2">Accounts</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Accounts"]</td>
+                                    <td style="border: none;" colspan="4">@item.Accounts</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Enquires</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Enquires"]</td>
+                                    <td style="border: none;" colspan="4">@item.Enquires</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Judgments</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Judgments"] </td>
+                                    <td style="border: none;" colspan="4">@item.Judgments </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Notices</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Notices"] </td>
+                                    <td style="border: none;" colspan="4">@item.Notices </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Bank Defaults</td>
-                                    <td style="border: none;" colspan="4">@ViewData["BankDefaults"] </td>
+                                    <td style="border: none;" colspan="4">@item.BankDefaults </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Collections</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Collections"] </td>
+                                    <td style="border: none;" colspan="4">@item.Collections </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Directors</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Directors"] </td>
+                                    <td style="border: none;" colspan="4">@item.Directors </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Addresses</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Addresses"] </td>
+                                    <td style="border: none;" colspan="4">@item.Addresses </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Telepohnes</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Telephones"] </td>
+                                    <td style="border: none;" colspan="4">@item.Telephones </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Occupants</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Occupants"] </td>
+                                    <td style="border: none;" colspan="4">@item.Occupants </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Employers</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Employers"] </td>
+                                    <td style="border: none;" colspan="4">@item.Employers </td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Trace Alerts</td>
-                                    <td style="border: none;" colspan="4">@ViewData["TraceAlerts"]</td>
+                                    <td style="border: none;" colspan="4">@item.TraceAlerts</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Payment Profiles</td>
-                                    <td style="border: none;" colspan="4">@ViewData["PaymentProfiles"]</td>
+                                    <td style="border: none;" colspan="4">@item.PaymentProfiles</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Own Enquires</td>
-                                    <td style="border: none;" colspan="4">@ViewData["OwnEnquiries"]</td>
+                                    <td style="border: none;" colspan="4">@item.OwnEnquiries</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Admin Orders</td>
-                                    <td style="border: none;" colspan="4">@ViewData["AdminOrders"]</td>
+                                    <td style="border: none;" colspan="4">@item.AdminOrders</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Possible Matches</td>
-                                    <td style="border: none;" colspan="4">@ViewData["PossibleMatches"]</td>
+                                    <td style="border: none;" colspan="4">@item.PossibleMatches</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Definite Matches</td>
-                                    <td style="border: none;" colspan="4">@ViewData["DefiniteMatches"]</td>
+                                    <td style="border: none;" colspan="4">@item.DefiniteMatches</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Loans</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Loans"]</td>
+                                    <td style="border: none;" colspan="4">@item.Loans</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Fraud Alerts</td>
-                                    <td style="border: none;" colspan="4">@ViewData["FraudAlerts"]</td>
+                                    <td style="border: none;" colspan="4">@item.FraudAlerts</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Companies</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Companies"]</td>
+                                    <td style="border: none;" colspan="4">@item.Companies</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Properties</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Properties"]</td>
+                                    <td style="border: none;" colspan="4">@item.Properties</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Documents</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Documents"]</td>
+                                    <td style="border: none;" colspan="4">@item.Documents</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Demand Letters</td>
-                                    <td style="border: none;" colspan="4">@ViewData["DemandLetters"]</td>
+                                    <td style="border: none;" colspan="4">@item.DemandLetters</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Trusts</td>
-                                    <td style="border: none;" colspan="4">@ViewData["Trusts"]</td>
+                                    <td style="border: none;" colspan="4">@item.Trusts</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Bonds</td>
-                                    <td style="border: none;" colspan="4">@ViewData["BondsBonds"]</td>
+                                    <td style="border: none;" colspan="4">@item.BondsBonds</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Deeds</td>
-                                    <td style="border: none;" colspan="4">@ViewData["BondsBonds"]</td>
+                                    <td style="border: none;" colspan="4">@item.BondsBonds</td>
 
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Public Defaults</td>
-                                    <td style="border: none;" colspan="4">@ViewData["PublicDefaults"]</td>
+                                    <td style="border: none;" colspan="4">@item.PublicDefaults</td>
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">NLR Accounts</td>
-                                    <td style="border: none;" colspan="4">@ViewData["NLRAccounts"]</td>
+                                    <td style="border: none;" colspan="4">@item.NLRAccounts</td>
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                             }
@@ -450,8 +451,8 @@
                         </thead>
 
                         @*<tr>
-            <th class="col_header" style="width: 200%">Enquiry History</th>
-        </tr>*@
+                                <th class="col_header" style="width: 200%">Enquiry History</th>
+                            </tr>*@
                         <tr>
                             <th colspan="1">Date</th>
                             <th colspan="4">By</th>

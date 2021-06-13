@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<sitemanifest>
-  <IisApp path="C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\Package\PackageTmp" />
-  <setAcl path="C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
-  <setAcl path="C:\Users\emman\Documents\KTO Work Projects\jcred2.0\searchworks.client\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
-</sitemanifest>
