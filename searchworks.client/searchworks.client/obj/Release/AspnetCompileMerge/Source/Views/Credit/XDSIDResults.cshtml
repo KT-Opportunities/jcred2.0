@@ -1,0 +1,156 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Credit.PersonInformation>
+
+@{
+    ViewBag.Title = "XDS";
+}
+
+
+
+    <div class="col-md-10 col-sm-10 con">
+        <div class="seaTab">
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+                    <div class="opt1">
+                        <div class="exp">Export List </div>
+                        <div class="create">Create Group</div>
+                        <div class="history"><i class="fa fa-history"></i>History</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @{
+            string msg1 = "<a class=export target=_blank href=" + ViewData["PDFCopyURL"] + "><img src=/Content/img/export.png alt=/></a>";
+            @Html.Raw(msg1)
+        }
+
+        <div class="seaTable form-style-9">
+            @using (Html.BeginForm("XDSIDResults", "Credit", FormMethod.Post))
+            {
+                <h3 class="Trans">XDS ID Verification</h3>
+
+                <ul>
+                    <li>
+                        @Html.TextBox("Reference", null, new { @class = "field-style field-split align-left", @id = "Ref", @placeholder = "Reference", disabled = "disabled" })
+                        @Html.TextBox("IDNumber", null, new { @class = "field-style field-split align-right", @id = "IDNumber", @placeholder = "ID Number", required = "required", minlength = "13", maxlength = "13" })
+
+                    </li>
+                    <li>
+                        I accept the terms and conditions
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </li>
+
+                    <li>
+                        <button onclick="Search()" id="individualSearch" class="btn btn-primary" name="individualSearch">Search</button>
+                    </li>
+                </ul>
+
+            }
+        </div>
+
+        <h3>Results</h3>
+        <div id="dem">
+        </div>
+
+        <table id="table" class="table table-hover table-fixed " style=" margin-top: 24px;">
+            <thead class="head" style="">
+                <tr style="">
+                    <th scope="col">Person ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Fullname</th>
+                    <th scope="col">ID Number</th>
+                    <th scope="col">Passport Number</th>
+                    <th scope="col">Enquity ID</th>
+                    <th scope="col">Enquity Result ID</th>
+                    <th scope="col">Reference</th>
+
+                </tr>
+            </thead>
+            <tbody style="">
+
+                <tr>
+                    <td>
+                        @ViewData["PersonID"]
+                    </td>
+                    <td>
+                        @ViewData["FirstName"]
+                    </td>
+                    <td>
+                        @ViewData["Surname"]
+                    </td>
+                    <td>
+                        @ViewData["Fullname"]
+                    </td>
+                    <td>
+                        @ViewData["IDNumber"]
+                    </td>
+                    <td>
+                        @ViewData["PassportNumber"]
+                    </td>
+                    <td>
+                        @ViewData["EnquiryID"]
+                    </td>
+                    <td>
+                        @ViewData["EnquiryResultID"]
+                    </td>
+                    <td>
+                        @ViewData["Reference"]
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    function Search() {
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: '@Url.Action("XDSIDResults", "Credit")',
+                                data: {
+                                    FirstName: $('#FirstName').val(),
+                                    Surname: $('#Surname').val(),
+                                    IDNumber: $('#IDNumber').val(),
+
+                                },
+                            dataType: "text",
+                                error: function (result) {
+                                    alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Account Created </div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+
+
+
+
+                            },
+                                success: function (result) {
+
+                             var alertMessage = '<div class="alert alert-success" role="alert">'
+                                        + 'Right Usename/Password</div>';
+
+                                    $(".resturn-message").html(alertMessage)
+
+                                    //alert(result.user_type);
+
+                                    debugger;
+
+
+                            }
+                        });
+                        }
+
+    </script>

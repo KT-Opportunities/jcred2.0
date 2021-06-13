@@ -1,0 +1,1171 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<searchworks.client.Credit.PersonInformation>
+
+@{
+    ViewBag.Title = "Experian Consumer Profile";
+}
+
+<div class="col-md-10 col-sm-10">
+    <div class="sea non">SEARCH RESULTS</div>
+    <div class="sea non">Experian Consumer Profile</div>
+    <div class="sea act">@ViewData["refe"]</div>
+    <div class="con2">
+        <div class="left_col">
+            <div class="results">
+                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                <p>2 Results</p>
+            </div>
+            <p class="num">@ViewData["ExFullname"]</p>
+            <p class="num2">Experian Consumer Profile</p>
+
+            <div class="multi non">
+                Multiple Results
+            </div>
+            <div class="multi act">
+                Detailed Information
+            </div>
+
+            <div class="seaInfo">
+                Search Information
+            </div>
+
+            <div class="userInfo">
+                <p class="">User:<span>@ViewData["user"]</span></p>
+                <p class="">Date:<span>@ViewData["date"] </span></p>
+                <p class="">Reference:<span>@ViewData["ref"]</span></p>
+                <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
+            </div>
+        </div>
+        <div class="right_col">
+            <div id="notification" class="seaRes">
+                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+            <div class="not">
+                Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
+                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+            </div>
+
+            <div id="notification" class="seaRes">
+                Experian <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+            @if (@ViewData["Message"].ToString() == "good" && @ViewData["ResponseMessage"].ToString() == "ExperianConsumerProfile")
+            {
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="PIU" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="PITU" style="display:none;">
+                            <tr>
+                                <td colspan="2">Title</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExTitle"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Date of Birth</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDateOfBirth"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">First Name</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExFirstName"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Middle Name</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExMiddleName1"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Surname</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExSurname"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">FullName</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExFullname"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">ID Number</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExIDNumber"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Gender</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExGender"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Age</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExAge"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Marital Status</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExMaritalStatus"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">Reference</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExReference"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Has Properties</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExHasProperties"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="HAIU" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="HAITU" style="display:none;">
+                            <tr>
+                                <td colspan="2">ID Verified</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExIDVerified"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Surname Verified</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExSurnameVerified"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Initials Verified</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExInitialsVerified"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="CONI" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="CONIT" style="display:none;">
+                            <tr>
+                                <td colspan="2">Physical Address</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExPhysicalAddress"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="CI" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="CIT" style="display:none;">
+                            <tr>
+                                <th class="col_header" style="width: 200%">Data Counts</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">DelphiScore</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDelphiScore"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Flag Count</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExFlagCount"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Flag Details</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExFlagDetails"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExAccounts"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Enquires</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExEnquiries"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Judgments</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExJudgments"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Notices</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNotices"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Bank Defaults</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExBankDefaults"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Defaults</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDefaults"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Collections</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCollections"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Directors</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDirectors"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Address</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExAddresses"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Telephones</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExTelephones"] </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Occupants</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExOccupants"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Employers</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExEmployers"] </td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Trace Alerts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExTraceAlerts"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Payment Profiles</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExPaymentProfiles"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Own Enquires</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExOwnEnquiries"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Admin Orders</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExAdminOrders"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Possible Matches</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExPossibleMatches"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Definite Matches</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDefiniteMatches"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Loans</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExLoans"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Fraud Alerts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExFraudAlerts"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Companies</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCompanies"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Properties</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExProperties"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Documents</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDocuments"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Demand Letters</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDemandLetters"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Trusts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExTrusts"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Bonds</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExBondsBonds"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Deeds</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExDeeds"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Public Defaults</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExPublicDefaults"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNLRAccounts"]</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <th class="col_header" style="width: 200%">Debt Review Status</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Status Code</td>
+                                <td style="border: none;" colspan="4">@ViewData["DRStatusCode"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Status Description</td>
+                                <td style="border: none;" colspan="4">@ViewData["DRStatusDescription"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <th class="col_header" style="width: 200%">Consumer Statistics</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Highest Judgment</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExHighestJudgment"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Revolving Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExRevolvingAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Instalment Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExInstalmentAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Open Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExOpenAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Adverse Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExAdverseAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Percent Arrears</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExPercent0ArrearsLast12Histories"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">PPS Last 12 Months</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNumberPPSLast12Months"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Micro loans Past 12 Months</td>
+                                <td style="border: none;" colspan="4">@ViewData["NLRMicroloansPast12Months"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <th style="width: 50%; border: none;">NLR Stats</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Active Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNLRActiveAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Closed Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNLRClosedAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Worst Month Arrears</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNLRWorstMonthArrears"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Balance Exposure</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNLRBalanceExposure"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Cumulative Arrears</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExNLRCumulativeArrears"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <th style="width: 50%; border: none;">CCA Stats</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Active Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCCAActiveAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Closed Accounts</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCCAClosedAccounts"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Worst Month Arrears</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCCAWorstMonthArrears"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Balance Exposure</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCCABalanceExposure"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Cumulative Arrears</td>
+                                <td style="border: none;" colspan="4">@ViewData["ExCCACumulativeArrears"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <th colspan="1">NLR Enquiries By Client:</th>
+                                <th colspan="3">NLR Enquiries By Other:</th>
+                                <th colspan="1">NLR Positive Loans:</th>
+                                <th colspan="2">NLR Highest Months In Arrears: </th>
+                            </tr>
+                            <tr>
+                                <td colspan="1">12months: @ViewData["ExNLR12MonthsEnquiriesByClient"]</td>
+                                <td colspan="3">@ViewData["ExNLR12MonthsEnquiriesByOther"]</td>
+                                <td colspan="1">@ViewData["ExNLR12MonthsPositiveLoans"]</td>
+                                <td colspan="2">@ViewData["ExNLR12MonthsHighestMonthsInArrears"]</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="1">24months: @ViewData["ExNLR24MonthsEnquiriesByClient"]</td>
+                                <td colspan="3">@ViewData["ExNLR24MonthsEnquiriesByOther"]</td>
+                                <td colspan="1">@ViewData["ExNLR24MonthsPositiveLoans"]</td>
+                                <td colspan="2">@ViewData["ExNLR24MonthsHighestMonthsInArrears"]</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="1">36months: @ViewData["ExNLR36MonthsEnquiriesByClient"]</td>
+                                <td colspan="3">@ViewData["ExNLR36MonthsEnquiriesByOther"]</td>
+                                <td colspan="1">@ViewData["ExNLR36MonthsPositiveLoans"]</td>
+                                <td colspan="2">@ViewData["ExNLR36MonthsHighestMonthsInArrears"]</td>
+                            </tr>
+                            <tr>
+                                <th colspan="1">CCA Enquiries By Client:</th>
+                                <th colspan="3">CCA Enquiries By Other:</th>
+                                <th colspan="1">CCA Positive Loans:</th>
+                                <th colspan="2">CCA Highest Months In Arrears: </th>
+                            </tr>
+                            <tr>
+                                <td colspan="1">12months: @ViewData["ExCCA12MonthsEnquiriesByClient"]</td>
+                                <td colspan="3">@ViewData["ExCCA12MonthsEnquiriesByOther"]</td>
+                                <td colspan="1">@ViewData["ExCCA12MonthsPositiveLoans"]</td>
+                                <td colspan="2">@ViewData["ExCCA12MonthsHighestMonthsInArrears"]</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">12months: @ViewData["ExCCA24MonthsEnquiriesByClient"]</td>
+                                <td colspan="3">@ViewData["ExCCA24MonthsEnquiriesByOther"]</td>
+                                <td colspan="1">@ViewData["ExCCA24MonthsPositiveLoans"]</td>
+                                <td colspan="2">@ViewData["ExCCA24MonthsHighestMonthsInArrears"]</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">12months: @ViewData["ExCCA36MonthsEnquiriesByClient"]</td>
+                                <td colspan="3">@ViewData["ExCCA36MonthsEnquiriesByOther"]</td>
+                                <td colspan="1">@ViewData["ExCCA36MonthsPositiveLoans"]</td>
+                                <td colspan="2">@ViewData["ExCCA36MonthsHighestMonthsInArrears"]</td>
+                            </tr>
+                            <tr>
+                                <th class="col_header" style="width: 200%">Enquiry History</th>
+                            </tr>
+                            <tr>
+                                <th colspan="1">Date</th>
+                                <th colspan="4">By</th>
+                                <th colspan="4">Contact</th>
+                            </tr>
+
+                            @foreach (var item in @ViewBag.EnqHIst)
+                            {
+                                <tr>
+                                    <td colspan="1">@item.EnquiryDate</td>
+                                    <td colspan="4">@item.EnquiredBy</td>
+                                    <td colspan="4">@item.EnquiredByContact</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="HIT" style="display:none;">
+                            <tr>
+                                <th  class="col_header" style="width: 677%">Address History</th>
+                            </tr>
+                            <tr>
+                                <th colspan="1">TypeDescription</th>
+                                <th colspan="1">Line1</th>
+                                <th colspan="1">Line2</th>
+                                <th colspan="1">Line3</th>
+                                <th colspan="1">PostalCode</th>
+                                <th colspan="1">FullAddress</th>
+                                <th colspan="1">LastUpdatedDate</th>
+                            </tr>
+                            @foreach (var item in @ViewBag.AddressHist)
+                            {
+                        <tr>
+                            <td colspan="1">@item.TypeDescription</td>
+                            <td colspan="1">@item.Line1</td>
+                            <td colspan="1">@item.Line2</td>
+                            <td colspan="1">@item.Line3</td>
+                            <td colspan="1">@item.PostalCode</td>
+                            <td colspan="1">@item.FullAddress</td>
+                            <td colspan="1">@item.LastUpdatedDate</td>
+                        </tr>
+                            }
+                            <tr>
+                                <th  class="col_header" style="width: 677%">Telephone History</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">TypeDescription</th>
+                                <th colspan="1">DialCode</th>
+                                <th colspan="1">Number</th>
+                                <th colspan="1">FullNumber</th>
+                                <th colspan="2">LastUpdatedDateTel</th>
+                            </tr>
+                            @foreach (var item in @ViewBag.TelHist)
+                            {
+                                <tr>
+                                    <td colspan="2">@item.TypeDescriptionTel</td>
+                                    <td colspan="1">@item.DialCode</td>
+                                    <td colspan="1">@item.Number</td>
+                                    <td colspan="1">@item.FullNumber</td>
+                                    <td colspan="2">@item.LastUpdatedDateTel</td>
+                                </tr>
+                            }
+                            <tr>
+                                    <th  class="col_header" style="width: 677%">Employment History</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4">EmployerName</th>
+                                    <th colspan="4">Designation</th>
+                                </tr>
+                                @foreach (var item in @ViewBag.EmpHist)
+                                {
+                                    <tr>
+                                        <td colspan="4">@item.EmployerName</td>
+                                        <td colspan="4">@item.Designation</td>
+                                   
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+                @*<div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>.
+                            <tr>
+                                <th id="CIU" style="border: none; cursor:pointer;" colspan="2">Consumer Statistics</th>
+                            </tr>
+                        </thead>
+                        <tbody id="">
+                        </tbody>
+                    </table>
+                    <div id="CITU" class="row com" style="display:none;">
+
+                         
+
+                        <div class="col-md-4 col-sm-4 ">
+                            
+                            <h5> CCA 24 Months</h5>
+                            <p><b>Enquiries By Client: </b>@ViewData["ExCCA24MonthsEnquiriesByClient"]</p>
+                            <p><b>Enquiries By Other: </b>@ViewData["ExCCA24MonthsEnquiriesByOther"]</p>
+                            <p><b>Postive Loans: </b>@ViewData["ExCCA24MonthsPositiveLoans"]</p>
+                            <p><b>Highest Months In Arrears: </b>@ViewData["ExCCA24MonthsHighestMonthsInArrears"]</p>
+                            <hr />
+                            <h5> CCA 36 Months</h5>
+                            <p><b>Enquiries By Client: </b>@ViewData["ExCCA36MonthsEnquiriesByClient"]</p>
+                            <p><b>Enquiries By Other: </b>@ViewData["ExCCA36MonthsEnquiriesByOther"]</p>
+                            <p><b>Postive Loans: </b>@ViewData["ExCCA36MonthsPositiveLoans"]</p>
+                            <p><b>Highest Months In Arrears: </b>@ViewData["ExCCA36MonthsHighestMonthsInArrears"]</p>
+                        </div>
+                    </div>
+                </div>*@
+                @*<div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table style="display:none;" id="HIT" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="add" style="border: none; cursor:pointer;" colspan="2">Address History</th>
+                                </tr>
+                                <tr>
+                                    <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                </tr>
+                                <tr>
+                                    <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div style="display:none;" id="addT">
+                            <div class="thatrow">
+                                <div class="col_header">Code Type</div>
+                                <div class="col_header">Line 1</div>
+                                <div class="col_header">Line 2</div>
+                                <div class="col_header">Line 3</div>
+                                <div class="col_header">Line 4</div>
+                                <div class="col_header">Postal Code</div>
+                                <div class="col_header">Last Updated Date</div>
+                                @foreach (var key in ViewBag.ArrayList)
+                                {
+                                    <div class="colspace"> @key.Value</div>
+                                }
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display:none;" id="telT">
+                            <div class="thatrow">
+                                <div class="col_headerTel">Type</div>
+                                <div class="col_headerTel">Number</div>
+                                <div class="col_headerTel">Last Updated Date</div>
+                                @foreach (var key in ViewBag.TelArrayList)
+                                {
+                                    <div class="colspaceTel"> @key.Value</div>
+                                }
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="display:none;" id="emT">
+                            <div class="thatrow">
+                                <div class="col_headerTel">Employer Name</div>
+                                <div class="col_headerTel">Designation</div>
+                                <div class="col_headerTel">Last Updated Date</div>
+                                @foreach (var key in ViewBag.EMArrayList)
+                                {
+                                    <div class="colspaceTel"> @key.Value</div>
+                                }
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>*@
+            }
+            else if (@ViewData["Message"].ToString() == "Service is offline")
+            {
+                <div class="no_results">
+                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                    <div class="no_res">
+                        @ViewData["Message2"]
+                    </div>
+                </div>
+
+            }
+
+            @*<div id="notification" class="seaRes">
+                    VeriCred <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
+                </div>*@
+
+            @*@if (@ViewData["Message"].ToString() == "good" && @ViewData["VeriCredMessage"].ToString() == "Found")
+                {
+                    <div class="TeleHis">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="PIV" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                </tr>
+                            </thead>
+                            <tbody id="PITV" style="display:none;">
+                                <tr>
+                                    <td colspan="2">Date of Birth</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoDateOfBirth"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">First Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoFirstName"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Surname</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoSurname"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Fullname</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoFullname"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">ID Number</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoIDNumber"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Gender</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoGender"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Age</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoAge"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Current Employer</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoCurrentEmployer"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="TeleHis">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="HAIV" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
+                                </tr>
+                            </thead>
+                            <tbody id="HAITV" style="display:none;">
+                                <tr>
+                                    <td colspan="2">Physical Address</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoPhysicalAddress"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Mobile Numnber</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoMobileNumber"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Home Telephone Number</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoHomeTelephoneNumber"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Work Telephone Number</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VeriCredInfoWorkTelephoneNumber"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="TeleHis">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="HIV" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table style="display:none;" id="HITV" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="addV" style="border: none; cursor:pointer;" colspan="2">Address History</th>
+                                </tr>
+                                <tr>
+                                    <th id="telV" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                </tr>
+                                <tr>
+                                    <th id="emV" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div style="display:none;" id="addTV">
+
+                            <div class="thatrow">
+                                <div class="col_header">Code Type</div>
+                                <div class="col_header">Line 1</div>
+                                <div class="col_header">Line 2</div>
+                                <div class="col_header">Line 3</div>
+                                <div class="col_header">Line 4</div>
+                                <div class="col_header">Postal Code</div>
+                                <div class="col_header">Last Updated Date</div>
+
+                                @foreach (var key in ViewBag.ArrayList)
+                                {
+                                    <div class="colspace"> @key.Value</div>
+                                }
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CITV" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display:none;" id="telTV">
+
+                            <div class="thatrow">
+                                <div class="col_headerTel">Type</div>
+                                <div class="col_headerTel">Number</div>
+                                <div class="col_headerTel">Last Updated Date</div>
+
+                                @foreach (var key in ViewBag.TelArrayList)
+                                {
+                                    <div class="colspaceTel"> @key.Value</div>
+                                }
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CITVeriCredInfoWorkTelephoneNumber" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display:none;" id="emTV">
+
+                            <div class="thatrow">
+                                <div class="col_headerTel">Employer Name</div>
+                                <div class="col_headerTel">Designation</div>
+                                <div class="col_headerTel">Last Updated Date</div>
+
+                                @foreach (var key in ViewBag.EMArrayList)
+                                {
+                                    <div class="colspaceTel"> @key.Value</div>
+                                }
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else if (@ViewData["Message"].ToString() == "Service is offline")
+                {
+                    <div class="no_results">
+                        <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                        <div class="no_res">
+                            @ViewData["Message2"]
+                        </div>
+                    </div>
+
+                }*@
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //CompScan
+    $("#PI").click(function () {
+        $("#PIT").toggle();
+    });
+    $("#HAI").click(function () {
+        $("#HAIT").toggle();
+    });
+    $("#CI").click(function () {
+        $("#CIT").toggle();
+    });
+
+    $("#HI").click(function () {
+        $("#HIT").toggle();
+    });
+
+    $("#add").click(function () {
+        $("#addT").toggle();
+    });
+
+    $("#tel").click(function () {
+        $("#telT").toggle();
+    });
+    $("#CONI").click(function () {
+        $("#CONIT").toggle();
+    })
+
+    $("#em").click(function () {
+        $("#emT").toggle();
+    });
+
+    //TransUnion
+    $("#PIU").click(function () {
+        $("#PITU").toggle();
+    });
+    $("#HAIU").click(function () {
+        $("#HAITU").toggle();
+    });
+    $("#CIU").click(function () {
+        $("#CITU").toggle();
+    });
+
+    $("#HIU").click(function () {
+        $("#HITU").toggle();
+    });
+
+    $("#addU").click(function () {
+        $("#addTU").toggle();
+    });
+
+    $("#telU").click(function () {
+        $("#telTU").toggle();
+    });
+
+    $("#emU").click(function () {
+        $("#emTU").toggle();
+    });
+
+    //XDS
+    $("#PIX").click(function () {
+        $("#PITX").toggle();
+    });
+    $("#HAIX").click(function () {
+        $("#HAITX").toggle();
+    });
+    $("#CIX").click(function () {
+        $("#CITX").toggle();
+    });
+
+    $("#HIX").click(function () {
+        $("#HITX").toggle();
+    });
+
+    $("#addX").click(function () {
+        $("#addTX").toggle();
+    });
+
+    $("#telX").click(function () {
+        $("#telTX").toggle();
+    });
+
+    $("#emX").click(function () {
+        $("#emTX").toggle();
+    });
+
+    //VeriCred
+    $("#PIV").click(function () {
+        $("#PITV").toggle();
+    });
+    $("#HAIV").click(function () {
+        $("#HAITV").toggle();
+    });
+    $("#CIV").click(function () {
+        $("#CITV").toggle();
+    });
+
+    $("#HIV").click(function () {
+        $("#HITV").toggle();
+    });
+
+    $("#addV").click(function () {
+        $("#addTV").toggle();
+    });
+
+    $("#telV").click(function () {
+        $("#telTV").toggle();
+    });
+
+    $("#emV").click(function () {
+        $("#emTV").toggle();
+    });
+
+    $(document).ready(function () {
+        $(".not").hide();
+        $("#minusNot").hide();
+
+        $('#plusNot').on('click', function () {
+            $(".not").show();
+            $("#minusNot").show();
+            $("#plusNot").hide();
+
+        });
+
+        $('#minusNot').on('click', function () {
+            $("#minusNot").hide();
+            $("#plusNot").show();
+            $(".not").hide();
+
+        });
+
+        $("#minusSeaInfo").hide();
+        $(".SeaInfo").hide();
+
+        $('#plusSeaInfo').on('click', function () {
+            $(".SeaInfo").show();
+            $("#minusSeaInfo").show();
+            $("#plusSeaInfo").hide();
+
+        });
+
+        $('#minusSeaInfo').on('click', function () {
+            $("#minusSeaInfo").hide();
+            $("#plusSeaInfo").show();
+            $(".SeaInfo").hide();
+        });
+
+        $("#minusPerInfo").hide();
+        $(".PerInfo").hide();
+
+        $('#plusPerInfo').on('click', function () {
+            $(".PerInfo").show();
+            $("#minusPerInfo").show();
+            $("#plusPerInfo").hide();
+
+        });
+
+        $('#minusPerInfo').on('click', function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+        });
+
+        $("#minusHomeInfo").hide();
+        $(".HomeInfo").hide();
+
+        $('#plusHomeInfo').on('click', function () {
+            $(".HomeInfo").show();
+            $("#minusHomeInfo").show();
+            $("#plusHomeInfo").hide();
+
+        });
+
+        $('#minusHomeInfo').on('click', function () {
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+        });
+
+        $("#minusTeleHis").hide();
+        $(".TeleHis").hide();
+
+        $('#plusTeleHis').on('click', function () {
+            $(".TeleHis").show();
+            $("#minusTeleHis").show();
+            $("#plusTeleHis").hide();
+
+        });
+
+        $('#minusTeleHis').on('click', function () {
+            $("#minusTeleHis").hide();
+            $("#plusTeleHis").show();
+            $(".TeleHis").hide();
+        });
+
+        $("#minusEmpHis").hide();
+        $(".EmpHis").hide();
+
+        $('#plusEmpHis').on('click', function () {
+            $(".EmpHis").show();
+            $("#minusEmpHis").show();
+            $("#plusEmpHis").hide();
+
+        });
+
+        $('#minusEmpHis').on('click', function () {
+            $("#minusEmpHis").hide();
+            $("#plusEmpHis").show();
+            $(".EmpHis").hide();
+        });
+
+    });
+</script>

@@ -1362,3 +1362,63 @@ height: 424px;
     align-items: baseline;
     border-radius: 5px;
 }
+
+
+
+.tabs-btn {
+    background: white;
+    height: 43px;
+    border-radius: 3px;
+}
+
+#tabs-btn {
+    align-self: center;
+    /* background: #fff; */
+    width: 184px;
+    margin-top: 15px;
+    border-width: 0;
+    border-radius: 0px;
+    opacity: 1;
+    font-family: 'Poppins-SemiBold';
+    font-size: 12px;
+    color: black;
+    cursor: pointer;
+    /*    display: flex;
+        align-items: center;
+        justify-content: center;*/
+}
+
+.tabs-row {
+    margin-left: 13px;
+}
+
+#tabs-close {
+    position: relative;
+    float: right;
+    bottom: 9px;
+    color: red;
+    cursor: pointer;
+    top: 8px;
+    right: 13px;
+    color: red;
+}
+
+/*.display {
+}
+
+.none {
+    display: none;
+}*/
+
+.tab-txt {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    margin-top: 8%;
+    font-size: 9px;
+}
+
+#tabs-btn:hover {
+    background: #f7f7f7
+}
