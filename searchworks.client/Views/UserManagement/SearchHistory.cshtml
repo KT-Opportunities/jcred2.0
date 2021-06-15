@@ -7,59 +7,61 @@
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
     @*<div class="row btn-row">
-        <div class="col-md-6 col-sm-6">
-            <div class="row">
-                <div class="col-md-4 col-sm-1">
-                    <button onclick="myFunction('seaHistory')" style="cursor: pointer;color:white" type="button"
-                            class="btns active">
-                        SEARCH HISTORY
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
-    <div id="seaHistory" style="display:block">
-        <div class="row com-row">
-            <div class="com-div">
+            <div class="col-md-6 col-sm-6">
                 <div class="row">
-                    <div class="col-6">
-                        <form class="form-inline my-form-inline">
-                            <div class="form-group mb-2 in-mar">
-                                <label for="inputPassword" class="col-form-label search-label">Search by</label>
-                                <div class="in-mar">
-                                    <input type="text" class="form-control" id="inputPassword">
-                                </div>
-                            </div>
-                            <button type="button" class="btn-b" data-toggle="modal" data-target="#adSearch">Advanced Search</button>
-                        </form>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('seaHistory')" style="cursor: pointer;color:white" type="button"
+                                class="btns active">
+                            SEARCH HISTORY
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>*@
+
+    <div id="seaHistory" style="display:block">
+        <div class="sea_bar" @*class="row com-row"*@>
+            <label>Search History</label>
+            <input name="search" />
+            <button data-toggle="modal" data-target="#adSearch">Advanced Search</button>
+            @*<div class="com-div">
+                    <div class="row">
+                        <div class="col-6">
+                            <form class="form-inline my-form-inline">
+                                <div class="form-group mb-2 in-mar">
+                                    <label for="inputPassword" class="col-form-label search-label">Search by</label>
+                                    <div class="in-mar">
+                                        <input type="text" class="form-control" id="inputPassword">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>*@
         </div>
+
         <div class="row ro-2">
             <div class="con1">
                 <table class="table table-borderless custom-table">
                     <thead>
                         <tr class="justify-content-around" style="display:flex">
-                            <th scope="col" class="color">
+                            <th scope="col" class="thSearch color">
                                 <label class="control control--checkbox">
                                     <input type="checkbox" class="js-check-all" />
                                     @*<div class="control__indicator"></div>*@
                                 </label>
                             </th>
-                            <th scope="col" class="color">Search Type</th>
-                            <th scope="col" class="color">Description</th>
-                            <th scope="col" class="color">Response Type</th>
-                            <th scope="col" class="color">Reference</th>
-                            <th scope="col" class="color">Name</th>
-                            <th scope="col" class="color">Time Searched</th>
-                            <th scope="col" class="color"></th>
+
+                            <th scope="col" class="thSearch">Search Type</th>
+                            <th scope="col" class="thSearch">Description</th>
+                            <th scope="col" class="thSearch">Response Type</th>
+                            <th scope="col" class="thSearch">Reference</th>
+                            <th scope="col" class="thSearch">Name</th>
+                            <th scope="col" class="thSearch">Time Searched</th>
+                            <th scope="col" class="thSearch"></th>
                         </tr>
                     </thead>
                 </table>
@@ -81,38 +83,38 @@
                                 string Type = @item.ResponseType;
 
                                 <tr scope="row" class="justify-content-around t-row " style="display:flex">
-                                    <td style="">
+                                    <td style="" class="">
                                         <label class="control control--checkbox">
                                             <input type="checkbox" />
                                             @*<div class="control__indicator"></div>*@
                                         </label>
                                     </td>
-                                    <td style="display:flex;text-wrap:normal" data-toggle="modal"
+                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.CallerModule
                                     </td>
-                                    <td style="" data-toggle="modal"
+                                    <td class="td" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.SearchDescription
                                     </td>
-                                    <td style="display:flex;word-break: break-all" data-toggle="modal"
+                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.ResponseType
                                     </td>
-                                    <td style="display:flex;word-break: break-all" data-toggle="modal"
+                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.Reference
                                     </td>
-                                    <td style="display:flex;word-break: break-all" data-toggle="modal"
+                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.Name
                                     </td>
-                                    <td style="" data-toggle="modal"
+                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.ReportDate
                                     </td>
 
-                                    <td>@Html.ActionLink("View", Type + "Database", "Credit", new { id = ID, token = Token, refe = Ref, type = Type }, null)</td>
+                                    <td>@Html.ActionLink("View", Type + "Database", "Credit", new { id = ID, token = Token }, null)</td>
                                 </tr>
 
                             }
@@ -203,7 +205,6 @@
     </div>
 </div>
 
-
 <script>
 
       var tab = [];
@@ -217,22 +218,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('SEARCH HISTORY');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -244,7 +238,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -340,4 +333,27 @@
 
         console.log($(event.target).text());
     };
+
+    $(function () {
+        $('.js-check-all').on('click', function () {
+            if ($(this).prop('checked')) {
+                $('.control--checkbox input[type="checkbox"]').each(function () {
+                    $(this).prop('checked', true);
+                    $(this).closest('tr').addClass('active');
+                })
+            } else {
+                $('.control--checkbox input[type="checkbox"]').each(function () {
+                    $(this).prop('checked', false);
+                    $(this).closest('tr').removeClass('active');
+                })
+            }
+        });
+        $('.control--checkbox input[type="checkbox"]').on('click', function () {
+            if ($(this).closest('tr').hasClass('active')) {
+                $(this).closest('tr').removeClass('active');
+            } else {
+                $(this).closest('tr').addClass('active');
+            }
+        });
+    });
 </script>

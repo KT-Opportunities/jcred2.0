@@ -22,7 +22,7 @@
     </div>
     <div class="con">
         <div class="col-md-6 col-sm-6 left">
-            @using (Html.BeginForm("CombinedCreditReportResults", "Credit", FormMethod.Post))
+            @using (Html.BeginForm("CombinedConsumerCreditReportResults", "Credit", FormMethod.Post))
             {
                 <div class="ref">
                     <label>Reference</label><br>
@@ -83,13 +83,16 @@
                 </div>
 
                 <div class="tc">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <div class="checkBoxDiv">
+                        <a href="#">Consumer consent</a>&nbsp;acquired &nbsp;
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </div>
+                    <button id="combinedComSearch" class="butn" name="combinedComSearch">Perform Search</button>
                 </div>
-
-                <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
 
             }
         </div>
@@ -155,7 +158,7 @@
             $.ajax(
                 {
                     type: "POST",
-                    url: '@Url.Action("CombinedCreditReportResults", "Credit")',
+                    url: '@Url.Action("CombinedConsumerCreditReportResults", "Credit")',
                     data: {
                         IDNumber: $('#IDNumber').val(),
                          Firstname: $('#Firstname').val(),

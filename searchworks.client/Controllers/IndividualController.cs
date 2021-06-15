@@ -722,63 +722,70 @@ namespace searchworks.client.Controllers
             //    IDNumber = id,
             //    Sequestration = "false",
             //};
-
-            var apiInput = new
+            try
             {
-                SessionToken = authtoken,
-                DeedsOfficeIDs = "3",//company name contains: See documentation
-                Reference = "",//search reference: probably store in logs
-                Surname = "Thoriso",
-                Firstname = "Rangata",
-                IDNumber = "9303195109086",
-                Sequestration = "false"
-            };
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    DeedsOfficeIDs = "3",//company name contains: See documentation
+                    Reference = "",//search reference: probably store in logs
+                    Surname = "Thoriso",
+                    Firstname = "Rangata",
+                    IDNumber = "9303195109086",
+                    Sequestration = "false"
+                };
 
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
 
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Response");
-            //dynamic rootObject = JObject.Parse(response.Content);
-            //ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Response");
+                //dynamic rootObject = JObject.Parse(response.Content);
+                //ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
-            //extract list of companies returned
-            List<DeedsInformation> lst = getCompanyList(response);
+                //extract list of companies returned
+                List<DeedsInformation> lst = getCompanyList(response);
 
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-            DateTime time = DateTime.Now;
+                DateTime time = DateTime.Now;
 
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CIPC Company Records";
-            string action = "Company Name:" + name;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "CIPC Company Records";
+                string action = "Company Name:" + name;
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
 
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-            ViewData["ComName"] = name;
+                ViewData["user"] = Session["Name"].ToString();
+                ViewData["date"] = DateTime.Today.ToShortDateString();
+                ViewData["ref"] = refe;
+                ViewData["ComName"] = name;
 
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
-            conn.Open();
+                conn.Open();
 
-            var cmd2 = new MySqlCommand(query_uid, conn);
+                var cmd2 = new MySqlCommand(query_uid, conn);
 
-            var reader2 = cmd2.ExecuteReader();
+                var reader2 = cmd2.ExecuteReader();
 
-            conn.Close();
+                conn.Close();
 
-            return View(lst);
+                return View(lst);
+            }
+            catch (Exception e)
+            {
+                TempData["Msg"] = e.ToString();
+                return View();
+            }
         }
 
         private List<DeedsInformation> getCompanyList(IRestResponse response)

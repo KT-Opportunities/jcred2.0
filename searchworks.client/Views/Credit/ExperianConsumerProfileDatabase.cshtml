@@ -70,75 +70,51 @@
                                 <tr>
                                     <td colspan="4">Title</td>
                                     <td style="border: none;" colspan="4">@item.Title </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Date of Birth</td>
                                     <td style="border: none;" colspan="4">@item.DateOfBirth</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">First Name</td>
                                     <td style="border: none;" colspan="4">@item.FirstName</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Middle Name</td>
                                     <td style="border: none;" colspan="4">@item.MiddleName1</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Surname</td>
                                     <td style="border: none;" colspan="4">@item.Surname</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">FullName</td>
                                     <td style="border: none;" colspan="4">@item.Fullname</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">ID Number</td>
                                     <td style="border: none;" colspan="4">@item.IDNumber</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Gender</td>
                                     <td style="border: none;" colspan="4">@item.Gender</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Age</td>
                                     <td style="border: none;" colspan="4">@item.Age</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Marital Status</td>
                                     <td style="border: none;" colspan="4">@item.MaritalStatus</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
                                     <td colspan="2">Reference</td>
                                     <td style="border: none;" colspan="4">@item.Reference</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Has Properties</td>
                                     <td style="border: none;" colspan="4">@item.HasProperties</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -157,17 +133,14 @@
                                 <tr>
                                     <td colspan="2">ID Verified</td>
                                     <td style="border: none;" colspan="4">@hm.IDVerified</td>
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Surname Verified</td>
                                     <td style="border: none;" colspan="4">@hm.SurnameVerified</td>
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Initials Verified</td>
                                     <td style="border: none;" colspan="4">@hm.InitialsVerified</td>
-                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -175,15 +148,39 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+  
 <script>
+
+
     function Export() {
 
+        $(".PerInfo").show();
+        $("#minusPerInfo").show();
+        $("#plusPerInfo").hide();
+        $("#PITU").toggle();
+
+        $(".HomeInfo").show();
+        $("#minusHomeInfo").show();
+        $("#plusHomeInfo").hide();
+        $("#HAITU").toggle();
+
+        $(".not").show();
+        $("#minusNot").show();
+        $("#plusNot").hide();
+
+        $("#minusNot").hide();
+        $("#plusNot").show();
+        $(".not").hide();
+
         var opt = {
-            margin: 1,
-            filename: 'myfile.pdf',
-            image: { type: 'jpeg', quality: 1.5 },
+            margin: 0,
+            filename: 'ExperianConsumerProfile.pdf',
+            //filename: 'ExperianConsumerProfile`${@ViewData["ExFullname"]}`.pdf',
+            image: { type: 'jpeg', quality: 1 },
             html2canvas: { scale: 1 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
         };
@@ -191,9 +188,28 @@
         var element = document.getElementById('content');
         html2pdf().set(opt).from(element).save();
 
+        setTimeout(function () {
+
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+            $("#PITU").toggle();
+
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+            $("#HAITU").toggle();
+
+
+
+        }, 1000);
+
+
     }
 </script>
 <script>
+
+
 
     //CompScan
     $("#PI").click(function () {

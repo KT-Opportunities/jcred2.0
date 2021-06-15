@@ -1,5 +1,4 @@
-﻿using IronPdf;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -188,9 +187,10 @@ namespace searchworks.client.Controllers
             conn.Close();
         }
 
-        public void saveDataCounts(dynamic SearchToken, dynamic Reference, dynamic SearchID, dynamic Accounts, dynamic Enquiries, dynamic typeOfSearch /*dynamic Judgments, dynamic Notices, dynamic BankDefaults, dynamic Defaults, dynamic Collections, dynamic Directors, dynamic Addresses, dynamic Telephones, dynamic Occupants, dynamic Employers, dynamic TraceAlerts, dynamic PaymentProfiles, dynamic OwnEnquiries, dynamic AdminOrders, dynamic PossibleMatches, dynamic DefiniteMatches, dynamic Loans, dynamic FraudAlerts, dynamic Companies, dynamic Properties, dynamic Documents, dynamic DemandLetters, dynamic Trusts, dynamic Bonds, dynamic Deeds, dynamic PublicDefaults, dynamic NLRAccounts*/)
+        public void saveDataCounts(dynamic SearchToken, dynamic Reference, dynamic SearchID, dynamic Accounts, dynamic Enquiries, dynamic Judgments, dynamic Notices, dynamic BankDefaults, dynamic Defaults, dynamic Collections, dynamic Directors, dynamic Addresses, dynamic Telephones, dynamic Occupants, dynamic Employers, dynamic TraceAlerts, dynamic PaymentProfiles, dynamic OwnEnquiries, dynamic AdminOrders, dynamic PossibleMatches, dynamic DefiniteMatches, dynamic Loans, dynamic FraudAlerts, dynamic Companies, dynamic Properties, dynamic Documents, dynamic DemandLetters, dynamic Trusts, dynamic Bonds, dynamic Deeds, dynamic PublicDefaults, dynamic NLRAccounts, dynamic typeOfSearch)
+
         {
-            string query_uid = "INSERT INTO datacounts (SearchToken,Reference,SearchID,Accounts,Enquiries,typeOfSearch) VALUES('" + SearchToken + "','" + Reference + "','" + SearchID + "','" + Accounts + "','" + Enquiries + "','" + typeOfSearch + "')";
+            string query_uid = "INSERT INTO datacounts (SearchToken,Reference,SearchID, Accounts, Enquiries, Judgments, Notices, BankDefaults, Defaults, Collections, Directors, Addresses, Telephones, Occupants, Employers, TraceAlerts, PaymentProfiles, OwnEnquiries, AdminOrders, PossibleMatches, DefiniteMatches, Loans, FraudAlerts, Companies, Properties, Documents, DemandLetters, Trusts, Bonds, Deeds, PublicDefaults, NLRAccounts, typeOfSearch) VALUES('" + SearchToken + "','" + Reference + "','" + SearchID + "','" + Accounts + "','" + Enquiries + "','" + Judgments + "','" + Notices + "','" + BankDefaults + "','" + Defaults + "','" + Collections + "','" + Directors + "','" + Addresses + "','" + Telephones + "','" + Occupants + "','" + Employers + "','" + TraceAlerts + "','" + PaymentProfiles + "','" + OwnEnquiries + "','" + AdminOrders + "','" + PossibleMatches + "','" + DefiniteMatches + "','" + Loans + "','" + FraudAlerts + "','" + Companies + "','" + Properties + "','" + Documents + "','" + DemandLetters + "','" + Trusts + "','" + Bonds + "','" + Deeds + "','" + PublicDefaults + "','" + NLRAccounts + "','" + typeOfSearch + "')";
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
@@ -443,9 +443,9 @@ namespace searchworks.client.Controllers
             conn.Close();
         }
 
-        public void saveTelephoneHistory(dynamic SearchToken, dynamic Reference, dynamic SearchID, dynamic DialCode, dynamic TelephoneID, dynamic TypeDescription, dynamic TypeCode, dynamic Number, dynamic FullNumber, dynamic LastUpdatedDate, dynamic typeOfSearch)
+        public void saveTelephoneHistory(dynamic SearchToken, dynamic Reference, dynamic SearchID, dynamic DialCode, dynamic TelephoneID, dynamic TypeDescription, dynamic TypeCode, dynamic Number, dynamic FullNumber, dynamic LastUpdatedDateTel, dynamic typeOfSearch)
         {
-            string query_uid = "INSERT INTO telephonehistory (SearchToken,Reference,SearchID,DialCode,TelephoneID,TypeDescriptionTel,TypeCode,Number,FullNumber,LastUpdatedDate,typeOfSearch) VALUES('" + SearchToken + "','" + Reference + "','" + SearchID + "','" + DialCode + "','" + TelephoneID + "','" + TypeDescription + "','" + TypeCode + "','" + Number + "','" + FullNumber + "','" + LastUpdatedDate + "','" + typeOfSearch + "')";
+            string query_uid = "INSERT INTO telephonehistory (SearchToken,Reference,SearchID,DialCode,TelephoneID,TypeDescriptionTel,TypeCode,Number,FullNumber,LastUpdatedDateTel,typeOfSearch) VALUES('" + SearchToken + "','" + Reference + "','" + SearchID + "','" + DialCode + "','" + TelephoneID + "','" + TypeDescription + "','" + TypeCode + "','" + Number + "','" + FullNumber + "','" + LastUpdatedDateTel + "','" + typeOfSearch + "')";
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
@@ -507,7 +507,7 @@ namespace searchworks.client.Controllers
                 Username = api_username,
                 Password = api_password
             };
-            /* string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }"; *///Change Back
+            //string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
             string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
@@ -728,18 +728,18 @@ namespace searchworks.client.Controllers
                         ViewData["ComCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
                         saveCCAStats(SearchToken, Reference, SearchID, ViewData["ComCCAActiveAccounts"].ToString(), ViewData["ComCCAClosedAccounts"].ToString(), ViewData["ComCCAWorstMonthArrears"].ToString(), " ", ViewData["ComCCABalanceExposure"].ToString(), " ", ViewData["ComCCACumulativeArrears"].ToString(), "CompuScanCombinedCreditReport");
 
-                        //Months
-                        ViewData["ComMonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
-                        ViewData["ComMonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
-                        ViewData["ComMonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
-                        ViewData["ComMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
-                        saveNLR12Months(SearchToken, Reference, SearchID, ViewData["ComMonthsEnquiriesByClient"].ToString(), ViewData["ComMonthsEnquiriesByOther"].ToString(), ViewData["ComMonthsPositiveLoans"].ToString(), ViewData["ComMonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
-                        //Months
-                        ViewData["ComMonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
-                        ViewData["ComMonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
-                        ViewData["ComMonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
-                        ViewData["ComMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
-                        saveNLRStats24(SearchToken, Reference, SearchID, ViewData["ComMonthsEnquiriesByClient"].ToString(), ViewData["ComMonthsEnquiriesByOther"].ToString(), ViewData["ComMonthsPositiveLoans"].ToString(), ViewData["ComMonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
+                        //NLR12Months
+                        ViewData["ComNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+                        ViewData["ComNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+                        ViewData["ComNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+                        ViewData["ComNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+                        saveNLR12Months(SearchToken, Reference, SearchID, ViewData["ComNLR12MonthsEnquiriesByClient"].ToString(), ViewData["ComNLR12MonthsEnquiriesByOther"].ToString(), ViewData["ComNLR12MonthsPositiveLoans"].ToString(), ViewData["ComNLR12MonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
+                        //NLR24Months
+                        ViewData["ComNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
+                        ViewData["ComNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
+                        ViewData["ComNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
+                        ViewData["ComNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
+                        saveNLRStats24(SearchToken, Reference, SearchID, ViewData["ComNLR24MonthsEnquiriesByClient"].ToString(), ViewData["ComNLR24MonthsEnquiriesByOther"].ToString(), ViewData["ComNLR24MonthsPositiveLoans"].ToString(), ViewData["ComNLR24MonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
 
                         //NLR36Months
                         ViewData["ComNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
@@ -749,11 +749,11 @@ namespace searchworks.client.Controllers
                         saveNLR36Months(SearchToken, Reference, SearchID, ViewData["ComNLR36MonthsEnquiriesByClient"].ToString(), ViewData["ComNLR36MonthsEnquiriesByOther"].ToString(), ViewData["ComNLR36MonthsPositiveLoans"].ToString(), ViewData["ComNLR36MonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
 
                         //Months
-                        ViewData["ComMonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
-                        ViewData["ComMonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
-                        ViewData["ComMonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
-                        ViewData["ComMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
-                        saveCCA12Months(SearchToken, Reference, SearchID, ViewData["ComMonthsEnquiriesByClient"].ToString(), ViewData["ComMonthsEnquiriesByOther"].ToString(), ViewData["ComMonthsPositiveLoans"].ToString(), ViewData["ComMonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
+                        ViewData["ComCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
+                        ViewData["ComCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
+                        ViewData["ComCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
+                        ViewData["ComCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
+                        saveCCA12Months(SearchToken, Reference, SearchID, ViewData["ComCCA12MonthsEnquiriesByClient"].ToString(), ViewData["ComCCA12MonthsEnquiriesByOther"].ToString(), ViewData["ComCCA12MonthsPositiveLoans"].ToString(), ViewData["ComCCA12MonthsHighestMonthsInArrears"].ToString(), "CompuScanCombinedCreditReport");
 
                         //CCA24Months
                         ViewData["ComCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
@@ -865,19 +865,19 @@ namespace searchworks.client.Controllers
                         ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
                         ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
                         saveCCAStats(SearchToken, Reference, SearchID, ViewData["ExCCAActiveAccounts"].ToString(), ViewData["ExCCAClosedAccounts"].ToString(), ViewData["ExCCAWorstMonthArrears"].ToString(), " ", ViewData["ExCCABalanceExposure"].ToString(), " ", ViewData["ExCCACumulativeArrears"].ToString(), "ExperianCombinedCreditReport");
-                        //Months
-                        ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
-                        ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
-                        ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
-                        ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
-                        saveNLR12Months(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
+                        //NLR12Months
+                        ViewData["ExNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+                        ViewData["ExNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+                        ViewData["ExNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+                        ViewData["ExNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+                        saveNLR12Months(SearchToken, Reference, SearchID, ViewData["ExNLR12MonthsEnquiriesByClient"].ToString(), ViewData["ExNLR12MonthsEnquiriesByOther"].ToString(), ViewData["ExNLR12MonthsPositiveLoans"].ToString(), ViewData["ExNLR12MonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
 
-                        //Months
-                        ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
-                        ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
-                        ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
-                        ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
-                        saveNLRStats24(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
+                        //NLR24Months
+                        ViewData["ExNLR24EnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
+                        ViewData["ExNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
+                        ViewData["ExNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
+                        ViewData["ExNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
+                        saveNLRStats24(SearchToken, Reference, SearchID, ViewData["ExNLR24MonthsEnquiriesByClient"].ToString(), ViewData["ExNLR24MonthsEnquiriesByOther"].ToString(), ViewData["ExNLR24MonthsPositiveLoans"].ToString(), ViewData["ExNLR24MonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
 
                         //NLR36Months
                         ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
@@ -886,12 +886,12 @@ namespace searchworks.client.Controllers
                         ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
                         saveNLR36Months(SearchToken, Reference, SearchID, ViewData["ExNLR36MonthsEnquiriesByClient"].ToString(), ViewData["ExNLR36MonthsEnquiriesByOther"].ToString(), ViewData["ExNLR36MonthsPositiveLoans"].ToString(), ViewData["ExNLR36MonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
 
-                        //Months
-                        ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
-                        ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
-                        ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
-                        ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
-                        saveCCA24Months(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
+                        //CCA12Months
+                        ViewData["ExCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByClient;
+                        ViewData["ExCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.EnquiriesByOther;
+                        ViewData["ExCCA12monthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.PositiveLoans;
+                        ViewData["ExCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Months.HighestMonthsInArrears;
+                        saveCCA12Months(SearchToken, Reference, SearchID, ViewData["ExCCA12MonthsEnquiriesByClient"].ToString(), ViewData["ExCCA12MonthsEnquiriesByOther"].ToString(), ViewData["ExCCA12MonthsPositiveLoans"].ToString(), ViewData["ExCCA12MonthsHighestMonthsInArrears"].ToString(), "ExperianCombinedCreditReport");
 
                         //CCA24Months
                         ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
@@ -1025,11 +1025,6 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        public ActionResult CompuScan()
-        {
-            return View();
-        }
-
         public ActionResult CombinedConsumerTrace()
         {
             return View();
@@ -1081,7 +1076,7 @@ namespace searchworks.client.Controllers
 
                 //company search API call
                 var url = "https://rest.searchworks.co.za/credit/combinedreport/trace/";
-                //var url = "https://uatrest.searchworks.co.za/credit/combinedreport/trace/";
+                //var url = "https://uatuatrest.searchworks.co.za/credit/combinedreport/trace/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -1746,1716 +1741,13 @@ namespace searchworks.client.Controllers
             }
             catch (Exception e)
             {
-                ViewData["Message"] = "An error occured, please check the entered values.";
+                ViewData["Message"] = e.ToString();
             }
             return View();
         }
 
         public ActionResult CombinedConsumerTraceDatabase(DatabaseSearch combinedconsumerTraceSearch)
         {
-            return View();
-        }
-
-        public ActionResult CompuScanBankCodesDocument()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanBankCodesDocumentResults(CompuScan comp)
-        {
-            try
-            {
-                string id = comp.IDNumber;
-                string clientName = comp.clientName;
-                string bankName = comp.bankName;
-                string branchCode = comp.branchCode;
-                string branchName = comp.branchName;
-                string accountNumber = comp.accountNumber;
-                int amount = comp.amount;
-                string terms = comp.terms;
-                int reportType = comp.ReportType;
-
-                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                DateTime time = DateTime.Now;
-
-                string date_add = DateTime.Today.ToShortDateString();
-                string time_add = time.ToString("T");
-                string page = "Combined Consumer Trace";
-                string action = "Client Name:" + clientName + "; Bank Name: " + bankName + "; Branch Code:" + branchCode + "; Branch Name: " + branchName + "; Account Number:" + accountNumber + "; Amount:" + amount + "; Terms:" + terms + "; Report Type" + reportType;
-                string user_id = Session["ID"].ToString();
-                string us = Session["Name"].ToString();
-
-                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                conn.Open();
-
-                var cmd2 = new MySqlCommand(query_uid, conn);
-
-                var reader2 = cmd2.ExecuteReader();
-
-                conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                if (!tokenValid(authtoken))
-                {
-                    //exit with a warning
-                }
-
-                //company search API call
-                var url = "https://rest.searchworks.co.za/documents/compuscan/bankcodes/";
-
-                //create RestSharp client and POST request object
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-
-                //request headers
-                request.RequestFormat = DataFormat.Json;
-                request.AddHeader("Content-Type", "application/json");
-                //object containing input parameter data for company() API method
-                var apiInput = new
-                {
-                    sessionToken = authtoken,
-                    reference = us,//search reference: probably store in logs
-                    idNumber = id,
-                    clientName = clientName,
-                    bankName = bankName,
-                    branchCode = branchCode,
-                    branchName = branchName,
-                    accountNumber = accountNumber,
-                    amount = amount,
-                    terms = terms,
-                    ReportType = reportType,
-                };
-
-                //add parameters and token to request
-                request.Parameters.Clear();
-                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                //ApiResponse is a class to model the data we want from the API response
-
-                //make the API request and get a response
-                IRestResponse response = client.Execute<RootObject>(request);
-
-                dynamic rootObject = JObject.Parse(response.Content);
-                //JObject o = JObject.Parse(response.Content);
-
-                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-                JToken token = JToken.Parse(response.Content);
-
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = rootObject.ResponseMessage; ;
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanBankCodesDocument");
-            }
-            catch (Exception e)
-            {
-                TempData["msg"] = "An error occured, please check the entered values.";
-            }
-
-            return View();
-        }
-
-        public ActionResult CompuScanBankOnFile()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanBankOnFileResults(CompuScan comp)
-        {
-            string id = comp.IDNumber;
-            try
-            {
-                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                DateTime time = DateTime.Now;
-
-                string date_add = DateTime.Today.ToShortDateString();
-                string time_add = time.ToString("T");
-                string page = "CompuScan Bank On File";
-                string action = "ID: " + id;
-                string user_id = Session["ID"].ToString();
-                string us = Session["Name"].ToString();
-
-                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                conn.Open();
-
-                var cmd2 = new MySqlCommand(query_uid, conn);
-
-                var reader2 = cmd2.ExecuteReader();
-
-                conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                if (!tokenValid(authtoken))
-                {
-                    //exit with a warning
-                }
-
-                //company search API call
-                var url = "https://rest.searchworks.co.za/compuscan/bankcodes/idnumber/";
-
-                //create RestSharp client and POST request object
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-
-                //request headers
-                request.RequestFormat = DataFormat.Json;
-                request.AddHeader("Content-Type", "application/json");
-                //object containing input parameter data for company() API method
-                var apiInput = new
-                {
-                    sessionToken = authtoken,
-                    reference = us,//search reference: probably store in logs
-                    iDNumber = id
-                };
-
-                //add parameters and token to request
-                request.Parameters.Clear();
-                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                //ApiResponse is a class to model the data we want from the API response
-
-                //make the API request and get a response
-                IRestResponse response = client.Execute<RootObject>(request);
-
-                dynamic rootObject = JObject.Parse(response.Content);
-                //JObject o = JObject.Parse(response.Content);
-
-                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                System.Diagnostics.Debug.WriteLine(o);
-                JToken token = JToken.Parse(response.Content);
-
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-
-                var mes = ViewData["ResponseMessage"].ToString();
-                if (mes == "ServiceOffline")
-                {
-                    ViewData["Message"] = "Service is offline";
-                    return View();
-                }
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                //string ResponseType = rootObject.ResponseMessage; ;
-                saveSearchHistory(SearchID, SearchUserName, "CompuScanBankOnFile", Session["Name"].ToString(), ReportDate, Reference, SearchToken, "credit/compuScan", null, SearchType, SearchDescription, "CompuScanBankOnFile");
-            }
-            catch (Exception e)
-            {
-                TempData["msg"] = "An error occured, please check the entered values.";
-            }
-            return View();
-        }
-
-        public ActionResult CompuScanConsumerProfile()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanConsumerProfileResults(CompuScan comp)
-        {
-            string id = comp.IDNumber;
-            int enquiryReason = comp.EnquiryReason;
-            string surname = comp.Surname;
-            string firstname = comp.FirstName;
-            string refe = comp.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-            try
-            {
-                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                DateTime time = DateTime.Now;
-
-                string date_add = DateTime.Today.ToShortDateString();
-                string time_add = time.ToString("T");
-                string page = "CompuScan Consumer Profile";
-                string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; ID: " + id;
-                string user_id = Session["ID"].ToString();
-                string us = Session["Name"].ToString();
-
-                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                conn.Open();
-
-                var cmd2 = new MySqlCommand(query_uid, conn);
-
-                var reader2 = cmd2.ExecuteReader();
-
-                conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                if (!tokenValid(authtoken))
-                {
-                    //exit with a warning
-                }
-
-                //company search API call
-                var url = "https://rest.searchworks.co.za/credit/compuscan/consumerprofile/";
-
-                //create RestSharp client and POST request object
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-                ViewData["user"] = Session["Name"].ToString();
-
-                //request headers
-                request.RequestFormat = DataFormat.Json;
-                request.AddHeader("Content-Type", "application/json");
-                //object containing input parameter data for company() API method
-                var apiInput = new
-                {
-                    sessionToken = authtoken,
-                    reference = us,//search reference: probably store in logs
-                    idNumber = id,
-                    enquiryReason = enquiryReason,
-                    surname = surname,
-                    firstname = firstname,
-                };
-
-                //add parameters and token to request
-                request.Parameters.Clear();
-                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                //ApiResponse is a class to model the data we want from the API response
-
-                //make the API request and get a response
-                IRestResponse response = client.Execute<RootObject>(request);
-
-                dynamic rootObject = JObject.Parse(response.Content);
-                //JObject o = JObject.Parse(response.Content);
-
-                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-                JToken token = JToken.Parse(response.Content);
-
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = ViewData["ResponseMessage"].ToString();
-
-                if (mes == "ServiceOffline")
-                {
-                    ViewData["Message"] = "Service is offline";
-                    return View();
-                }
-                else
-                {
-                    ViewData["Message"] = "good";
-
-                    int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                    string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                    string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                    string ResponseType = rootObject.ResponseMessage; ;
-                    string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                    string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                    string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                    string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                    string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                    string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                    saveSearchHistory(SearchID, SearchUserName, ResponseType, Session["Name"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerProfile");
-
-                    if (rootObject.ResponseObject.PersonInformation != null)
-                    {
-                        //personaInformantion
-                        ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                        ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                        ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-                        ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                        ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                        ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                        ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                        ViewData["Country"] = rootObject.ResponseObject.PersonInformation.Country;
-                        ViewData["VerificationStatus"] = rootObject.ResponseObject.PersonInformation.VerificationStatus;
-                        ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                        savePersonInformation(SearchToken, Reference, SearchID, null, null, null, ViewData["DateOfBirth"].ToString(), ViewData["FirstName"].ToString(), ViewData["Surname"].ToString(),
-                            ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(),
-                        null, null, null, null, ViewData["Gender"].ToString(), ViewData["Age"].ToString(),
-                       null, null, null, null,
-                       null, null
-                       , null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"], "CompuScan");
-                    }
-                    else
-                    {
-                        ViewData["PersonInformationMessage"] = "No Match";
-                    }
-
-                    if (rootObject.ResponseObject.CreditInformation != null)
-                    {
-                        //CreditInformation
-                        ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
-                        ViewData["Risk"] = rootObject.ResponseObject.CreditInformation.Risk;
-                        ViewData["RiskColour"] = rootObject.ResponseObject.CreditInformation.RiskColour;
-                        ViewData["DelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
-                        ViewData["TotalInstallmentAmountCPAAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalInstallmentAmountCPAAccounts_CompuScan;
-                        ViewData["TotalInstallmentAmountNLRAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalInstallmentAmountNLRAccounts_CompuScan;
-                        ViewData["TotalNumberCPAAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalNumberCPAAccounts_CompuScan;
-                        ViewData["TotalNumberNLRAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalNumberNLRAccounts_CompuScan;
-                        ViewData["TotalNumberActiveCPAAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalNumberActiveCPAAccounts_CompuScan;
-                        ViewData["TotalNumberActiveNLRAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalNumberActiveNLRAccounts_CompuScan;
-                        ViewData["TotalNumberClosedCPAAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalNumberClosedCPAAccounts_CompuScan;
-                        ViewData["TotalNumberClosedNLRAccounts_CompuScan"] = rootObject.ResponseObject.CreditInformation.TotalNumberClosedNLRAccounts_CompuScan;
-                        //saveCreditInformation(SearchToken, Reference, SearchID, " ",
-                        //     ViewData["DelphiScore"].ToString(),
-                        //       ViewData["DelphiScoreChartURL"].ToString(), ViewData["RiskColour"].ToString(),
-                        //    " ", " ", ViewData["TotalInstallmentAmountCPAAccounts_CompuScan"].ToString(),
-                        //   ViewData["TotalInstallmentAmountNLRAccounts_CompuScan"].ToString(), ViewData["TotalNumberCPAAccounts_CompuScan"].ToString(),
-                        //   ViewData["TotalNumberNLRAccounts_CompuScan"].ToString(), ViewData["TotalNumberActiveCPAAccounts_CompuScan"].ToString(),
-                        //    ViewData["TotalNumberActiveNLRAccounts_CompuScan"].ToString(), ViewData["TotalNumberClosedCPAAccounts_CompuScan"].ToString(),
-                        //    ViewData["TotalNumberClosedNLRAccounts_CompuScan"].ToString());
-
-                        //DeclineReason
-                        ViewData["ReasonDescription"] = rootObject.ResponseObject.CreditInformation.DeclineReason[0].ReasonDescription;
-                        saveCreditDeclineReason(SearchToken, Reference, SearchID, null, ViewData["ReasonDescription"].ToString(), "CompuScan");
-                        //DataCounts
-                        ViewData["Accounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Accounts;
-                        ViewData["Enquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries;
-                        ViewData["Judgments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Judgments;
-                        ViewData["Notices"] = rootObject.ResponseObject.CreditInformation.DataCounts.Notices;
-                        ViewData["BankDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults;
-                        ViewData["Defaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.Defaults;
-                        ViewData["Collections"] = rootObject.ResponseObject.CreditInformation.DataCounts.Collections;
-                        ViewData["Directors"] = rootObject.ResponseObject.CreditInformation.DataCounts.Directors;
-                        ViewData["Addresses"] = rootObject.ResponseObject.CreditInformation.DataCounts.Addresses;
-                        ViewData["Telephones"] = rootObject.ResponseObject.CreditInformation.DataCounts.Telephones;
-                        ViewData["Occupants"] = rootObject.ResponseObject.CreditInformation.DataCounts.Occupants;
-                        ViewData["Employers"] = rootObject.ResponseObject.CreditInformation.DataCounts.Employers;
-                        ViewData["TraceAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts;
-                        ViewData["PaymentProfiles"] = rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles;
-                        ViewData["OwnEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries;
-                        ViewData["AdminOrders"] = rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders;
-                        ViewData["PossibleMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
-                        ViewData["DefiniteMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.DefiniteMatches;
-                        ViewData["Loans"] = rootObject.ResponseObject.CreditInformation.DataCounts.Loans;
-                        ViewData["FraudAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts;
-                        ViewData["Companies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
-                        ViewData["Properties"] = rootObject.ResponseObject.CreditInformation.DataCounts.Properties;
-                        ViewData["Documents"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
-                        ViewData["DemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
-                        ViewData["Trusts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Trusts;
-                        ViewData["Bonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Bonds;
-                        ViewData["Deeds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Deeds;
-                        ViewData["PublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
-                        ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
-
-                        //DebtReviewStatus
-                        ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
-                        ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
-                        //saveDebtReviewStatus(SearchToken, Reference, SearchID, ViewData["DRStatusCode"].ToString(), null, ViewData["DRStatusDescription"].ToString(), null);
-                        //ConsumerStatistics
-                        ViewData["HighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
-                        ViewData["RevolvingAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.RevolvingAccounts;
-                        ViewData["InstalmentAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.InstalmentAccounts;
-                        ViewData["OpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
-                        ViewData["AdverseAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts;
-                        //NLRStats
-                        ViewData["NLRStats_ActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
-                        ViewData["NLRStats_ClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
-                        ViewData["NLRStats_WorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
-                        ViewData["NLRStats_BalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
-                        ViewData["NLRStats_MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-                        ViewData["NLRStats_CumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.CumulativeArrears;
-                        //CCAStats
-                        ViewData["CCAStats_ActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
-                        ViewData["CCAStats_ClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
-                        ViewData["CCAStats_WorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
-                        ViewData["CCAStats_BalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
-                        ViewData["CCAStats_MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-                        ViewData["CCAStats_CumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.CumulativeArrears;
-                        //NLR12Months
-                        ViewData["NLR12Months_EnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
-                        ViewData["NLR12Months_EnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
-                        ViewData["NLR12Months_PositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
-                        ViewData["NLR12Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-                        //NLR36Months
-                        ViewData["NLR36Months_EnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
-                        ViewData["NLR36Months_EnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
-                        ViewData["NLR36Months_PositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
-                        ViewData["NLR36Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-                        //NLR24Months
-                        ViewData["NLR24Months_EnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
-                        ViewData["NLR24Months_EnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
-                        ViewData["NLR24Months_PositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
-                        ViewData["NLR24Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
-                        //CCA12Months
-                        ViewData["CCA12Months_EnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
-                        ViewData["CCA12Months_EnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
-                        ViewData["CCA12Months_PositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
-                        ViewData["CCA12Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
-                        //CCA24Months
-                        ViewData["CCA24Months_EnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
-                        ViewData["CCA24Months_EnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
-                        ViewData["CCA24Months_PositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
-                        ViewData["CCA24Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
-                        //CCA36Months
-                        ViewData["CCA36Months_EnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
-                        ViewData["CCA36Months_EnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
-                        ViewData["CCA36Months_PositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
-                        ViewData["CCA36Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-
-                        //EnquiryHistory
-                        ViewData["EnquiryHistory_EnquiryDate"] = rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiryDate;
-                        ViewData["EnquiryHistory_EnquiredBy"] = rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiredBy;
-                        ViewData["EnquiryHistory_EnquiredByContact"] = rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiredByContact;
-                        ViewData["EnquiryHistory_EnquiredByContactNumber"] = rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiredByContactNumber;
-
-                        //CPA_Accounts
-                        if (rootObject.ResponseObject.CreditInformation.CPA_Accounts != null)
-                        {
-                            ViewData["SubscriberCode"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].SubscriberCode;
-                            ViewData["SubscriberName"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].SubscriberName;
-                            ViewData["BranchCode"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].BranchCode;
-                            ViewData["AccountNO"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].AccountNO;
-                            ViewData["SubAccountNO"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].SubAccountNO;
-                            ViewData["OwnershipType"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OwnershipType;
-                            ViewData["OwnershipTypeDescription"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OwnershipTypeDescription;
-                            ViewData["Reason"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Reason;
-                            ViewData["ReasonDescription"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ReasonDescription;
-                            ViewData["PaymentType"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentType;
-                            ViewData["PaymentTypeDescription"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentTypeDescription;
-                            ViewData["AccountType"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].AccountType;
-                            ViewData["AccountTypeDescription"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].AccountTypeDescription;
-                            ViewData["OpenDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OpenDate;
-                            ViewData["DeferredPaymentDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].DeferredPaymentDate;
-                            ViewData["LastPaymentDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].LastPaymentDate;
-                            ViewData["OpenBalance"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OpenBalance;
-                            ViewData["OpenBalanceIND"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OpenBalanceIND;
-                            ViewData["CurrentBalance"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].CurrentBalance;
-                            ViewData["CurrentBalanceIND"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].CurrentBalanceIND;
-                            ViewData["OverdueAmount"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OverdueAmount;
-                            ViewData["OverdueAmountIND"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OverdueAmountIND;
-                            ViewData["InstalmentAmount"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].InstalmentAmount;
-                            ViewData["ArrearsPeriod"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ArrearsPeriod;
-                            ViewData["RepaymentFrequency"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].RepaymentFrequency;
-                            ViewData["RepaymentFrequencyDescription"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].RepaymentFrequencyDescription;
-                            ViewData["Terms"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Terms;
-                            ViewData["StatusCode"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].StatusCode;
-                            ViewData["StatusCodeDesc"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].StatusCodeDesc;
-                            ViewData["StatusDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].StatusDate;
-                            ViewData["ThirdPartyName"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ThirdPartyName;
-                            ViewData["ThirdPartySold"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ThirdPartySold;
-                            ViewData["ThirdPartySoldDescription"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ThirdPartySoldDescription;
-                            ViewData["JointLoanParticipants"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].JointLoanParticipants;
-                            ViewData["PaymentHistory"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentHistory;
-                            ViewData["PaymentHistoryStatus"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentHistoryStatus;
-                            ViewData["PaymentHistoryChart"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentHistoryChart;
-                            ViewData["MonthEndDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].MonthEndDate;
-                            ViewData["DateCreated"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].DateCreated;
-                        }
-
-                        //NLR_Accounts
-                        if (rootObject.ResponseObject.CreditInformation.NLR_Accounts != null)
-                        {
-                            ViewData["NLR_SubscriberCode"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubscriberCode;
-                            ViewData["NLR_SubscriberName"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubscriberName;
-                            ViewData["NLR_BranchCode"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].BranchCode;
-                            ViewData["NLR_AccountNO"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].AccountNO;
-                            ViewData["NLR_SubAccountNO"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubAccountNO;
-                            ViewData["NLR_OwnershipType"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OwnershipType;
-                            ViewData["NLR_OwnershipTypeDescription"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OwnershipTypeDescription;
-                            ViewData["NLR_Reason"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].Reason;
-                            ViewData["NLR_ReasonDescription"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ReasonDescription;
-                            ViewData["NLR_PaymentType"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentType;
-                            ViewData["NLR_PaymentTypeDescription"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentTypeDescription;
-                            ViewData["NLR_AccountType"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].AccountType;
-                            ViewData["NLR_AccountTypeDescription"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].AccountTypeDescription;
-                            ViewData["NLR_OpenDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OpenDate;
-                            ViewData["NLR_DeferredPaymentDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].DeferredPaymentDate;
-                            ViewData["NLR_LastPaymentDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].LastPaymentDate;
-                            ViewData["NLR_OpenBalance"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OpenBalance;
-                            ViewData["NLR_OpenBalanceIND"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OpenBalanceIND;
-                            ViewData["NLR_CurrentBalance"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].CurrentBalance;
-                            ViewData["NLR_CurrentBalanceIND"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].CurrentBalanceIND;
-                            ViewData["NLR_OverdueAmount"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OverdueAmount;
-                            ViewData["NLR_OverdueAmountIND"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OverdueAmountIND;
-                            ViewData["NLR_InstalmentAmount"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].InstalmentAmount;
-                            ViewData["NLR_ArrearsPeriod"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ArrearsPeriod;
-                            ViewData["NLR_RepaymentFrequency"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubscriberCodeRepaymentFrequency;
-                            ViewData["NLR_RepaymentFrequencyDescription"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].RepaymentFrequencyDescription;
-                            ViewData["NLR_Terms"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].Terms;
-                            ViewData["NLR_StatusCode"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].StatusCode;
-                            ViewData["NLR_StatusCodeDesc"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].StatusCodeDesc;
-                            ViewData["NLR_StatusDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].StatusDate;
-                            ViewData["NLR_ThirdPartyName"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ThirdPartyName;
-                            ViewData["NLR_ThirdPartySold"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ThirdPartySold;
-                            ViewData["NLR_ThirdPartySoldDescription"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ThirdPartySoldDescription;
-                            ViewData["NLR_JointLoanParticipants"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].JointLoanParticipants;
-                            ViewData["NLR_PaymentHistory"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistory;
-                            ViewData["NLR_PaymentHistoryStatus"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistoryStatus;
-                            ViewData["NLR_PaymentHistoryChart"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistoryChart;
-                            ViewData["NLR_MonthEndDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].MonthEndDate;
-                            ViewData["NLR_DateCreated"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].DateCreated;
-                        }
-                    }
-                    else
-                    {
-                        ViewData["CreditInformationMessage"] = "No Match";
-                    }
-
-                    if (rootObject.ResponseObject.DirectorshipInformation != null)
-                    {
-                        //Directorships
-                        ViewData["D_DesignationCode"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
-                        ViewData["D_AppointmentDate"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].AppointmentDate;
-                        ViewData["D_DirectorStatus"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorStatus;
-                        ViewData["D_DirectorStatusDate"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorStatusDate;
-                        ViewData["D_CompanyName"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyName;
-                        ViewData["D_CompanyType"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyType;
-                        ViewData["D_CompanyStatus"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyStatus;
-                        ViewData["D_CompanyStatusCode"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyStatusCode;
-                        ViewData["D_CompanyRegistrationNumber"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyRegistrationNumber;
-                        ViewData["D_CompanyRegistrationDate"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyRegistrationDate;
-                        ViewData["D_CompanyStartDate"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyStartDate;
-                        ViewData["D_CompanyTaxNumber"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyTaxNumber;
-                        ViewData["D_DirectorTypeCode"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorTypeCode;
-                        ViewData["D_DirectorType"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorType;
-                        ViewData["D_MemberSize"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].MemberSize;
-                        ViewData["D_MemberContribution"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].MemberContribution;
-                        ViewData["D_MemberContributionType"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].MemberContributionType;
-                        ViewData["D_ResignationDate"] = rootObject.ResponseObject.DirectorshipInformation.Directorships[0].ResignationDate;
-                    }
-                    else
-                    {
-                        ViewData["DirectorshipInformationMessage"] = "No Match";
-                    }
-
-                    if (rootObject.ResponseObject.HistoricalInformation.AddressHistory != null)
-                    {
-                        //AddressHistory
-                        ViewData["AH_TypeDescription"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
-                        ViewData["AH_Line1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line1;
-                        ViewData["AH_Line2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line2;
-                        ViewData["AH_Line3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line3;
-                        ViewData["AH_Line4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line4;
-                        ViewData["AH_PostalCode"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].PostalCode;
-                        ViewData["AH_FullAddress"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
-                        ViewData["AH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-
-                        //TelephoneHistory
-                        ViewData["TH_TypeDescription"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription;
-                        ViewData["TH_FullNumber"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].FullNumber;
-                        ViewData["TH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].LastUpdatedDate;
-
-                        //EmploymentHistory
-                        ViewData["EH_TypeDescription"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].TypeDescription;
-                        ViewData["EH_Designation"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
-                        ViewData["EH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
-                        ViewData["EH_EmployeeType"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployeeType;
-                        ViewData["EH_SalaryFrequency"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].SalaryFrequency;
-                        ViewData["EH_PayslipReference"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].PayslipReference;
-                        ViewData["EH_EmployeeNumber"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployeeNumber;
-                    }
-                    else
-                    {
-                        ViewData["HistoricalInformationMessage"] = "No Match";
-                    }
-                    return View();
-                }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
-                return View();
-            }
-        }
-
-        public ActionResult CompuScanConsumerProfileDatabase(DatabaseSearch DbSearch)
-        {
-            System.Collections.Generic.List<PersonInformation> personInfoList = new System.Collections.Generic.List<PersonInformation>();
-            System.Collections.Generic.List<HomeAffairsInformation> homeAffairsInformationList = new System.Collections.Generic.List<HomeAffairsInformation>();
-            System.Collections.Generic.List<CreditInformation> creditInformationList = new System.Collections.Generic.List<CreditInformation>();
-            System.Collections.Generic.List<DataCounts> dataCountsList = new System.Collections.Generic.List<DataCounts>();
-            System.Collections.Generic.List<DebtReviewStatus> debtReviewStatusList = new System.Collections.Generic.List<DebtReviewStatus>();
-            System.Collections.Generic.List<ConsumerStatistics> consumerstatsList = new System.Collections.Generic.List<ConsumerStatistics>();
-            System.Collections.Generic.List<NLRStats> nlrstatsList = new System.Collections.Generic.List<NLRStats>();
-            System.Collections.Generic.List<CCAStats> ccastatsList = new System.Collections.Generic.List<CCAStats>();
-            System.Collections.Generic.List<CCA12months> cca12monthsLists = new System.Collections.Generic.List<CCA12months>();
-            System.Collections.Generic.List<CCA24months> cca24monthsList = new System.Collections.Generic.List<CCA24months>();
-            System.Collections.Generic.List<CCA36months> cca36monthsList = new System.Collections.Generic.List<CCA36months>();
-            System.Collections.Generic.List<NLR12months> nlr12monthsLists = new System.Collections.Generic.List<NLR12months>();
-            System.Collections.Generic.List<NLR24months> nlr24monthsLists = new System.Collections.Generic.List<NLR24months>();
-            System.Collections.Generic.List<NLR36months> nlr36monthsList = new System.Collections.Generic.List<NLR36months>();
-            System.Collections.Generic.List<EnquiryHistory> enquiryInformationList = new System.Collections.Generic.List<EnquiryHistory>();
-            System.Collections.Generic.List<AddressHistory> addressInformationList = new System.Collections.Generic.List<AddressHistory>();
-            System.Collections.Generic.List<EmploymentHistory> employmentInformationList = new System.Collections.Generic.List<EmploymentHistory>();
-            System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
-            System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
-            //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
-
-            ViewData["id"] = DbSearch.id.ToString(); ViewData["token"] = DbSearch.token.ToString();
-            ViewData["refe"] = DbSearch.refe; ViewData["type"] = DbSearch.type;
-
-            //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",         serverIp, username, password, databaseName);
-                                                                                                                   //string query_uid = $"SELECT * FROM personinformation,homeaffairsinformation,creditinformation,datacounts,debtreviewstatus,addresshistory,telephonehistory,consumerstatistics,nlrstats,ccastats,months,cca24months,cca36months,enquiryhistory,employmenthistory,months,months,nlr36months,cpa_accounts  WHERE personinformation.SearchToken = '{DbSearch.token}'"; //Add TABLE paymenthistoryaccountdetails!!!!
-
-            using (var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString))
-            {
-                conn.Open();
-
-                //**************************************************** personal info***********//
-                string query_uid_personinformation = $"SELECT * FROM personinformation as a WHERE a.SearchToken  = '{DbSearch.token}'";
-                using (var cmd = new MySqlCommand(query_uid_personinformation, conn))
-                    try
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            int DateOfBirth = reader.GetOrdinal("DateOfBirth");
-                            int Title = reader.GetOrdinal("Title"); int FirstName = reader.GetOrdinal("FirstName"); int
-                            Surname = reader.GetOrdinal("Surname"); int Fullname
-                            = reader.GetOrdinal("Fullname"); int IDNumber = reader.GetOrdinal("IDNumber"); int Gender
-                            = reader.GetOrdinal("Gender"); int Age = reader.GetOrdinal("Age"); int MaritalStatus =
-                            reader.GetOrdinal("MaritalStatus"); int MiddleName1 = reader.GetOrdinal("MiddleName1"); int
-                            Reference = reader.GetOrdinal("Reference"); int HasProperties = reader.GetOrdinal("HasProperties");
-
-                            //PersonInformation
-
-                            PersonInformation personInformation = new PersonInformation(); personInformation.DateOfBirth
-                            = (reader[DateOfBirth] != Convert.DBNull) ? reader[DateOfBirth].ToString() : null;
-                            personInformation.Title = (reader[Title] != Convert.DBNull) ? reader[Title].ToString() : null;
-                            personInformation.FirstName = (reader[FirstName] != Convert.DBNull) ?
-                            reader[FirstName].ToString() : null; personInformation.Surname = (reader[Surname] !=
-                            Convert.DBNull) ? reader[Surname].ToString() : null; personInformation.Fullname =
-                            (reader[Fullname] != Convert.DBNull) ? reader[Fullname].ToString() : null;
-                            personInformation.IDNumber = (reader[IDNumber] != Convert.DBNull) ? reader[IDNumber].ToString() :
-                            null; personInformation.Gender = (reader[Gender] != Convert.DBNull) ? reader[Gender].ToString() :
-                            null; personInformation.Age = (reader[Age] != Convert.DBNull) ? reader[Age].ToString() : null;
-                            personInformation.MaritalStatus = (reader[MaritalStatus] != Convert.DBNull) ?
-                            reader[MaritalStatus].ToString() : null; personInformation.MiddleName1 = (reader[MiddleName1] !=
-                            Convert.DBNull) ? reader[MiddleName1].ToString() : null; personInformation.Reference =
-                            (reader[Reference] != Convert.DBNull) ? reader[Reference].ToString() : null;
-                            personInformation.HasProperties = (reader[HasProperties] != Convert.DBNull) ?
-                            Convert.ToBoolean(reader[HasProperties]) : false; //add to the list
-                            personInfoList.Add(personInformation);
-                        }
-                        ViewData["PersonInfoList"] = personInfoList;
-                        ViewData["PersonInfoListCount"] = personInfoList.Count;
-                    }
-                    catch (Exception err)
-                    {
-                        //console.log
-                    }
-                //*****************************************END personal info***********//
-                //**************************************************** homeaffairsinformation info***********//
-                string query_uid_homeaffairsinformation = $"SELECT * FROM homeaffairsinformation as a WHERE   a.SearchToken = '{DbSearch.token}'";
-                using (var cmd = new MySqlCommand(query_uid_homeaffairsinformation, conn)) try
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            //HomeAffairsInformation
-                            HomeAffairsInformation homeAffairsInformation
- = new HomeAffairsInformation(); int ExFirstName = reader.GetOrdinal("FirstName"); int
- DeceasedDate = reader.GetOrdinal("DeceasedDate"); int IDVerified =
- reader.GetOrdinal("IDVerified"); int SurnameVerified = reader.GetOrdinal("SurnameVerified"); int
- Warnings = reader.GetOrdinal("Warnings"); int DeceasedStatus =
- reader.GetOrdinal("DeceasedStatus"); int VerifiedStatus = reader.GetOrdinal("VerifiedStatus");
-                            int InitialsVerified = reader.GetOrdinal("InitialsVerified"); int CauseOfDeath =
-                            reader.GetOrdinal("CauseOfDeath"); int VerifiedDate = reader.GetOrdinal("VerifiedDate");
-
-                            homeAffairsInformation.FirstName = (reader[ExFirstName] != Convert.DBNull) ?
-                            reader[ExFirstName].ToString() : null; homeAffairsInformation.IDVerified = (reader[IDVerified] !=
-                            Convert.DBNull) ? reader[IDVerified].ToString() : null; homeAffairsInformation.SurnameVerified =
-                            (reader[SurnameVerified] != Convert.DBNull) ? reader[SurnameVerified].ToString() : null;
-                            homeAffairsInformation.Warnings = (reader[Warnings] != Convert.DBNull) ?
-                            reader[Warnings].ToString() : null; homeAffairsInformation.DeceasedDate = (reader[DeceasedDate]
-                            != Convert.DBNull) ? reader[DeceasedDate].ToString() : null;
-                            homeAffairsInformation.DeceasedStatus = (reader[DeceasedStatus] != Convert.DBNull) ?
-                            reader[DeceasedStatus].ToString() : null; homeAffairsInformation.VerifiedStatus =
-                            (reader[VerifiedStatus] != Convert.DBNull) ? reader[VerifiedStatus].ToString() : null;
-                            homeAffairsInformation.InitialsVerified = (reader[InitialsVerified] != Convert.DBNull) ?
-                            reader[InitialsVerified].ToString() : null; homeAffairsInformation.CauseOfDeath =
-                            (reader[CauseOfDeath] != Convert.DBNull) ? reader[CauseOfDeath].ToString() : null;
-                            homeAffairsInformation.VerifiedDate = (reader[VerifiedDate] != Convert.DBNull) ?
-                            reader[VerifiedDate].ToString() : null; //add to the list
-                            homeAffairsInformationList.Add(homeAffairsInformation);
-                        }
-
-                        //add list to the viewbagviewdata ViewData["HomeAffairsInfoList"] = homeAffairsInformationList;
-                        ViewData["HomeAffairsInfoListCount"] = homeAffairsInformationList.Count;
-                    }
-                    catch (Exception err)
-                    { System.Diagnostics.Debug.WriteLine(err.ToString()); }
-            }
-
-            return View();
-        }
-
-        public ActionResult CompuScanConsumerTrace()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanConsumerTraceResults(CompuScan comp)
-        {
-            try
-            {
-                string id = comp.IDNumber;
-                string tele = comp.TelephoneNumber;
-                string teleID = comp.TelephoneID;
-                string traceType = comp.TraceType;
-                string refe = comp.Reference;
-
-                if (traceType == "ID")
-                {
-                    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                    var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                    DateTime time = DateTime.Now;
-
-                    string date_add = DateTime.Today.ToShortDateString();
-                    string time_add = time.ToString("T");
-                    string page = "CompuScan Consumer Trace By IDNumber";
-                    string action = "ID: " + id;
-                    string user_id = Session["ID"].ToString();
-                    string us = Session["Name"].ToString();
-
-                    ViewData["user"] = Session["Name"].ToString();
-                    ViewData["date"] = DateTime.Today.ToShortDateString();
-                    ViewData["ref"] = refe;
-
-                    string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                    conn.Open();
-
-                    var cmd2 = new MySqlCommand(query_uid, conn);
-
-                    var reader2 = cmd2.ExecuteReader();
-
-                    conn.Close();
-
-                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                    if (!tokenValid(authtoken))
-                    {
-                        //exit with a warning
-                    }
-
-                    //company search API call
-                    var url = "https://rest.searchworks.co.za/credit/compuscan/consumertrace/idnumber/";
-
-                    //create RestSharp client and POST request object
-                    var client = new RestClient(url);
-                    var request = new RestRequest(Method.POST);
-
-                    //request headers
-                    request.RequestFormat = DataFormat.Json;
-                    request.AddHeader("Content-Type", "application/json");
-                    //object containing input parameter data for company() API method
-                    var apiInput = new
-                    {
-                        SessionToken = authtoken,
-                        Reference = us,//search reference: probably store in logs
-                        IDNumber = id
-                    };
-
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-
-                    //make the API request and get a response
-                    IRestResponse response = client.Execute<RootObject>(request);
-
-                    dynamic rootObject = JObject.Parse(response.Content);
-                    //JObject o = JObject.Parse(response.Content);
-
-                    JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    JToken token = JToken.Parse(response.Content);
-
-                    ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-
-                    var mes = ViewData["ResponseMessage"].ToString();
-                    if (mes == "ServiceOffline")
-                    {
-                        ViewData["Message"] = "Service is offline";
-                        return View();
-                    }
-                    else
-                    {
-                        int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                        string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                        string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                        string ResponseType = rootObject.ResponseMessage; ;
-                        string Name = ViewData["user"].ToString();
-                        string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                        string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                        string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                        string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                        string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                        string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                        saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerTrace");
-
-                        ViewData["Message"] = "good";
-                        ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                        ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation["DateOfBirth"];
-                        ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-                        ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-                        ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeCode;
-
-                        if (rootObject.ResponseObject.PersonInformation != null)
-                        {
-                            //personaInformantion
-                            ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                            ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                            ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-                            ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                            ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                            ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                            ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                            ViewData["MiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
-                            ViewData["MiddleName2"] = rootObject.ResponseObject.PersonInformation.MiddleName2;
-                            ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                        }
-                        else
-                        {
-                            ViewData["PersonInformationMessage"] = "No Match";
-                        }
-
-                        if (ViewData["CreditInformationMessage"].ToString() != "")
-                        {
-                            //FraudIndicatorSummary
-                            ViewData["ProtectiveVerification"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-                        }
-                        else
-                        {
-                            ViewData["CreditInformationMessage"] = "No Match";
-                        }
-
-                        if (ViewData["HomeAffairsInformationMessage"].ToString() != "")
-                        {
-                            //HomeAffairsInformation
-                            ViewData["DeceasedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-                            ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
-                            ViewData["CauseOfDeath"] = rootObject.ResponseObject.HomeAffairsInformation.CauseOfDeath;
-                            ViewData["VerifiedDate"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedDate;
-                            ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus;
-                        }
-                        else
-                        {
-                            ViewData["HomeAffairsInformationMessage"] = "No Match";
-                        }
-
-                        if (ViewData["HistoricalInformationMessage"].ToString() != "")
-                        {
-                            //AddressHistory
-                            ViewData["TypeCode"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeCode;
-                            ViewData["AH_Line1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line1;
-                            ViewData["AH_Line2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line2;
-                            ViewData["AH_Line3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line3;
-                            ViewData["AH_Line4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line4;
-                            ViewData["AH_PostalCode"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].PostalCode;
-                            ViewData["AH_FullAddress"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
-                            ViewData["AH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-
-                            //TelephoneHistory
-                            ViewData["TH_TypeDescription"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription;
-                            ViewData["TH_TypeCode"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeCode;
-                            ViewData["TH_FullNumber"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].Number;
-                            ViewData["TH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].LastUpdatedDate;
-
-                            //EmploymentHistory
-                            ViewData["EH_EmployerName"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
-                            ViewData["EH_Designation"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
-                            ViewData["EH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
-                        }
-                        else
-                        {
-                            ViewData["HistoricalInformationMessage"] = "No Match";
-                        }
-                        return View();
-                    }
-                }
-                else if (traceType == "tele")
-                {
-                    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                    var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                    DateTime time = DateTime.Now;
-
-                    string date_add = DateTime.Today.ToShortDateString();
-                    string time_add = time.ToString("T");
-                    string page = "CompuScan Consumer Trace By Telephone Number";
-                    string action = "Telephone Number: " + tele;
-                    string user_id = Session["ID"].ToString();
-                    string us = Session["Name"].ToString();
-
-                    ViewData["user"] = Session["Name"].ToString();
-                    ViewData["date"] = DateTime.Today.ToShortDateString();
-                    ViewData["ref"] = refe;
-
-                    string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                    conn.Open();
-
-                    var cmd2 = new MySqlCommand(query_uid, conn);
-
-                    var reader2 = cmd2.ExecuteReader();
-
-                    conn.Close();
-
-                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                    if (!tokenValid(authtoken))
-                    {
-                        //exit with a warning
-                    }
-
-                    //company search API call
-                    var url = "https://rest.searchworks.co.za/credit/compuscan/consumertrace/telephonenumber/";
-
-                    //create RestSharp client and POST request object
-                    var client = new RestClient(url);
-                    var request = new RestRequest(Method.POST);
-
-                    //request headers
-                    request.RequestFormat = DataFormat.Json;
-                    request.AddHeader("Content-Type", "application/json");
-                    //object containing input parameter data for company() API method
-                    var apiInput = new
-                    {
-                        SessionToken = authtoken,
-                        Reference = us,//search reference: probably store in logs
-                        TelephoneNumber = tele
-                    };
-
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-
-                    //make the API request and get a response
-                    IRestResponse response = client.Execute<RootObject>(request);
-
-                    dynamic rootObject = JObject.Parse(response.Content);
-                    //JObject o = JObject.Parse(response.Content);
-
-                    JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                    System.Diagnostics.Debug.WriteLine(o);
-                    JToken token = JToken.Parse(response.Content);
-
-                    ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-
-                    var mes = ViewData["ResponseMessage"].ToString();
-                    if (mes == "ServiceOffline")
-                    {
-                        ViewData["Message"] = "Service is offline";
-                        return View();
-                    }
-                    else
-                    {
-                        int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                        string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                        string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                        string ResponseType = rootObject.ResponseMessage; ;
-                        string Name = ViewData["user"].ToString();
-                        string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                        string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                        string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                        string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                        string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                        string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-
-                        ViewData["Message"] = "good";
-                        ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                        ViewData["PersonInformationMessage"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-
-                        if (ViewData["PersonInformationMessage"].ToString() != "")
-                        {
-                            //personaInformantion
-                            ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
-                            ViewData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
-                            ViewData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
-                            ViewData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
-                            ViewData["MiddleName1"] = rootObject.ResponseObject[0].PersonInformation.MiddleName1;
-                            ViewData["HasProperties"] = rootObject.ResponseObject[0].PersonInformation.HasProperties;
-                        }
-                        else
-                        {
-                            ViewData["PersonInformationMessage"] = "No Match";
-                        }
-                        return View();
-                    }
-                }
-                else if (traceType == "teleID")
-                {
-                    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-                    var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-                    DateTime time = DateTime.Now;
-
-                    string date_add = DateTime.Today.ToShortDateString();
-                    string time_add = time.ToString("T");
-                    string page = "CompuScan Consumer Trace By TelephoneID";
-                    string action = "TelephoneID: " + tele;
-                    string user_id = Session["ID"].ToString();
-                    string us = Session["Name"].ToString();
-
-                    ViewData["user"] = Session["Name"].ToString();
-                    ViewData["date"] = DateTime.Today.ToShortDateString();
-                    ViewData["ref"] = refe;
-
-                    string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-                    conn.Open();
-
-                    var cmd2 = new MySqlCommand(query_uid, conn);
-
-                    var reader2 = cmd2.ExecuteReader();
-
-                    conn.Close();
-
-                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-                    if (!tokenValid(authtoken))
-                    {
-                        //exit with a warning
-                    }
-
-                    //company search API call
-                    var url = "https://rest.searchworks.co.za/credit/compuscan/consumertrace/telephoneid/";
-
-                    //create RestSharp client and POST request object
-                    var client = new RestClient(url);
-                    var request = new RestRequest(Method.POST);
-
-                    //request headers
-                    request.RequestFormat = DataFormat.Json;
-                    request.AddHeader("Content-Type", "application/json");
-                    //object containing input parameter data for company() API method
-                    var apiInput = new
-                    {
-                        SessionToken = authtoken,
-                        Reference = us,//search reference: probably store in logs
-                        TelephoneID = id
-                    };
-
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                    //ApiResponse is a class to model the data we want from the API response
-
-                    //make the API request and get a response
-                    IRestResponse response = client.Execute<RootObject>(request);
-
-                    dynamic rootObject = JObject.Parse(response.Content);
-                    //JObject o = JObject.Parse(response.Content);
-
-                    JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-                    JToken token = JToken.Parse(response.Content);
-
-                    ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                }
-            }
-            catch (Exception e)
-            {
-                TempData["msg"] = "An error occured, please check the entered values.";
-            }
-
-            return View();
-        }
-
-        public ActionResult CompuScanContactInformation()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanContactInformationResults(CompuScan comp)
-        {
-            string id = comp.IDNumber;
-            string passport = comp.passport;
-            string surname = comp.Surname;
-            string firstname = comp.FirstName;
-            string refe = comp.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CompuScan Contact Information";
-            string action = "First Name: " + firstname + "; Surname: " + surname + "; Passport: " + passport + "; ID: " + id;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/compuscan/contactinformation/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                sessionToken = authtoken,
-                reference = us,//search reference: probably store in logs
-                idNumber = id,
-                passport = passport,
-                surname = surname,
-                firstname = firstname,
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-            JToken token = JToken.Parse(response.Content);
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            var mes = ViewData["ResponseMessage"].ToString();
-            if (mes == "ServiceOffline")
-            {
-                ViewData["Message"] = "Service is offline";
-                return View();
-            }
-            else
-            {
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = rootObject.ResponseMessage; ;
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerTrace");
-
-                ViewData["Message"] = "good";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation["DateOfBirth"];
-                //ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-                //ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-                ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
-
-                if (ViewData["PersonInformationMessage"].ToString() != "")
-                {
-                    //personaInformantion
-                    ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                    ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                    ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-                    ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                    ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                    ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                    ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                    ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                }
-                else
-                {
-                    ViewData["PersonInformationMessage"] = "No Match";
-                }
-
-                if (ViewData["HistoricalInformationMessage"].ToString() != "")
-                {
-                    //AddressHistory
-                    ViewData["AH_TypeDescription"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
-                    ViewData["AH_Line1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line1;
-                    ViewData["AH_Line2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line2;
-                    ViewData["AH_Line3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line3;
-                    ViewData["AH_Line4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line4;
-                    ViewData["AH_PostalCode"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].PostalCode;
-                    ViewData["AH_FullAddress"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
-                    ViewData["AH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
-
-                    //TelephoneHistory
-                    ViewData["TH_TypeDescription"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription;
-                    ViewData["TH_FullNumber"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].Number;
-                    ViewData["TH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].LastUpdatedDate;
-
-                    //EmploymentHistory
-                    ViewData["EH_EmployerName"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
-                    ViewData["EH_Designation"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
-                    ViewData["EH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
-                }
-                else
-                {
-                    ViewData["HistoricalInformationMessage"] = "No Match";
-                }
-            }
-            return View();
-        }
-
-        public ActionResult CompuScanEmploymentConfidenceIndex()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanEmploymentConfidenceIndexResults(CompuScan comp)
-        {
-            string id = comp.IDNumber;
-            string firstname = comp.FirstName;
-            string surname = comp.Surname;
-            string refe = comp.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CompuScan Employment Confidence Index";
-            string action = "First Name: " + firstname + "; Surname: " + surname + "; ID: " + id;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/compuscan/EmploymentConfidenceIndex/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                SessionToken = authtoken,
-                Reference = us,//search reference: probably store in logs
-                IDNumber = id,
-                Surname = surname,
-                Firstname = firstname
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-            JToken token = JToken.Parse(response.Content);
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            var mes = ViewData["ResponseMessage"].ToString();
-            if (mes == "ServiceOffline")
-            {
-                ViewData["Message"] = "Service is offline";
-                return View();
-            }
-            else
-            {
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = rootObject.ResponseMessage; ;
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanEmploymentConfidenceIndex");
-
-                ViewData["Message"] = "good";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation["DateOfBirth"];
-                //ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-                //ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-                ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
-
-                if (ViewData["PersonInformationMessage"].ToString() != "")
-                {
-                    //personaInformantion
-                    ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                    ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                    ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
-                    ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                    ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                    ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                    ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                    ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                }
-                else
-                {
-                    ViewData["PersonInformationMessage"] = "No Match";
-                }
-
-                if (ViewData["HistoricalInformationMessage"].ToString() != "")
-                {
-                    //EmploymentHistory
-                    ViewData["EH_EmployerName"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
-                    ViewData["EH_Designation"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
-                    ViewData["EH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
-                    ViewData["EH_FirstReportedDate"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].FirstReportedDate;
-                    ViewData["EH_NumberOfAccounts"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].NumberOfAccounts;
-                    ViewData["EH_ConfidenceIndex"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].ConfidenceIndex;
-                    ViewData["EH_HighestConfidence"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].HighestConfidence;
-                }
-                else
-                {
-                    ViewData["HistoricalInformationMessage"] = "No Match";
-                }
-            }
-            return View();
-        }
-
-        public ActionResult CompuScanGrossMonthlyIncomeByIDNumber()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanGrossMonthlyIncomeByIDNumberResults(CompuScan comp)
-        {
-            string id = comp.IDNumber;
-            string refe = comp.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CompuScan Employment Confidence Index";
-            string action = "ID: " + id;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/compuscan/grossmonthlyincome/idnumber/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                SessionToken = authtoken,
-                Reference = us,//search reference: probably store in logs
-                IDNumber = id,
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-            JToken token = JToken.Parse(response.Content);
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            var mes = ViewData["ResponseMessage"].ToString();
-            if (mes == "ServiceOffline" || mes == "NotFound")
-            {
-                ViewData["Message"] = "Service is offline";
-
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-                return View();
-            }
-            else
-            {
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = rootObject.ResponseMessage; ;
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanGrossMonthlyIncomeByIDNumber");
-
-                ViewData["Message"] = "good";
-
-                ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                //ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-                //ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-
-                if (ViewData["PersonInformationMessage"].ToString() != "")
-                {
-                    //personaInformantion
-                    ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                    ViewData["IncomeBracket"] = rootObject.ResponseObject.PersonInformation.IncomeBracket;
-                    ViewData["IncomeGrossEstimate"] = rootObject.ResponseObject.PersonInformation.IncomeGrossEstimate;
-                    ViewData["IncomeConfidence"] = rootObject.ResponseObject.PersonInformation.IncomeConfidence;
-                    ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                    ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                    ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                    ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                }
-                else
-                {
-                    ViewData["PersonInformationMessage"] = "No Match";
-                }
-            }
-            return View();
-        }
-
-        public ActionResult CompuScanIDPhotoVerification()
-        {
-            return View();
-        }
-
-        public ActionResult CompuScanIDPhotoVerificationResults(CompuScan comp)
-        {
-            string id = comp.IDNumber;
-            string refe = comp.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CompuScan ID Photo Verification";
-            string action = "ID: " + id;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/compuscan/idphotoverification/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                sessionToken = authtoken,
-                reference = us,//search reference: probably store in logs
-                idNumber = id,
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-            JToken token = JToken.Parse(response.Content);
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            var mes = ViewData["ResponseMessage"].ToString();
-            if (mes == "ServiceOffline")
-            {
-                ViewData["Message"] = "Service is offline";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-                return View();
-            }
-            else
-            {
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = rootObject.ResponseMessage; ;
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanIDPhotoVerification");
-
-                ViewData["Message"] = "good";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation["DateOfBirth"];
-                //ViewData["CreditInformationMessage"] = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
-                ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.IDNumber;
-                //ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
-
-                if (ViewData["PersonInformationMessage"].ToString() != "")
-                {
-                    //personaInformantion
-                    ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                    ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
-                    ViewData["MarriageDate"] = rootObject.ResponseObject.PersonInformation.MarriageDate;
-                    ViewData["CountryOfBirth"] = rootObject.ResponseObject.PersonInformation.CountryOfBirth;
-                    ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                    ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                    ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                }
-                else
-                {
-                    ViewData["PersonInformationMessage"] = "No Match";
-                }
-
-                if (ViewData["HomeAffairsInformationMessage"].ToString() != "")
-                {
-                    //personaInformantion
-                    ViewData["IDNumber"] = rootObject.ResponseObject.HomeAffairsInformation.IDNumber;
-                    ViewData["IDPhotoURL"] = rootObject.ResponseObject.HomeAffairsInformation.IDPhotoURL;
-                    ViewData["FirstName"] = rootObject.ResponseObject.HomeAffairsInformation.FirstName;
-                    ViewData["Surname"] = rootObject.ResponseObject.HomeAffairsInformation.Surname;
-                    ViewData["DeceasedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
-                    ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
-                    ViewData["IDIssuedDate"] = rootObject.ResponseObject.HomeAffairsInformation.IDIssuedDate;
-                    ViewData["IDCardIssued"] = rootObject.ResponseObject.HomeAffairsInformation.IDCardIssued;
-                    ViewData["IDNumberBlocked"] = rootObject.ResponseObject.HomeAffairsInformation.IDNumberBlocked;
-                    ViewData["IDSequenceNumber"] = rootObject.ResponseObject.HomeAffairsInformation.IDSequenceNumber;
-                    ViewData["OnHANIS"] = rootObject.ResponseObject.HomeAffairsInformation.OnHANIS;
-                    ViewData["OnNPR"] = rootObject.ResponseObject.HomeAffairsInformation.OnNPR;
-                }
-                else
-                {
-                    ViewData["HomeAffairsInformationMessage"] = "No Match";
-                }
-            }
             return View();
         }
 
@@ -3475,378 +1767,390 @@ namespace searchworks.client.Controllers
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "Experian Consumer Profile";
-            string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; Passport: " + passport + "; ID: " + id;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
+            try
             {
-                //exit with a warning
-            }
+                DateTime time = DateTime.Now;
 
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/experian/consumerprofile/";
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "Experian Consumer Profile";
+                string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; Passport: " + passport + "; ID: " + id;
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
+                ViewData["user"] = Session["Name"].ToString();
+                ViewData["date"] = DateTime.Today.ToShortDateString();
+                ViewData["ref"] = refe;
 
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                sessionToken = authtoken,
-                reference = us,//search reference: probably store in logs
-                iDNumber = id,
-                enquiryReason = enquiryReason,
-                surname = surname,
-                firstName = firstname,
-                passporNumber = passport
-            };
+                conn.Open();
 
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
+                var cmd2 = new MySqlCommand(query_uid, conn);
 
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
+                var reader2 = cmd2.ExecuteReader();
 
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                conn.Close();
 
-            JToken token = JToken.Parse(response.Content);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            var mes = ViewData["ResponseMessage"].ToString();
-
-            if (mes == "ServiceOffline")
-            {
-                ViewData["Message"] = "Service is offline";
-                return View();
-            }
-            else
-            {
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = rootObject.ResponseMessage; ;
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "ExperianConsumerProfile");
-
-                ViewData["Message"] = "good";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                if (ViewData["ResponseMessage"].ToString() == "ExperianConsumerProfile")
+                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                if (!tokenValid(authtoken))
                 {
-                    //PersonInformation
-                    ViewData["ExDateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                    ViewData["ExTitle"] = rootObject.ResponseObject.PersonInformation.Title;
-                    ViewData["ExFirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
-                    ViewData["ExSurname"] = rootObject.ResponseObject.PersonInformation.Surname;
-                    ViewData["ExFullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                    ViewData["ExIDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                    ViewData["ExGender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                    ViewData["ExAge"] = rootObject.ResponseObject.PersonInformation.Age;
-                    ViewData["ExMaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
-                    ViewData["ExMiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
-                    ViewData["ExReference"] = rootObject.ResponseObject.PersonInformation.Reference;
-                    ViewData["ExHasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                    ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
-                    saveContactInformation(SearchToken, Reference, SearchID, null, null, null, null, ViewData["ExPhysicalAddress"].ToString(), null, "ExperianConsumerProfile");
-                    savePersonInformation(SearchToken, Reference, SearchID, null, null, ViewData["ExTitle"].ToString(), ViewData["ExDateOfBirth"].ToString(), ViewData["ExFirstName"].ToString(), ViewData["ExSurname"].ToString(),
-                         ViewData["ExFullname"].ToString(), ViewData["ExIDNumber"].ToString(), null, null, ViewData["ExReference"].ToString(), ViewData["ExMaritalStatus"].ToString(), ViewData["ExGender"].ToString(), ViewData["ExAge"].ToString(), ViewData["ExMiddleName1"].ToString(), null, null, null, null, null, null, null, ViewData["ExHasProperties"], "ExperianConsumerProfile");
-                    //HomeAffairsInformation
-                    ViewData["ExIDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
-                    ViewData["ExSurnameVerified"] = rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified;
-                    ViewData["ExInitialsVerified"] = rootObject.ResponseObject.HomeAffairsInformation.InitialsVerified;
-                    saveHomeAffairsInformation(SearchToken, Reference, SearchID,
-                       rootObject.ResponseObject.HomeAffairsInformation.FirstName,
-                       rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate,
-                       rootObject.ResponseObject.HomeAffairsInformation.IDVerified,
-                       rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified,
-                       rootObject.ResponseObject.HomeAffairsInformation.Warnings,
-                       rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus,
-                       rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus,
-                       rootObject.ResponseObject.HomeAffairsInformation.InitialsVerified,
-                       rootObject.ResponseObject.HomeAffairsInformation.CauseOfDeath,
-                       rootObject.ResponseObject.HomeAffairsInformation.VerifiedDate, "ExperianConsumerProfile"
-                       );
-                    //CreditInformation
-                    ViewData["ExDelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
-                    ViewData["ExDelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
-                    ViewData["ExFlagCount"] = rootObject.ResponseObject.CreditInformation.FlagCount;
-                    ViewData["ExFlagDetails"] = rootObject.ResponseObject.CreditInformation.FlagDetails;
-                    ViewData["ExAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Accounts;
-                    ViewData["ExEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries;
-                    ViewData["ExJudgments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Judgments;
-                    ViewData["ExNotices"] = rootObject.ResponseObject.CreditInformation.DataCounts.Notices;
-                    ViewData["ExBankDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults;
-                    ViewData["ExDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.Defaults;
-                    ViewData["ExCollections"] = rootObject.ResponseObject.CreditInformation.DataCounts.Collections;
-                    ViewData["ExDirectors"] = rootObject.ResponseObject.CreditInformation.DataCounts.Directors;
-                    ViewData["ExAddresses"] = rootObject.ResponseObject.CreditInformation.DataCounts.Addresses;
-                    ViewData["ExTelephones"] = rootObject.ResponseObject.CreditInformation.DataCounts.Telephones;
-                    ViewData["ExOccupants"] = rootObject.ResponseObject.CreditInformation.DataCounts.Occupants;
-                    ViewData["ExEmployers"] = rootObject.ResponseObject.CreditInformation.DataCounts.Employers;
-                    ViewData["ExTraceAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts;
-                    ViewData["ExPaymentProfiles"] = rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles;
-                    ViewData["ExOwnEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries;
-                    saveCreditInformation(SearchToken, Reference, SearchID, null, rootObject.ResponseObject.CreditInformation.DelphiScore, rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL,
-                        null,
-                        rootObject.ResponseObject.CreditInformation.FlagCount,
-                        rootObject.ResponseObject.CreditInformation.FlagDetails,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null, null, null, "ExperianConsumerProfile");
+                    //exit with a warning
+                }
 
-                    ViewData["ExAdminOrders"] = rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders;
-                    ViewData["ExPossibleMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
-                    ViewData["ExDefiniteMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.DefiniteMatches;
-                    ViewData["ExLoans"] = rootObject.ResponseObject.CreditInformation.DataCounts.Loans;
-                    ViewData["ExFraudAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts;
-                    ViewData["ExCompanies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
-                    ViewData["ExProperties"] = rootObject.ResponseObject.CreditInformation.DataCounts.Properties;
-                    ViewData["ExDocuments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
-                    ViewData["ExDemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
-                    ViewData["ExTrusts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Trusts;
-                    ViewData["ExBondsBonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.BondsBonds;
-                    ViewData["ExDeeds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Deeds;
-                    ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
-                    ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
-                    //ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
-                    saveDataCounts(SearchToken, Reference, SearchID, null, null, "ExperianConsumerProfile");
-                    //ConsumerStatistics
-                    ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
-                    ViewData["ExRevolvingAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.RevolvingAccounts;
-                    ViewData["ExInstalmentAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.InstalmentAccounts;
-                    ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
-                    ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts;
-                    ViewData["ExPercent0ArrearsLast12Histories"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.Percent0ArrearsLast12Histories;
-                    ViewData["ExMonthsOldestOpenedPPSEver"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.MonthsOldestOpenedPPSEver;
-                    ViewData["ExNumberPPSLast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NumberPPSLast12Months;
-                    ViewData["ExNLRMicroloansPast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months;
-                    saveConsumerStatistics(SearchToken, Reference, SearchID, ViewData["ExHighestJudgment"].ToString(), ViewData["ExRevolvingAccounts"].ToString(), ViewData["ExInstalmentAccounts"].ToString(),
-                        ViewData["ExOpenAccounts"].ToString(), ViewData["ExAdverseAccounts"].ToString(), ViewData["ExPercent0ArrearsLast12Histories"].ToString(),
-                        ViewData["ExMonthsOldestOpenedPPSEver"].ToString(), ViewData["ExNumberPPSLast12Months"].ToString(), ViewData["ExNLRMicroloansPast12Months"].ToString(), "ExperianConsumerProfile");
-                    //DebtReviewStatus
-                    ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
-                    ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
-                    saveDebtReviewStatus(SearchToken, Reference, SearchID, ViewData["DRStatusCode"].ToString(), null, ViewData["DRStatusDescription"].ToString(), null, "ExperianConsumerProfile");
-                    List<EnquiryHistory> EnqHIst;
-                    List<AddressHistory> AddressHist;
-                    List<TelephoneHistory> TelHist;
-                    List<EmploymentHistory> EmpHist;
-                    Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
-                    elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
-                    elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                    elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                    elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                //company search API call
+                var url = "https://rest.searchworks.co.za/credit/experian/consumerprofile/";
 
-                    String EnquiryDate = "";
-                    String EnquiredBy = "";
-                    String EnquiredByContact = "";
-                    //AddressHIstoryValues
-                    String TypeDescription = "";
-                    String Line1 = "";
-                    String Line2 = "";
-                    String Line3 = "";
-                    String PostalCode = "";
-                    String FullAddress = "";
-                    String LastUpdatedDate = "";
-                    //TelephoneHIstory
-                    String TypeDescriptionTel = "";
-                    String DialCode = "";
-                    String Number = "";
-                    String FullNumber = "";
-                    String LastUpdatedDateTel = "";
-                    //EmploymentHistory
-                    String EmployerName = "";
-                    String Designation = "";
-                    EnqHIst = new List<EnquiryHistory>();
-                    AddressHist = new List<AddressHistory>();
-                    TelHist = new List<TelephoneHistory>();
-                    EmpHist = new List<EmploymentHistory>();
-                    if (rootObject.ResponseObject.CreditInformation.EnquiryHistory != null)
-                    {
-                        for (int count = 0; count < (elements.Count); count++)
-                        {
-                            EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
-                            EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
-                            EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
-                            saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "ExperianConsumerProfile");
-                            EnqHIst.Add(new EnquiryHistory
-                            {
-                                EnquiryDate = EnquiryDate,
-                                EnquiredBy = EnquiredBy,
-                                EnquiredByContact = EnquiredByContact
-                            });
-                        }
-                    }
-                    if (rootObject.ResponseObject.CreditInformation.AddressHistory != null)
-                    {
-                        for (int count = 0; count < (elements1.Count); count++)
-                        {
-                            TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
-                            Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
-                            Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
-                            Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
-                            PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
-                            FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
-                            LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
-                            saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "ExperianConsumerProfile");
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
 
-                            AddressHist.Add(new AddressHistory
-                            {
-                                TypeDescription = TypeDescription,
-                                Line1 = Line1,
-                                Line2 = Line2,
-                                Line3 = Line3,
-                                PostalCode = PostalCode,
-                                FullAddress = FullAddress,
-                                LastUpdatedDate = LastUpdatedDate,
-                            });
-                        }
-                    }
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                //object containing input parameter data for company() API method
+                var apiInput = new
+                {
+                    sessionToken = authtoken,
+                    reference = us,//search reference: probably store in logs
+                    iDNumber = id,
+                    enquiryReason = enquiryReason,
+                    surname = surname,
+                    firstName = firstname,
+                    passporNumber = passport
+                };
 
-                    if (rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null)
-                    {
-                        for (int count = 0; count < (elements2.Count); count++)
-                        {
-                            TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
-                            Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
-                            FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
-                            LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
-                            saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDate, "ExperianConsumerProfile");
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
 
-                            TelHist.Add(new TelephoneHistory
-                            {
-                                TypeDescriptionTel = TypeDescriptionTel,
-                                DialCode = DialCode,
-                                Number = Number,
-                                FullNumber = FullNumber,
-                                LastUpdatedDateTel = LastUpdatedDate,
-                            });
-                        }
-                    }
-                    if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null)
-                    {
-                        for (int count = 0; count < (elements3.Count); count++)
-                        {
-                            EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
-                            saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "ExperianConsumerProfile");
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
 
-                            EmpHist.Add(new EmploymentHistory
-                            {
-                                EmployerName = EmployerName,
-                                Designation = Designation,
-                            });
-                        }
-                    }
+                dynamic rootObject = JObject.Parse(response.Content);
+                //JObject o = JObject.Parse(response.Content);
+                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
 
-                    ViewData["EnqHIst"] = EnqHIst;
-                    ViewData["AddressHist"] = AddressHist;
-                    ViewData["TelHist"] = TelHist;
-                    ViewData["EmpHist"] = EmpHist;
-                    //NLRStats
-                    ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
-                    ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
-                    ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
-                    ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
-                    ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-                    saveNLRStats(SearchToken, Reference, SearchID, ViewData["ExNLRActiveAccounts"].ToString(), ViewData["ExNLRClosedAccounts"].ToString(), ViewData["ExNLRWorstMonthArrears"].ToString(), " ", ViewData["ExNLRBalanceExposure"].ToString(), " ", ViewData["ExNLRCumulativeArrears"].ToString(), "ExperianConsumerProfile");
+                JToken token = JToken.Parse(response.Content);
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
 
-                    //CCAStats
-                    ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
-                    ViewData["ExCCAClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
-                    ViewData["ExCCAWorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
-                    ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
-                    ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-                    saveCCAStats(SearchToken, Reference, SearchID, ViewData["ExCCAActiveAccounts"].ToString(), ViewData["ExCCAClosedAccounts"].ToString(), ViewData["ExCCAWorstMonthArrears"].ToString(), " ", ViewData["ExCCABalanceExposure"].ToString(), " ", ViewData["ExCCACumulativeArrears"].ToString(), "ExperianConsumerProfile");
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                var mes = ViewData["ResponseMessage"].ToString();
 
-                    //Months
-                    ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
-                    ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
-                    ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
-                    ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-                    saveNLR12Months(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
-
-                    //Months
-                    ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
-                    ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
-                    ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
-                    ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
-                    saveNLRStats24(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
-
-                    //NLR36Months
-                    ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
-                    ViewData["ExNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
-                    ViewData["ExNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
-                    ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-                    saveNLR36Months(SearchToken, Reference, SearchID, ViewData["ExNLR36MonthsEnquiriesByClient"].ToString(), ViewData["ExNLR36MonthsEnquiriesByOther"].ToString(), ViewData["ExNLR36MonthsPositiveLoans"].ToString(), ViewData["ExNLR36MonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
-
-                    //Months
-                    ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
-                    ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
-                    ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
-                    ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
-                    saveCCA24Months(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
-
-                    //CCA24Months
-                    ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
-                    ViewData["ExCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
-                    ViewData["ExCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
-                    ViewData["ExCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
-                    saveCCA24Months(SearchToken, Reference, SearchID, ViewData["ExCCA24MonthsEnquiriesByClient"].ToString(), ViewData["ExCCA24MonthsEnquiriesByOther"].ToString(), ViewData["ExCCA24MonthsPositiveLoans"].ToString(), ViewData["ExCCA24MonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
-
-                    //CCA36Months
-                    ViewData["ExCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
-                    ViewData["ExCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
-                    ViewData["ExCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
-                    ViewData["ExCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-                    saveCCA36Months(SearchToken, Reference, SearchID, ViewData["ExCCA36MonthsEnquiriesByClient"].ToString(), ViewData["ExCCA36MonthsEnquiriesByOther"].ToString(), ViewData["ExCCA36MonthsPositiveLoans"], ViewData["ExCCA36MonthsHighestMonthsInArrears"], "ExperianConsumerProfile");
+                if (mes == "ServiceOffline")
+                {
+                    ViewData["Message"] = "Service is offline";
+                    return View();
                 }
                 else
                 {
-                    ViewData["Experian"] = "No Match";
+                    int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                    string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                    string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                    string ResponseType = rootObject.ResponseMessage; ;
+                    string Name = ViewData["user"].ToString();
+                    string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                    string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                    string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                    string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                    string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                    string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+                    saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "ExperianConsumerProfile");
+
+                    ViewData["Message"] = "good";
+                    ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
+
+                    if (ViewData["ResponseMessage"].ToString() == "ExperianConsumerProfile")
+                    {
+                        //PersonInformation
+                        ViewData["ExDateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+                        ViewData["ExTitle"] = rootObject.ResponseObject.PersonInformation.Title;
+                        ViewData["ExFirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+                        ViewData["ExSurname"] = rootObject.ResponseObject.PersonInformation.Surname;
+                        ViewData["ExFullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
+                        ViewData["ExIDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
+                        ViewData["ExGender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                        ViewData["ExAge"] = rootObject.ResponseObject.PersonInformation.Age;
+                        ViewData["ExMaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
+                        ViewData["ExMiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
+                        ViewData["ExReference"] = rootObject.ResponseObject.PersonInformation.Reference;
+                        ViewData["ExHasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
+                        ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
+                        saveContactInformation(SearchToken, Reference, SearchID, null, null, null, null, ViewData["ExPhysicalAddress"].ToString(), null, "ExperianConsumerProfile");
+                        savePersonInformation(SearchToken, Reference, SearchID, null, null, ViewData["ExTitle"].ToString(), ViewData["ExDateOfBirth"].ToString(), ViewData["ExFirstName"].ToString(), ViewData["ExSurname"].ToString(),
+                             ViewData["ExFullname"].ToString(), ViewData["ExIDNumber"].ToString(), null, null, ViewData["ExReference"].ToString(), ViewData["ExMaritalStatus"].ToString(), ViewData["ExGender"].ToString(), ViewData["ExAge"].ToString(), ViewData["ExMiddleName1"].ToString(), null, null, null, null, null, null, null, ViewData["ExHasProperties"], "ExperianConsumerProfile");
+                        //HomeAffairsInformation
+                        ViewData["ExIDVerified"] = rootObject.ResponseObject.HomeAffairsInformation.IDVerified;
+                        ViewData["ExSurnameVerified"] = rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified;
+                        ViewData["ExInitialsVerified"] = rootObject.ResponseObject.HomeAffairsInformation.InitialsVerified;
+                        saveHomeAffairsInformation(SearchToken, Reference, SearchID,
+                           rootObject.ResponseObject.HomeAffairsInformation.FirstName,
+                           rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate,
+                           rootObject.ResponseObject.HomeAffairsInformation.IDVerified,
+                           rootObject.ResponseObject.HomeAffairsInformation.SurnameVerified,
+                           rootObject.ResponseObject.HomeAffairsInformation.Warnings,
+                           rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus,
+                           rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus,
+                           rootObject.ResponseObject.HomeAffairsInformation.InitialsVerified,
+                           rootObject.ResponseObject.HomeAffairsInformation.CauseOfDeath,
+                           rootObject.ResponseObject.HomeAffairsInformation.VerifiedDate, "ExperianConsumerProfile"
+                           );
+                        //CreditInformation
+                        ViewData["ExDelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
+                        ViewData["ExDelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
+                        ViewData["ExFlagCount"] = rootObject.ResponseObject.CreditInformation.FlagCount;
+                        ViewData["ExFlagDetails"] = rootObject.ResponseObject.CreditInformation.FlagDetails;
+
+                        saveCreditInformation(SearchToken, Reference, SearchID, null, rootObject.ResponseObject.CreditInformation.DelphiScore, rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL,
+                           null,
+                           rootObject.ResponseObject.CreditInformation.FlagCount,
+                           rootObject.ResponseObject.CreditInformation.FlagDetails,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null, null, null, "ExperianConsumerProfile");
+
+                        ViewData["ExAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Accounts;
+                        ViewData["ExEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries;
+                        ViewData["ExJudgments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Judgments;
+                        ViewData["ExNotices"] = rootObject.ResponseObject.CreditInformation.DataCounts.Notices;
+                        ViewData["ExBankDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults;
+                        ViewData["ExDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.Defaults;
+                        ViewData["ExCollections"] = rootObject.ResponseObject.CreditInformation.DataCounts.Collections;
+                        ViewData["ExDirectors"] = rootObject.ResponseObject.CreditInformation.DataCounts.Directors;
+                        ViewData["ExAddresses"] = rootObject.ResponseObject.CreditInformation.DataCounts.Addresses;
+                        ViewData["ExTelephones"] = rootObject.ResponseObject.CreditInformation.DataCounts.Telephones;
+                        ViewData["ExOccupants"] = rootObject.ResponseObject.CreditInformation.DataCounts.Occupants;
+                        ViewData["ExEmployers"] = rootObject.ResponseObject.CreditInformation.DataCounts.Employers;
+                        ViewData["ExTraceAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts;
+                        ViewData["ExPaymentProfiles"] = rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles;
+                        ViewData["ExOwnEnquiries"] = rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries;
+                        ViewData["ExAdminOrders"] = rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders;
+                        ViewData["ExPossibleMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
+                        ViewData["ExDefiniteMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.DefiniteMatches;
+                        ViewData["ExLoans"] = rootObject.ResponseObject.CreditInformation.DataCounts.Loans;
+                        ViewData["ExFraudAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts;
+                        ViewData["ExCompanies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
+                        ViewData["ExProperties"] = rootObject.ResponseObject.CreditInformation.DataCounts.Properties;
+                        ViewData["ExDocuments"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
+                        ViewData["ExDemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
+                        ViewData["ExTrusts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Trusts;
+                        ViewData["ExBondsBonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Bonds;
+                        ViewData["ExDeeds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Deeds;
+                        ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
+                        ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
+                        //ViewData["ExApplicationDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.ApplicationDate;
+                        saveDataCounts(SearchToken, Reference, SearchID, rootObject.ResponseObject.CreditInformation.DataCounts.Accounts,
+                            rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries, rootObject.ResponseObject.CreditInformation.DataCounts.Judgments, rootObject.ResponseObject.CreditInformation.DataCounts.Notices, rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults, rootObject.ResponseObject.CreditInformation.DataCounts.Defaults, rootObject.ResponseObject.CreditInformation.DataCounts.Collections, rootObject.ResponseObject.CreditInformation.DataCounts.Directors, rootObject.ResponseObject.CreditInformation.DataCounts.Addresses, rootObject.ResponseObject.CreditInformation.DataCounts.Telephones, rootObject.ResponseObject.CreditInformation.DataCounts.Occupants, rootObject.ResponseObject.CreditInformation.DataCounts.
+                            Employers, rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts, rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles, rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries, rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders, rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches, rootObject.ResponseObject.CreditInformation.DataCounts.DefiniteMatches, rootObject.ResponseObject.CreditInformation.DataCounts.Loans, rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts, rootObject.ResponseObject.CreditInformation.DataCounts.
+                            Companies, rootObject.ResponseObject.CreditInformation.DataCounts.Properties, rootObject.ResponseObject.CreditInformation.DataCounts.Documents, rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters, rootObject.ResponseObject.CreditInformation.DataCounts.Trusts, rootObject.ResponseObject.CreditInformation.DataCounts.Bonds, rootObject.ResponseObject.CreditInformation.DataCounts.Deeds, rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults, rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts, "ExperianConsumerProfile");
+                        //ConsumerStatistics
+                        ViewData["ExHighestJudgment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
+                        ViewData["ExRevolvingAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.RevolvingAccounts;
+                        ViewData["ExInstalmentAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.InstalmentAccounts;
+                        ViewData["ExOpenAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
+                        ViewData["ExAdverseAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts;
+                        ViewData["ExPercent0ArrearsLast12Histories"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.Percent0ArrearsLast12Histories;
+                        ViewData["ExMonthsOldestOpenedPPSEver"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.MonthsOldestOpenedPPSEver;
+                        ViewData["ExNumberPPSLast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NumberPPSLast12Months;
+                        ViewData["ExNLRMicroloansPast12Months"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months;
+                        saveConsumerStatistics(SearchToken, Reference, SearchID, ViewData["ExHighestJudgment"].ToString(), ViewData["ExRevolvingAccounts"].ToString(), ViewData["ExInstalmentAccounts"].ToString(),
+                            ViewData["ExOpenAccounts"].ToString(), ViewData["ExAdverseAccounts"].ToString(), ViewData["ExPercent0ArrearsLast12Histories"].ToString(),
+                            ViewData["ExMonthsOldestOpenedPPSEver"].ToString(), ViewData["ExNumberPPSLast12Months"].ToString(), ViewData["ExNLRMicroloansPast12Months"].ToString(), "ExperianConsumerProfile");
+                        //DebtReviewStatus
+                        ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
+                        ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+                        saveDebtReviewStatus(SearchToken, Reference, SearchID, ViewData["DRStatusCode"].ToString(), null, ViewData["DRStatusDescription"].ToString(), null, "ExperianConsumerProfile");
+                        List<EnquiryHistory> EnqHIst;
+                        List<AddressHistory> AddressHist;
+                        List<TelephoneHistory> TelHist;
+                        List<EmploymentHistory> EmpHist;
+                        Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+                        elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
+                        elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                        elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                        elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+
+                        String EnquiryDate = "";
+                        String EnquiredBy = "";
+                        String EnquiredByContact = "";
+                        //AddressHIstoryValues
+                        String TypeDescription = "";
+                        String Line1 = "";
+                        String Line2 = "";
+                        String Line3 = "";
+                        String PostalCode = "";
+                        String FullAddress = "";
+                        String LastUpdatedDate = "";
+                        //TelephoneHIstory
+                        String TypeDescriptionTel = "";
+                        String DialCode = "";
+                        String Number = "";
+                        String FullNumber = "";
+                        String LastUpdatedDateTel = "";
+                        //EmploymentHistory
+                        String EmployerName = "";
+                        String Designation = "";
+                        EnqHIst = new List<EnquiryHistory>();
+                        AddressHist = new List<AddressHistory>();
+                        TelHist = new List<TelephoneHistory>();
+                        EmpHist = new List<EmploymentHistory>();
+                        if (rootObject.ResponseObject.CreditInformation.EnquiryHistory != null)
+                        {
+                            for (int count = 0; count < (elements.Count); count++)
+                            {
+                                EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                                EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                                EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+                                saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "ExperianConsumerProfile");
+                                EnqHIst.Add(new EnquiryHistory
+                                {
+                                    EnquiryDate = EnquiryDate,
+                                    EnquiredBy = EnquiredBy,
+                                    EnquiredByContact = EnquiredByContact
+                                });
+                            }
+                        }
+                        if (rootObject.ResponseObject.CreditInformation.AddressHistory != null)
+                        {
+                            for (int count = 0; count < (elements1.Count); count++)
+                            {
+                                TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                                Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                                Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                                Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                                PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                                FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                                LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                                saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "ExperianConsumerProfile");
+
+                                AddressHist.Add(new AddressHistory
+                                {
+                                    TypeDescription = TypeDescription,
+                                    Line1 = Line1,
+                                    Line2 = Line2,
+                                    Line3 = Line3,
+                                    PostalCode = PostalCode,
+                                    FullAddress = FullAddress,
+                                    LastUpdatedDate = LastUpdatedDate,
+                                });
+                            }
+                        }
+
+                        if (rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null)
+                        {
+                            for (int count = 0; count < (elements2.Count); count++)
+                            {
+                                TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                                DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                                Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                                FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                                LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+                                saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDateTel, "ExperianConsumerProfile");
+
+                                TelHist.Add(new TelephoneHistory
+                                {
+                                    TypeDescriptionTel = TypeDescriptionTel,
+                                    DialCode = DialCode,
+                                    Number = Number,
+                                    FullNumber = FullNumber,
+                                    LastUpdatedDateTel = LastUpdatedDate,
+                                });
+                            }
+                        }
+                        if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null)
+                        {
+                            for (int count = 0; count < (elements3.Count); count++)
+                            {
+                                EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                                Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+                                saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "ExperianConsumerProfile");
+
+                                EmpHist.Add(new EmploymentHistory
+                                {
+                                    EmployerName = EmployerName,
+                                    Designation = Designation,
+                                });
+                            }
+                        }
+
+                        ViewData["EnqHIst"] = EnqHIst;
+                        ViewData["AddressHist"] = AddressHist;
+                        ViewData["TelHist"] = TelHist;
+                        ViewData["EmpHist"] = EmpHist;
+                        //NLRStats
+                        ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
+                        ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
+                        ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
+                        ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
+                        ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
+                        saveNLRStats(SearchToken, Reference, SearchID, ViewData["ExNLRActiveAccounts"].ToString(), ViewData["ExNLRClosedAccounts"].ToString(), ViewData["ExNLRWorstMonthArrears"].ToString(), " ", ViewData["ExNLRBalanceExposure"].ToString(), " ", ViewData["ExNLRCumulativeArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //CCAStats
+                        ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
+                        ViewData["ExCCAClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
+                        ViewData["ExCCAWorstMonthArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
+                        ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
+                        ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+                        saveCCAStats(SearchToken, Reference, SearchID, ViewData["ExCCAActiveAccounts"].ToString(), ViewData["ExCCAClosedAccounts"].ToString(), ViewData["ExCCAWorstMonthArrears"].ToString(), " ", ViewData["ExCCABalanceExposure"].ToString(), " ", ViewData["ExCCACumulativeArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //Months
+                        ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+                        ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+                        ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+                        ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+                        saveNLR12Months(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //Months
+                        ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
+                        ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
+                        ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
+                        ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
+                        saveNLRStats24(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //NLR36Months
+                        ViewData["ExNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
+                        ViewData["ExNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
+                        ViewData["ExNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
+                        ViewData["ExNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
+                        saveNLR36Months(SearchToken, Reference, SearchID, ViewData["ExNLR36MonthsEnquiriesByClient"].ToString(), ViewData["ExNLR36MonthsEnquiriesByOther"].ToString(), ViewData["ExNLR36MonthsPositiveLoans"].ToString(), ViewData["ExNLR36MonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //Months
+                        ViewData["ExMonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
+                        ViewData["ExMonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
+                        ViewData["ExMonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
+                        ViewData["ExMonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
+                        saveCCA24Months(SearchToken, Reference, SearchID, ViewData["ExMonthsEnquiriesByClient"].ToString(), ViewData["ExMonthsEnquiriesByOther"].ToString(), ViewData["ExMonthsPositiveLoans"].ToString(), ViewData["ExMonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //CCA24Months
+                        ViewData["ExCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
+                        ViewData["ExCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
+                        ViewData["ExCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
+                        ViewData["ExCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
+                        saveCCA24Months(SearchToken, Reference, SearchID, ViewData["ExCCA24MonthsEnquiriesByClient"].ToString(), ViewData["ExCCA24MonthsEnquiriesByOther"].ToString(), ViewData["ExCCA24MonthsPositiveLoans"].ToString(), ViewData["ExCCA24MonthsHighestMonthsInArrears"].ToString(), "ExperianConsumerProfile");
+
+                        //CCA36Months
+                        ViewData["ExCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
+                        ViewData["ExCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
+                        ViewData["ExCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
+                        ViewData["ExCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
+                        saveCCA36Months(SearchToken, Reference, SearchID, ViewData["ExCCA36MonthsEnquiriesByClient"].ToString(), ViewData["ExCCA36MonthsEnquiriesByOther"].ToString(), ViewData["ExCCA36MonthsPositiveLoans"], ViewData["ExCCA36MonthsHighestMonthsInArrears"], "ExperianConsumerProfile");
+                    }
+                    else
+                    {
+                        ViewData["Experian"] = "No Match";
+                        return View();
+                    }
+
                     return View();
                 }
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = e.ToString();
 
                 return View();
             }
@@ -3874,11 +2178,6 @@ namespace searchworks.client.Controllers
             System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
             System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
             //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
-
-            ViewData["id"] = DbSearch.id.ToString();
-            ViewData["token"] = DbSearch.token.ToString();
-            ViewData["refe"] = DbSearch.refe;
-            ViewData["type"] = DbSearch.type;
 
             //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -4525,27 +2824,6 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        public ActionResult ExportPDF(DatabaseSearch DbSearch)
-        {
-            try
-            {
-                var htmlToPdf = new HtmlToPdf();
-                var html = @"<h1>Hello World!</h1><br><p>This is IronPdf.</p>";
-                // turn html to pdf
-                var pdf = htmlToPdf.RenderHtmlAsPdf(html);
-                // save resulting pdf into file
-                pdf.SaveAs("HtmlToPdf.Pdf");
-
-                var Renderer = new HtmlToPdf();
-                Renderer.RenderHtmlAsPdf("<h1>Html with CSS and Images</h1>").SaveAs("example.pdf");
-                return Content("Successfully exported");
-            }
-            catch (Exception e)
-            {
-                return Content(e.ToString());
-            }
-        }
-
         public ActionResult LetterOfDemand()
         {
             return View();
@@ -5020,84 +3298,84 @@ namespace searchworks.client.Controllers
             string passport = trans.PassportNumber;
             string dob = trans.DateOfBirth;
             string refe = trans.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "TransUnion Consumer ID Verification";
-            string action = "ID: " + id + "; First Name: " + firstName + "; Surname: " + surname + "; Contact Name: " + conName + "; Contact Number: " + conNumber + "; Passport Number: " + passport + "; Date Of Birth: " + dob;
-            System.Diagnostics.Debug.WriteLine(Session["ID"].ToString());
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            TempData["user"] = Session["Name"].ToString();
-            TempData["date"] = DateTime.Today.ToShortDateString();
-            TempData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/transunion/consumerprofile/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                SessionToken = authtoken,
-                Reference = authtoken,//search reference: probably store in logs
-                ContactName = conName,
-                ContactNumber = conNumber,
-                EnquiryReason = enquiryReason,
-                IDNumber = id,
-                Surname = surname,
-                FirstName = firstName,
-                PassportNumber = passport,
-                DateOfBirth = dob,
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "hereee");
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-
-            JToken token = JToken.Parse(response.Content);
             try
             {
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+                DateTime time = DateTime.Now;
+
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "TransUnion Consumer ID Verification";
+                string action = "ID: " + id + "; First Name: " + firstName + "; Surname: " + surname + "; Contact Name: " + conName + "; Contact Number: " + conNumber + "; Passport Number: " + passport + "; Date Of Birth: " + dob;
+                System.Diagnostics.Debug.WriteLine(Session["ID"].ToString());
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
+
+                TempData["user"] = Session["Name"].ToString();
+                TempData["date"] = DateTime.Today.ToShortDateString();
+                TempData["ref"] = refe;
+
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                conn.Open();
+
+                var cmd2 = new MySqlCommand(query_uid, conn);
+
+                var reader2 = cmd2.ExecuteReader();
+
+                conn.Close();
+
+                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                if (!tokenValid(authtoken))
+                {
+                    //exit with a warning
+                }
+
+                //company search API call
+                var url = "https://rest.searchworks.co.za/credit/transunion/consumerprofile/";
+
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
+
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                //object containing input parameter data for company() API method
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    Reference = authtoken,//search reference: probably store in logs
+                    ContactName = conName,
+                    ContactNumber = conNumber,
+                    EnquiryReason = enquiryReason,
+                    IDNumber = id,
+                    Surname = surname,
+                    FirstName = firstName,
+                    PassportNumber = passport,
+                    DateOfBirth = dob,
+                };
+
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
+
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                //JObject o = JObject.Parse(response.Content);
+                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "hereee");
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+
+                JToken token = JToken.Parse(response.Content);
+
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
                 string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
@@ -5126,7 +3404,7 @@ namespace searchworks.client.Controllers
                 ViewData["Remarks"] = rootObject.ResponseObject.PersonInformation.Remarks;
                 ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
                 ViewData["SpouseFirstName"] = rootObject.ResponseObject.PersonInformation.SpouseFirstName;
-                ViewData["SpouseSurname"] = rootObject.ResponseObject.PersonInformation.SpouseFirstName;
+                ViewData["SpouseSurname"] = rootObject.ResponseObject.PersonInformation.SpouseSurname;
                 ViewData["PassportNumber"] = rootObject.ResponseObject.PersonInformation.PassportNumber;
                 ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname;
                 ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
@@ -5139,7 +3417,30 @@ namespace searchworks.client.Controllers
                 ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
                 ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
 
-                savePersonInformation(SearchToken, Reference, SearchID, ViewData["InformationDate"].ToString(), ViewData["PersonID"].ToString(), ViewData["PersonTitle"].ToString(), ViewData["DateOfBirth"].ToString(), ViewData["FirstName"].ToString(), ViewData["Surname"].ToString(), ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(), ViewData["IDNumber_Alternate"].ToString(), ViewData["PassportNumber"].ToString(), ViewData["Reference"].ToString(), ViewData["MaritalStatus"].ToString(), ViewData["Gender"].ToString(), ViewData["Age"].ToString(), ViewData["MiddleName1"].ToString(), ViewData["MiddleName2"].ToString(), ViewData["SpouseFirstName"].ToString(), ViewData["SpouseSurname"].ToString(), ViewData["NumberOfDependants"].ToString(), ViewData["Remarks"].ToString(), null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"].ToString(), "TransUnionConsumerProfile");
+                savePersonInformation(SearchToken, Reference, SearchID,
+                    rootObject.ResponseObject.PersonInformation.InformationDate,
+                    rootObject.ResponseObject.PersonInformation.PersonID,
+                    rootObject.ResponseObject.PersonInformation.Title,
+                    rootObject.ResponseObject.PersonInformation.DateOfBirth,
+                    rootObject.ResponseObject.PersonInformation.FirstName,
+                    rootObject.ResponseObject.PersonInformation.Surname,
+                    rootObject.ResponseObject.PersonInformation.Fullname,
+                    rootObject.ResponseObject.PersonInformation.IDNumber,
+                    rootObject.ResponseObject.PersonInformation.IDNumber_Alternate,
+                    rootObject.ResponseObject.PersonInformation.PassportNumber,
+                    rootObject.ResponseObject.PersonInformation.Reference,
+                    rootObject.ResponseObject.PersonInformation.MaritalStatus,
+                    rootObject.ResponseObject.PersonInformation.Gender,
+                    rootObject.ResponseObject.PersonInformation.Age,
+                    rootObject.ResponseObject.PersonInformation.MiddleName1,
+                    rootObject.ResponseObject.PersonInformation.MiddleName2,
+                    rootObject.ResponseObject.PersonInformation.SpouseFirstName,
+                    rootObject.ResponseObject.PersonInformation.SpouseSurname,
+                    rootObject.ResponseObject.PersonInformation.NumberOfDependants,
+                    rootObject.ResponseObject.PersonInformation.Remarks,
+                    null,
+                    rootObject.ResponseObject.PersonInformation.VerificationStatus,
+                    rootObject.ResponseObject.PersonInformation.HasProperties, "TransUnionConsumerProfile");
 
                 //HomeAffairsInformation
                 ViewData["FirstName"] = rootObject.ResponseObject.HomeAffairsInformation.FirstName;
@@ -5172,13 +3473,19 @@ namespace searchworks.client.Controllers
                 ViewData["Documents"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
                 ViewData["DemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
                 ViewData["Trusts"] = rootObject.ResponseObject.CreditInformation.DataCounts.Trusts;
-                ViewData["BondsBonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.BondsBonds;
+                ViewData["BondsBonds"] = rootObject.ResponseObject.CreditInformation.DataCounts.Bonds;
                 ViewData["PublicDefaults"] = rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults;
                 ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
-
+                saveDataCounts(SearchToken, Reference, SearchID, rootObject.ResponseObject.CreditInformation.DataCounts.
+                    Accounts, rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries, rootObject.ResponseObject.CreditInformation.DataCounts.Judgments, rootObject.ResponseObject.CreditInformation.DataCounts.Notices, rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults, null, rootObject.ResponseObject.CreditInformation.DataCounts.Collections, rootObject.ResponseObject.CreditInformation.DataCounts.Directors, rootObject.ResponseObject.CreditInformation.DataCounts.Addresses, rootObject.ResponseObject.CreditInformation.DataCounts.
+                    Telephones, rootObject.ResponseObject.CreditInformation.DataCounts.Occupants, rootObject.ResponseObject.CreditInformation.DataCounts.Employers, rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts, rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles, rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries, rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders, rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches,
+                    null, rootObject.ResponseObject.CreditInformation.DataCounts.Loans, rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts, rootObject.ResponseObject.CreditInformation.DataCounts.Companies, rootObject.ResponseObject.CreditInformation.DataCounts.Properties, rootObject.ResponseObject.CreditInformation.DataCounts.Documents, rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters, rootObject.ResponseObject.CreditInformation.DataCounts.Trusts, rootObject.ResponseObject.CreditInformation.DataCounts.Bonds, null, rootObject.ResponseObject.CreditInformation.DataCounts.
+                    PublicDefaults, rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts, "TransUnionConsumerProfile");
                 //DebtReviewStatus
                 ViewData["StatusDate"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDate;
                 ViewData["StatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+                saveDebtReviewStatus(SearchToken, Reference, SearchID, null, rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDate, rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription,
+                    null, null);
                 //EnquiryHistory
                 List<EnquiryHistory> EnqHIst;
                 Newtonsoft.Json.Linq.JArray elements4 = new Newtonsoft.Json.Linq.JArray();
@@ -5199,6 +3506,7 @@ namespace searchworks.client.Controllers
                         EnquiredBy = EnquiredBy,
                         EnquiredByContact = EnquiredByContact
                     });
+                    saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "TransUnionConsumerProfile");
                 }
                 ViewData["EnqHIst"] = EnqHIst;
 
@@ -5254,6 +3562,7 @@ namespace searchworks.client.Controllers
                         EnquiredBy = EnquiredBy,
                         EnquiredByContact = EnquiredByContact
                     });
+                    saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "TransUnionConsumerProfile");
                 }
                 for (int count = 0; count < (elements1.Count); count++)
                 {
@@ -5275,6 +3584,7 @@ namespace searchworks.client.Controllers
                         FullAddress = FullAddress,
                         LastUpdatedDate = LastUpdatedDate,
                     });
+                    saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "TransUnionConsumerProfile");
                 }
                 for (int count = 0; count < (elements2.Count); count++)
                 {
@@ -5292,6 +3602,7 @@ namespace searchworks.client.Controllers
                         FullNumber = FullNumber,
                         LastUpdatedDateTel = LastUpdatedDate,
                     });
+                    saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescriptionTel, null, Number, FullNumber, LastUpdatedDate, "TransUnionConsumerProfile");
                 }
                 for (int count = 0; count < (elements3.Count); count++)
                 {
@@ -5303,6 +3614,7 @@ namespace searchworks.client.Controllers
                         EmployerName = EmployerName,
                         Designation = Designation,
                     });
+                    saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, null, null, "TransUnionConsumerProfile");
                 }
 
                 for (int count = 0; count < (elements5.Count); count++)
@@ -5321,6 +3633,7 @@ namespace searchworks.client.Controllers
                         PhoneNumber = PhoneNumber,
                         EmailAddress = EmailAddress,
                     });
+                    saveEnquiryHistory(SearchToken, Reference, SearchID, IntEnquiryDate, CompanyName, ContactPerson, EmailAddress, null, "TransUnionConsumerProfile");
                 }
 
                 ViewData["EnqHIst"] = EnqHIst;
@@ -5331,7 +3644,7 @@ namespace searchworks.client.Controllers
             }
             catch (Exception e)
             {
-                TempData["msg"] = "An error occured, please check the entered values.";
+                TempData["msg"] = e.ToString();
             }
 
             return View();
@@ -6522,266 +4835,273 @@ namespace searchworks.client.Controllers
             string id = veri.idNumber;
             string enquiryReason = veri.EnquiryReason;
             string refe = veri.Reference;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "VeriCred Consumer Profile";
-            string action = "ID: " + id + "; Enquiry Reason: " + enquiryReason;
-            string user_id = Session["ID"].ToString();
-            System.Diagnostics.Debug.WriteLine(user_id);
-            string us = Session["Name"].ToString();
-
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
+            try
             {
-                //exit with a warning
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+                DateTime time = DateTime.Now;
+
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "VeriCred Consumer Profile";
+                string action = "ID: " + id + "; Enquiry Reason: " + enquiryReason;
+                string user_id = Session["ID"].ToString();
+                System.Diagnostics.Debug.WriteLine(user_id);
+                string us = Session["Name"].ToString();
+
+                ViewData["user"] = Session["Name"].ToString();
+                ViewData["date"] = DateTime.Today.ToShortDateString();
+                ViewData["ref"] = refe;
+
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                conn.Open();
+
+                var cmd2 = new MySqlCommand(query_uid, conn);
+
+                var reader2 = cmd2.ExecuteReader();
+
+                conn.Close();
+
+                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                if (!tokenValid(authtoken))
+                {
+                    //exit with a warning
+                }
+
+                //company search API call
+                var url = "https://rest.searchworks.co.za/credit/vericred/consumerprofile/";
+
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
+
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                //object containing input parameter data for company() API method
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    Reference = authtoken,//search reference: probably store in logs
+                    IDNumber = id,
+                    EnquiryReason = enquiryReason,
+                };
+
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
+
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                //JObject o = JObject.Parse(response.Content);
+
+                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+                JToken token = JToken.Parse(response.Content);
+
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+
+                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+
+                var mes = ViewData["ResponseMessage"].ToString();
+                if (mes == "NotFound")
+                {
+                    ViewData["Message"] = "Not Found";
+                    ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
+                    return View();
+                }
+                else
+                {
+                    ViewData["Message"] = "good";
+
+                    int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                    string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                    string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                    string ResponseType = ViewData["ResponseMessage"].ToString();
+                    string Name = ViewData["user"].ToString();
+                    string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                    string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                    string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                    string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                    string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                    string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+                    saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "VeriCredConsumerProfile");
+
+                    //PersonalInformation
+                    ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
+                    ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
+                    ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+                    ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
+                    ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
+                    ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
+                    savePersonInformation(SearchToken, Reference, SearchID, null, null, null, ViewData["DateOfBirth"].ToString(), null, null, ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(), null, null, null, null, ViewData["Gender"].ToString(), ViewData["Age"].ToString(), null, null, null, null, null, null, null, null, ViewData["HasProperties"], "VeriCredConsumerProfile");
+                    //CreditInformation
+                    ViewData["DelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
+                    ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
+                    ViewData["RiskColour"] = rootObject.ResponseObject.CreditInformation.RiskColour;
+                    saveCreditInformation(SearchID, Reference, SearchID, " ", rootObject.ResponseObject.CreditInformation.DelphiScore, rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL, ViewData["RiskColour"], " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "VeriCredConsumerProfile");
+                    //~~~ConsumerStatistics~~~//
+                    ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+                    saveCCAStats(SearchToken, Reference, SearchID, " ", " ", " ", " ", " ", rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment, " ", "VeriCredConsumerProfile");
+
+                    List<CPAaccounts> CPAACCOUNTS;
+
+                    Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
+                    elements1 = rootObject.ResponseObject.CreditInformation.CPA_Accounts;
+
+                    String Account_ID = "";
+                    String SubscriberCode = "";
+                    String SubscriberName = "";
+                    String AccountNO = "";
+                    String OpenDate = "";
+                    String LastPaymentDate = "";
+                    String OpenBalance = "";
+                    String CurrentBalance = "";
+                    String OverdueAmount = "";
+                    String InstalmentAmount = "";
+                    String StatusCodeDesc = "";
+                    String StatusDate = "";
+                    String IndustryType = "";
+                    String PaymentHistoryChartURL = "";
+                    Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails = new Newtonsoft.Json.Linq.JArray();
+                    CPAACCOUNTS = new List<CPAaccounts>();
+
+                    for (int count = 0; count < (elements1.Count); count++)
+                    {
+                        Account_ID = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].Account_ID;
+                        SubscriberCode = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberCode;
+                        SubscriberName = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberName;
+                        AccountNO = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].AccountNO;
+                        OpenDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenDate;
+                        LastPaymentDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].LastPaymentDate;
+                        OpenBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenBalance;
+                        CurrentBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].CurrentBalance;
+                        OverdueAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OverdueAmount;
+                        InstalmentAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].InstalmentAmount;
+                        StatusCodeDesc = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusCodeDesc;
+                        StatusDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusDate;
+                        IndustryType = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].IndustryType;
+                        PaymentHistoryChartURL = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryChartURL;
+                        PaymentHistoryAccountDetails = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryAccountDetails;//ADD TO DATABASE
+                        CPAACCOUNTS.Add(new CPAaccounts
+                        {
+                            Account_ID = Account_ID,
+                            SubscriberCode = SubscriberCode,
+                            SubscriberName = SubscriberName,
+                            AccountNO = AccountNO,
+                            OpenDate = OpenDate,
+                            LastPaymentDate = LastPaymentDate,
+                            OpenBalance = OpenBalance,
+                            CurrentBalance = CurrentBalance,
+                            OverdueAmount = OverdueAmount,
+                            InstalmentAmount = InstalmentAmount,
+                            StatusCodeDesc = StatusCodeDesc,
+                            StatusDate = StatusDate,
+                            IndustryType = IndustryType,
+                            PaymentHistoryChartURL = PaymentHistoryChartURL,
+                            //PaymentHistoryAccountDetails = PaymentHistoryAccountDetails,
+                        });
+                        saveCPA_Accounts(SearchToken, Reference, SearchID, Account_ID, SubscriberCode, SubscriberName, AccountNO, null, null, null, null, null, null, null, null, OpenDate, null,
+                            LastPaymentDate, OpenBalance, null, CurrentBalance, null, OverdueAmount, InstalmentAmount, null, null, null, null, StatusCodeDesc, IndustryType, PaymentHistoryChartURL,
+                            StatusDate, null, null, null, null, null, null, null, null, "VeriCredConsumerProfile");
+                    }
+
+                    ViewData["CPAACCOUNTS"] = CPAACCOUNTS;
+
+                    //HistoricalInformation
+                    List<AddressHistory> AddressHist;
+                    List<TelephoneHistory> TelHist;
+                    List<EmploymentHistory> EmpHist;
+                    Newtonsoft.Json.Linq.JArray element1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+                    element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                    elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                    elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                    //AddressHIstoryValues
+                    String TypeDescription = "";
+                    String Line1 = "";
+                    String Line2 = "";
+                    String Line3 = "";
+                    String PostalCode = "";
+                    String FullAddress = "";
+                    String LastUpdatedDate = "";
+                    //TelephoneHIstory
+                    String TypeDescriptionTel = "";
+                    String DialCode = "";
+                    String Number = "";
+                    String FullNumber = "";
+                    String LastUpdatedDateTel = "";
+                    //EmploymentHistory
+                    String EmployerName = "";
+                    String Designation = "";
+                    AddressHist = new List<AddressHistory>();
+                    TelHist = new List<TelephoneHistory>();
+                    EmpHist = new List<EmploymentHistory>();
+                    for (int count = 0; count < (element1.Count); count++)
+                    {
+                        TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                        Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                        Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                        Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                        PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                        FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                        saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "VeriCredConsumerProfile");
+                        AddressHist.Add(new AddressHistory
+                        {
+                            TypeDescription = TypeDescription,
+                            Line1 = Line1,
+                            Line2 = Line2,
+                            Line3 = Line3,
+                            PostalCode = PostalCode,
+                            FullAddress = FullAddress,
+                            LastUpdatedDate = LastUpdatedDate,
+                        });
+                    }
+                    for (int count = 0; count < (elements2.Count); count++)
+                    {
+                        TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                        DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                        Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                        FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                        LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+                        saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDate, "VeriCredConsumerProfile");
+                        TelHist.Add(new TelephoneHistory
+                        {
+                            TypeDescriptionTel = TypeDescriptionTel,
+                            DialCode = DialCode,
+                            Number = Number,
+                            FullNumber = FullNumber,
+                            LastUpdatedDateTel = LastUpdatedDate,
+                        });
+                    }
+                    for (int count = 0; count < (elements3.Count); count++)
+                    {
+                        EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
+                        saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "VeriCredConsumerProfile");
+                        EmpHist.Add(new EmploymentHistory
+                        {
+                            EmployerName = EmployerName,
+                            LastUpdatedDate = LastUpdatedDate,
+                        });
+                    }
+                    ViewData["AddressHist"] = AddressHist;
+                    ViewData["TelHist"] = TelHist;
+                    ViewData["EmpHist"] = EmpHist;
+                    return View();
+                }
             }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/vericred/consumerprofile/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
+            catch (Exception e)
             {
-                SessionToken = authtoken,
-                Reference = authtoken,//search reference: probably store in logs
-                IDNumber = id,
-                EnquiryReason = enquiryReason,
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-            JToken token = JToken.Parse(response.Content);
-
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-
-            var mes = ViewData["ResponseMessage"].ToString();
-            if (mes == "NotFound")
-            {
-                ViewData["Message"] = "Not Found";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-                return View();
-            }
-            else
-            {
-                ViewData["Message"] = "good";
-
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = ViewData["ResponseMessage"].ToString();
-                string Name = ViewData["user"].ToString();
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "VeriCredConsumerProfile");
-
-                //PersonalInformation
-                ViewData["Fullname"] = rootObject.ResponseObject.PersonInformation.Fullname;
-                ViewData["IDNumber"] = rootObject.ResponseObject.PersonInformation.IDNumber;
-                ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
-                ViewData["Age"] = rootObject.ResponseObject.PersonInformation.Age;
-                ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender;
-                ViewData["HasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                savePersonInformation(SearchToken, Reference, SearchID, null, null, null, ViewData["DateOfBirth"].ToString(), null, null, ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(), null, null, null, null, ViewData["Gender"].ToString(), ViewData["Age"].ToString(), null, null, null, null, null, null, null, null, ViewData["HasProperties"], "VeriCredConsumerProfile");
-                //CreditInformation
-                ViewData["DelphiScoreChartURL"] = rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
-                ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
-                ViewData["RiskColour"] = rootObject.ResponseObject.CreditInformation.RiskColour;
-                saveCreditInformation(SearchID, Reference, SearchID, " ", rootObject.ResponseObject.CreditInformation.DelphiScore, rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL, ViewData["RiskColour"], " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "VeriCredConsumerProfile");
-                //~~~ConsumerStatistics~~~//
-                ViewData["MonthlyInstalment"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-                saveCCAStats(SearchToken, Reference, SearchID, " ", " ", " ", " ", " ", rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment, " ", "VeriCredConsumerProfile");
-
-                List<CPAaccounts> CPAACCOUNTS;
-
-                Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
-                elements1 = rootObject.ResponseObject.CreditInformation.CPA_Accounts;
-
-                String Account_ID = "";
-                String SubscriberCode = "";
-                String SubscriberName = "";
-                String AccountNO = "";
-                String OpenDate = "";
-                String LastPaymentDate = "";
-                String OpenBalance = "";
-                String CurrentBalance = "";
-                String OverdueAmount = "";
-                String InstalmentAmount = "";
-                String StatusCodeDesc = "";
-                String StatusDate = "";
-                String IndustryType = "";
-                String PaymentHistoryChartURL = "";
-                Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails = new Newtonsoft.Json.Linq.JArray();
-                CPAACCOUNTS = new List<CPAaccounts>();
-
-                for (int count = 0; count < (elements1.Count); count++)
-                {
-                    Account_ID = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].Account_ID;
-                    SubscriberCode = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberCode;
-                    SubscriberName = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].SubscriberName;
-                    AccountNO = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].AccountNO;
-                    OpenDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenDate;
-                    LastPaymentDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].LastPaymentDate;
-                    OpenBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OpenBalance;
-                    CurrentBalance = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].CurrentBalance;
-                    OverdueAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].OverdueAmount;
-                    InstalmentAmount = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].InstalmentAmount;
-                    StatusCodeDesc = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusCodeDesc;
-                    StatusDate = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].StatusDate;
-                    IndustryType = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].IndustryType;
-                    PaymentHistoryChartURL = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryChartURL;
-                    PaymentHistoryAccountDetails = rootObject.ResponseObject.CreditInformation.CPA_Accounts[count].PaymentHistoryAccountDetails;//ADD TO DATABASE
-                    CPAACCOUNTS.Add(new CPAaccounts
-                    {
-                        Account_ID = Account_ID,
-                        SubscriberCode = SubscriberCode,
-                        SubscriberName = SubscriberName,
-                        AccountNO = AccountNO,
-                        OpenDate = OpenDate,
-                        LastPaymentDate = LastPaymentDate,
-                        OpenBalance = OpenBalance,
-                        CurrentBalance = CurrentBalance,
-                        OverdueAmount = OverdueAmount,
-                        InstalmentAmount = InstalmentAmount,
-                        StatusCodeDesc = StatusCodeDesc,
-                        StatusDate = StatusDate,
-                        IndustryType = IndustryType,
-                        PaymentHistoryChartURL = PaymentHistoryChartURL,
-                        //PaymentHistoryAccountDetails = PaymentHistoryAccountDetails,
-                    });
-                    saveCPA_Accounts(SearchToken, Reference, SearchID, Account_ID, SubscriberCode, SubscriberName, AccountNO, null, null, null, null, null, null, null, null, OpenDate, null,
-                        LastPaymentDate, OpenBalance, null, CurrentBalance, null, OverdueAmount, InstalmentAmount, null, null, null, null, StatusCodeDesc, IndustryType, PaymentHistoryChartURL,
-                        StatusDate, null, null, null, null, null, null, null, null, "VeriCredConsumerProfile");
-                }
-
-                ViewData["CPAACCOUNTS"] = CPAACCOUNTS;
-
-                //HistoricalInformation
-                List<AddressHistory> AddressHist;
-                List<TelephoneHistory> TelHist;
-                List<EmploymentHistory> EmpHist;
-                Newtonsoft.Json.Linq.JArray element1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
-                element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
-                //AddressHIstoryValues
-                String TypeDescription = "";
-                String Line1 = "";
-                String Line2 = "";
-                String Line3 = "";
-                String PostalCode = "";
-                String FullAddress = "";
-                String LastUpdatedDate = "";
-                //TelephoneHIstory
-                String TypeDescriptionTel = "";
-                String DialCode = "";
-                String Number = "";
-                String FullNumber = "";
-                String LastUpdatedDateTel = "";
-                //EmploymentHistory
-                String EmployerName = "";
-                String Designation = "";
-                AddressHist = new List<AddressHistory>();
-                TelHist = new List<TelephoneHistory>();
-                EmpHist = new List<EmploymentHistory>();
-                for (int count = 0; count < (element1.Count); count++)
-                {
-                    TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
-                    Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
-                    Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
-                    Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
-                    PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
-                    FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
-                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
-                    saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "VeriCredConsumerProfile");
-                    AddressHist.Add(new AddressHistory
-                    {
-                        TypeDescription = TypeDescription,
-                        Line1 = Line1,
-                        Line2 = Line2,
-                        Line3 = Line3,
-                        PostalCode = PostalCode,
-                        FullAddress = FullAddress,
-                        LastUpdatedDate = LastUpdatedDate,
-                    });
-                }
-                for (int count = 0; count < (elements2.Count); count++)
-                {
-                    TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                    DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
-                    Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
-                    FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
-                    LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
-                    saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDate, "VeriCredConsumerProfile");
-                    TelHist.Add(new TelephoneHistory
-                    {
-                        TypeDescriptionTel = TypeDescriptionTel,
-                        DialCode = DialCode,
-                        Number = Number,
-                        FullNumber = FullNumber,
-                        LastUpdatedDateTel = LastUpdatedDate,
-                    });
-                }
-                for (int count = 0; count < (elements3.Count); count++)
-                {
-                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
-                    saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "VeriCredConsumerProfile");
-                    EmpHist.Add(new EmploymentHistory
-                    {
-                        EmployerName = EmployerName,
-                        LastUpdatedDate = LastUpdatedDate,
-                    });
-                }
-                ViewData["AddressHist"] = AddressHist;
-                ViewData["TelHist"] = TelHist;
-                ViewData["EmpHist"] = EmpHist;
+                TempData["msg"] = e.ToString();
                 return View();
             }
         }
@@ -6808,11 +5128,6 @@ namespace searchworks.client.Controllers
             System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
             System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
             //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
-
-            ViewData["id"] = DbSearch.id.ToString();
-            ViewData["token"] = DbSearch.token.ToString();
-            ViewData["refe"] = DbSearch.refe;
-            ViewData["type"] = DbSearch.type;
 
             //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -9023,3 +7338,1437 @@ namespace searchworks.client.Controllers
         }
     }
 }
+
+//----------------------------------COMPUSCAN CODE STARTS FROM HERE!!!!!  1) UNCOMMENT FROM NEXT LINE, CUT AND PASTE INSIDE A CLASS.-----------------------------
+//    public ActionResult CompuScan()
+//    {
+//        return View();
+//    }
+
+// public ActionResult CompuScanBankCodesDocument() { return View(); }
+
+// public ActionResult CompuScanBankCodesDocumentResults(CompuScan comp) { try { string id =
+// comp.IDNumber; string clientName = comp.clientName; string bankName = comp.bankName; string
+// branchCode = comp.branchCode; string branchName = comp.branchName; string accountNumber =
+// comp.accountNumber; int amount = comp.amount; string terms = comp.terms; int reportType = comp.ReportType;
+
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "Combined Consumer Trace"; string action = "Client Name:" + clientName + "; Bank
+// Name: " + bankName + "; Branch Code:" + branchCode + "; Branch Name: " + branchName + "; Account
+// Number:" + accountNumber + "; Amount:" + amount + "; Terms:" + terms + "; Report Type" +
+// reportType; string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/documents/compuscan/bankcodes/"; //create RestSharp client and
+// POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { sessionToken = authtoken, reference = us,//search reference: probably store in
+// logs idNumber = id, clientName = clientName, bankName = bankName, branchCode = branchCode,
+// branchName = branchName, accountNumber = accountNumber, amount = amount, terms = terms,
+// ReportType = reportType, };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanBankCodesDocument"); } catch
+// (Exception e) { TempData["msg"] = "An error occured, please check the entered values."; }
+
+// return View(); }
+
+// public ActionResult CompuScanBankOnFile() { return View(); }
+
+// public ActionResult CompuScanBankOnFileResults(CompuScan comp) { string id = comp.IDNumber; try {
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Bank On File"; string action = "ID: " + id; string user_id =
+// Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/compuscan/bankcodes/idnumber/"; //create RestSharp client and
+// POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { sessionToken = authtoken, reference = us,//search reference: probably store in
+// logs iDNumber = id };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+// System.Diagnostics.Debug.WriteLine(o); JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+
+// var mes = ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline") {
+// ViewData["Message"] = "Service is offline"; return View(); } int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; //string ResponseType =
+// rootObject.ResponseMessage; ; saveSearchHistory(SearchID, SearchUserName, "CompuScanBankOnFile",
+// Session["Name"].ToString(), ReportDate, Reference, SearchToken, "credit/compuScan", null,
+// SearchType, SearchDescription, "CompuScanBankOnFile"); } catch (Exception e) { TempData["msg"] =
+// "An error occured, please check the entered values."; } return View(); }
+
+// public ActionResult CompuScanConsumerProfile() { return View(); }
+
+// public ActionResult CompuScanConsumerProfileResults(CompuScan comp) { string id = comp.IDNumber;
+// int enquiryReason = comp.EnquiryReason; string surname = comp.Surname; string firstname =
+// comp.FirstName; string refe = comp.Reference;
+
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName); try { var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Consumer Profile"; string action = "First Name: " + firstname + ";
+// Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; ID: " + id; string user_id =
+// Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/consumerprofile/"; //create RestSharp client and
+// POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+// ViewData["user"] = Session["Name"].ToString();
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { sessionToken = authtoken, reference = us,//search reference: probably store in
+// logs idNumber = id, enquiryReason = enquiryReason, surname = surname, firstname = firstname, };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; var mes = ViewData["ResponseMessage"].ToString();
+
+// if (mes == "ServiceOffline") { ViewData["Message"] = "Service is offline"; return View(); } else
+// { ViewData["Message"] = "good";
+
+// int SearchID = rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, Session["Name"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerProfile");
+
+// if (rootObject.ResponseObject.PersonInformation != null) { //personaInformantion
+// ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+// ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+// ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname; ViewData["Fullname"] =
+// rootObject.ResponseObject.PersonInformation.Fullname; ViewData["IDNumber"] =
+// rootObject.ResponseObject.PersonInformation.IDNumber; ViewData["Gender"] =
+// rootObject.ResponseObject.PersonInformation.Gender; ViewData["Age"] =
+// rootObject.ResponseObject.PersonInformation.Age; ViewData["Country"] =
+// rootObject.ResponseObject.PersonInformation.Country; ViewData["VerificationStatus"] =
+// rootObject.ResponseObject.PersonInformation.VerificationStatus; ViewData["HasProperties"] =
+// rootObject.ResponseObject.PersonInformation.HasProperties; savePersonInformation(SearchToken,
+// Reference, SearchID, null, null, null, ViewData["DateOfBirth"].ToString(),
+// ViewData["FirstName"].ToString(), ViewData["Surname"].ToString(),
+// ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(), null, null, null, null,
+// ViewData["Gender"].ToString(), ViewData["Age"].ToString(), null, null, null, null, null, null ,
+// null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"], "CompuScan"); } else
+// { ViewData["PersonInformationMessage"] = "No Match"; }
+
+// if (rootObject.ResponseObject.CreditInformation != null) { //CreditInformation
+// ViewData["DelphiScore"] = rootObject.ResponseObject.CreditInformation.DelphiScore;
+// ViewData["Risk"] = rootObject.ResponseObject.CreditInformation.Risk; ViewData["RiskColour"] =
+// rootObject.ResponseObject.CreditInformation.RiskColour; ViewData["DelphiScoreChartURL"] =
+// rootObject.ResponseObject.CreditInformation.DelphiScoreChartURL;
+// ViewData["TotalInstallmentAmountCPAAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalInstallmentAmountCPAAccounts_CompuScan;
+// ViewData["TotalInstallmentAmountNLRAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalInstallmentAmountNLRAccounts_CompuScan;
+// ViewData["TotalNumberCPAAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalNumberCPAAccounts_CompuScan;
+// ViewData["TotalNumberNLRAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalNumberNLRAccounts_CompuScan;
+// ViewData["TotalNumberActiveCPAAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalNumberActiveCPAAccounts_CompuScan;
+// ViewData["TotalNumberActiveNLRAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalNumberActiveNLRAccounts_CompuScan;
+// ViewData["TotalNumberClosedCPAAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalNumberClosedCPAAccounts_CompuScan;
+// ViewData["TotalNumberClosedNLRAccounts_CompuScan"] =
+// rootObject.ResponseObject.CreditInformation.TotalNumberClosedNLRAccounts_CompuScan;
+// //saveCreditInformation(SearchToken, Reference, SearchID, " ", //
+// ViewData["DelphiScore"].ToString(), // ViewData["DelphiScoreChartURL"].ToString(),
+// ViewData["RiskColour"].ToString(), // " ", " ",
+// ViewData["TotalInstallmentAmountCPAAccounts_CompuScan"].ToString(), //
+// ViewData["TotalInstallmentAmountNLRAccounts_CompuScan"].ToString(),
+// ViewData["TotalNumberCPAAccounts_CompuScan"].ToString(), //
+// ViewData["TotalNumberNLRAccounts_CompuScan"].ToString(),
+// ViewData["TotalNumberActiveCPAAccounts_CompuScan"].ToString(), //
+// ViewData["TotalNumberActiveNLRAccounts_CompuScan"].ToString(),
+// ViewData["TotalNumberClosedCPAAccounts_CompuScan"].ToString(), // ViewData["TotalNumberClosedNLRAccounts_CompuScan"].ToString());
+
+// //DeclineReason ViewData["ReasonDescription"] =
+// rootObject.ResponseObject.CreditInformation.DeclineReason[0].ReasonDescription;
+// saveCreditDeclineReason(SearchToken, Reference, SearchID, null,
+// ViewData["ReasonDescription"].ToString(), "CompuScan"); //DataCounts ViewData["Accounts"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Accounts; ViewData["Enquiries"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries; ViewData["Judgments"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Judgments; ViewData["Notices"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Notices; ViewData["BankDefaults"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.BankDefaults; ViewData["Defaults"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Defaults; ViewData["Collections"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Collections; ViewData["Directors"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Directors; ViewData["Addresses"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Addresses; ViewData["Telephones"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Telephones; ViewData["Occupants"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Occupants; ViewData["Employers"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Employers; ViewData["TraceAlerts"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.TraceAlerts; ViewData["PaymentProfiles"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.PaymentProfiles; ViewData["OwnEnquiries"]
+// = rootObject.ResponseObject.CreditInformation.DataCounts.OwnEnquiries; ViewData["AdminOrders"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.AdminOrders; ViewData["PossibleMatches"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
+// ViewData["DefiniteMatches"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.DefiniteMatches; ViewData["Loans"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Loans; ViewData["FraudAlerts"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts; ViewData["Companies"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Companies; ViewData["Properties"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Properties; ViewData["Documents"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Documents; ViewData["DemandLetters"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters; ViewData["Trusts"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Trusts; ViewData["Bonds"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Bonds; ViewData["Deeds"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.Deeds; ViewData["PublicDefaults"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.PublicDefaults; ViewData["NLRAccounts"] = rootObject.ResponseObject.CreditInformation.DataCounts.NLRAccounts;
+
+// //DebtReviewStatus ViewData["DRStatusCode"] =
+// rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
+// ViewData["DRStatusDescription"] =
+// rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
+// //saveDebtReviewStatus(SearchToken, Reference, SearchID, ViewData["DRStatusCode"].ToString(),
+// null, ViewData["DRStatusDescription"].ToString(), null); //ConsumerStatistics
+// ViewData["HighestJudgment"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.HighestJudgment;
+// ViewData["RevolvingAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.RevolvingAccounts;
+// ViewData["InstalmentAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.InstalmentAccounts;
+// ViewData["OpenAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.OpenAccounts;
+// ViewData["AdverseAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.AdverseAccounts; //NLRStats
+// ViewData["NLRStats_ActiveAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
+// ViewData["NLRStats_ClosedAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
+// ViewData["NLRStats_WorstMonthArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
+// ViewData["NLRStats_BalanceExposure"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
+// ViewData["NLRStats_MonthlyInstalment"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
+// ViewData["NLRStats_CumulativeArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.CumulativeArrears;
+// //CCAStats ViewData["CCAStats_ActiveAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
+// ViewData["CCAStats_ClosedAccounts"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
+// ViewData["CCAStats_WorstMonthArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
+// ViewData["CCAStats_BalanceExposure"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
+// ViewData["CCAStats_MonthlyInstalment"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+// ViewData["CCAStats_CumulativeArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCAStats.CumulativeArrears;
+// //NLR12Months ViewData["NLR12Months_EnquiriesByClient"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+// ViewData["NLR12Months_EnquiriesByOther"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+// ViewData["NLR12Months_PositiveLoans"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+// ViewData["NLR12Months_HighestMonthsInArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+// //NLR36Months ViewData["NLR36Months_EnquiriesByClient"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
+// ViewData["NLR36Months_EnquiriesByOther"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
+// ViewData["NLR36Months_PositiveLoans"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
+// ViewData["NLR36Months_HighestMonthsInArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
+// //NLR24Months ViewData["NLR24Months_EnquiriesByClient"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
+// ViewData["NLR24Months_EnquiriesByOther"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
+// ViewData["NLR24Months_PositiveLoans"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
+// ViewData["NLR24Months_HighestMonthsInArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
+// //CCA12Months ViewData["CCA12Months_EnquiriesByClient"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
+// ViewData["CCA12Months_EnquiriesByOther"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
+// ViewData["CCA12Months_PositiveLoans"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
+// ViewData["CCA12Months_HighestMonthsInArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
+// //CCA24Months ViewData["CCA24Months_EnquiriesByClient"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
+// ViewData["CCA24Months_EnquiriesByOther"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
+// ViewData["CCA24Months_PositiveLoans"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
+// ViewData["CCA24Months_HighestMonthsInArrears"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
+// //CCA36Months ViewData["CCA36Months_EnquiriesByClient"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
+// ViewData["CCA36Months_EnquiriesByOther"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
+// ViewData["CCA36Months_PositiveLoans"] =
+// rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
+// ViewData["CCA36Months_HighestMonthsInArrears"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
+
+// //EnquiryHistory ViewData["EnquiryHistory_EnquiryDate"] =
+// rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiryDate;
+// ViewData["EnquiryHistory_EnquiredBy"] =
+// rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiredBy;
+// ViewData["EnquiryHistory_EnquiredByContact"] =
+// rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiredByContact;
+// ViewData["EnquiryHistory_EnquiredByContactNumber"] = rootObject.ResponseObject.CreditInformation.EnquiryHistory[0].EnquiredByContactNumber;
+
+// //CPA_Accounts if (rootObject.ResponseObject.CreditInformation.CPA_Accounts != null) {
+// ViewData["SubscriberCode"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].SubscriberCode;
+// ViewData["SubscriberName"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].SubscriberName;
+// ViewData["BranchCode"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].BranchCode;
+// ViewData["AccountNO"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].AccountNO;
+// ViewData["SubAccountNO"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].SubAccountNO;
+// ViewData["OwnershipType"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OwnershipType;
+// ViewData["OwnershipTypeDescription"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OwnershipTypeDescription;
+// ViewData["Reason"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Reason;
+// ViewData["ReasonDescription"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ReasonDescription;
+// ViewData["PaymentType"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentType;
+// ViewData["PaymentTypeDescription"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentTypeDescription;
+// ViewData["AccountType"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].AccountType;
+// ViewData["AccountTypeDescription"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].AccountTypeDescription;
+// ViewData["OpenDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OpenDate;
+// ViewData["DeferredPaymentDate"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].DeferredPaymentDate;
+// ViewData["LastPaymentDate"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].LastPaymentDate;
+// ViewData["OpenBalance"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OpenBalance;
+// ViewData["OpenBalanceIND"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OpenBalanceIND;
+// ViewData["CurrentBalance"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].CurrentBalance;
+// ViewData["CurrentBalanceIND"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].CurrentBalanceIND;
+// ViewData["OverdueAmount"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OverdueAmount;
+// ViewData["OverdueAmountIND"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].OverdueAmountIND;
+// ViewData["InstalmentAmount"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].InstalmentAmount;
+// ViewData["ArrearsPeriod"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ArrearsPeriod;
+// ViewData["RepaymentFrequency"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].RepaymentFrequency;
+// ViewData["RepaymentFrequencyDescription"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].RepaymentFrequencyDescription;
+// ViewData["Terms"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].Terms;
+// ViewData["StatusCode"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].StatusCode;
+// ViewData["StatusCodeDesc"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].StatusCodeDesc;
+// ViewData["StatusDate"] = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].StatusDate;
+// ViewData["ThirdPartyName"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ThirdPartyName;
+// ViewData["ThirdPartySold"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ThirdPartySold;
+// ViewData["ThirdPartySoldDescription"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].ThirdPartySoldDescription;
+// ViewData["JointLoanParticipants"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].JointLoanParticipants;
+// ViewData["PaymentHistory"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentHistory;
+// ViewData["PaymentHistoryStatus"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentHistoryStatus;
+// ViewData["PaymentHistoryChart"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].PaymentHistoryChart;
+// ViewData["MonthEndDate"] =
+// rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].MonthEndDate; ViewData["DateCreated"]
+// = rootObject.ResponseObject.CreditInformation.CPA_Accounts[0].DateCreated; }
+
+// //NLR_Accounts if (rootObject.ResponseObject.CreditInformation.NLR_Accounts != null) {
+// ViewData["NLR_SubscriberCode"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubscriberCode;
+// ViewData["NLR_SubscriberName"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubscriberName;
+// ViewData["NLR_BranchCode"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].BranchCode; ViewData["NLR_AccountNO"]
+// = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].AccountNO;
+// ViewData["NLR_SubAccountNO"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubAccountNO;
+// ViewData["NLR_OwnershipType"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OwnershipType;
+// ViewData["NLR_OwnershipTypeDescription"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OwnershipTypeDescription;
+// ViewData["NLR_Reason"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].Reason;
+// ViewData["NLR_ReasonDescription"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ReasonDescription;
+// ViewData["NLR_PaymentType"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentType;
+// ViewData["NLR_PaymentTypeDescription"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentTypeDescription;
+// ViewData["NLR_AccountType"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].AccountType;
+// ViewData["NLR_AccountTypeDescription"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].AccountTypeDescription;
+// ViewData["NLR_OpenDate"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OpenDate;
+// ViewData["NLR_DeferredPaymentDate"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].DeferredPaymentDate;
+// ViewData["NLR_LastPaymentDate"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].LastPaymentDate;
+// ViewData["NLR_OpenBalance"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OpenBalance;
+// ViewData["NLR_OpenBalanceIND"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OpenBalanceIND;
+// ViewData["NLR_CurrentBalance"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].CurrentBalance;
+// ViewData["NLR_CurrentBalanceIND"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].CurrentBalanceIND;
+// ViewData["NLR_OverdueAmount"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OverdueAmount;
+// ViewData["NLR_OverdueAmountIND"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].OverdueAmountIND;
+// ViewData["NLR_InstalmentAmount"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].InstalmentAmount;
+// ViewData["NLR_ArrearsPeriod"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ArrearsPeriod;
+// ViewData["NLR_RepaymentFrequency"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].SubscriberCodeRepaymentFrequency;
+// ViewData["NLR_RepaymentFrequencyDescription"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].RepaymentFrequencyDescription;
+// ViewData["NLR_Terms"] = rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].Terms;
+// ViewData["NLR_StatusCode"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].StatusCode;
+// ViewData["NLR_StatusCodeDesc"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].StatusCodeDesc;
+// ViewData["NLR_StatusDate"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].StatusDate;
+// ViewData["NLR_ThirdPartyName"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ThirdPartyName;
+// ViewData["NLR_ThirdPartySold"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ThirdPartySold;
+// ViewData["NLR_ThirdPartySoldDescription"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].ThirdPartySoldDescription;
+// ViewData["NLR_JointLoanParticipants"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].JointLoanParticipants;
+// ViewData["NLR_PaymentHistory"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistory;
+// ViewData["NLR_PaymentHistoryStatus"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistoryStatus;
+// ViewData["NLR_PaymentHistoryChart"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].PaymentHistoryChart;
+// ViewData["NLR_MonthEndDate"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].MonthEndDate;
+// ViewData["NLR_DateCreated"] =
+// rootObject.ResponseObject.CreditInformation.NLR_Accounts[0].DateCreated; } } else {
+// ViewData["CreditInformationMessage"] = "No Match"; }
+
+// if (rootObject.ResponseObject.DirectorshipInformation != null) { //Directorships
+// ViewData["D_DesignationCode"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DesignationCode;
+// ViewData["D_AppointmentDate"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].AppointmentDate;
+// ViewData["D_DirectorStatus"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorStatus;
+// ViewData["D_DirectorStatusDate"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorStatusDate;
+// ViewData["D_CompanyName"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyName;
+// ViewData["D_CompanyType"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyType;
+// ViewData["D_CompanyStatus"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyStatus;
+// ViewData["D_CompanyStatusCode"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyStatusCode;
+// ViewData["D_CompanyRegistrationNumber"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyRegistrationNumber;
+// ViewData["D_CompanyRegistrationDate"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyRegistrationDate;
+// ViewData["D_CompanyStartDate"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyStartDate;
+// ViewData["D_CompanyTaxNumber"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].CompanyTaxNumber;
+// ViewData["D_DirectorTypeCode"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorTypeCode;
+// ViewData["D_DirectorType"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].DirectorType;
+// ViewData["D_MemberSize"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].MemberSize;
+// ViewData["D_MemberContribution"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].MemberContribution;
+// ViewData["D_MemberContributionType"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].MemberContributionType;
+// ViewData["D_ResignationDate"] =
+// rootObject.ResponseObject.DirectorshipInformation.Directorships[0].ResignationDate; } else {
+// ViewData["DirectorshipInformationMessage"] = "No Match"; }
+
+// if (rootObject.ResponseObject.HistoricalInformation.AddressHistory != null) { //AddressHistory
+// ViewData["AH_TypeDescription"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
+// ViewData["AH_Line1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line1;
+// ViewData["AH_Line2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line2;
+// ViewData["AH_Line3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line3;
+// ViewData["AH_Line4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line4;
+// ViewData["AH_PostalCode"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].PostalCode;
+// ViewData["AH_FullAddress"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
+// ViewData["AH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
+
+// //TelephoneHistory ViewData["TH_TypeDescription"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription;
+// ViewData["TH_FullNumber"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].FullNumber;
+// ViewData["TH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].LastUpdatedDate;
+
+// //EmploymentHistory ViewData["EH_TypeDescription"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].TypeDescription;
+// ViewData["EH_Designation"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
+// ViewData["EH_LastUpdatedDate"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
+// ViewData["EH_EmployeeType"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployeeType;
+// ViewData["EH_SalaryFrequency"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].SalaryFrequency;
+// ViewData["EH_PayslipReference"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].PayslipReference;
+// ViewData["EH_EmployeeNumber"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployeeNumber; } else {
+// ViewData["HistoricalInformationMessage"] = "No Match"; } return View(); } } catch (Exception e) {
+// System.Diagnostics.Debug.WriteLine(e.ToString()); return View(); } }
+
+// public ActionResult CompuScanConsumerProfileDatabase(DatabaseSearch DbSearch) {
+// System.Collections.Generic.List<PersonInformation> personInfoList = new
+// System.Collections.Generic.List<PersonInformation>();
+// System.Collections.Generic.List<HomeAffairsInformation> homeAffairsInformationList = new
+// System.Collections.Generic.List<HomeAffairsInformation>();
+// System.Collections.Generic.List<CreditInformation> creditInformationList = new
+// System.Collections.Generic.List<CreditInformation>(); System.Collections.Generic.List<DataCounts>
+// dataCountsList = new System.Collections.Generic.List<DataCounts>();
+// System.Collections.Generic.List<DebtReviewStatus> debtReviewStatusList = new
+// System.Collections.Generic.List<DebtReviewStatus>();
+// System.Collections.Generic.List<ConsumerStatistics> consumerstatsList = new
+// System.Collections.Generic.List<ConsumerStatistics>(); System.Collections.Generic.List<NLRStats>
+// nlrstatsList = new System.Collections.Generic.List<NLRStats>();
+// System.Collections.Generic.List<CCAStats> ccastatsList = new
+// System.Collections.Generic.List<CCAStats>(); System.Collections.Generic.List<CCA12months>
+// cca12monthsLists = new System.Collections.Generic.List<CCA12months>();
+// System.Collections.Generic.List<CCA24months> cca24monthsList = new
+// System.Collections.Generic.List<CCA24months>(); System.Collections.Generic.List<CCA36months>
+// cca36monthsList = new System.Collections.Generic.List<CCA36months>();
+// System.Collections.Generic.List<NLR12months> nlr12monthsLists = new
+// System.Collections.Generic.List<NLR12months>(); System.Collections.Generic.List<NLR24months>
+// nlr24monthsLists = new System.Collections.Generic.List<NLR24months>();
+// System.Collections.Generic.List<NLR36months> nlr36monthsList = new
+// System.Collections.Generic.List<NLR36months>(); System.Collections.Generic.List<EnquiryHistory>
+// enquiryInformationList = new System.Collections.Generic.List<EnquiryHistory>();
+// System.Collections.Generic.List<AddressHistory> addressInformationList = new
+// System.Collections.Generic.List<AddressHistory>();
+// System.Collections.Generic.List<EmploymentHistory> employmentInformationList = new
+// System.Collections.Generic.List<EmploymentHistory>();
+// System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new
+// System.Collections.Generic.List<TelephoneHistory>(); System.Collections.Generic.List<CPAaccounts>
+// cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
+// //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
+
+// //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference =
+// 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile' string
+// dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName); //string query_uid = $"SELECT * FROM
+// personinformation,homeaffairsinformation,creditinformation,datacounts,debtreviewstatus,addresshistory,telephonehistory,consumerstatistics,nlrstats,ccastats,months,cca24months,cca36months,enquiryhistory,employmenthistory,months,months,nlr36months,cpa_accounts
+// WHERE personinformation.SearchToken = '{DbSearch.token}'"; //Add TABLE paymenthistoryaccountdetails!!!!
+
+// using (var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString)) { conn.Open();
+
+// //**************************************************** personal info***********// string
+// query_uid_personinformation = $"SELECT * FROM personinformation as a WHERE a.SearchToken =
+// '{DbSearch.token}'"; using (var cmd = new MySqlCommand(query_uid_personinformation, conn)) try {
+// using (var reader = cmd.ExecuteReader()) { int DateOfBirth = reader.GetOrdinal("DateOfBirth");
+// int Title = reader.GetOrdinal("Title"); int FirstName = reader.GetOrdinal("FirstName"); int
+// Surname = reader.GetOrdinal("Surname"); int Fullname
+// = reader.GetOrdinal("Fullname"); int IDNumber = reader.GetOrdinal("IDNumber"); int Gender
+// = reader.GetOrdinal("Gender"); int Age = reader.GetOrdinal("Age"); int MaritalStatus =
+// reader.GetOrdinal("MaritalStatus"); int MiddleName1 = reader.GetOrdinal("MiddleName1"); int
+// Reference = reader.GetOrdinal("Reference"); int HasProperties = reader.GetOrdinal("HasProperties");
+
+// //PersonInformation
+
+//                        PersonInformation personInformation = new PersonInformation(); personInformation.DateOfBirth
+//                        = (reader[DateOfBirth] != Convert.DBNull) ? reader[DateOfBirth].ToString() : null;
+//                        personInformation.Title = (reader[Title] != Convert.DBNull) ? reader[Title].ToString() : null;
+//                        personInformation.FirstName = (reader[FirstName] != Convert.DBNull) ?
+//                        reader[FirstName].ToString() : null; personInformation.Surname = (reader[Surname] !=
+//                        Convert.DBNull) ? reader[Surname].ToString() : null; personInformation.Fullname =
+//                        (reader[Fullname] != Convert.DBNull) ? reader[Fullname].ToString() : null;
+//                        personInformation.IDNumber = (reader[IDNumber] != Convert.DBNull) ? reader[IDNumber].ToString() :
+//                        null; personInformation.Gender = (reader[Gender] != Convert.DBNull) ? reader[Gender].ToString() :
+//                        null; personInformation.Age = (reader[Age] != Convert.DBNull) ? reader[Age].ToString() : null;
+//                        personInformation.MaritalStatus = (reader[MaritalStatus] != Convert.DBNull) ?
+//                        reader[MaritalStatus].ToString() : null; personInformation.MiddleName1 = (reader[MiddleName1] !=
+//                        Convert.DBNull) ? reader[MiddleName1].ToString() : null; personInformation.Reference =
+//                        (reader[Reference] != Convert.DBNull) ? reader[Reference].ToString() : null;
+//                        personInformation.HasProperties = (reader[HasProperties] != Convert.DBNull) ?
+//                        Convert.ToBoolean(reader[HasProperties]) : false; //add to the list
+//                        personInfoList.Add(personInformation);
+//                    }
+//                    ViewData["PersonInfoList"] = personInfoList;
+//                    ViewData["PersonInfoListCount"] = personInfoList.Count;
+//                }
+//                catch (Exception err)
+//                {
+//                    //console.log
+//                }
+//            //*****************************************END personal info***********//
+//            //**************************************************** homeaffairsinformation info***********//
+//            string query_uid_homeaffairsinformation = $"SELECT * FROM homeaffairsinformation as a WHERE   a.SearchToken = '{DbSearch.token}'";
+//            using (var cmd = new MySqlCommand(query_uid_homeaffairsinformation, conn)) try
+//                {
+//                    using (var reader = cmd.ExecuteReader())
+//                    {
+//                        //HomeAffairsInformation
+//                        HomeAffairsInformation homeAffairsInformation
+//= new HomeAffairsInformation(); int ExFirstName = reader.GetOrdinal("FirstName"); int
+//DeceasedDate = reader.GetOrdinal("DeceasedDate"); int IDVerified =
+//reader.GetOrdinal("IDVerified"); int SurnameVerified = reader.GetOrdinal("SurnameVerified"); int
+//Warnings = reader.GetOrdinal("Warnings"); int DeceasedStatus =
+//reader.GetOrdinal("DeceasedStatus"); int VerifiedStatus = reader.GetOrdinal("VerifiedStatus");
+//                        int InitialsVerified = reader.GetOrdinal("InitialsVerified"); int CauseOfDeath =
+//                        reader.GetOrdinal("CauseOfDeath"); int VerifiedDate = reader.GetOrdinal("VerifiedDate");
+
+// homeAffairsInformation.FirstName = (reader[ExFirstName] != Convert.DBNull) ?
+// reader[ExFirstName].ToString() : null; homeAffairsInformation.IDVerified = (reader[IDVerified] !=
+// Convert.DBNull) ? reader[IDVerified].ToString() : null; homeAffairsInformation.SurnameVerified =
+// (reader[SurnameVerified] != Convert.DBNull) ? reader[SurnameVerified].ToString() : null;
+// homeAffairsInformation.Warnings = (reader[Warnings] != Convert.DBNull) ?
+// reader[Warnings].ToString() : null; homeAffairsInformation.DeceasedDate = (reader[DeceasedDate]
+// != Convert.DBNull) ? reader[DeceasedDate].ToString() : null;
+// homeAffairsInformation.DeceasedStatus = (reader[DeceasedStatus] != Convert.DBNull) ?
+// reader[DeceasedStatus].ToString() : null; homeAffairsInformation.VerifiedStatus =
+// (reader[VerifiedStatus] != Convert.DBNull) ? reader[VerifiedStatus].ToString() : null;
+// homeAffairsInformation.InitialsVerified = (reader[InitialsVerified] != Convert.DBNull) ?
+// reader[InitialsVerified].ToString() : null; homeAffairsInformation.CauseOfDeath =
+// (reader[CauseOfDeath] != Convert.DBNull) ? reader[CauseOfDeath].ToString() : null;
+// homeAffairsInformation.VerifiedDate = (reader[VerifiedDate] != Convert.DBNull) ?
+// reader[VerifiedDate].ToString() : null; //add to the list
+// homeAffairsInformationList.Add(homeAffairsInformation); }
+
+// //add list to the viewbagviewdata ViewData["HomeAffairsInfoList"] = homeAffairsInformationList;
+// ViewData["HomeAffairsInfoListCount"] = homeAffairsInformationList.Count; } catch (Exception err)
+// { System.Diagnostics.Debug.WriteLine(err.ToString()); } }
+
+// return View(); }
+
+// public ActionResult CompuScanConsumerTrace() { return View(); }
+
+// public ActionResult CompuScanConsumerTraceResults(CompuScan comp) { try { string id =
+// comp.IDNumber; string tele = comp.TelephoneNumber; string teleID = comp.TelephoneID; string
+// traceType = comp.TraceType; string refe = comp.Reference;
+
+// if (traceType == "ID") { string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Consumer Trace By IDNumber"; string action = "ID: " + id; string user_id
+// = Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/consumertrace/idnumber/"; //create RestSharp
+// client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { SessionToken = authtoken, Reference = us,//search reference: probably store in
+// logs IDNumber = id };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!! JToken
+// token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+
+// var mes = ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline") {
+// ViewData["Message"] = "Service is offline"; return View(); } else { int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerTrace");
+
+// ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
+// criteria above.";
+
+// ViewData["PersonInformationMessage"] =
+// rootObject.ResponseObject.PersonInformation["DateOfBirth"]; ViewData["CreditInformationMessage"]
+// = rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
+// ViewData["HomeAffairsInformationMessage"] =
+// rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
+// ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeCode;
+
+// if (rootObject.ResponseObject.PersonInformation != null) { //personaInformantion
+// ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+// ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+// ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname; ViewData["Fullname"] =
+// rootObject.ResponseObject.PersonInformation.Fullname; ViewData["IDNumber"] =
+// rootObject.ResponseObject.PersonInformation.IDNumber; ViewData["Gender"] =
+// rootObject.ResponseObject.PersonInformation.Gender; ViewData["Age"] =
+// rootObject.ResponseObject.PersonInformation.Age; ViewData["MiddleName1"] =
+// rootObject.ResponseObject.PersonInformation.MiddleName1; ViewData["MiddleName2"] =
+// rootObject.ResponseObject.PersonInformation.MiddleName2; ViewData["HasProperties"] =
+// rootObject.ResponseObject.PersonInformation.HasProperties; } else {
+// ViewData["PersonInformationMessage"] = "No Match"; }
+
+// if (ViewData["CreditInformationMessage"].ToString() != "") { //FraudIndicatorSummary
+// ViewData["ProtectiveVerification"] =
+// rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"]; }
+// else { ViewData["CreditInformationMessage"] = "No Match"; }
+
+// if (ViewData["HomeAffairsInformationMessage"].ToString() != "") { //HomeAffairsInformation
+// ViewData["DeceasedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
+// ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
+// ViewData["CauseOfDeath"] = rootObject.ResponseObject.HomeAffairsInformation.CauseOfDeath;
+// ViewData["VerifiedDate"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedDate;
+// ViewData["VerifiedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.VerifiedStatus; }
+// else { ViewData["HomeAffairsInformationMessage"] = "No Match"; }
+
+// if (ViewData["HistoricalInformationMessage"].ToString() != "") { //AddressHistory
+// ViewData["TypeCode"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeCode; ViewData["AH_Line1"]
+// = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line1; ViewData["AH_Line2"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line2; ViewData["AH_Line3"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line3; ViewData["AH_Line4"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line4;
+// ViewData["AH_PostalCode"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].PostalCode;
+// ViewData["AH_FullAddress"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
+// ViewData["AH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
+
+// //TelephoneHistory ViewData["TH_TypeDescription"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription;
+// ViewData["TH_TypeCode"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeCode;
+// ViewData["TH_FullNumber"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].Number;
+// ViewData["TH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].LastUpdatedDate;
+
+// //EmploymentHistory ViewData["EH_EmployerName"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
+// ViewData["EH_Designation"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
+// ViewData["EH_LastUpdatedDate"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate; } else {
+// ViewData["HistoricalInformationMessage"] = "No Match"; } return View(); } } else if (traceType ==
+// "tele") { string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Consumer Trace By Telephone Number"; string action = "Telephone Number:
+// " + tele; string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/consumertrace/telephonenumber/"; //create
+// RestSharp client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { SessionToken = authtoken, Reference = us,//search reference: probably store in
+// logs TelephoneNumber = tele };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+// System.Diagnostics.Debug.WriteLine(o); JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+
+// var mes = ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline") {
+// ViewData["Message"] = "Service is offline"; return View(); } else { int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+
+// ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
+// criteria above.";
+
+// ViewData["PersonInformationMessage"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+
+// if (ViewData["PersonInformationMessage"].ToString() != "") { //personaInformantion
+// ViewData["FirstName"] = rootObject.ResponseObject[0].PersonInformation.FirstName;
+// ViewData["Surname"] = rootObject.ResponseObject[0].PersonInformation.Surname;
+// ViewData["Fullname"] = rootObject.ResponseObject[0].PersonInformation.Fullname;
+// ViewData["IDNumber"] = rootObject.ResponseObject[0].PersonInformation.IDNumber;
+// ViewData["MiddleName1"] = rootObject.ResponseObject[0].PersonInformation.MiddleName1;
+// ViewData["HasProperties"] = rootObject.ResponseObject[0].PersonInformation.HasProperties; } else
+// { ViewData["PersonInformationMessage"] = "No Match"; } return View(); } } else if (traceType ==
+// "teleID") { string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Consumer Trace By TelephoneID"; string action = "TelephoneID: " + tele;
+// string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/consumertrace/telephoneid/"; //create RestSharp
+// client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { SessionToken = authtoken, Reference = us,//search reference: probably store in
+// logs TelephoneID = id };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; } } catch (Exception e) {
+// TempData["msg"] = "An error occured, please check the entered values."; }
+
+// return View(); }
+
+// public ActionResult CompuScanContactInformation() { return View(); }
+
+// public ActionResult CompuScanContactInformationResults(CompuScan comp) { string id =
+// comp.IDNumber; string passport = comp.passport; string surname = comp.Surname; string firstname =
+// comp.FirstName; string refe = comp.Reference;
+
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Contact Information"; string action = "First Name: " + firstname + ";
+// Surname: " + surname + "; Passport: " + passport + "; ID: " + id; string user_id =
+// Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/contactinformation/"; //create RestSharp client
+// and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { sessionToken = authtoken, reference = us,//search reference: probably store in
+// logs idNumber = id, passport = passport, surname = surname, firstname = firstname, };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o =
+// JObject.Parse(response.Content); JObject o =
+// JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; var mes =
+// ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline") { ViewData["Message"] =
+// "Service is offline"; return View(); } else { int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerTrace");
+
+// ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
+// criteria above.";
+
+// ViewData["PersonInformationMessage"] =
+// rootObject.ResponseObject.PersonInformation["DateOfBirth"];
+// //ViewData["CreditInformationMessage"] =
+// rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
+// //ViewData["HomeAffairsInformationMessage"] =
+// rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
+// ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
+
+// if (ViewData["PersonInformationMessage"].ToString() != "") { //personaInformantion
+// ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+// ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+// ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname; ViewData["Fullname"] =
+// rootObject.ResponseObject.PersonInformation.Fullname; ViewData["IDNumber"] =
+// rootObject.ResponseObject.PersonInformation.IDNumber; ViewData["Gender"] =
+// rootObject.ResponseObject.PersonInformation.Gender; ViewData["Age"] =
+// rootObject.ResponseObject.PersonInformation.Age; ViewData["HasProperties"] =
+// rootObject.ResponseObject.PersonInformation.HasProperties; } else {
+// ViewData["PersonInformationMessage"] = "No Match"; }
+
+// if (ViewData["HistoricalInformationMessage"].ToString() != "") { //AddressHistory
+// ViewData["AH_TypeDescription"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
+// ViewData["AH_Line1"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line1;
+// ViewData["AH_Line2"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line2;
+// ViewData["AH_Line3"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line3;
+// ViewData["AH_Line4"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].Line4;
+// ViewData["AH_PostalCode"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].PostalCode;
+// ViewData["AH_FullAddress"] =
+// rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].FullAddress;
+// ViewData["AH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].LastUpdatedDate;
+
+// //TelephoneHistory ViewData["TH_TypeDescription"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].TypeDescription;
+// ViewData["TH_FullNumber"] =
+// rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].Number;
+// ViewData["TH_LastUpdatedDate"] = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[0].LastUpdatedDate;
+
+// //EmploymentHistory ViewData["EH_EmployerName"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
+// ViewData["EH_Designation"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
+// ViewData["EH_LastUpdatedDate"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate; } else {
+// ViewData["HistoricalInformationMessage"] = "No Match"; } } return View(); }
+
+// public ActionResult CompuScanEmploymentConfidenceIndex() { return View(); }
+
+// public ActionResult CompuScanEmploymentConfidenceIndexResults(CompuScan comp) { string id =
+// comp.IDNumber; string firstname = comp.FirstName; string surname = comp.Surname; string refe = comp.Reference;
+
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Employment Confidence Index"; string action = "First Name: " + firstname
+// + "; Surname: " + surname + "; ID: " + id; string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/EmploymentConfidenceIndex/"; //create RestSharp
+// client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { SessionToken = authtoken, Reference = us,//search reference: probably store in
+// logs IDNumber = id, Surname = surname, Firstname = firstname };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; var mes =
+// ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline") { ViewData["Message"] =
+// "Service is offline"; return View(); } else { int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanEmploymentConfidenceIndex");
+
+// ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
+// criteria above.";
+
+// ViewData["PersonInformationMessage"] =
+// rootObject.ResponseObject.PersonInformation["DateOfBirth"];
+// //ViewData["CreditInformationMessage"] =
+// rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
+// //ViewData["HomeAffairsInformationMessage"] =
+// rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
+// ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
+
+// if (ViewData["PersonInformationMessage"].ToString() != "") { //personaInformantion
+// ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+// ViewData["FirstName"] = rootObject.ResponseObject.PersonInformation.FirstName;
+// ViewData["Surname"] = rootObject.ResponseObject.PersonInformation.Surname; ViewData["Fullname"] =
+// rootObject.ResponseObject.PersonInformation.Fullname; ViewData["IDNumber"] =
+// rootObject.ResponseObject.PersonInformation.IDNumber; ViewData["Gender"] =
+// rootObject.ResponseObject.PersonInformation.Gender; ViewData["Age"] =
+// rootObject.ResponseObject.PersonInformation.Age; ViewData["HasProperties"] =
+// rootObject.ResponseObject.PersonInformation.HasProperties; } else {
+// ViewData["PersonInformationMessage"] = "No Match"; }
+
+// if (ViewData["HistoricalInformationMessage"].ToString() != "") { //EmploymentHistory
+// ViewData["EH_EmployerName"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].EmployerName;
+// ViewData["EH_Designation"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].Designation;
+// ViewData["EH_LastUpdatedDate"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].LastUpdatedDate;
+// ViewData["EH_FirstReportedDate"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].FirstReportedDate;
+// ViewData["EH_NumberOfAccounts"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].NumberOfAccounts;
+// ViewData["EH_ConfidenceIndex"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].ConfidenceIndex;
+// ViewData["EH_HighestConfidence"] =
+// rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[0].HighestConfidence; } else {
+// ViewData["HistoricalInformationMessage"] = "No Match"; } } return View(); }
+
+// public ActionResult CompuScanGrossMonthlyIncomeByIDNumber() { return View(); }
+
+// public ActionResult CompuScanGrossMonthlyIncomeByIDNumberResults(CompuScan comp) { string id =
+// comp.IDNumber; string refe = comp.Reference;
+
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan Employment Confidence Index"; string action = "ID: " + id; string
+// user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/credit/compuscan/grossmonthlyincome/idnumber/"; //create
+// RestSharp client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { SessionToken = authtoken, Reference = us,//search reference: probably store in
+// logs IDNumber = id, };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; var mes =
+// ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline" || mes == "NotFound") {
+// ViewData["Message"] = "Service is offline";
+
+// ViewData["Message2"] = "No recent searches available. Please modify criteria above."; return
+// View(); } else { int SearchID = rootObject.ResponseObject.SearchInformation.SearchID; string
+// SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanGrossMonthlyIncomeByIDNumber");
+
+// ViewData["Message"] = "good";
+
+// ViewData["PersonInformationMessage"] = rootObject.ResponseObject.PersonInformation.IDNumber;
+// //ViewData["CreditInformationMessage"] =
+// rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
+// //ViewData["HomeAffairsInformationMessage"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
+
+// if (ViewData["PersonInformationMessage"].ToString() != "") { //personaInformantion
+// ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+// ViewData["IncomeBracket"] = rootObject.ResponseObject.PersonInformation.IncomeBracket;
+// ViewData["IncomeGrossEstimate"] =
+// rootObject.ResponseObject.PersonInformation.IncomeGrossEstimate; ViewData["IncomeConfidence"] =
+// rootObject.ResponseObject.PersonInformation.IncomeConfidence; ViewData["IDNumber"] =
+// rootObject.ResponseObject.PersonInformation.IDNumber; ViewData["Gender"] =
+// rootObject.ResponseObject.PersonInformation.Gender; ViewData["Age"] =
+// rootObject.ResponseObject.PersonInformation.Age; ViewData["HasProperties"] =
+// rootObject.ResponseObject.PersonInformation.HasProperties; } else {
+// ViewData["PersonInformationMessage"] = "No Match"; } } return View(); }
+
+// public ActionResult CompuScanIDPhotoVerification() { return View(); }
+
+// public ActionResult CompuScanIDPhotoVerificationResults(CompuScan comp) { string id =
+// comp.IDNumber; string refe = comp.Reference;
+
+// string dbConnectionString =
+// ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};",
+// serverIp, username, password, databaseName);
+
+// var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+// DateTime time = DateTime.Now;
+
+// string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
+// string page = "CompuScan ID Photo Verification"; string action = "ID: " + id; string user_id =
+// Session["ID"].ToString(); string us = Session["Name"].ToString();
+
+// ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
+// DateTime.Today.ToShortDateString(); ViewData["ref"] = refe;
+
+// string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
+// "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+// conn.Open();
+
+// var cmd2 = new MySqlCommand(query_uid, conn);
+
+// var reader2 = cmd2.ExecuteReader();
+
+// conn.Close();
+
+// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
+// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
+// "https://rest.searchworks.co.za/compuscan/idphotoverification/"; //create RestSharp client and
+// POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+
+// //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
+// "application/json"); //object containing input parameter data for company() API method var
+// apiInput = new { sessionToken = authtoken, reference = us,//search reference: probably store in
+// logs idNumber = id, };
+
+// //add parameters and token to request request.Parameters.Clear();
+// request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput),
+// ParameterType.RequestBody); request.AddParameter("Authorization", "Bearer " + authtoken,
+// ParameterType.HttpHeader); //ApiResponse is a class to model the data we want from the API response
+
+// //make the API request and get a response IRestResponse response = client.Execute<RootObject>(request);
+
+// dynamic rootObject = JObject.Parse(response.Content); //JObject o = JObject.Parse(response.Content);
+
+// JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+// JToken token = JToken.Parse(response.Content);
+
+// ViewData["ResponseMessage"] = rootObject.ResponseMessage; var mes =
+// ViewData["ResponseMessage"].ToString(); if (mes == "ServiceOffline") { ViewData["Message"] =
+// "Service is offline"; ViewData["Message2"] = "No recent searches available. Please modify
+// criteria above."; return View(); } else { int SearchID =
+// rootObject.ResponseObject.SearchInformation.SearchID; string SearchUserName =
+// rootObject.ResponseObject.SearchInformation.SearchUserName; string ReportDate =
+// rootObject.ResponseObject.SearchInformation.ReportDate; string ResponseType =
+// rootObject.ResponseMessage; ; string Name = ViewData["user"].ToString(); string Reference =
+// rootObject.ResponseObject.SearchInformation.Reference; string SearchToken =
+// rootObject.ResponseObject.SearchInformation.SearchToken; string CallerModule =
+// rootObject.ResponseObject.SearchInformation.CallerModule; string DataSupplier =
+// rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
+// rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
+// rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
+// SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
+// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanIDPhotoVerification");
+
+// ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
+// criteria above.";
+
+// ViewData["PersonInformationMessage"] =
+// rootObject.ResponseObject.PersonInformation["DateOfBirth"];
+// //ViewData["CreditInformationMessage"] =
+// rootObject.ResponseObject.CreditInformation.FraudIndicatorSummary["ProtectiveVerification"];
+// ViewData["HomeAffairsInformationMessage"] =
+// rootObject.ResponseObject.HomeAffairsInformation.IDNumber;
+// //ViewData["HistoricalInformationMessage"] = rootObject.ResponseObject.HistoricalInformation.AddressHistory[0].TypeDescription;
+
+// if (ViewData["PersonInformationMessage"].ToString() != "") { //personaInformantion
+// ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
+// ViewData["MaritalStatus"] = rootObject.ResponseObject.PersonInformation.MaritalStatus;
+// ViewData["MarriageDate"] = rootObject.ResponseObject.PersonInformation.MarriageDate;
+// ViewData["CountryOfBirth"] = rootObject.ResponseObject.PersonInformation.CountryOfBirth;
+// ViewData["Gender"] = rootObject.ResponseObject.PersonInformation.Gender; ViewData["Age"] =
+// rootObject.ResponseObject.PersonInformation.Age; ViewData["HasProperties"] =
+// rootObject.ResponseObject.PersonInformation.HasProperties; } else {
+// ViewData["PersonInformationMessage"] = "No Match"; }
+
+// if (ViewData["HomeAffairsInformationMessage"].ToString() != "") { //personaInformantion
+// ViewData["IDNumber"] = rootObject.ResponseObject.HomeAffairsInformation.IDNumber;
+// ViewData["IDPhotoURL"] = rootObject.ResponseObject.HomeAffairsInformation.IDPhotoURL;
+// ViewData["FirstName"] = rootObject.ResponseObject.HomeAffairsInformation.FirstName;
+// ViewData["Surname"] = rootObject.ResponseObject.HomeAffairsInformation.Surname;
+// ViewData["DeceasedStatus"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedStatus;
+// ViewData["DeceasedDate"] = rootObject.ResponseObject.HomeAffairsInformation.DeceasedDate;
+// ViewData["IDIssuedDate"] = rootObject.ResponseObject.HomeAffairsInformation.IDIssuedDate;
+// ViewData["IDCardIssued"] = rootObject.ResponseObject.HomeAffairsInformation.IDCardIssued;
+// ViewData["IDNumberBlocked"] = rootObject.ResponseObject.HomeAffairsInformation.IDNumberBlocked;
+// ViewData["IDSequenceNumber"] = rootObject.ResponseObject.HomeAffairsInformation.IDSequenceNumber;
+// ViewData["OnHANIS"] = rootObject.ResponseObject.HomeAffairsInformation.OnHANIS; ViewData["OnNPR"]
+// = rootObject.ResponseObject.HomeAffairsInformation.OnNPR; } else {
+// ViewData["HomeAffairsInformationMessage"] = "No Match"; } } return View(); }

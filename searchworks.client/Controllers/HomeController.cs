@@ -443,131 +443,138 @@ namespace searchworks.client.Controllers
 
         public ActionResult CIPCCompanyDetails(string comID)
         {
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
-            {
-                //exit with a warning
-            }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/cipc/company/companyid/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
-            {
-                SessionToken = authtoken,
-                //CipcSearchBy = 2,company name contains: See documentation
-                Reference = authtoken,//search reference: probably store in logs
-                CompanyID = comID,
-                SearchDescription = ""
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-            Dictionary<string, string> arrayList = new Dictionary<string, string>();
-
-            List<string> thatlist = new List<string>();
-            Dictionary<int, Dictionary<string, string>> MianArrayList = new Dictionary<int, Dictionary<string, string>>();
-            elements = rootObject.ResponseObject.Directors;
-            ViewData["TheCount"] = elements.Count;
-
-            List<Directors> DirecD;
-            DirecD = new List<Directors>();
-            for (int count = 0; count < (elements.Count); count++)
-            {
-                string DirectorID = rootObject.ResponseObject.Directors[count].DirectorID;
-                string FirstName = rootObject.ResponseObject.Directors[count].FirstName;
-                string Surname = rootObject.ResponseObject.Directors[count].Surname;
-                string Fullname = rootObject.ResponseObject.Directors[count].Fullname;
-                string IdNumber = rootObject.ResponseObject.Directors[count].IdNumber;
-                string DateOfBirth = rootObject.ResponseObject.Directors[count].DateOfBirth;
-                string Age = rootObject.ResponseObject.Directors[count].Age;
-                string StatusCode = rootObject.ResponseObject.Directors[count].StatusCode;
-                string Status = rootObject.ResponseObject.Directors[count].Status;
-                string TypeCode = rootObject.ResponseObject.Directors[count].TypeCode;
-                string Type = rootObject.ResponseObject.Directors[count].Type;
-                string AppointmentDate = rootObject.ResponseObject.Directors[count].AppointmentDate;
-                string ResignationDate = rootObject.ResponseObject.Directors[count].ResignationDate;
-                string MemberContribution = rootObject.ResponseObject.Directors[count].MemberContribution;
-                string MemberSize = rootObject.ResponseObject.Directors[count].MemberSize;
-                string ResidentialAddress1 = rootObject.ResponseObject.Directors[count].ResidentialAddress1;
-                string ResidentialAddress2 = rootObject.ResponseObject.Directors[count].ResidentialAddress2;
-                string ResidentialAddress3 = rootObject.ResponseObject.Directors[count].ResidentialAddress3;
-                string ResidentialAddress4 = rootObject.ResponseObject.Directors[count].ResidentialAddress4;
-                string ResidentialPostCode = rootObject.ResponseObject.Directors[count].ResidentialPostCode;
-                string PostalAddress1 = rootObject.ResponseObject.Directors[count].PostalAddress1;
-                string PostalAddress2 = rootObject.ResponseObject.Directors[count].PostalAddress2;
-                string PostalAddress3 = rootObject.ResponseObject.Directors[count].PostalAddress3;
-                string PostalAddress4 = rootObject.ResponseObject.Directors[count].PostalAddress4;
-                string PostalPostCode = rootObject.ResponseObject.Directors[count].PostalPostCode;
-                string CountryCode = rootObject.ResponseObject.Directors[count].CountryCode;
-                string Country = rootObject.ResponseObject.Directors[count].Country;
-                string NationalityCode = rootObject.ResponseObject.Directors[count].NationalityCode;
-                string Gender = rootObject.ResponseObject.Directors[count].Gender;
-
-                thatlist.Add(FirstName);
-
-                ViewData["ArrayList"] = arrayList;
-                ViewData["thatlist"] = thatlist;
-
-                DirecD.Add(new Directors
+            try {
+                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                if (!tokenValid(authtoken))
                 {
-                    DirectorID = DirectorID,
-                    FirstName = FirstName,
-                    Surname = Surname,
-                    Gender = Gender,
-                    IdNumber = IdNumber,
-                    Age = Age,
-                    Status = Status,
-                    ResignationDate = ResignationDate,
-                });
+                    //exit with a warning
+                }
 
-                MianArrayList.Add(count, arrayList);
-                ViewData[" MianArrayList"] = MianArrayList;
-                ViewData["DirectorsDetails"] = DirecD;
+                //company search API call
+                var url = "https://rest.searchworks.co.za/cipc/company/companyid/";
+
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
+
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                //object containing input parameter data for company() API method
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    //CipcSearchBy = 2,company name contains: See documentation
+                    Reference = authtoken,//search reference: probably store in logs
+                    CompanyID = comID,
+                    SearchDescription = ""
+                };
+
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
+
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                Dictionary<string, string> arrayList = new Dictionary<string, string>();
+
+                List<string> thatlist = new List<string>();
+                Dictionary<int, Dictionary<string, string>> MianArrayList = new Dictionary<int, Dictionary<string, string>>();
+                elements = rootObject.ResponseObject.Directors;
+                ViewData["TheCount"] = elements.Count;
+
+                List<Directors> DirecD;
+                DirecD = new List<Directors>();
+                for (int count = 0; count < (elements.Count); count++)
+                {
+                    string DirectorID = rootObject.ResponseObject.Directors[count].DirectorID;
+                    string FirstName = rootObject.ResponseObject.Directors[count].FirstName;
+                    string Surname = rootObject.ResponseObject.Directors[count].Surname;
+                    string Fullname = rootObject.ResponseObject.Directors[count].Fullname;
+                    string IdNumber = rootObject.ResponseObject.Directors[count].IdNumber;
+                    string DateOfBirth = rootObject.ResponseObject.Directors[count].DateOfBirth;
+                    string Age = rootObject.ResponseObject.Directors[count].Age;
+                    string StatusCode = rootObject.ResponseObject.Directors[count].StatusCode;
+                    string Status = rootObject.ResponseObject.Directors[count].Status;
+                    string TypeCode = rootObject.ResponseObject.Directors[count].TypeCode;
+                    string Type = rootObject.ResponseObject.Directors[count].Type;
+                    string AppointmentDate = rootObject.ResponseObject.Directors[count].AppointmentDate;
+                    string ResignationDate = rootObject.ResponseObject.Directors[count].ResignationDate;
+                    string MemberContribution = rootObject.ResponseObject.Directors[count].MemberContribution;
+                    string MemberSize = rootObject.ResponseObject.Directors[count].MemberSize;
+                    string ResidentialAddress1 = rootObject.ResponseObject.Directors[count].ResidentialAddress1;
+                    string ResidentialAddress2 = rootObject.ResponseObject.Directors[count].ResidentialAddress2;
+                    string ResidentialAddress3 = rootObject.ResponseObject.Directors[count].ResidentialAddress3;
+                    string ResidentialAddress4 = rootObject.ResponseObject.Directors[count].ResidentialAddress4;
+                    string ResidentialPostCode = rootObject.ResponseObject.Directors[count].ResidentialPostCode;
+                    string PostalAddress1 = rootObject.ResponseObject.Directors[count].PostalAddress1;
+                    string PostalAddress2 = rootObject.ResponseObject.Directors[count].PostalAddress2;
+                    string PostalAddress3 = rootObject.ResponseObject.Directors[count].PostalAddress3;
+                    string PostalAddress4 = rootObject.ResponseObject.Directors[count].PostalAddress4;
+                    string PostalPostCode = rootObject.ResponseObject.Directors[count].PostalPostCode;
+                    string CountryCode = rootObject.ResponseObject.Directors[count].CountryCode;
+                    string Country = rootObject.ResponseObject.Directors[count].Country;
+                    string NationalityCode = rootObject.ResponseObject.Directors[count].NationalityCode;
+                    string Gender = rootObject.ResponseObject.Directors[count].Gender;
+
+                    thatlist.Add(FirstName);
+
+                    ViewData["ArrayList"] = arrayList;
+                    ViewData["thatlist"] = thatlist;
+
+                    DirecD.Add(new Directors
+                    {
+                        DirectorID = DirectorID,
+                        FirstName = FirstName,
+                        Surname = Surname,
+                        Gender = Gender,
+                        IdNumber = IdNumber,
+                        Age = Age,
+                        Status = Status,
+                        ResignationDate = ResignationDate,
+                    });
+
+                    MianArrayList.Add(count, arrayList);
+                    ViewData[" MianArrayList"] = MianArrayList;
+                    ViewData["DirectorsDetails"] = DirecD;
+                }
+
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
+                ViewData["CompanyID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
+                ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
+                ViewData["CompanyStatus"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
+                ViewData["CompanyType"] = rootObject.ResponseObject.CompanyInformation.CompanyType;
+                ViewData["FinancialYearEnd"] = rootObject.ResponseObject.CompanyInformation.FinancialYearEnd;
+                ViewData["RegistrationDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
+                ViewData["Region"] = rootObject.ResponseObject.CompanyInformation.Region;
+                ViewData["Country"] = rootObject.ResponseObject.CompanyInformation.Country;
+
+                ViewData["PhysicalAddressLine1"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine1;
+                ViewData["PhysicalAddressLine2"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine2;
+                ViewData["PhysicalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine3;
+                ViewData["PhysicalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine4;
+                ViewData["PhysicalPostCode"] = rootObject.ResponseObject.CompanyInformation.PhysicalPostCode;
+
+                ViewData["PostalAddressLine1"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine1;
+                ViewData["PostalAddressLine2"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine2;
+                ViewData["PostalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine3;
+                ViewData["PostalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine4;
+                ViewData["PostalPostCode"] = rootObject.ResponseObject.CompanyInformation.PostalPostCode;
+                TempData.Keep();
+                return View();
             }
-
-            TempData["ResponseMessage"] = rootObject.ResponseMessage;
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-            ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
-            ViewData["CompanyID"] = rootObject.ResponseObject.CompanyInformation.CompanyID;
-            ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CompanyInformation.CompanyRegistrationNumber;
-            ViewData["CompanyStatus"] = rootObject.ResponseObject.CompanyInformation.CompanyStatus;
-            ViewData["CompanyType"] = rootObject.ResponseObject.CompanyInformation.CompanyType;
-            ViewData["FinancialYearEnd"] = rootObject.ResponseObject.CompanyInformation.FinancialYearEnd;
-            ViewData["RegistrationDate"] = rootObject.ResponseObject.CompanyInformation.RegistrationDate;
-            ViewData["Region"] = rootObject.ResponseObject.CompanyInformation.Region;
-            ViewData["Country"] = rootObject.ResponseObject.CompanyInformation.Country;
-
-            ViewData["PhysicalAddressLine1"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine1;
-            ViewData["PhysicalAddressLine2"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine2;
-            ViewData["PhysicalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine3;
-            ViewData["PhysicalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PhysicalAddressLine4;
-            ViewData["PhysicalPostCode"] = rootObject.ResponseObject.CompanyInformation.PhysicalPostCode;
-
-            ViewData["PostalAddressLine1"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine1;
-            ViewData["PostalAddressLine2"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine2;
-            ViewData["PostalAddressLine3"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine3;
-            ViewData["PostalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine4;
-            ViewData["PostalPostCode"] = rootObject.ResponseObject.CompanyInformation.PostalPostCode;
-            TempData.Keep();
-            return View();
+            catch (Exception e) {
+                TempData["Msg"] = e.ToString();
+                return View();
+            }
+           
         }
 
         public ActionResult CSICompanyRecords()

@@ -48,7 +48,7 @@
                 <div class="seaRes">
                     Search Results
                 </div>
-                <table class="table table-striped"style="table-layout:fixed; width: 100%;">
+                <table class="table table-striped" style="table-layout:fixed; width: 100%;">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -63,7 +63,7 @@
                             <td>@TempData["FirstName"]</td>
                             <td>@TempData["Surname"]</td>
                             <td>@TempData["IDNumber"]</td>
-                            <td> @TempData["Age"]</td>
+                            <td>@TempData["Age"]</td>
                             <td>@TempData["DateOfBirth"]</td>
                             <td>
                                 @Html.ActionLink("View more", "CSIPersonalRecordsDetails", "Individual", new { indiID = @TempData["IDNumber"] }, new { @id = "view", @class = "seaMore" })

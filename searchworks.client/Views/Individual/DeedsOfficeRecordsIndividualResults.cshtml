@@ -11,86 +11,96 @@
 <div class="col-md-10 col-sm-10">
     <div class="sea act">SEARCH RESULTS</div>
     <div class="con2">
-        <div class="left_col">
-            <div class="results">
-                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                <p>2 Results</p>
+        @if (TempData["msg"] != null)
+        {
+
+            <div>@TempData["msg"].ToString() </div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+
+        }
+        else
+        {
+            <div class="left_col">
+                <div class="results">
+                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                    <p>2 Results</p>
+                </div>
+                <p class="num">@ViewData["ComName"]</p>
+                <p class="num2">CIPC Company Search</p>
+
+                <div class="multi act">
+                    Multiple Results
+                </div>
+                <div class="multi non">
+                    Detailed Information
+                </div>
+
+                <div class="seaInfo">
+                    Search Information
+                </div>
+
+                <div class="userInfo">
+                    <p class="">User:<span>@ViewData["user"]</span></p>
+                    <p class="">Date:<span>@ViewData["date"]</span></p>
+                    <p class="">Reference:<span>@ViewData["ref"]</span></p>
+                    <p class="">Request:<span> @ViewData["ResponseMessage"]</span></p>
+                </div>
             </div>
-            <p class="num">@ViewData["ComName"]</p>
-            <p class="num2">CIPC Company Search</p>
+            <div class="right_col">
+                <div class="seaRes">
+                    Search Results
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
 
-            <div class="multi act">
-                Multiple Results
+                            <th>Company ID</th>
+                            <th>Registration number</th>
+                            <th>Company Name</th>
+                            <th>Translated Name</th>
+                            <th>Registration Date</th>
+                            <th>Status Code</th>
+                            <th class="last">Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @*<tbody>
+
+                            @foreach (var item in DeedsInformation)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CompanyID)
+                                    </td>
+                                    <td>
+
+                                        @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CompanyName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CompanyTranslatedName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CompanyStatusCode)
+                                    </td>
+                                    <td class="last">
+                                        @Html.DisplayFor(modelItem => item.CompanyStatus)
+                                    </td>
+                                    <td>
+
+                                        @Html.ActionLink("Search more", "CIPCCompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>*@
+                </table>
             </div>
-            <div class="multi non">
-                Detailed Information
-            </div>
-
-            <div class="seaInfo">
-                Search Information
-            </div>
-
-            <div class="userInfo">
-                <p class="">User:<span>@ViewData["user"]</span></p>
-                <p class="">Date:<span>@ViewData["date"]</span></p>
-                <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                <p class="">Request:<span> @ViewData["ResponseMessage"]</span></p>
-            </div>
-        </div>
-        <div class="right_col">
-            <div class="seaRes">
-                Search Results
-            </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-
-                        <th>Company ID</th>
-                        <th>Registration number</th>
-                        <th>Company Name</th>
-                        <th>Translated Name</th>
-                        <th>Registration Date</th>
-                        <th>Status Code</th>
-                        <th class="last">Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                @*<tbody>
-
-                        @foreach (var item in DeedsInformation)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyID)
-                                </td>
-                                <td>
-
-                                    @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyTranslatedName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CompanyStatusCode)
-                                </td>
-                                <td class="last">
-                                    @Html.DisplayFor(modelItem => item.CompanyStatus)
-                                </td>
-                                <td>
-
-                                    @Html.ActionLink("Search more", "CIPCCompanyDetails", "Home", new { comID = item.CompanyID }, new { @id = "view", @class = "seaMore" })
-                                </td>
-                            </tr>
-                        }
-                    </tbody>*@
-            </table>
-        </div>
+        }
     </div>
 </div>
 

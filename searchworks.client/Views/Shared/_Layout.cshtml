@@ -33,16 +33,16 @@
 
     <div class="container-fluid">
         <div class="row content">
-            <div class="col-md-2 col-sm-2 sidenav">
+            <div class="col-md-2 col-sm-2 sidenav"  style="">
                 <img src="~/Content/img/White Logo.png" alt="can't display image" id="imgs">
-                <div id="jquery-accordion-menu" class="jquery-accordion-menu">
+                <div id="jquery-accordion-menu" class="jquery-accordion-menu" style="height:100%;">
                     <ul>
                         <li>
                             <a href="#"><i class="fas fa-user-alt"></i>INDIVIDUAL </a>
                             <ul class="submenu">
                                 <li><a href="@Url.Action("CSIPersonalRecords","Individual")">CSI Person Records</a></li>
                                 <li><a href="@Url.Action("DatabasePropertyIndividual","Individual")">Database Property</a></li>
-                                <li><a href="@Url.Action("DeedsOfficeRecordsIndividual","Individual")">Deeds Office Records</a></li>
+                                <li><a href="#" @*href="@Url.Action("DeedsOfficeRecordsIndividual","Individual")"*@>Deeds Office Records</a></li>
                             </ul>
                         </li>
                         <li>
@@ -72,7 +72,7 @@
                             <ul class="submenu">
                                 <li><a href="@Url.Action("CombinedConsumerTrace","Credit")">Combined Consumer Trace</a></li>
                                 <li><a href="@Url.Action("CombinedConsumerCreditReport","Credit")">Combined Credit Report</a></li>
-                                <li>
+                                @*<li>
                                     <a href="#">CompuScan</a>
                                     <ul class="submenu">
                                         <li><a href="@Url.Action("CompuScanBankCodesDocument","Credit")">- Bank Codes Document</a></li>
@@ -84,7 +84,7 @@
                                         <li><a href="@Url.Action("CompuScanGrossMonthlyIncomeByIDNumber","Credit")">- Gross Monthly Income <br> By ID Number</a></li>
                                         <li><a href="@Url.Action("CompuScanIDPhotoVerification","Credit")">- ID Photo Verification</a></li>
                                     </ul>
-                                </li>
+                                </li>*@
                                 <li>
                                     <a href="#">Experian</a>
                                     <ul class="submenu">
@@ -140,7 +140,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="@Url.Action("IntelligenceReport","IntelligenceReport")"><i class="fas fa-chart-line"></i>INTELLIGENCE REPORT</a>
+                            <a style="display:flex;word-break: break-all" href="@Url.Action("IntelligenceReport","IntelligenceReport")"><i class="fas fa-chart-line"></i>INTELLIGENCE REPORT</a>
                         </li>
                         <li>
                             <a href="#"><i class="fas fa-box"></i>BULK SEARCH<br><span class="coming">(COMING SOON)</span></a>
