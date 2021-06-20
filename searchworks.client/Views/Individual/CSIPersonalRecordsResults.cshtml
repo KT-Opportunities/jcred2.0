@@ -65,7 +65,7 @@
                             <td>@TempData["IDNumber"]</td>
                             <td>@TempData["Age"]</td>
                             <td>@TempData["DateOfBirth"]</td>
-                            <td>
+                            <td class="last">
                                 @Html.ActionLink("View more", "CSIPersonalRecordsDetails", "Individual", new { indiID = @TempData["IDNumber"] }, new { @id = "view", @class = "seaMore" })
                             </td>
                         </tr>

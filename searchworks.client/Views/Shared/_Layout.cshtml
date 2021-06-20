@@ -19,21 +19,15 @@
     <link rel="stylesheet" href="~/Content/css/home.css">
     <link rel="stylesheet" href="~/Content/css/tabs.css">
     <link rel="stylesheet" href="~/Content/scroll.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <script type="text/javascript" src="~/Content/js/sidenav.js"></script>
     <script type="text/javascript" src="~/Content/js/html2pdf.bundle.min.js"></script>
-
-    @*LitePicker*@
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <body>
-
     <div class="container-fluid">
         <div class="row content">
-            <div class="col-md-2 col-sm-2 sidenav"  style="">
+            <div class="col-md-2 col-sm-2 sidenav" style="">
                 <img src="~/Content/img/White Logo.png" alt="can't display image" id="imgs">
                 <div id="jquery-accordion-menu" class="jquery-accordion-menu" style="height:100%;">
                     <ul>
@@ -51,7 +45,7 @@
                                 <li><a href="@Url.Action("CIPCCompany","Home")">CIPC Company Search</a></li>
                                 <li><a href="@Url.Action("CSICompanyRecords","Home")">CSI Company Records </a></li>
                                 <li><a href="@Url.Action("DatabasePropertyCompany","Home")">Database Property</a></li>
-                                <li><a href="@Url.Action("DeedsOfficeRecordsCompanay","Home")">Deeds Office Records</a></li>
+                                <li><a href="#" @*href="@Url.Action("DeedsOfficeRecordsCompanay","Home")"*@>Deeds Office Records</a></li>
                             </ul>
                         </li>
                         <li>
@@ -73,18 +67,18 @@
                                 <li><a href="@Url.Action("CombinedConsumerTrace","Credit")">Combined Consumer Trace</a></li>
                                 <li><a href="@Url.Action("CombinedConsumerCreditReport","Credit")">Combined Credit Report</a></li>
                                 @*<li>
-                                    <a href="#">CompuScan</a>
-                                    <ul class="submenu">
-                                        <li><a href="@Url.Action("CompuScanBankCodesDocument","Credit")">- Bank Codes Document</a></li>
-                                        <li><a href="@Url.Action("CompuScanBankOnFile","Credit")">- Bank On File</a></li>
-                                        <li><a href="@Url.Action("CompuScanConsumerProfile","Credit")">- Consumer Profile</a></li>
-                                        <li><a href="@Url.Action("CompuScanConsumerTrace","Credit")">- Consumer Trace</a></li>
-                                        <li><a href="@Url.Action("CompuScanContactInformation","Credit")">- Contact Information</a></li>
-                                        <li><a href="@Url.Action("CompuScanEmploymentConfidenceIndex","Credit")">- Employment Confidence <br> Index </a></li>
-                                        <li><a href="@Url.Action("CompuScanGrossMonthlyIncomeByIDNumber","Credit")">- Gross Monthly Income <br> By ID Number</a></li>
-                                        <li><a href="@Url.Action("CompuScanIDPhotoVerification","Credit")">- ID Photo Verification</a></li>
-                                    </ul>
-                                </li>*@
+                                        <a href="#">CompuScan</a>
+                                        <ul class="submenu">
+                                            <li><a href="@Url.Action("CompuScanBankCodesDocument","Credit")">- Bank Codes Document</a></li>
+                                            <li><a href="@Url.Action("CompuScanBankOnFile","Credit")">- Bank On File</a></li>
+                                            <li><a href="@Url.Action("CompuScanConsumerProfile","Credit")">- Consumer Profile</a></li>
+                                            <li><a href="@Url.Action("CompuScanConsumerTrace","Credit")">- Consumer Trace</a></li>
+                                            <li><a href="@Url.Action("CompuScanContactInformation","Credit")">- Contact Information</a></li>
+                                            <li><a href="@Url.Action("CompuScanEmploymentConfidenceIndex","Credit")">- Employment Confidence <br> Index </a></li>
+                                            <li><a href="@Url.Action("CompuScanGrossMonthlyIncomeByIDNumber","Credit")">- Gross Monthly Income <br> By ID Number</a></li>
+                                            <li><a href="@Url.Action("CompuScanIDPhotoVerification","Credit")">- ID Photo Verification</a></li>
+                                        </ul>
+                                    </li>*@
                                 <li>
                                     <a href="#">Experian</a>
                                     <ul class="submenu">
@@ -185,11 +179,17 @@
             evt.currentTarget.className += " active";
         }
     </script>
-
+    @*LitePicker*@
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
         $(function () {
             $('input[name="daterange"]').daterangepicker({
                 opens: 'center',
+                applyButtonClasses: 'dateRangeApplyButton',
+                cancelButtonClasses: 'dateRangeCancelButton',
+                buttonClasses: 'dateRangeButton'
             }, function (start, end, label) {
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             });

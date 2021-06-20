@@ -125,9 +125,9 @@
         </div>
     </div>
     <div class="modal fade" id="adSearch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg " role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header " >
                     <h5 class="modal-title" id="exampleModalLabel">Advanced search options</h5>
                     <div class="row justify-content-end">
                         <div class="row" style="display: block;position: relative;margin-right:25px">
@@ -184,12 +184,12 @@
                         <div class="col-6">
                         </div>
                     </div>
-                    <div class="row justify-content-start col-12">
+                    <div class="col justify-content-start ">
                         <strong class="heading1">Start and end date</strong><br>
-
-                        <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="col-12" />
+ 
+                        <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="col-6" />
                     </div>
-                    <div class="row justify-content-center">
+                    @*<div class="row justify-content-center">
                         <div class="col-6">
                         </div>
                         <div class="col-6" style="margin-left: 343px;">
@@ -198,7 +198,7 @@
                                 <button class="btn-b2 btnSpace">Apply Search</button>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
@@ -207,6 +207,9 @@
 
 <script>
 
+    $(window).on('load', function () {
+        $('#adSearch').modal('show');
+    });
       var tab = [];
     // removing duplicates
 

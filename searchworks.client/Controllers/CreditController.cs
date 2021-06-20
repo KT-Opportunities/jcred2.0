@@ -1969,6 +1969,7 @@ namespace searchworks.client.Controllers
                         List<TelephoneHistory> TelHist;
                         List<EmploymentHistory> EmpHist;
                         Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
+
                         elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
                         elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
                         elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
@@ -1998,6 +1999,8 @@ namespace searchworks.client.Controllers
                         AddressHist = new List<AddressHistory>();
                         TelHist = new List<TelephoneHistory>();
                         EmpHist = new List<EmploymentHistory>();
+                        System.Diagnostics.Debug.WriteLine(elements.Count.ToString(), elements1.Count, elements2.Count, elements3.Count);
+
                         if (rootObject.ResponseObject.CreditInformation.EnquiryHistory != null)
                         {
                             for (int count = 0; count < (elements.Count); count++)
@@ -2014,6 +2017,9 @@ namespace searchworks.client.Controllers
                                 });
                             }
                         }
+                        ViewData["EnqHIst"] = EnqHIst;
+                        ViewData["EnqHIstCount"] = EnqHIst.Count;
+
                         if (rootObject.ResponseObject.CreditInformation.AddressHistory != null)
                         {
                             for (int count = 0; count < (elements1.Count); count++)
@@ -2039,6 +2045,8 @@ namespace searchworks.client.Controllers
                                 });
                             }
                         }
+                        ViewData["AddressHist"] = AddressHist;
+                        ViewData["AddressHistCount"] = AddressHist.Count;
 
                         if (rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null)
                         {
@@ -2048,7 +2056,7 @@ namespace searchworks.client.Controllers
                                 DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
                                 Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
                                 FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
-                                LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+                                LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
                                 saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDateTel, "ExperianConsumerProfile");
 
                                 TelHist.Add(new TelephoneHistory
@@ -2057,16 +2065,19 @@ namespace searchworks.client.Controllers
                                     DialCode = DialCode,
                                     Number = Number,
                                     FullNumber = FullNumber,
-                                    LastUpdatedDateTel = LastUpdatedDate,
+                                    LastUpdatedDateTel = LastUpdatedDateTel,
                                 });
                             }
                         }
+                        ViewData["TelHist"] = TelHist;
+                        ViewData["TelHistCount"] = TelHist.Count;
+
                         if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null)
                         {
                             for (int count = 0; count < (elements3.Count); count++)
                             {
                                 EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                                Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+                                Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation;
                                 saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "ExperianConsumerProfile");
 
                                 EmpHist.Add(new EmploymentHistory
@@ -2076,11 +2087,9 @@ namespace searchworks.client.Controllers
                                 });
                             }
                         }
-
-                        ViewData["EnqHIst"] = EnqHIst;
-                        ViewData["AddressHist"] = AddressHist;
-                        ViewData["TelHist"] = TelHist;
                         ViewData["EmpHist"] = EmpHist;
+                        ViewData["EmpHistCount"] = EmpHist.Count;
+
                         //NLRStats
                         ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                         ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
