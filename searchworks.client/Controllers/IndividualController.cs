@@ -94,16 +94,23 @@ namespace searchworks.client.Controllers
             string time_add = time.ToString("T");
             string page = "CSI Person " + eqType + "By " + seaType;
             string action = "Name:" + name + "; Surname:" + sur;
-            string user_id;
-            user_id = Session["ID"].ToString();
-
+            string user_id = "";
+            System.Diagnostics.Debug.WriteLine(Session["ID"]);
+            if (Session["ID"] == null)
+            {
+                RedirectToAction("Logout", "Home");
+            }
+            else
+            {
+                user_id = Session["ID"].ToString();
+            }
             string us = Session["Name"].ToString();
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + "date_add" + "','" + "time_add" + "','" + "page" + "','" + "action" + "','" + "user_id" + "','" + "us" + "')";
+            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
             TempData["user"] = Session["Name"].ToString();
             TempData["date"] = DateTime.Today.ToShortDateString();

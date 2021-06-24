@@ -3,9 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="col-md-10 col-sm-10">
-    <div class="sea act">SEARCH RESULTS</div>
-    <div class="sea act">@TempData["SearchType"]</div>
-
     <div class="con2">
         @if (TempData["msg"] != null)
         {
@@ -56,131 +53,162 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <td>Information Date</td>
-                                <td>
-                                    @ViewData["InformationDate"]<a class="seaMore" href="#">View more</a>
-                                </td>
+                                <td colspan="2">Information Date</td>
+                                <td style="border: none;" colspan="4">@ViewData["InformationDate"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
                             </tr>
                             <tr>
-                                <td>PersonID</td>
-                                <td>
-                                    @ViewData["PersonID"]  <a class="seaMore" href="#">View more</a>
-                                </td>
+                                <td colspan="2">PersonID</td>
+                                <td style="border: none;" colspan="4">@ViewData["PersonID"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
                             </tr>
                             <tr>
-                                <td>Title</td>
-                                <td>
-                                    @ViewData["PersonTitle"] <a class="seaMore" href="#">View more</a>
-                                </td>
+                                <td colspan="2">Title</td>
+                                <td style="border: none;" colspan="4">@ViewData["PersonTitle"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
                             </tr>
                             <tr>
-                                <td>DateOfBirth</td>
-                                <td>
-                                    @ViewData["DateOfBirth"] <a class="seaMore" href="#">View more</a>
-                                </td>
+                                <td colspan="2">DateOfBirth</td>
+                                <td style="border: none;" colspan="4">@ViewData["DateOfBirth"]</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>FirstName</td>
-                                <td>
-                                    @ViewData["FirstName"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">FirstName</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["FirstName"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>Surname</td>
-                                <td>
-                                    @ViewData["Surname"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">Surname</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["Surname"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>Fullname</td>
-                                <td>
-                                    @ViewData["Fullname"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">Fullname</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["Fullname"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>IDNumber</td>
-                                <td>
-                                    @ViewData["IDNumber"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">IDNumber</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["IDNumber"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>IDNumber_Alternate</td>
-                                <td>
-                                    @ViewData["IDNumber_Alternate"]  <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">IDNumber_Alternate</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["IDNumber_Alternate"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>MaritalStatus</td>
-                                <td>
-                                    @ViewData["MaritalStatus"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">MaritalStatus</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["MaritalStatus"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
 
                             <tr>
-                                <td>Gender</td>
-                                <td>
-                                    @ViewData["Gender"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">Gender</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["Gender"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>Age</td>
-                                <td>
-                                    @ViewData["Age"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">Age</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["Age"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>MiddleName1</td>
-                                <td>
-                                    @ViewData["MiddleName1"]  <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">MiddleName1</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["MiddleName1"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>MiddleName2</td>
-                                <td>
-                                    @ViewData["MiddleName2"]  <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">MiddleName2</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["MiddleName2"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>SpouseFirstName</td>
-                                <td>
-                                    @ViewData["SpouseFirstName"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">SpouseFirstName</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["SpouseFirstName"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>SpouseSurname</td>
-                                <td>
-                                    @ViewData["SpouseSurname"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">SpouseSurname</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["SpouseSurname"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>NumberOfDependants</td>
-                                <td>
-                                    @ViewData["NumberOfDependants"]  <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">NumberOfDependants</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["NumberOfDependants"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>Remarks</td>
-                                <td>
-                                    @ViewData["Remarks"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">Remarks</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["Remarks"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>HasProperties</td>
-                                <td>
-                                    @ViewData["HasProperties"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">HasProperties</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["HasProperties"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>AlsoKnownAs</td>
-                                <td>
-                                    @ViewData["AkaName"] <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">AlsoKnownAs</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["AkaName"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
-                                <td>ConsumerID</td>
-                                <td>
-                                    @ViewData["ConsumerID"]  <a class="seaMore" href="#">View more</a>
+                                <td colspan="2">ConsumerID</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["ConsumerID"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                         </tbody>
                     </table>
@@ -194,32 +222,42 @@
                             <tr>
                                 <td colspan="2">FirstName</td>
                                 <td style="border: none;" colspan="4">
-                                    @ViewData["FirstName"] <a class="seaMore" href="#">View more</a>
+                                    @ViewData["FirstName"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
                                 <td colspan="2">DeceasedDate</td>
-                                <td>
-                                    @ViewData["DeceasedDate"] <a class="seaMore" href="#">View more</a>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["DeceasedDate"] 
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
                                 <td colspan="2">IDVerified</td>
-                                <td>
-                                    @ViewData["IDVerified"] <a class="seaMore" href="#">View more</a>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["IDVerified"]  
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
                                 <td colspan="2">SurnameVerified</td>
-                                <td>
-                                    @ViewData["SurnameVerified"] <a class="seaMore" href="#">View more</a>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["SurnameVerified"] 
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                             <tr>
                                 <td colspan="2">Warnings</td>
-                                <td>
-                                    @ViewData["Warnings"] <a class="seaMore" href="#">View more</a>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["Warnings"]
                                 </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
                             </tr>
                         </tbody>
                     </table>
@@ -230,13 +268,7 @@
                 </div>
 
                 <div class="CreHis">
-
                     <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="addV" style="border: none;" colspan="2">DataCounts</th>
-                            </tr>
-                        </thead>
                         <tbody>
 
                             <tr>
@@ -413,51 +445,46 @@
                                 <td style="border: none;" colspan="4">@ViewData["NLRAccounts"]</td>
                                 <td><a class="seaMore" href="#">View more</a></td>
                             </tr>
+                            <tr>
+                                <td colspan="2">StatusDate</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["StatusDate"]
+                                </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">StatusDescription</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewData["StatusDescription"]
+                                </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+
+                            </tr>
+                            <tr>
+                                <th colspan="7" class="col_header">Enquiry History</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Date</th>
+                                <th colspan="2">By</th>
+                                <th colspan="2">Contact</th>
+                                <th colspan="1"></th>
+
+                            </tr>
+
+                            @foreach (var item in @ViewBag.EnqHIst)
+                            {
+                        <tr>
+                            <td colspan="2">@item.EnquiryDate</td>
+                            <td colspan="2">@item.EnquiredBy</td>
+                            <td style="border: none;" colspan="2">@item.EnquiredByContact</td>
+                            <td><a class="seaMore" href="#">View more</a></td>
+
+
+                        </tr>
+                            }
                         </tbody>
-                        <thead>
-                            <tr>
-                                <th id="addV" style="border: none;" colspan="2">DebtReview Status</th>
-                            </tr>
-                        </thead>
-
-                        <tr>
-                            <td colspan="1">StatusDate</td>
-                            <td>
-                                @ViewData["StatusDate"] <a class="seaMore" href="#">View more</a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>StatusDescription</td>
-                            <td>
-                                @ViewData["StatusDescription"] <a class="seaMore" href="#">View more</a>
-                            </td>
-                        </tr>
-
-                        <thead>
-                            <tr>
-                                <th id="addV" style="border: none;" colspan="2">Enquiry History</th>
-                            </tr>
-                        </thead>
-
-                        @*<tr>
-                            <th class="col_header" style="width: 200%">Enquiry History</th>
-                        </tr>*@
-                        <tr>
-                            <th colspan="1">Date</th>
-                            <th colspan="4">By</th>
-                            <th colspan="4">Contact</th>
-                        </tr>
-
-                        @foreach (var item in @ViewBag.EnqHIst)
-                        {
-                            <tr>
-                                <td colspan="1">@item.EnquiryDate</td>
-                                <td colspan="4">@item.EnquiredBy</td>
-                                <td colspan="4">@item.EnquiredByContact</td>
-                            </tr>
-                        }
-
                     </table>
                 </div>
                 <div id="notification" class="seaRes">
@@ -467,7 +494,7 @@
                 <div class="HistInfo">
                     <table class="table table-striped">
                         <tr>
-                            <th class="col_header" style="width: 677%">Address History</th>
+                            <th class="col_header" >Address History</th>
                         </tr>
                         <tr>
                             <th colspan="1">TypeDescription</th>

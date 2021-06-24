@@ -165,6 +165,14 @@ namespace searchworks.client.Controllers
             */
         }
 
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
+            System.Diagnostics.Debug.WriteLine(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult Logs()
         {
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -345,7 +353,7 @@ namespace searchworks.client.Controllers
         {
             string name = search.CompanyName;
             string pdf = search.PDF;
-            string strCompanyName = name;
+            string strCompanyName = name != null ? name.Trim() : null;
             string refe = search.Reference;
 
             string authtoken = GetLoginToken("api@ktopportunities.co.za", "P@ssw0rd!");
@@ -443,7 +451,8 @@ namespace searchworks.client.Controllers
 
         public ActionResult CIPCCompanyDetails(string comID)
         {
-            try {
+            try
+            {
                 string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
@@ -570,11 +579,11 @@ namespace searchworks.client.Controllers
                 TempData.Keep();
                 return View();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 TempData["Msg"] = e.ToString();
                 return View();
             }
-           
         }
 
         public ActionResult CSICompanyRecords()
@@ -584,7 +593,7 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSICompanyRecordsResults(Search search)
         {
-            string name = search.CompanyName;
+            string name = search.CompanyName != null ? search.CompanyName.Trim() : null;
             string type = search.seaType;
             string comID = search.CompanyID;
             string regNum = search.RegistrationNumber;

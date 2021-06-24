@@ -543,12 +543,12 @@ namespace searchworks.client.Controllers
 
         public ActionResult CombinedConsumerCreditReportResults(Search search)
         {
-            string id = search.IDNumber;
-            string name = search.FirstName;
-            string sur = search.Surname;
+            string id = search.IDNumber != null ? search.IDNumber : null;
+            string name = search.FirstName != null ? search.FirstName : null;
+            string sur = search.Surname != null ? search.Surname : null;
             int er = search.EnquiryReason;
+            string refe = search.Reference != null ? search.Reference : null;
 
-            string refe = search.Reference;
             ViewData["refe"] = name + " " + sur;
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -1032,14 +1032,13 @@ namespace searchworks.client.Controllers
 
         public ActionResult CombinedConsumerTraceResults(Search comp)
         {
+            string id = comp.IDNumber != null ? comp.IDNumber : null;
+            string refe = comp.Reference != null ? comp.Reference : null;
+
+            ViewData["refe"] = id;
+
             try
             {
-                string id = comp.IDNumber;
-                string refe = comp.Reference;
-
-                System.Diagnostics.Debug.WriteLine(id, refe);
-                ViewData["refe"] = id;
-
                 string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
@@ -1202,106 +1201,120 @@ namespace searchworks.client.Controllers
 
                         //Historical Information
                         // Address
-                        Newtonsoft.Json.Linq.JArray addressElement = new Newtonsoft.Json.Linq.JArray();
-                        addressElement = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory;
-                        for (int count = 0; count < (addressElement.Count); count++)
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].AddressHistory;
+                        if (AddressExists != null)
                         {
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "CompuScanCombinedConsumerTrace"
-                            );
-                        }
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory;
-                        List<string> thatlist = new List<string>();
-                        Dictionary<string, string> arrayList = new Dictionary<string, string>();
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory;
+                            List<string> thatlist = new List<string>();
+                            Dictionary<string, string> arrayList = new Dictionary<string, string>();
 
-                        for (int count = 0; count < (elements.Count); count++)
-                        {
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                            for (int count = 0; count < (elements.Count); count++)
+                            {
+                                string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode;
+                                string Line1 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1;
+                                string Line2 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2;
+                                string Line3 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3;
+                                string Line4 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4;
+                                string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                            arrayList.Add(count + "_TypeCode", TypeCode);
-                            arrayList.Add(count + "_Line1", Line1);
-                            arrayList.Add(count + "_Line2", Line2);
-                            arrayList.Add(count + "_Line3", Line3);
-                            arrayList.Add(count + "_Line4", Line4);
-                            arrayList.Add(count + "_PostalCode", PostalCode);
-                            arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["ArrayList"] = arrayList;
+                                arrayList.Add(count + "_TypeCode", TypeCode);
+                                arrayList.Add(count + "_Line1", Line1);
+                                arrayList.Add(count + "_Line2", Line2);
+                                arrayList.Add(count + "_Line3", Line3);
+                                arrayList.Add(count + "_Line4", Line4);
+                                arrayList.Add(count + "_PostalCode", PostalCode);
+                                arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["ArrayList"] = arrayList;
+                            }
+
+                            Newtonsoft.Json.Linq.JArray addressElement = new Newtonsoft.Json.Linq.JArray();
+                            addressElement = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory;
+                            for (int count = 0; count < (addressElement.Count); count++)
+                            {
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "CompuScanCombinedConsumerTrace"
+                                );
+                            }
                         }
 
                         // Telephone
-                        Newtonsoft.Json.Linq.JArray telephoneElement = new Newtonsoft.Json.Linq.JArray();
-                        telephoneElement = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
-                        for (int count = 0; count < (telephoneElement.Count); count++)
+                        JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
                         {
-                            saveTelephoneHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate
-                            , "CompuScanCombinedConsumerTrace"
-                            );
-                        }
-                        Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
-                        Telelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
-                        List<string> Telthatlist = new List<string>();
-                        Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
+                            Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
+                            Telelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
+                            List<string> Telthatlist = new List<string>();
+                            Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
 
-                        for (int count = 0; count < (Telelements.Count); count++)
-                        {
-                            string Type = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
+                            for (int count = 0; count < (Telelements.Count); count++)
+                            {
+                                string Type = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                                string Number = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
 
-                            TelarrayList.Add(count + "_Type", Type);
-                            TelarrayList.Add(count + "_Numnber", Number);
-                            TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["TelArrayList"] = TelarrayList;
+                                TelarrayList.Add(count + "_Type", Type);
+                                TelarrayList.Add(count + "_Numnber", Number);
+                                TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["TelArrayList"] = TelarrayList;
+                            }
+                            Newtonsoft.Json.Linq.JArray telephoneElement = new Newtonsoft.Json.Linq.JArray();
+                            telephoneElement = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
+                            for (int count = 0; count < (telephoneElement.Count); count++)
+                            {
+                                saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate
+                                , "CompuScanCombinedConsumerTrace"
+                                );
+                            }
                         }
 
                         // Employment
-                        Newtonsoft.Json.Linq.JArray Employmentelements = new Newtonsoft.Json.Linq.JArray();
-                        Employmentelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory;
-                        for (int count = 0; count < (Employmentelements.Count); count++)
+                        JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
                         {
-                            saveEmploymentHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "CompuScanCombinedConsumerTrace"
-                            );
-                        }
-                        Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
-                        EMelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory;
-                        List<string> EMthatlist = new List<string>();
-                        Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
+                            Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
+                            EMelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory;
+                            List<string> EMthatlist = new List<string>();
+                            Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
 
-                        for (int count = 0; count < (EMelements.Count); count++)
-                        {
-                            string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            string Designation = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                            for (int count = 0; count < (EMelements.Count); count++)
+                            {
+                                string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                                string Designation = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
 
-                            EMarrayList.Add(count + "_EmployerName", EmployerName);
-                            EMarrayList.Add(count + "_Designation", Designation);
-                            EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["EMArrayList"] = EMarrayList;
+                                EMarrayList.Add(count + "_EmployerName", EmployerName);
+                                EMarrayList.Add(count + "_Designation", Designation);
+                                EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["EMArrayList"] = EMarrayList;
+                            }
+
+                            Newtonsoft.Json.Linq.JArray Employmentelements = new Newtonsoft.Json.Linq.JArray();
+                            Employmentelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory;
+                            for (int count = 0; count < (Employmentelements.Count); count++)
+                            {
+                                saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "CompuScanCombinedConsumerTrace"
+                                );
+                            }
                         }
                     }
                     else
@@ -1363,96 +1376,140 @@ namespace searchworks.client.Controllers
                             rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].PostalAddress, "TransUnionCombinedConsumerTrace");
 
                         //Historical Information
-
                         // Address
-
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory;
-                        List<string> thatlist = new List<string>();
-                        Dictionary<string, string> arrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (elements.Count); count++)
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"].AddressHistory;
+                        if (AddressExists != null)
                         {
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory;
+                            List<string> thatlist = new List<string>();
+                            //Dictionary<string, string> arrayList = new Dictionary<string, string>();
+                            List<AddressHistory> AddressHist;
+                            AddressHist = new List<AddressHistory>();
+                            for (int count = 0; count < (elements.Count); count++)
+                            {
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeCode,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
+                                    );
+
+                                string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeCode;
+                                string Line1 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1;
+                                string Line2 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2;
+                                string Line3 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3;
+                                string Line4 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4;
+                                string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode;
+                                string FullAddress = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+
+                                AddressHist.Add(new AddressHistory
+                                {
+                                    TypeDescription = TypeCode,
+                                    Line1 = Line1,
+                                    Line2 = Line2,
+                                    Line3 = Line3,
+                                    Line4 = Line4,
+                                    PostalCode = PostalCode,
+                                    FullAddress = FullAddress,
+                                    LastUpdatedDate = LastUpdatedDate,
+                                });
+
+                                //arrayList.Add(count + "_TypeCode", TypeCode);
+                                //arrayList.Add(count + "_Line1", Line1);
+                                //arrayList.Add(count + "_Line2", Line2);
+                                //arrayList.Add(count + "_Line3", Line3);
+                                //arrayList.Add(count + "_Line4", Line4);
+                                //arrayList.Add(count + "_PostalCode", PostalCode);
+                                //arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["ArrayList"] = AddressHist;
+                            }
+                        }
+
+                        // Telephone
+                        JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
+                        {
+                            Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
+                            Telelements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory;
+                            List<string> Telthatlist = new List<string>();
+                            //Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
+                            List<TelephoneHistory> TelHist;
+                            TelHist = new List<TelephoneHistory>();
+
+                            for (int count = 0; count < (Telelements.Count); count++)
+                            {
+                                saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
+
                                 );
 
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                                string Type = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                                string Number = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].Number;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
 
-                            arrayList.Add(count + "_TypeCode", TypeCode);
-                            arrayList.Add(count + "_Line1", Line1);
-                            arrayList.Add(count + "_Line2", Line2);
-                            arrayList.Add(count + "_Line3", Line3);
-                            arrayList.Add(count + "_Line4", Line4);
-                            arrayList.Add(count + "_PostalCode", PostalCode);
-                            arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["ArrayList"] = arrayList;
-                        }
-                        // Telephone
-                        Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
-                        Telelements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory;
-                        List<string> Telthatlist = new List<string>();
-                        Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
+                                TelHist.Add(new TelephoneHistory
+                                {
+                                    TypeDescriptionTel = Type,
+                                    Number = Number,
+                                    LastUpdatedDateTel = LastUpdatedDate,
+                                });
 
-                        for (int count = 0; count < (Telelements.Count); count++)
-                        {
-                            saveTelephoneHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].Number,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
+                                //TelarrayList.Add(count + "_Type", Type);
+                                //TelarrayList.Add(count + "_Numnber", Number);
+                                //TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
 
-                            );
-
-                            string Type = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
-
-                            TelarrayList.Add(count + "_Type", Type);
-                            TelarrayList.Add(count + "_Numnber", Number);
-                            TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["TelArrayList"] = TelarrayList;
+                                ViewData["TelArrayList"] = TelHist;
+                            }
                         }
 
                         // Employment
-                        Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
-                        EMelements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory;
-                        List<string> EMthatlist = new List<string>();
-                        Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (EMelements.Count); count++)
+                        JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
                         {
-                            saveEmploymentHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
-                            );
+                            Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
+                            EMelements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory;
+                            //List<string> EMthatlist = new List<string>();
+                            //Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
 
-                            string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            string Designation = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].Designation;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                            List<EmploymentHistory> EmpHist;
+                            EmpHist = new List<EmploymentHistory>();
 
-                            EMarrayList.Add(count + "_EmployerName", EmployerName);
-                            EMarrayList.Add(count + "_Designation", Designation);
-                            EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["EMArrayList"] = EMarrayList;
+                            for (int count = 0; count < (EMelements.Count); count++)
+                            {
+                                saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
+                                );
+
+                                string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                                string Designation = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].Designation;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+
+                                EmpHist.Add(new EmploymentHistory
+                                {
+                                    EmployerName = EmployerName,
+                                    Designation = Designation,
+                                    LastUpdatedDate = LastUpdatedDate,
+                                });
+                                //EMarrayList.Add(count + "_EmployerName", EmployerName);
+                                //EMarrayList.Add(count + "_Designation", Designation);
+                                //EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["EMArrayList"] = EmpHist;
+                            }
                         }
                     }
                     else
@@ -1520,93 +1577,105 @@ namespace searchworks.client.Controllers
                         saveFraudIndicatorSummary(SearchToken, Reference, SearchID, ViewData["XDSInfoSAFPSListing"].ToString(), ViewData["XDSInfoEmployerFraudVerification"].ToString(), ViewData["XDSInfoProtectiveVerification"].ToString(), "XDSCombinedConsumerTrace");
 
                         // Address
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory;
-                        List<string> thatlist = new List<string>();
-                        Dictionary<string, string> arrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (elements.Count); count++)
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].AddressHistory;
+                        if (AddressExists != null)
                         {
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory;
+                            List<string> thatlist = new List<string>();
+                            Dictionary<string, string> arrayList = new Dictionary<string, string>();
 
-                            arrayList.Add(count + "_TypeCode", TypeCode);
-                            arrayList.Add(count + "_Line1", Line1);
-                            arrayList.Add(count + "_Line2", Line2);
-                            arrayList.Add(count + "_Line3", Line3);
-                            arrayList.Add(count + "_Line4", Line4);
-                            arrayList.Add(count + "_PostalCode", PostalCode);
-                            arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["ArrayList"] = arrayList;
+                            for (int count = 0; count < (elements.Count); count++)
+                            {
+                                string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode;
+                                string Line1 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1;
+                                string Line2 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2;
+                                string Line3 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3;
+                                string Line4 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4;
+                                string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
-                            );
+                                arrayList.Add(count + "_TypeCode", TypeCode);
+                                arrayList.Add(count + "_Line1", Line1);
+                                arrayList.Add(count + "_Line2", Line2);
+                                arrayList.Add(count + "_Line3", Line3);
+                                arrayList.Add(count + "_Line4", Line4);
+                                arrayList.Add(count + "_PostalCode", PostalCode);
+                                arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["ArrayList"] = arrayList;
+
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
+                                );
+                            }
                         }
 
                         // Telephone
-                        Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
-                        Telelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory;
-                        List<string> Telthatlist = new List<string>();
-                        Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (Telelements.Count); count++)
+                        JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
                         {
-                            string Type = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
+                            Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
+                            Telelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory;
+                            List<string> Telthatlist = new List<string>();
+                            Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
 
-                            TelarrayList.Add(count + "_Type", Type);
-                            TelarrayList.Add(count + "_Numnber", Number);
-                            TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["TelArrayList"] = TelarrayList;
+                            for (int count = 0; count < (Telelements.Count); count++)
+                            {
+                                string Type = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                                string Number = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
 
-                            saveTelephoneHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
-                            );
+                                TelarrayList.Add(count + "_Type", Type);
+                                TelarrayList.Add(count + "_Numnber", Number);
+                                TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["TelArrayList"] = TelarrayList;
+
+                                saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
+                                );
+                            }
                         }
 
                         // Employment
-                        Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
-                        EMelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory;
-                        List<string> EMthatlist = new List<string>();
-                        Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (EMelements.Count); count++)
+                        JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
                         {
-                            string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            string Designation = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                            Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
+                            EMelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory;
+                            List<string> EMthatlist = new List<string>();
+                            Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
 
-                            EMarrayList.Add(count + "_EmployerName", EmployerName);
-                            EMarrayList.Add(count + "_Designation", Designation);
-                            EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["EMArrayList"] = EMarrayList;
+                            for (int count = 0; count < (EMelements.Count); count++)
+                            {
+                                string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                                string Designation = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
 
-                            saveEmploymentHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
-                            );
+                                EMarrayList.Add(count + "_EmployerName", EmployerName);
+                                EMarrayList.Add(count + "_Designation", Designation);
+                                EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["EMArrayList"] = EMarrayList;
+
+                                saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
+                                );
+                            }
                         }
                     }
                     else
@@ -1643,93 +1712,104 @@ namespace searchworks.client.Controllers
                             rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["ContactInformation"].PostalAddress, "VeriCredCombinedConsumerTrace");
 
                         //Historical Information
-
                         // Address
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory;
-                        List<string> thatlist = new List<string>();
-                        Dictionary<string, string> arrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (elements.Count); count++)
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["HistoricalInformation"].AddressHistory;
+                        if (AddressExists != null)
                         {
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory;
+                            List<string> thatlist = new List<string>();
+                            Dictionary<string, string> arrayList = new Dictionary<string, string>();
 
-                            arrayList.Add(count + "_TypeCode", TypeCode);
-                            arrayList.Add(count + "_Line1", Line1);
-                            arrayList.Add(count + "_Line2", Line2);
-                            arrayList.Add(count + "_Line3", Line3);
-                            arrayList.Add(count + "_Line4", Line4);
-                            arrayList.Add(count + "_PostalCode", PostalCode);
-                            arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["ArrayList"] = arrayList;
+                            for (int count = 0; count < (elements.Count); count++)
+                            {
+                                string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].TypeCode;
+                                string Line1 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line1;
+                                string Line2 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line2;
+                                string Line3 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line3;
+                                string Line4 = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line4;
+                                string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].PostalCode;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line1,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line2,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line3,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line4,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "VeriCredCombinedConsumerTrace"
-                            );
+                                arrayList.Add(count + "_TypeCode", TypeCode);
+                                arrayList.Add(count + "_Line1", Line1);
+                                arrayList.Add(count + "_Line2", Line2);
+                                arrayList.Add(count + "_Line3", Line3);
+                                arrayList.Add(count + "_Line4", Line4);
+                                arrayList.Add(count + "_PostalCode", PostalCode);
+                                arrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["ArrayList"] = arrayList;
+
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].TypeCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "VeriCredCombinedConsumerTrace"
+                                );
+                            }
                         }
 
                         // Telephone
-                        Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
-                        Telelements = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory;
-                        List<string> Telthatlist = new List<string>();
-                        Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (Telelements.Count); count++)
+                        JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
                         {
-                            string Type = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
+                            Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
+                            Telelements = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory;
+                            List<string> Telthatlist = new List<string>();
+                            Dictionary<string, string> TelarrayList = new Dictionary<string, string>();
 
-                            TelarrayList.Add(count + "_Type", Type);
-                            TelarrayList.Add(count + "_Numnber", Number);
-                            TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["TelArrayList"] = TelarrayList;
-                            saveTelephoneHistory(SearchToken, Reference, SearchID,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].Number,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                           rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "VeriCredCombinedConsumerTrace"
-                           );
+                            for (int count = 0; count < (Telelements.Count); count++)
+                            {
+                                string Type = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                                string Number = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].Number;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
+
+                                TelarrayList.Add(count + "_Type", Type);
+                                TelarrayList.Add(count + "_Numnber", Number);
+                                TelarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["TelArrayList"] = TelarrayList;
+                                saveTelephoneHistory(SearchToken, Reference, SearchID,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                               rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "VeriCredCombinedConsumerTrace"
+                               );
+                            }
                         }
 
                         // Employment
-                        Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
-                        EMelements = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory;
-                        List<string> EMthatlist = new List<string>();
-                        Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
-
-                        for (int count = 0; count < (EMelements.Count); count++)
+                        JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
                         {
-                            string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            string Designation = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].Designation;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                            Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
+                            EMelements = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory;
+                            List<string> EMthatlist = new List<string>();
+                            Dictionary<string, string> EMarrayList = new Dictionary<string, string>();
 
-                            EMarrayList.Add(count + "_EmployerName", EmployerName);
-                            EMarrayList.Add(count + "_Designation", Designation);
-                            EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
-                            ViewData["EMArrayList"] = EMarrayList;
-                            saveEmploymentHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                            rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "VeriCredCombinedConsumerTrace"
-                            );
+                            for (int count = 0; count < (EMelements.Count); count++)
+                            {
+                                string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                                string Designation = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].Designation;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+
+                                EMarrayList.Add(count + "_EmployerName", EmployerName);
+                                EMarrayList.Add(count + "_Designation", Designation);
+                                EMarrayList.Add(count + "_LastUpdatedDate", LastUpdatedDate);
+                                ViewData["EMArrayList"] = EMarrayList;
+                                saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "VeriCredCombinedConsumerTrace"
+                                );
+                            }
                         }
                     }
                     else
@@ -1758,12 +1838,12 @@ namespace searchworks.client.Controllers
 
         public ActionResult ExperianConsumerProfileResults(Experian exp)
         {
-            string id = exp.iDNumber;
-            string enquiryReason = exp.enquiryReason;
-            string surname = exp.surname;
-            string firstname = exp.firstName;
-            string passport = exp.passportNumber;
-            string refe = exp.reference;
+            string id = exp.iDNumber != null ? exp.iDNumber : null;
+            string enquiryReason = exp.enquiryReason != null ? exp.enquiryReason : null;
+            string surname = exp.surname != null ? exp.surname : null;
+            string firstname = exp.firstName != null ? exp.firstName : null;
+            string passport = exp.passportNumber != null ? exp.passportNumber : null;
+            string refe = exp.reference != null ? exp.reference : null;
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
@@ -1775,12 +1855,21 @@ namespace searchworks.client.Controllers
                 string time_add = time.ToString("T");
                 string page = "Experian Consumer Profile";
                 string action = "First Name: " + firstname + "; Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; Passport: " + passport + "; ID: " + id;
-                string user_id = Session["ID"].ToString();
+                string user_id = "";
+
+                if (Session["ID"].ToString() == null)
+                {
+                    RedirectToAction("Logout", "Home");
+                }
+                else
+                {
+                    user_id = Session["ID"].ToString();
+                }
+                //string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
-
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
@@ -1876,8 +1965,11 @@ namespace searchworks.client.Controllers
                         ViewData["ExMiddleName1"] = rootObject.ResponseObject.PersonInformation.MiddleName1;
                         ViewData["ExReference"] = rootObject.ResponseObject.PersonInformation.Reference;
                         ViewData["ExHasProperties"] = rootObject.ResponseObject.PersonInformation.HasProperties;
-                        ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
-                        saveContactInformation(SearchToken, Reference, SearchID, null, null, null, null, ViewData["ExPhysicalAddress"].ToString(), null, "ExperianConsumerProfile");
+                        if (rootObject.ResponseObject.ContactInformation != null)
+                        {
+                            ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.ContactInformation.PhysicalAddress;
+                        }
+                        saveContactInformation(SearchToken, Reference, SearchID, null, null, null, null, rootObject.ResponseObject.ContactInformation != null ? rootObject.ResponseObject.ContactInformation.PhysicalAddress : null, null, "ExperianConsumerProfile");
                         savePersonInformation(SearchToken, Reference, SearchID, null, null, ViewData["ExTitle"].ToString(), ViewData["ExDateOfBirth"].ToString(), ViewData["ExFirstName"].ToString(), ViewData["ExSurname"].ToString(),
                              ViewData["ExFullname"].ToString(), ViewData["ExIDNumber"].ToString(), null, null, ViewData["ExReference"].ToString(), ViewData["ExMaritalStatus"].ToString(), ViewData["ExGender"].ToString(), ViewData["ExAge"].ToString(), ViewData["ExMiddleName1"].ToString(), null, null, null, null, null, null, null, ViewData["ExHasProperties"], "ExperianConsumerProfile");
                         //HomeAffairsInformation
@@ -1964,47 +2056,22 @@ namespace searchworks.client.Controllers
                         ViewData["DRStatusCode"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusCode;
                         ViewData["DRStatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
                         saveDebtReviewStatus(SearchToken, Reference, SearchID, ViewData["DRStatusCode"].ToString(), null, ViewData["DRStatusDescription"].ToString(), null, "ExperianConsumerProfile");
-                        List<EnquiryHistory> EnqHIst;
-                        List<AddressHistory> AddressHist;
-                        List<TelephoneHistory> TelHist;
-                        List<EmploymentHistory> EmpHist;
                         Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
 
-                        elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
-                        elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                        elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                        elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
-
-                        String EnquiryDate = "";
-                        String EnquiredBy = "";
-                        String EnquiredByContact = "";
-                        //AddressHIstoryValues
-                        String TypeDescription = "";
-                        String Line1 = "";
-                        String Line2 = "";
-                        String Line3 = "";
-                        String PostalCode = "";
-                        String FullAddress = "";
-                        String LastUpdatedDate = "";
-                        //TelephoneHIstory
-                        String TypeDescriptionTel = "";
-                        String DialCode = "";
-                        String Number = "";
-                        String FullNumber = "";
-                        String LastUpdatedDateTel = "";
-                        //EmploymentHistory
-                        String EmployerName = "";
-                        String Designation = "";
-                        EnqHIst = new List<EnquiryHistory>();
-                        AddressHist = new List<AddressHistory>();
-                        TelHist = new List<TelephoneHistory>();
-                        EmpHist = new List<EmploymentHistory>();
-                        System.Diagnostics.Debug.WriteLine(elements.Count.ToString(), elements1.Count, elements2.Count, elements3.Count);
-
-                        if (rootObject.ResponseObject.CreditInformation.EnquiryHistory != null)
+                        JToken CreditInfoExists = rootObject.ResponseObject["CreditInformation"].EnquiryHistory;
+                        if (CreditInfoExists != null)
                         {
+                            elements = rootObject.ResponseObject["CreditInformation"].EnquiryHistory;
+
+                            List<EnquiryHistory> EnqHIst;
+                            EnqHIst = new List<EnquiryHistory>();
+
                             for (int count = 0; count < (elements.Count); count++)
                             {
+                                String EnquiryDate = "";
+                                String EnquiredBy = "";
+                                String EnquiredByContact = "";
+
                                 EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
                                 EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
                                 EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
@@ -2016,12 +2083,25 @@ namespace searchworks.client.Controllers
                                     EnquiredByContact = EnquiredByContact
                                 });
                             }
+                            ViewData["EnqHIst"] = EnqHIst;
+                            ViewData["EnqHIstCount"] = EnqHIst.Count;
                         }
-                        ViewData["EnqHIst"] = EnqHIst;
-                        ViewData["EnqHIstCount"] = EnqHIst.Count;
 
-                        if (rootObject.ResponseObject.CreditInformation.AddressHistory != null)
+                        JToken AddressExists = rootObject.ResponseObject["HistoricalInformation"].AddressHistory;
+                        if (AddressExists != null)
                         {
+                            List<AddressHistory> AddressHist;
+                            AddressHist = new List<AddressHistory>();
+
+                            String TypeDescription = "";
+                            String Line1 = "";
+                            String Line2 = "";
+                            String Line3 = "";
+                            String PostalCode = "";
+                            String FullAddress = "";
+                            String LastUpdatedDate = "";
+
+                            elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
                             for (int count = 0; count < (elements1.Count); count++)
                             {
                                 TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
@@ -2044,12 +2124,24 @@ namespace searchworks.client.Controllers
                                     LastUpdatedDate = LastUpdatedDate,
                                 });
                             }
+                            ViewData["AddressHist"] = AddressHist;
+                            ViewData["AddressHistCount"] = AddressHist.Count;
                         }
-                        ViewData["AddressHist"] = AddressHist;
-                        ViewData["AddressHistCount"] = AddressHist.Count;
 
-                        if (rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null)
+                        JToken TelephoneExists = rootObject.ResponseObject["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
                         {
+                            List<TelephoneHistory> TelHist;
+                            TelHist = new List<TelephoneHistory>();
+
+                            String TypeDescriptionTel = "";
+                            String DialCode = "";
+                            String Number = "";
+                            String FullNumber = "";
+                            String LastUpdatedDateTel = "";
+
+                            elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+
                             for (int count = 0; count < (elements2.Count); count++)
                             {
                                 TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
@@ -2057,7 +2149,7 @@ namespace searchworks.client.Controllers
                                 Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
                                 FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
                                 LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
-                                saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDateTel, "ExperianConsumerProfile");
+                                saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescriptionTel, null, Number, FullNumber, LastUpdatedDateTel, "ExperianConsumerProfile");
 
                                 TelHist.Add(new TelephoneHistory
                                 {
@@ -2068,17 +2160,24 @@ namespace searchworks.client.Controllers
                                     LastUpdatedDateTel = LastUpdatedDateTel,
                                 });
                             }
+                            ViewData["TelHist"] = TelHist;
+                            ViewData["TelHistCount"] = TelHist.Count;
                         }
-                        ViewData["TelHist"] = TelHist;
-                        ViewData["TelHistCount"] = TelHist.Count;
 
-                        if (rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null)
+                        JToken EmploymentExists = rootObject.ResponseObject["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
                         {
+                            String EmployerName = "";
+                            String Designation = "";
+                            List<EmploymentHistory> EmpHist;
+                            EmpHist = new List<EmploymentHistory>();
+                            elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+
                             for (int count = 0; count < (elements3.Count); count++)
                             {
                                 EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
                                 Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation;
-                                saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "ExperianConsumerProfile");
+                                saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, null, "ExperianConsumerProfile");
 
                                 EmpHist.Add(new EmploymentHistory
                                 {
@@ -2086,10 +2185,9 @@ namespace searchworks.client.Controllers
                                     Designation = Designation,
                                 });
                             }
+                            ViewData["EmpHist"] = EmpHist;
+                            ViewData["EmpHistCount"] = EmpHist.Count;
                         }
-                        ViewData["EmpHist"] = EmpHist;
-                        ViewData["EmpHistCount"] = EmpHist.Count;
-
                         //NLRStats
                         ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                         ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
@@ -2159,7 +2257,7 @@ namespace searchworks.client.Controllers
             }
             catch (Exception e)
             {
-                TempData["msg"] = e.ToString();
+                TempData["msg"] = "Error Occured, Please verify the details that have been entered";
 
                 return View();
             }
@@ -2187,6 +2285,7 @@ namespace searchworks.client.Controllers
             System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
             System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
             //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
+            System.Collections.Generic.List<Directorship> directorshipList = new System.Collections.Generic.List<Directorship>();
 
             //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -2829,6 +2928,200 @@ namespace searchworks.client.Controllers
                         System.Diagnostics.Debug.WriteLine(err);
                     }
                 //************************************************* End EnquiryInformation ***********//
+
+                //************************************************* Start AddressHistoryInformation ***********//
+                string query_uid_AddressHistoryInfo = $"SELECT * FROM addresshistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_AddressHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //addresshistoryInformation
+                            AddressHistory AddressInfo = new AddressHistory();
+
+                            int AddressID = reader.GetOrdinal("AddressID");
+                            int TypeDescription = reader.GetOrdinal("TypeDescription");
+                            int Line1 = reader.GetOrdinal("Line1");
+                            int Line2 = reader.GetOrdinal("Line2");
+                            int Line3 = reader.GetOrdinal("Line3");
+                            int Line4 = reader.GetOrdinal("Line4");
+                            int PostalCode = reader.GetOrdinal("PostalCode");
+                            int FullAddress = reader.GetOrdinal("FullAddress");
+                            int AddressLastUpdatedDate = reader.GetOrdinal("LastUpdatedDate");
+                            while (reader.Read())
+                            {
+                                AddressInfo.AddressID = (reader[AddressID] != Convert.DBNull) ? reader[AddressID].ToString() : null;
+                                AddressInfo.TypeDescription = (reader[TypeDescription] != Convert.DBNull) ? reader[TypeDescription].ToString() : null;
+                                AddressInfo.Line1 = (reader[Line1] != Convert.DBNull) ? reader[Line1].ToString() : null;
+                                AddressInfo.Line2 = (reader[Line2] != Convert.DBNull) ? reader[Line2].ToString() : null;
+                                AddressInfo.Line3 = (reader[Line3] != Convert.DBNull) ? reader[Line3].ToString() : null;
+                                AddressInfo.Line4 = (reader[Line4] != Convert.DBNull) ? reader[Line4].ToString() : null;
+                                AddressInfo.PostalCode = (reader[PostalCode] != Convert.DBNull) ? reader[PostalCode].ToString() : null;
+                                AddressInfo.FullAddress = (reader[FullAddress] != Convert.DBNull) ? reader[FullAddress].ToString() : null;
+                                AddressInfo.LastUpdatedDate = (reader[AddressLastUpdatedDate] != Convert.DBNull) ? reader[AddressLastUpdatedDate].ToString() : null;
+
+                                addressInformationList.Add(AddressInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["addressInformationList"] = addressInformationList;
+                        ViewData["addressInformationListCount"] = addressInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End AddressHistoryInformation ***********//
+
+                //************************************************* Start TelephonehistoryInformation ***********//
+                string query_uid_TelephoneHistoryInfo = $"SELECT * FROM telephonehistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_TelephoneHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //TelephoneHistoryInformation
+                            TelephoneHistory TelephoneInfo = new TelephoneHistory();
+
+                            // //Telephone History
+                            int TypeDescriptionTel = reader.GetOrdinal("TypeDescriptionTel");
+                            int DialCode = reader.GetOrdinal("DialCode");
+                            int Number = reader.GetOrdinal("Number");
+                            int FullNumber = reader.GetOrdinal("FullNumber");
+                            int LastUpdatedDateTel = reader.GetOrdinal("LastUpdatedDateTel");
+
+                            while (reader.Read())
+                            {
+                                TelephoneInfo.TypeDescriptionTel = (reader[TypeDescriptionTel] != Convert.DBNull) ? reader[TypeDescriptionTel].ToString() : null;
+                                TelephoneInfo.DialCode = (reader[DialCode] != Convert.DBNull) ? reader[DialCode].ToString() : null;
+                                TelephoneInfo.Number = (reader[Number] != Convert.DBNull) ? reader[Number].ToString() : null;
+                                TelephoneInfo.FullNumber = (reader[FullNumber] != Convert.DBNull) ? reader[FullNumber].ToString() : null;
+                                TelephoneInfo.LastUpdatedDateTel = (reader[LastUpdatedDateTel] != Convert.DBNull) ? reader[LastUpdatedDateTel].ToString() : null;
+
+                                telephoneInformationList.Add(TelephoneInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["telephoneInformationList"] = telephoneInformationList;
+                        ViewData["telephoneInformationListCount"] = telephoneInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
+
+                //************************************************* Start EmploymenthistoryInformation ***********//
+                string query_uid_EmploymentHistoryInfo = $"SELECT * FROM employmenthistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_EmploymentHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //query_uid_EmploymentHistoryInformation
+                            EmploymentHistory EmploymentInfo = new EmploymentHistory();
+
+                            // EmploymentHistory
+                            int EmployerName = reader.GetOrdinal("EmployerName");
+                            int Designation = reader.GetOrdinal("Designation");
+                            int EmployLastUpdatedDate = reader.GetOrdinal("LastUpdatedDate");
+
+                            while (reader.Read())
+                            {
+                                EmploymentInfo.EmployerName = (reader[EmployerName] != Convert.DBNull) ? reader[EmployerName].ToString() : null;
+                                EmploymentInfo.Designation = (reader[Designation] != Convert.DBNull) ? reader[Designation].ToString() : null;
+                                EmploymentInfo.LastUpdatedDate = (reader[EmployLastUpdatedDate] != Convert.DBNull) ? reader[EmployLastUpdatedDate].ToString() : null;
+
+                                employmentInformationList.Add(EmploymentInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["employmentInformationList"] = employmentInformationList;
+                        ViewData["employmentInformationListCount"] = employmentInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
+
+                //************************************************* Start DirectorShipInformation ***********//
+                string query_uid_DirectorShipInfo = $"SELECT * FROM directorships as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_DirectorShipInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //DirectorshipInformation
+                            Directorship DirectorshipInfo = new Directorship();
+
+                            // DirectorshipHistory
+                            int DesignationCode = reader.GetOrdinal("DesignationCode");
+                            int AppointmentDate = reader.GetOrdinal("AppointmentDate");
+                            int DirectorStatus = reader.GetOrdinal("DirectorStatus");
+                            int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
+                            int CompanyName = reader.GetOrdinal("CompanyName");
+                            int CompanyType = reader.GetOrdinal("CompanyType");
+                            int CompanyStatus = reader.GetOrdinal("CompanyStatus");
+                            int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
+                            int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
+                            int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
+                            int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
+                            int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                            int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
+                            int DirectorType = reader.GetOrdinal("DirectorType");
+                            int MemberSize = reader.GetOrdinal("MemberSize");
+                            int MemberContribution = reader.GetOrdinal("MemberContribution");
+                            int MemberContributionType = reader.GetOrdinal("MemberContributionType");
+                            int ResignationDate = reader.GetOrdinal("ResignationDate");
+
+                            while (reader.Read())
+                            {
+                                DirectorshipInfo.DesignationCode = (reader[DesignationCode] != Convert.DBNull) ? reader[DesignationCode].ToString() : null;
+                                DirectorshipInfo.AppointmentDate = (reader[AppointmentDate] != Convert.DBNull) ? reader[AppointmentDate].ToString() : null;
+                                DirectorshipInfo.DirectorStatus = (reader[DirectorStatus] != Convert.DBNull) ? reader[DirectorStatus].ToString() : null;
+                                DirectorshipInfo.DirectorStatusDate = (reader[DirectorStatusDate] != Convert.DBNull) ?
+                                reader[DirectorStatusDate].ToString() : null; DirectorshipInfo.CompanyName =
+                                (reader[CompanyName] != Convert.DBNull) ? reader[CompanyName].ToString() : null;
+                                DirectorshipInfo.CompanyType = (reader[CompanyType] != Convert.DBNull) ?
+                                reader[CompanyType].ToString() : null; DirectorshipInfo.CompanyStatus =
+                                (reader[CompanyStatus] != Convert.DBNull) ? reader[CompanyStatus].ToString() : null;
+                                DirectorshipInfo.CompanyStatusCode = (reader[CompanyStatusCode] != Convert.DBNull) ?
+                                reader[CompanyStatusCode].ToString() : null; DirectorshipInfo.CompanyRegistrationNumber
+                                = (reader[CompanyRegistrationNumber] != Convert.DBNull) ?
+                                reader[CompanyRegistrationNumber].ToString() : null;
+                                DirectorshipInfo.CompanyRegistrationDate = (reader[CompanyRegistrationDate] !=
+                                Convert.DBNull) ? reader[CompanyRegistrationDate].ToString() : null;
+                                DirectorshipInfo.CompanyStartDate = (reader[CompanyStartDate] != Convert.DBNull) ?
+                                reader[CompanyStartDate].ToString() : null; DirectorshipInfo.CompanyTaxNumber =
+                                (reader[CompanyTaxNumber] != Convert.DBNull) ? reader[CompanyTaxNumber].ToString() :
+                                null; DirectorshipInfo.DirectorTypeCode = (reader[DirectorTypeCode] != Convert.DBNull) ?
+                                reader[DirectorTypeCode].ToString() : null; DirectorshipInfo.DirectorType =
+                                (reader[DirectorType] != Convert.DBNull) ? reader[DirectorType].ToString() : null;
+                                DirectorshipInfo.MemberSize = (reader[MemberSize] != Convert.DBNull) ?
+                                reader[MemberSize].ToString() : null; DirectorshipInfo.MemberContribution =
+                                (reader[MemberContribution] != Convert.DBNull) ? reader[MemberContribution].ToString()
+                                : null; DirectorshipInfo.MemberContributionType = (reader[MemberContributionType] !=
+                                Convert.DBNull) ? reader[MemberContributionType].ToString() : null;
+                                DirectorshipInfo.ResignationDate = (reader[ResignationDate] != Convert.DBNull) ?
+                                reader[ResignationDate].ToString() : null;
+
+                                directorshipList.Add(DirectorshipInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["directorshipList"] = directorshipList;
+                        ViewData["directorshipListCount"] = directorshipList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
             }
             return View();
         }
@@ -2944,88 +3237,94 @@ namespace searchworks.client.Controllers
             string entityNumber = trans.EntityNumber;
             string entityName = trans.EntityName;
             Array moduleCodes = trans.ModuleCodes;
-
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            DateTime time = DateTime.Now;
-
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "TransUnion Company Profile";
-            string action = "Entity Name: " + entityName + "; Entity Number: " + entityNumber + "; Enquiry Reason: " + enquiryReason + "; Enquiry Type: " + enquiryType + "; Module Codes: " + moduleCodes;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
-
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-
-            conn.Open();
-
-            var cmd2 = new MySqlCommand(query_uid, conn);
-
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-            if (!tokenValid(authtoken))
+            try
             {
-                System.Diagnostics.Debug.WriteLine("User needs to be logged out");
-                //exit with a warning
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+                DateTime time = DateTime.Now;
+
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "TransUnion Company Profile";
+                string action = "Entity Name: " + entityName + "; Entity Number: " + entityNumber + "; Enquiry Reason: " + enquiryReason + "; Enquiry Type: " + enquiryType + "; Module Codes: " + moduleCodes;
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
+
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+
+                conn.Open();
+
+                var cmd2 = new MySqlCommand(query_uid, conn);
+
+                var reader2 = cmd2.ExecuteReader();
+
+                conn.Close();
+
+                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                if (!tokenValid(authtoken))
+                {
+                    //exit with a warning
+                }
+
+                //company search API call
+                var url = "https://rest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
+
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
+
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                //object containing input parameter data for company() API method
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    Reference = us,//search reference: probably store in logs
+                    EnquiryReason = enquiryReason,
+                    EnquiryType = enquiryType,
+                    EntityNumber = entityNumber,
+                    EntityName = entityName,
+                    ModuleCodes = moduleCodes,
+                };
+
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
+
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                //JObject o = JObject.Parse(response.Content);
+                JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
+
+                JToken token = JToken.Parse(response.Content);
+                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                string ResponseType = rootObject.ResponseMessage; ;
+                string Name = ViewData["user"].ToString();
+                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "TransUnionCompanyProfile");
+
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                return View();
             }
-
-            //company search API call
-            var url = "https://rest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
-
-            //create RestSharp client and POST request object
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-
-            //request headers
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
+            catch (Exception e)
             {
-                SessionToken = authtoken,
-                Reference = us,//search reference: probably store in logs
-                EnquiryReason = enquiryReason,
-                EnquiryType = enquiryType,
-                EntityNumber = entityNumber,
-                EntityName = entityName,
-                ModuleCodes = moduleCodes,
-            };
-
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
-
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
-
-            dynamic rootObject = JObject.Parse(response.Content);
-            //JObject o = JObject.Parse(response.Content);
-            JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-
-            JToken token = JToken.Parse(response.Content);
-            int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-            string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-            string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-            string ResponseType = rootObject.ResponseMessage; ;
-            string Name = ViewData["user"].ToString();
-            string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-            string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-            string CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-            string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-            string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-            string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-            saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "TransUnionCompanyProfile");
-
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            return View();
+                ViewData["msg"] = "Error Occured, Please verify the details that have been entered";
+                return View();
+            }
         }
 
         public ActionResult TransUnionConsumerContactInformation()
@@ -3298,15 +3597,15 @@ namespace searchworks.client.Controllers
 
         public ActionResult TransUnionConsumerProfileResults(TransUnion trans)
         {
-            string id = trans.IDNumber;
-            string conName = trans.ContactName;
-            string conNumber = trans.ContactNumber;
-            string enquiryReason = trans.EnquiryReason;
-            string surname = trans.Surname;
-            string firstName = trans.FirstName;
-            string passport = trans.PassportNumber;
-            string dob = trans.DateOfBirth;
-            string refe = trans.Reference;
+            string id = trans.IDNumber != null ? trans.IDNumber.Trim() : null;
+            string conName = trans.ContactName != null ? trans.ContactName.Trim() : null;
+            string conNumber = trans.ContactNumber != null ? trans.ContactNumber.Trim() : null;
+            string enquiryReason = trans.EnquiryReason != null ? trans.EnquiryReason.Trim() : null;
+            string surname = trans.Surname != null ? trans.Surname.Trim() : null;
+            string firstName = trans.FirstName != null ? trans.FirstName.Trim() : null;
+            string passport = trans.PassportNumber != null ? trans.PassportNumber.Trim() : null;
+            string dob = trans.DateOfBirth != null ? trans.DateOfBirth.Trim() : null;
+            string refe = trans.Reference != null ? trans.Reference.Trim() : null;
             try
             {
                 string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -3319,7 +3618,6 @@ namespace searchworks.client.Controllers
                 string time_add = time.ToString("T");
                 string page = "TransUnion Consumer ID Verification";
                 string action = "ID: " + id + "; First Name: " + firstName + "; Surname: " + surname + "; Contact Name: " + conName + "; Contact Number: " + conNumber + "; Passport Number: " + passport + "; Date Of Birth: " + dob;
-                System.Diagnostics.Debug.WriteLine(Session["ID"].ToString());
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
 
@@ -3380,15 +3678,14 @@ namespace searchworks.client.Controllers
                 dynamic rootObject = JObject.Parse(response.Content);
                 //JObject o = JObject.Parse(response.Content);
                 JObject o = JObject.Parse(response.Content);//Newtonsoft.Json.Linq.JObject search!!!!
-                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "hereee");
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
 
                 JToken token = JToken.Parse(response.Content);
 
                 int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
                 string SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
                 string ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                string ResponseType = ViewData["ResponseMessage"].ToString();
+                string ResponseType = rootObject.ResponseMessage;
                 string Name = TempData["user"].ToString();
                 string Reference = rootObject.ResponseObject.SearchInformation.Reference;
                 string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
@@ -3495,716 +3792,1058 @@ namespace searchworks.client.Controllers
                 ViewData["StatusDescription"] = rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription;
                 saveDebtReviewStatus(SearchToken, Reference, SearchID, null, rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDate, rootObject.ResponseObject.CreditInformation.DebtReviewStatus.StatusDescription,
                     null, null);
-                //EnquiryHistory
-                List<EnquiryHistory> EnqHIst;
-                Newtonsoft.Json.Linq.JArray elements4 = new Newtonsoft.Json.Linq.JArray();
-                elements4 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                String EnquiryDate = "";
-                String EnquiredBy = "";
-                String EnquiredByContact = "";
-                EnqHIst = new List<EnquiryHistory>();
-                for (int count = 0; count < (elements4.Count); count++)
-                {
-                    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
-                    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
-                    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+                //Newtonsoft.Json.Linq.JArray elements4 = new Newtonsoft.Json.Linq.JArray();
+                //elements4 = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
 
-                    EnqHIst.Add(new EnquiryHistory
+                //EnqHIst = new List<EnquiryHistory>();
+                //for (int count = 0; count < (elements4.Count); count++)
+                //{
+                //    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                //    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                //    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                //    EnqHIst.Add(new EnquiryHistory
+                //    {
+                //        EnquiryDate = EnquiryDate,
+                //        EnquiredBy = EnquiredBy,
+                //        EnquiredByContact = EnquiredByContact
+                //    });
+                //    saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "TransUnionConsumerProfile");
+                //}
+                //ViewData["EnqHIst"] = EnqHIst;
+
+                JToken EnquiryExists = rootObject.ResponseObject["CreditInformation"].EnquiryHistory;
+                if (EnquiryExists != null)
+                {
+                    List<EnquiryHistory> EnqHIst;
+                    Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                    elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
+                    String EnquiryDate = "";
+                    String EnquiredBy = "";
+                    String EnquiredByContact = "";
+                    EnqHIst = new List<EnquiryHistory>();
+                    for (int count = 0; count < (elements.Count); count++)
                     {
-                        EnquiryDate = EnquiryDate,
-                        EnquiredBy = EnquiredBy,
-                        EnquiredByContact = EnquiredByContact
-                    });
-                    saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "TransUnionConsumerProfile");
+                        EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
+                        EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
+                        EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+
+                        EnqHIst.Add(new EnquiryHistory
+                        {
+                            EnquiryDate = EnquiryDate,
+                            EnquiredBy = EnquiredBy,
+                            EnquiredByContact = EnquiredByContact
+                        });
+                        saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "TransUnionConsumerProfile");
+                    }
+                    ViewData["EnqHIst"] = EnqHIst;
                 }
-                ViewData["EnqHIst"] = EnqHIst;
-
-                List<InternalEnquiryHistory> IntEnqHistory;
-                List<AddressHistory> AddressHist;
-                List<TelephoneHistory> TelHist;
-                List<EmploymentHistory> EmpHist;
-                Newtonsoft.Json.Linq.JArray elements, elements1, elements2, elements3, elements5 = new Newtonsoft.Json.Linq.JArray();
-                elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
-                elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
-                elements5 = rootObject.ResponseObject.InternalEnquiryHistory;
-                //AddressHIstoryValues
-                String TypeDescription = "";
-                String Line1 = "";
-                String Line2 = "";
-                String Line3 = "";
-                String PostalCode = "";
-                String FullAddress = "";
-                String LastUpdatedDate = "";
-                //TelephoneHIstory
-                String TypeDescriptionTel = "";
-                String DialCode = "";
-                String Number = "";
-                String FullNumber = "";
-                String LastUpdatedDateTel = "";
-                //EmploymentHistory
-                String EmployerName = "";
-                String Designation = "";
-                //InternalEnquiryHistory
-                string CompanyName = "";
-                string IntEnquiryDate = "";
-                string ContactPerson = "";
-                string PhoneNumber = "";
-                string EmailAddress = "";
-
-                EnqHIst = new List<EnquiryHistory>();
-                AddressHist = new List<AddressHistory>();
-                TelHist = new List<TelephoneHistory>();
-                EmpHist = new List<EmploymentHistory>();
-                IntEnqHistory = new List<InternalEnquiryHistory>();
-
-                for (int count = 0; count < (elements.Count); count++)
+                JToken AddressExists = rootObject.ResponseObject["HistoricalInformation"].AddressHistory;
+                if (AddressExists != null)
                 {
-                    EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
-                    EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
-                    EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact;
+                    List<AddressHistory> AddressHist;
+                    Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
+                    elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                    String TypeDescription = "";
+                    String Line1 = "";
+                    String Line2 = "";
+                    String Line3 = "";
+                    String PostalCode = "";
+                    String FullAddress = "";
+                    String LastUpdatedDate = "";
+                    AddressHist = new List<AddressHistory>();
 
-                    EnqHIst.Add(new EnquiryHistory
+                    for (int count = 0; count < (elements1.Count); count++)
                     {
-                        EnquiryDate = EnquiryDate,
-                        EnquiredBy = EnquiredBy,
-                        EnquiredByContact = EnquiredByContact
-                    });
-                    saveEnquiryHistory(SearchToken, Reference, SearchID, EnquiryDate, EnquiredBy, EnquiredByContact, null, null, "TransUnionConsumerProfile");
-                }
-                for (int count = 0; count < (elements1.Count); count++)
-                {
-                    TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
-                    Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
-                    Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
-                    Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
-                    PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
-                    FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
-                    LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                        TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                        Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                        Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                        Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                        PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                        FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                    AddressHist.Add(new AddressHistory
-                    {
-                        TypeDescription = TypeDescription,
-                        Line1 = Line1,
-                        Line2 = Line2,
-                        Line3 = Line3,
-                        PostalCode = PostalCode,
-                        FullAddress = FullAddress,
-                        LastUpdatedDate = LastUpdatedDate,
-                    });
-                    saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "TransUnionConsumerProfile");
-                }
-                for (int count = 0; count < (elements2.Count); count++)
-                {
-                    TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                    DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
-                    Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
-                    FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
-                    LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
-
-                    TelHist.Add(new TelephoneHistory
-                    {
-                        TypeDescriptionTel = TypeDescriptionTel,
-                        DialCode = DialCode,
-                        Number = Number,
-                        FullNumber = FullNumber,
-                        LastUpdatedDateTel = LastUpdatedDate,
-                    });
-                    saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescriptionTel, null, Number, FullNumber, LastUpdatedDate, "TransUnionConsumerProfile");
-                }
-                for (int count = 0; count < (elements3.Count); count++)
-                {
-                    EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                    Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
-
-                    EmpHist.Add(new EmploymentHistory
-                    {
-                        EmployerName = EmployerName,
-                        Designation = Designation,
-                    });
-                    saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, null, null, "TransUnionConsumerProfile");
+                        AddressHist.Add(new AddressHistory
+                        {
+                            TypeDescription = TypeDescription,
+                            Line1 = Line1,
+                            Line2 = Line2,
+                            Line3 = Line3,
+                            PostalCode = PostalCode,
+                            FullAddress = FullAddress,
+                            LastUpdatedDate = LastUpdatedDate,
+                        });
+                        saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "TransUnionConsumerProfile");
+                    }
+                    ViewData["AddressHist"] = AddressHist;
                 }
 
-                for (int count = 0; count < (elements5.Count); count++)
+                JToken TelephoneExists = rootObject.ResponseObject["HistoricalInformation"].TelephoneHistory;
+                if (TelephoneExists != null)
                 {
-                    CompanyName = rootObject.ResponseObject.InternalEnquiryHistory[count].CompanyName;
-                    IntEnquiryDate = rootObject.ResponseObject.InternalEnquiryHistory[count].EnquiryDate;
-                    ContactPerson = rootObject.ResponseObject.InternalEnquiryHistory[count].ContactPerson;
-                    PhoneNumber = rootObject.ResponseObject.InternalEnquiryHistory[count].PhoneNumber;
-                    EmailAddress = rootObject.ResponseObject.InternalEnquiryHistory[count].EmailAddress;
+                    List<TelephoneHistory> TelHist;
+                    Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
 
-                    IntEnqHistory.Add(new InternalEnquiryHistory
+                    elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                    String TypeDescriptionTel = "";
+                    String DialCode = "";
+                    String Number = "";
+                    String FullNumber = "";
+                    String LastUpdatedDateTel = "";
+
+                    TelHist = new List<TelephoneHistory>();
+                    for (int count = 0; count < (elements2.Count); count++)
                     {
-                        CompanyName = CompanyName,
-                        IntEnquiryDate = IntEnquiryDate,
-                        ContactPerson = ContactPerson,
-                        PhoneNumber = PhoneNumber,
-                        EmailAddress = EmailAddress,
-                    });
-                    saveEnquiryHistory(SearchToken, Reference, SearchID, IntEnquiryDate, CompanyName, ContactPerson, EmailAddress, null, "TransUnionConsumerProfile");
-                }
+                        TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                        DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                        Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                        FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                        LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
 
-                ViewData["EnqHIst"] = EnqHIst;
-                ViewData["AddressHist"] = AddressHist;
-                ViewData["TelHist"] = TelHist;
-                ViewData["EmpHist"] = EmpHist;
-                ViewData["IntEnqHistory"] = IntEnqHistory;
+                        TelHist.Add(new TelephoneHistory
+                        {
+                            TypeDescriptionTel = TypeDescriptionTel,
+                            DialCode = DialCode,
+                            Number = Number,
+                            FullNumber = FullNumber,
+                            LastUpdatedDateTel = LastUpdatedDateTel,
+                        });
+                        saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescriptionTel, null, Number, FullNumber, LastUpdatedDateTel, "TransUnionConsumerProfile");
+                    }
+                    ViewData["TelHist"] = TelHist;
+                }
+                JToken EmploymentExists = rootObject.ResponseObject["HistoricalInformation"].EmploymentHistory;
+                if (EmploymentExists != null)
+                {
+                    List<EmploymentHistory> EmpHist;
+                    EmpHist = new List<EmploymentHistory>();
+                    Newtonsoft.Json.Linq.JArray elements3 = new Newtonsoft.Json.Linq.JArray();
+                    elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+                    String EmployerName = "";
+                    String Designation = "";
+
+                    for (int count = 0; count < (elements3.Count); count++)
+                    {
+                        EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                        Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation; ;
+
+                        EmpHist.Add(new EmploymentHistory
+                        {
+                            EmployerName = EmployerName,
+                            Designation = Designation,
+                        });
+                        saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, null, null, "TransUnionConsumerProfile");
+                    }
+
+                    ViewData["EmpHist"] = EmpHist;
+                }
+                JToken InternalEnquiryExists = rootObject.ResponseObject["InternalEnquiryHistory"];
+                if (InternalEnquiryExists != null)
+                {
+                    List<InternalEnquiryHistory> IntEnqHistory;
+                    Newtonsoft.Json.Linq.JArray elements5 = new Newtonsoft.Json.Linq.JArray();
+
+                    elements5 = rootObject.ResponseObject.InternalEnquiryHistory;
+
+                    string CompanyName = "";
+                    string IntEnquiryDate = "";
+                    string ContactPerson = "";
+                    string PhoneNumber = "";
+                    string EmailAddress = "";
+
+                    IntEnqHistory = new List<InternalEnquiryHistory>();
+
+                    for (int count = 0; count < (elements5.Count); count++)
+                    {
+                        CompanyName = rootObject.ResponseObject.InternalEnquiryHistory[count].CompanyName;
+                        IntEnquiryDate = rootObject.ResponseObject.InternalEnquiryHistory[count].EnquiryDate;
+                        ContactPerson = rootObject.ResponseObject.InternalEnquiryHistory[count].ContactPerson;
+                        PhoneNumber = rootObject.ResponseObject.InternalEnquiryHistory[count].PhoneNumber;
+                        EmailAddress = rootObject.ResponseObject.InternalEnquiryHistory[count].EmailAddress;
+
+                        IntEnqHistory.Add(new InternalEnquiryHistory
+                        {
+                            CompanyName = CompanyName,
+                            IntEnquiryDate = IntEnquiryDate,
+                            ContactPerson = ContactPerson,
+                            PhoneNumber = PhoneNumber,
+                            EmailAddress = EmailAddress,
+                        });
+                        saveEnquiryHistory(SearchToken, Reference, SearchID, IntEnquiryDate, CompanyName, ContactPerson, EmailAddress, null, "TransUnionConsumerProfile");
+                    }
+                    ViewData["IntEnqHistory"] = IntEnqHistory;
+                }
             }
             catch (Exception e)
             {
-                TempData["msg"] = e.ToString();
+                TempData["msg"] = "Error Occured, Please verify the details that have been entered";
             }
 
             return View();
         }
 
-        //public ActionResult TransUnionConsumerProfileDatabase(DatabaseSearch transSearch)
-        //{
-        //    ViewData["id"] = transSearch.id.ToString();
-        //    ViewData["token"] = transSearch.token.ToString();
-        //    ViewData["refe"] = transSearch.refe;
-        //    ViewData["type"] = transSearch.type;
-        //    //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
-        //    string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-        //    string query_uid = $"SELECT * FROM " +
-        //        $"personinformation,homeaffairsinformation,creditinformation,datacounts,debtreviewstatus,addresshistory,telephonehistory,consumerstatistics,nlrstats,ccastats,months,cca24months,cca36months,enquiryhistory,employmenthistory,months,months,nlr36months WHERE personinformation.SearchToken = '{transSearch.token}'";
-
-        // var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString); conn.Open();
-        // var cmd2 = new MySqlCommand(query_uid, conn); var reader2 = cmd2.ExecuteReader();
-        // System.Collections.Generic.List<PersonInformation> personInfoList = new
-        // System.Collections.Generic.List<PersonInformation>();
-        // System.Collections.Generic.List<HomeAffairsInformation> homeAffairsInformationList = new
-        // System.Collections.Generic.List<HomeAffairsInformation>();
-        // System.Collections.Generic.List<CreditInformation> creditInformationList = new
-        // System.Collections.Generic.List<CreditInformation>();
-        // System.Collections.Generic.List<DataCounts> dataCountsList = new
-        // System.Collections.Generic.List<DataCounts>();
-        // System.Collections.Generic.List<DebtReviewStatus> debtReviewStatusList = new
-        // System.Collections.Generic.List<DebtReviewStatus>();
-        // System.Collections.Generic.List<ConsumerStatistics> consumerstatsList = new
-        // System.Collections.Generic.List<ConsumerStatistics>();
-        // System.Collections.Generic.List<NLRStats> nlrstatsList = new
-        // System.Collections.Generic.List<NLRStats>(); System.Collections.Generic.List<CCAstats>
-        // ccastatsList = new System.Collections.Generic.List<CCAstats>();
-        // System.Collections.Generic.List<months> monthsLists = new
-        // System.Collections.Generic.List<months>(); System.Collections.Generic.List<CCA24months>
-        // cca24monthsList = new System.Collections.Generic.List<CCA24months>();
-        // System.Collections.Generic.List<CCA36months> cca36monthsList = new
-        // System.Collections.Generic.List<CCA36months>(); System.Collections.Generic.List<months>
-        // monthsLists = new System.Collections.Generic.List<months>();
-        // System.Collections.Generic.List<months> monthsLists = new
-        // System.Collections.Generic.List<months>(); System.Collections.Generic.List<NLR36months>
-        // nlr12monthsList = new System.Collections.Generic.List<NLR36months>();
-        // System.Collections.Generic.List<EnquiryHistory> enquiryInformationList = new
-        // System.Collections.Generic.List<EnquiryHistory>();
-        // System.Collections.Generic.List<AddressHistory> addressInformationList = new
-        // System.Collections.Generic.List<AddressHistory>();
-        // System.Collections.Generic.List<EmploymentHistory> employmentInformationList
-        // = new System.Collections.Generic.List<EmploymentHistory>();
-        // System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new
-        // System.Collections.Generic.List<TelephoneHistory>();
-        // System.Collections.Generic.List<Directorship> directorshipList = new System.Collections.Generic.List<Directorship>();
-
-        // //PersonInformation int DateOfBirth = reader2.GetOrdinal("DateOfBirth"); int Title =
-        // reader2.GetOrdinal("Title"); int FirstName = reader2.GetOrdinal("FirstName"); int Surname
-        // = reader2.GetOrdinal("Surname"); int Fullname = reader2.GetOrdinal("Fullname"); int IDNumber
-        // = reader2.GetOrdinal("IDNumber"); int Gender = reader2.GetOrdinal("Gender"); int Age =
-        // reader2.GetOrdinal("Age"); int MaritalStatus = reader2.GetOrdinal("MaritalStatus"); int
-        // MiddleName1 = reader2.GetOrdinal("MiddleName1"); int Reference =
-        // reader2.GetOrdinal("Reference"); int HasProperties = reader2.GetOrdinal("HasProperties");
-
-        // //HomeAffairsInformation int ExFirstName = reader2.GetOrdinal("FirstName"); int DeceasedDate
-        // = reader2.GetOrdinal("DeceasedDate"); int IDVerified = reader2.GetOrdinal("IDVerified"); int
-        // SurnameVerified = reader2.GetOrdinal("SurnameVerified"); int Warnings =
-        // reader2.GetOrdinal("Warnings"); int DeceasedStatus =
-        // reader2.GetOrdinal("DeceasedStatus"); int VerifiedStatus =
-        // reader2.GetOrdinal("VerifiedStatus"); int InitialsVerified =
-        // reader2.GetOrdinal("InitialsVerified"); int CauseOfDeath =
-        // reader2.GetOrdinal("CauseOfDeath"); int VerifiedDate = reader2.GetOrdinal("VerifiedDate");
-
-        // //CreditInformation int DelphiScore = reader2.GetOrdinal("DelphiScore"); int FlagCount =
-        // reader2.GetOrdinal("FlagCount"); int FlagDetails = reader2.GetOrdinal("FlagDetails");
-
-        // //DataCOunts int Accounts = reader2.GetOrdinal("Accounts"); int Enquiries =
-        // reader2.GetOrdinal("Enquiries"); //int Judgements = reader2.GetOrdinal("Judgements"); int
-        // Notices = reader2.GetOrdinal("Notices"); int BankDefaults =
-        // reader2.GetOrdinal("BankDefaults"); int Defaults = reader2.GetOrdinal("Defaults"); int
-        // Collections = reader2.GetOrdinal("Collections"); int Directors =
-        // reader2.GetOrdinal("Directors"); int Addresses = reader2.GetOrdinal("Addresses"); int
-        // Telephones = reader2.GetOrdinal("Telephones"); int Occupants =
-        // reader2.GetOrdinal("Occupants"); int Employers = reader2.GetOrdinal("Employers"); int
-        // TraceAlerts = reader2.GetOrdinal("TraceAlerts"); int PaymentProfiles =
-        // reader2.GetOrdinal("PaymentProfiles"); int OwnEnquiries =
-        // reader2.GetOrdinal("OwnEnquiries"); int AdminOrders = reader2.GetOrdinal("AdminOrders");
-        // int PossibleMatches = reader2.GetOrdinal("PossibleMatches"); int DefiniteMatches =
-        // reader2.GetOrdinal("DefiniteMatches"); int Loans = reader2.GetOrdinal("Loans"); int
-        // FraudAlerts = reader2.GetOrdinal("FraudAlerts"); int Companies =
-        // reader2.GetOrdinal("Companies"); int Properties = reader2.GetOrdinal("Properties"); int
-        // Documents = reader2.GetOrdinal("Documents"); int DemandLetters =
-        // reader2.GetOrdinal("DemandLetters"); int Trusts = reader2.GetOrdinal("Trusts"); int Bonds
-        // = reader2.GetOrdinal("Bonds"); int Deeds = reader2.GetOrdinal("Deeds"); int
-        // PublicDefaults = reader2.GetOrdinal("PublicDefaults"); int NLRAccounts = reader2.GetOrdinal("NLRAccounts");
-
-        // //DebtReviewStatus int StatusCode = reader2.GetOrdinal("StatusCode"); int StatusDate =
-        // reader2.GetOrdinal("StatusDate"); int StatusDescription =
-        // reader2.GetOrdinal("StatusDescription"); int ApplicationDate = reader2.GetOrdinal("ApplicationDate");
-
-        // //Consumer Statistics int HighestJudgment = reader2.GetOrdinal("HighestJudgment"); int
-        // RevolvingAccounts = reader2.GetOrdinal("RevolvingAccounts"); int InstalmentAccounts =
-        // reader2.GetOrdinal("InstalmentAccounts"); int OpenAccounts =
-        // reader2.GetOrdinal("OpenAccounts"); int AdverseAccounts =
-        // reader2.GetOrdinal("AdverseAccounts"); int Percent0ArrearsLast12Histories =
-        // reader2.GetOrdinal("Percent0ArrearsLast12Histories"); int MonthsOldestOpenedPPSEver =
-        // reader2.GetOrdinal("MonthsOldestOpenedPPSEver"); int NumberPPSLast12Months =
-        // reader2.GetOrdinal("NumberPPSLast12Months"); int NLRMicroloansPast12Months = reader2.GetOrdinal("NLRMicroloansPast12Months");
-
-        // //nlr stats int ActiveAccounts = reader2.GetOrdinal("ActiveAccounts"); int ClosedAccounts
-        // = reader2.GetOrdinal("ClosedAccounts"); int WorstMonthArrears =
-        // reader2.GetOrdinal("WorstMonthArrears"); int WorstArrearsStatus =
-        // reader2.GetOrdinal("WorstArrearsStatus"); int MonthlyInstalment =
-        // reader2.GetOrdinal("MonthlyInstalment"); int CumulativeArrears =
-        // reader2.GetOrdinal("CumulativeArrears"); int BalanceExposure = reader2.GetOrdinal("BalanceExposure");
-
-        // //ccastats int ccaActiveAccounts = reader2.GetOrdinal("ActiveAccounts"); int
-        // ccaClosedAccounts = reader2.GetOrdinal("ClosedAccounts"); int ccaWorstMonthArrears =
-        // reader2.GetOrdinal("WorstMonthArrears"); int ccaWorstArrearsStatus =
-        // reader2.GetOrdinal("WorstArrearsStatus"); int ccaMonthlyInstalment =
-        // reader2.GetOrdinal("MonthlyInstalment"); int ccaCumulativeArrears =
-        // reader2.GetOrdinal("CumulativeArrears"); int ccaBalanceExposure = reader2.GetOrdinal("BalanceExposure");
-
-        // //months int EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); int
-        // EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); int PositiveLoans
-        // = reader2.GetOrdinal("PositiveLoans"); int HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // //cca24months int cca24EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); int
-        // cca24EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); int cca24PositiveLoans =
-        // reader2.GetOrdinal("PositiveLoans"); int cca24HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // //cca36months int cca36EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); int
-        // cca36EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); int cca36PositiveLoans =
-        // reader2.GetOrdinal("PositiveLoans"); int cca36HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // //months int EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); int
-        // EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); int PositiveLoans
-        // = reader2.GetOrdinal("PositiveLoans"); int HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // //months int EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); int
-        // EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); int PositiveLoans
-        // = reader2.GetOrdinal("PositiveLoans"); int HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // //nlr36months int nlr36EnquiriesByClient = reader2.GetOrdinal("EnquiriesByClient"); int
-        // nlr36EnquiriesByOther = reader2.GetOrdinal("EnquiriesByOther"); int nlr36PositiveLoans =
-        // reader2.GetOrdinal("PositiveLoans"); int nlr36HighestMonthsInArrears = reader2.GetOrdinal("HighestMonthsInArrears");
-
-        // //EnquiryHistory int EnquiryDate = reader2.GetOrdinal("EnquiryDate"); int EnquiredBy =
-        // reader2.GetOrdinal("EnquiredBy"); int EnquiredByContact =
-        // reader2.GetOrdinal("EnquiredByContact"); int EnquiredByType =
-        // reader2.GetOrdinal("EnquiredByType"); int ReasonForEnquiry = reader2.GetOrdinal("ReasonForEnquiry");
-
-        // //AddressHistory int AddressID = reader2.GetOrdinal("AddressID"); int TypeDescription =
-        // reader2.GetOrdinal("TypeDescription"); int Line1 = reader2.GetOrdinal("Line1"); int Line2
-        // = reader2.GetOrdinal("Line2"); int Line3 = reader2.GetOrdinal("Line3"); int Line4 =
-        // reader2.GetOrdinal("Line4"); int PostalCode = reader2.GetOrdinal("PostalCode"); int
-        // FullAddress = reader2.GetOrdinal("FullAddress"); int AddressLastUpdatedDate = reader2.GetOrdinal("LastUpdatedDate");
-
-        // //Telephone History int TypeDescriptionTel = reader2.GetOrdinal("TypeDescriptionTel");
-        // int DialCode = reader2.GetOrdinal("DialCode"); int Number = reader2.GetOrdinal("Number");
-        // int FullNumber = reader2.GetOrdinal("FullNumber"); int LastUpdatedDateTel = reader2.GetOrdinal("LastUpdatedDateTel");
-
-        // //Employment History int EmployerName = reader2.GetOrdinal("EmployerName"); int
-        // Designation = reader2.GetOrdinal("Designation"); int EmployLastUpdatedDate = reader2.GetOrdinal("LastUpdatedDate");
-
-        // //Directorship int DesignationCode = reader2.GetOrdinal("DesignationCode"); int
-        // AppointmentDate = reader2.GetOrdinal("AppointmentDate"); int DirectorStatus =
-        // reader2.GetOrdinal("DirectorStatus"); int DirectorStatusDate
-        // = reader2.GetOrdinal("DirectorStatusDate"); int CompanyName =
-        // reader2.GetOrdinal("CompanyName"); int CompanyType = reader2.GetOrdinal("CompanyType");
-        // int CompanyStatus = reader2.GetOrdinal("CompanyStatus"); int CompanyStatusCode =
-        // reader2.GetOrdinal("CompanyStatusCode"); int CompanyRegistrationNumber =
-        // reader2.GetOrdinal("CompanyRegistrationNumber"); int CompanyRegistrationDate
-        // = reader2.GetOrdinal("CompanyRegistrationDate"); int CompanyStartDate =
-        // reader2.GetOrdinal("CompanyStartDate"); int CompanyTaxNumber =
-        // reader2.GetOrdinal("CompanyTaxNumber"); int DirectorTypeCode =
-        // reader2.GetOrdinal("DirectorTypeCode"); int DirectorType =
-        // reader2.GetOrdinal("DirectorType"); int MemberSize = reader2.GetOrdinal("MemberSize");
-        // int MemberContribution = reader2.GetOrdinal("MemberContribution"); int
-        // MemberContributionType = reader2.GetOrdinal("MemberContributionType"); int
-        // ResignationDate = reader2.GetOrdinal("ResignationDate"); while (reader2.Read()) {
-        // PersonInformation PersonInfo
-        // = new PersonInformation();
-
-        // PersonInfo.DateOfBirth = (reader2[DateOfBirth] != Convert.DBNull) ?
-        // reader2[DateOfBirth].ToString() : null; PersonInfo.Title = (reader2[Title] !=
-        // Convert.DBNull) ? reader2[Title].ToString() : null; PersonInfo.FirstName =
-        // (reader2[FirstName] != Convert.DBNull) ? reader2[FirstName].ToString() : null;
-        // PersonInfo.Surname = (reader2[Surname] != Convert.DBNull) ? reader2[Surname].ToString() :
-        // null; PersonInfo.Fullname = (reader2[Fullname] != Convert.DBNull) ?
-        // reader2[Fullname].ToString() : null; PersonInfo.IDNumber
-        // = (reader2[IDNumber] != Convert.DBNull) ? reader2[IDNumber].ToString() : null;
-        // PersonInfo.Gender = (reader2[Gender] != Convert.DBNull) ? reader2[Gender].ToString() :
-        // null; PersonInfo.Age = (reader2[Age] != Convert.DBNull) ? reader2[Age].ToString() : null;
-        // PersonInfo.MaritalStatus = (reader2[MaritalStatus] != Convert.DBNull) ?
-        // reader2[MaritalStatus].ToString() : null; PersonInfo.MiddleName1 = (reader2[MiddleName1]
-        // != Convert.DBNull) ? reader2[MiddleName1].ToString() : null; PersonInfo.Reference =
-        // (reader2[Reference] != Convert.DBNull) ? reader2[Reference].ToString() : null;
-        // PersonInfo.HasProperties = (reader2[HasProperties] != Convert.DBNull) ?
-        // Convert.ToBoolean(reader2[HasProperties]) : false;
-
-        // personInfoList.Add(PersonInfo);
-
-        // HomeAffairsInformation HomeAffairsInfo = new HomeAffairsInformation();
-
-        // HomeAffairsInfo.FirstName = (reader2[ExFirstName] != Convert.DBNull) ?
-        // reader2[ExFirstName].ToString() : null; HomeAffairsInfo.IDVerified = (reader2[IDVerified]
-        // != Convert.DBNull) ? reader2[IDVerified].ToString() : null;
-        // HomeAffairsInfo.SurnameVerified = (reader2[SurnameVerified] != Convert.DBNull) ?
-        // reader2[SurnameVerified].ToString() : null; HomeAffairsInfo.Warnings = (reader2[Warnings]
-        // != Convert.DBNull) ? reader2[Warnings].ToString() : null; HomeAffairsInfo.DeceasedDate =
-        // (reader2[DeceasedDate] != Convert.DBNull) ? reader2[DeceasedDate].ToString() : null;
-        // HomeAffairsInfo.DeceasedStatus = (reader2[DeceasedStatus] != Convert.DBNull) ?
-        // reader2[DeceasedStatus].ToString() : null; HomeAffairsInfo.VerifiedStatus =
-        // (reader2[VerifiedStatus] != Convert.DBNull) ? reader2[VerifiedStatus].ToString() : null; HomeAffairsInfo.InitialsVerified
-        // = (reader2[InitialsVerified] != Convert.DBNull) ? reader2[InitialsVerified].ToString() :
-        // null; HomeAffairsInfo.CauseOfDeath = (reader2[CauseOfDeath] != Convert.DBNull) ?
-        // reader2[CauseOfDeath].ToString() : null; HomeAffairsInfo.VerifiedDate =
-        // (reader2[VerifiedDate] != Convert.DBNull) ? reader2[VerifiedDate].ToString() : null;
-
-        // homeAffairsInformationList.Add(HomeAffairsInfo);
-
-        // CreditInformation CreditInfo = new CreditInformation();
-
-        // CreditInfo.DelphiScore = (reader2[DelphiScore] != Convert.DBNull) ?
-        // reader2[DelphiScore].ToString() : null; CreditInfo.FlagCount = (reader2[FlagCount] !=
-        // Convert.DBNull) ? reader2[FlagCount].ToString() : null; CreditInfo.FlagDetails =
-        // (reader2[FlagDetails] != Convert.DBNull) ? reader2[FlagDetails].ToString() : null;
-
-        // creditInformationList.Add(CreditInfo);
-
-        // DataCounts DataCountInfo = new DataCounts();
-
-        // DataCountInfo.Accounts = (reader2[Accounts] != Convert.DBNull) ?
-        // reader2[Accounts].ToString() : null; DataCountInfo.Enquiries = (reader2[Enquiries] !=
-        // Convert.DBNull) ? reader2[Enquiries].ToString() : null; //DataCountInfo.Judgements =
-        // (reader2[Judgements] != Convert.DBNull) ? reader2[Judgements].ToString() : null;
-        // DataCountInfo.Notices = (reader2[Notices] != Convert.DBNull) ?
-        // reader2[Notices].ToString() : null; DataCountInfo.BankDefaults = (reader2[BankDefaults]
-        // != Convert.DBNull) ? reader2[BankDefaults].ToString() : null; DataCountInfo.Defaults =
-        // (reader2[Defaults] != Convert.DBNull) ? reader2[Defaults].ToString() : null;
-        // DataCountInfo.Collections = (reader2[Collections] != Convert.DBNull) ?
-        // reader2[Collections].ToString() : null; DataCountInfo.Directors = (reader2[Directors] !=
-        // Convert.DBNull) ? reader2[Directors].ToString() : null; DataCountInfo.Addresses =
-        // (reader2[Addresses] != Convert.DBNull) ? reader2[Addresses].ToString() : null;
-        // DataCountInfo.Telephones = (reader2[Telephones] != Convert.DBNull) ?
-        // reader2[Telephones].ToString() : null; DataCountInfo.Occupants = (reader2[Occupants] !=
-        // Convert.DBNull) ? reader2[Occupants].ToString() : null; DataCountInfo.Employers =
-        // (reader2[Employers] != Convert.DBNull) ? reader2[Employers].ToString() : null;
-        // DataCountInfo.TraceAlerts = (reader2[TraceAlerts] != Convert.DBNull) ?
-        // reader2[TraceAlerts].ToString() : null; DataCountInfo.PaymentProfiles =
-        // (reader2[PaymentProfiles] != Convert.DBNull) ? reader2[PaymentProfiles].ToString() :
-        // null; DataCountInfo.OwnEnquiries = (reader2[OwnEnquiries] != Convert.DBNull) ?
-        // reader2[OwnEnquiries].ToString() : null; DataCountInfo.AdminOrders =
-        // (reader2[AdminOrders] != Convert.DBNull) ? reader2[AdminOrders].ToString() : null;
-        // DataCountInfo.PossibleMatches = (reader2[PossibleMatches] != Convert.DBNull) ?
-        // reader2[PossibleMatches].ToString() : null; DataCountInfo.DefiniteMatches =
-        // (reader2[DefiniteMatches] != Convert.DBNull) ? reader2[DefiniteMatches].ToString() :
-        // null; DataCountInfo.Loans = (reader2[Loans] != Convert.DBNull) ?
-        // reader2[Loans].ToString() : null; DataCountInfo.FraudAlerts = (reader2[FraudAlerts] !=
-        // Convert.DBNull) ? reader2[FraudAlerts].ToString() : null; DataCountInfo.Companies =
-        // (reader2[Companies] != Convert.DBNull) ? reader2[Companies].ToString() : null;
-        // DataCountInfo.Properties = (reader2[Properties] != Convert.DBNull) ?
-        // reader2[Properties].ToString() : null; DataCountInfo.Documents = (reader2[Documents] !=
-        // Convert.DBNull) ? reader2[Documents].ToString() : null; DataCountInfo.DemandLetters =
-        // (reader2[DemandLetters] != Convert.DBNull) ? reader2[DemandLetters].ToString() : null;
-        // DataCountInfo.Trusts = (reader2[Trusts] != Convert.DBNull) ? reader2[Trusts].ToString() :
-        // null; DataCountInfo.Bonds = (reader2[Bonds] != Convert.DBNull) ?
-        // reader2[Bonds].ToString() : null; DataCountInfo.Deeds = (reader2[Deeds] !=
-        // Convert.DBNull) ? reader2[Deeds].ToString() : null; DataCountInfo.PublicDefaults =
-        // (reader2[PublicDefaults] != Convert.DBNull) ? reader2[PublicDefaults].ToString() : null;
-        // DataCountInfo.NLRAccounts = (reader2[NLRAccounts] != Convert.DBNull) ?
-        // reader2[NLRAccounts].ToString() : null;
-
-        // dataCountsList.Add(DataCountInfo);
-
-        // DebtReviewStatus DebtReviewInfo = new DebtReviewStatus();
-
-        // DebtReviewInfo.StatusCode = (reader2[StatusCode] != Convert.DBNull) ?
-        // reader2[StatusCode].ToString() : null; DebtReviewInfo.StatusDate = (reader2[StatusDate]
-        // != Convert.DBNull) ? reader2[StatusDate].ToString() : null;
-        // DebtReviewInfo.StatusDescription = (reader2[StatusDescription] != Convert.DBNull) ?
-        // reader2[StatusDescription].ToString() : null; DebtReviewInfo.ApplicationDate =
-        // (reader2[ApplicationDate] != Convert.DBNull) ? reader2[ApplicationDate].ToString() : null;
-
-        // debtReviewStatusList.Add(DebtReviewInfo);
-
-        // ConsumerStatistics ConsumerStatsInfo = new ConsumerStatistics();
-
-        // ConsumerStatsInfo.HighestJudgment = (reader2[HighestJudgment] != Convert.DBNull) ?
-        // reader2[HighestJudgment].ToString() : null; ConsumerStatsInfo.RevolvingAccounts =
-        // (reader2[RevolvingAccounts] != Convert.DBNull) ? reader2[RevolvingAccounts].ToString() :
-        // null; ConsumerStatsInfo.InstalmentAccounts = (reader2[InstalmentAccounts] !=
-        // Convert.DBNull) ? reader2[InstalmentAccounts].ToString() : null;
-        // ConsumerStatsInfo.OpenAccounts = (reader2[OpenAccounts] != Convert.DBNull) ?
-        // reader2[OpenAccounts].ToString() : null; ConsumerStatsInfo.AdverseAccounts =
-        // (reader2[AdverseAccounts] != Convert.DBNull) ? reader2[AdverseAccounts].ToString() :
-        // null; ConsumerStatsInfo.Percent0ArrearsLast12Histories
-        // = (reader2[Percent0ArrearsLast12Histories] != Convert.DBNull) ?
-        // reader2[Percent0ArrearsLast12Histories].ToString() : null;
-        // ConsumerStatsInfo.MonthsOldestOpenedPPSEver = (reader2[MonthsOldestOpenedPPSEver] !=
-        // Convert.DBNull) ? reader2[MonthsOldestOpenedPPSEver].ToString() : null;
-        // ConsumerStatsInfo.NumberPPSLast12Months = (reader2[NumberPPSLast12Months] !=
-        // Convert.DBNull) ? reader2[NumberPPSLast12Months].ToString() : null;
-        // ConsumerStatsInfo.NLRMicroloansPast12Months = (reader2[NLRMicroloansPast12Months] !=
-        // Convert.DBNull) ? reader2[NLRMicroloansPast12Months].ToString() : null;
-
-        // consumerstatsList.Add(ConsumerStatsInfo);
-
-        // nlrstats nlrstatsInfo = new NLRstats();
-
-        // nlrstatsInfo.ActiveAccounts = (reader2[nlrActiveAccounts] != Convert.DBNull) ?
-        // reader2[nlrActiveAccounts].ToString() : null;
-
-        // nlrstatsInfo.ClosedAccounts = (reader2[nlrClosedAccounts] != Convert.DBNull) ?
-        // reader2[nlrClosedAccounts].ToString() : null; nlrstatsInfo.WorstMonthArrears =
-        // (reader2[nlrWorstMonthArrears] != Convert.DBNull) ?
-        // reader2[nlrWorstMonthArrears].ToString() : null; nlrstatsInfo.WorstArrearsStatus =
-        // (reader2[nlrWorstArrearsStatus] != Convert.DBNull) ?
-        // reader2[nlrWorstArrearsStatus].ToString() : null; nlrstatsInfo.MonthlyInstalment =
-        // (reader2[nlrMonthlyInstalment] != Convert.DBNull) ?
-        // reader2[nlrMonthlyInstalment].ToString() : null; nlrstatsInfo.CumulativeArrears =
-        // (reader2[nlrCumulativeArrears] != Convert.DBNull) ?
-        // reader2[nlrCumulativeArrears].ToString() : null; nlrstatsInfo.BalanceExposure =
-        // (reader2[nlrBalanceExposure] != Convert.DBNull) ? reader2[nlrBalanceExposure].ToString()
-        // : null;
-
-        // nlrstatsList.Add(nlrstatsInfo);
-
-        // //CCA Stats ccastats ccastatsInfo = new ccastats();
-
-        // ccastatsInfo.ActiveAccounts = (reader2[ccaActiveAccounts] != Convert.DBNull) ?
-        // reader2[ccaActiveAccounts].ToString() : null; ccastatsInfo.ClosedAccounts =
-        // (reader2[ccaClosedAccounts] != Convert.DBNull) ? reader2[ccaClosedAccounts].ToString() :
-        // null; ccastatsInfo.WorstMonthArrears
-        // = (reader2[ccaWorstMonthArrears] != Convert.DBNull) ?
-        // reader2[ccaWorstMonthArrears].ToString() : null; ccastatsInfo.WorstArrearsStatus =
-        // (reader2[ccaWorstArrearsStatus] != Convert.DBNull) ?
-        // reader2[ccaWorstArrearsStatus].ToString() : null; ccastatsInfo.MonthlyInstalment =
-        // (reader2[ccaMonthlyInstalment] != Convert.DBNull) ?
-        // reader2[ccaMonthlyInstalment].ToString() : null; ccastatsInfo.CumulativeArrears =
-        // (reader2[ccaCumulativeArrears] != Convert.DBNull) ?
-        // reader2[ccaCumulativeArrears].ToString() : null; ccastatsInfo.BalanceExposure =
-        // (reader2[ccaBalanceExposure] != Convert.DBNull) ? reader2[ccaBalanceExposure].ToString()
-        // : null;
-
-        // ccastatsList.Add(ccastatsInfo); //,cca24,cca36 months monthInfo = new months();
-
-        // monthInfo.EnquiriesByClient = (reader2[EnquiriesByClient] != Convert.DBNull) ?
-        // reader2[EnquiriesByClient].ToString() : null; monthInfo.EnquiriesByOther =
-        // (reader2[EnquiriesByOther] != Convert.DBNull) ? reader2[EnquiriesByOther].ToString() :
-        // null; monthInfo.PositiveLoans = (reader2[PositiveLoans] != Convert.DBNull) ?
-        // reader2[PositiveLoans].ToString() : null; monthInfo.HighestMonthsInArrears =
-        // (reader2[HighestMonthsInArrears] != Convert.DBNull) ?
-        // reader2[HighestMonthsInArrears].ToString() : null;
-
-        // monthsLists.Add(monthInfo);
-
-        // cca24months cca24monthInfo = new cca24months();
-
-        // cca24monthInfo.EnquiriesByClient = (reader2[cca24EnquiriesByClient] != Convert.DBNull) ?
-        // reader2[cca24EnquiriesByClient].ToString() : null; cca24monthInfo.EnquiriesByOther =
-        // (reader2[cca24EnquiriesByOther] != Convert.DBNull) ?
-        // reader2[cca24EnquiriesByOther].ToString() : null; cca24monthInfo.PositiveLoans =
-        // (reader2[cca24PositiveLoans] != Convert.DBNull) ? reader2[cca24PositiveLoans].ToString()
-        // : null; cca24monthInfo.HighestMonthsInArrears = (reader2[cca24HighestMonthsInArrears] !=
-        // Convert.DBNull) ? reader2[cca24HighestMonthsInArrears].ToString() : null;
-
-        // cca24monthsList.Add(cca24monthInfo);
-
-        // cca36months cca36monthInfo = new cca36months();
-
-        // cca36monthInfo.EnquiriesByClient = (reader2[cca36EnquiriesByClient] != Convert.DBNull) ?
-        // reader2[cca36EnquiriesByClient].ToString() : null; cca36monthInfo.EnquiriesByOther =
-        // (reader2[cca36EnquiriesByOther] != Convert.DBNull) ?
-        // reader2[cca36EnquiriesByOther].ToString() : null; cca36monthInfo.PositiveLoans =
-        // (reader2[cca36PositiveLoans] != Convert.DBNull) ? reader2[cca36PositiveLoans].ToString()
-        // : null; cca36monthInfo.HighestMonthsInArrears = (reader2[cca36HighestMonthsInArrears] !=
-        // Convert.DBNull) ? reader2[cca36HighestMonthsInArrears].ToString() : null;
-
-        // cca36monthsList.Add(cca36monthInfo);
-
-        // months monthInfo = new months();
-
-        // monthInfo.EnquiriesByClient = (reader2[EnquiriesByClient] != Convert.DBNull) ?
-        // reader2[EnquiriesByClient].ToString() : null; monthInfo.EnquiriesByOther =
-        // (reader2[EnquiriesByOther] != Convert.DBNull) ? reader2[EnquiriesByOther].ToString() :
-        // null; monthInfo.PositiveLoans = (reader2[PositiveLoans] != Convert.DBNull) ?
-        // reader2[PositiveLoans].ToString() : null; monthInfo.HighestMonthsInArrears =
-        // (reader2[HighestMonthsInArrears] != Convert.DBNull) ?
-        // reader2[HighestMonthsInArrears].ToString() : null;
-
-        // monthsLists.Add(monthInfo);
-
-        // months monthInfo = new months();
-
-        // monthInfo.EnquiriesByClient = (reader2[EnquiriesByClient] != Convert.DBNull) ?
-        // reader2[EnquiriesByClient].ToString() : null; monthInfo.EnquiriesByOther =
-        // (reader2[EnquiriesByOther] != Convert.DBNull) ? reader2[EnquiriesByOther].ToString() :
-        // null; monthInfo.PositiveLoans = (reader2[PositiveLoans] != Convert.DBNull) ?
-        // reader2[PositiveLoans].ToString() : null; monthInfo.HighestMonthsInArrears =
-        // (reader2[HighestMonthsInArrears] != Convert.DBNull) ?
-        // reader2[HighestMonthsInArrears].ToString() : null;
-
-        // monthsLists.Add(monthInfo);
-
-        // nlr36months nlr36monthInfo = new nlr36months();
-
-        // nlr36monthInfo.EnquiriesByClient = (reader2[nlr36EnquiriesByClient] != Convert.DBNull) ?
-        // reader2[nlr36EnquiriesByClient].ToString() : null; nlr36monthInfo.EnquiriesByOther =
-        // (reader2[nlr36EnquiriesByOther] != Convert.DBNull) ?
-        // reader2[nlr36EnquiriesByOther].ToString() : null; nlr36monthInfo.PositiveLoans =
-        // (reader2[nlr36PositiveLoans] != Convert.DBNull) ? reader2[nlr36PositiveLoans].ToString()
-        // : null; nlr36monthInfo.HighestMonthsInArrears = (reader2[nlr36HighestMonthsInArrears] !=
-        // Convert.DBNull) ? reader2[nlr36HighestMonthsInArrears].ToString() : null;
-
-        // nlr12monthsList.Add(nlr36monthInfo);
-
-        // EnquiryHistory EnquiryHistoryInfo = new EnquiryHistory();
-
-        // EnquiryHistoryInfo.EnquiryDate = (reader2[EnquiryDate] != Convert.DBNull) ?
-        // reader2[EnquiryDate].ToString() : null; EnquiryHistoryInfo.EnquiredBy =
-        // (reader2[EnquiredBy] != Convert.DBNull) ? reader2[EnquiredBy].ToString() : null;
-        // EnquiryHistoryInfo.EnquiredByContact = (reader2[EnquiredByContact] != Convert.DBNull) ?
-        // reader2[EnquiredByContact].ToString() : null; EnquiryHistoryInfo.EnquiredByType =
-        // (reader2[EnquiredByType] != Convert.DBNull) ? reader2[EnquiredByType].ToString() : null;
-        // EnquiryHistoryInfo.ReasonForEnquiry = (reader2[ReasonForEnquiry] != Convert.DBNull) ?
-        // reader2[ReasonForEnquiry].ToString() : null;
-
-        // enquiryInformationList.Add(EnquiryHistoryInfo); //Enquiry History
-
-        // //Address History AddressHistory AddressInfo = new AddressHistory();
-
-        // AddressInfo.AddressID = (reader2[AddressID] != Convert.DBNull) ?
-        // reader2[AddressID].ToString() : null; AddressInfo.TypeDescription =
-        // (reader2[TypeDescription] != Convert.DBNull) ? reader2[TypeDescription].ToString() :
-        // null; AddressInfo.Line1 = (reader2[Line1] != Convert.DBNull) ? reader2[Line1].ToString()
-        // : null; AddressInfo.Line2 = (reader2[Line2] != Convert.DBNull) ?
-        // reader2[Line2].ToString() : null; AddressInfo.Line3 = (reader2[Line3] != Convert.DBNull)
-        // ? reader2[Line3].ToString() : null; AddressInfo.Line4 = (reader2[Line4] !=
-        // Convert.DBNull) ? reader2[Line4].ToString() : null; AddressInfo.PostalCode
-        // = (reader2[PostalCode] != Convert.DBNull) ? reader2[PostalCode].ToString() : null;
-        // AddressInfo.FullAddress = (reader2[FullAddress] != Convert.DBNull) ?
-        // reader2[FullAddress].ToString() : null; AddressInfo.LastUpdatedDate =
-        // (reader2[AddressLastUpdatedDate] != Convert.DBNull) ?
-        // reader2[AddressLastUpdatedDate].ToString() : null;
-
-        // addressInformationList.Add(AddressInfo); //Telephone History
-
-        // TelephoneHistory TelephoneInfo = new TelephoneHistory();
-
-        // TelephoneInfo.TypeDescriptionTel = (reader2[TypeDescriptionTel] != Convert.DBNull) ?
-        // reader2[TypeDescriptionTel].ToString() : null; TelephoneInfo.DialCode =
-        // (reader2[DialCode] != Convert.DBNull) ? reader2[DialCode].ToString() : null;
-        // TelephoneInfo.Number = (reader2[Number] != Convert.DBNull) ? reader2[Number].ToString() :
-        // null; TelephoneInfo.FullNumber = (reader2[FullNumber] != Convert.DBNull) ?
-        // reader2[FullNumber].ToString() : null; TelephoneInfo.LastUpdatedDateTel =
-        // (reader2[LastUpdatedDateTel] != Convert.DBNull) ? reader2[LastUpdatedDateTel].ToString()
-        // : null;
-
-        // telephoneInformationList.Add(TelephoneInfo);
-
-        // //Employment History EmploymentHistory EmploymentInfo = new EmploymentHistory();
-
-        // EmploymentInfo.EmployerName = (reader2[EmployerName] != Convert.DBNull) ?
-        // reader2[EmployerName].ToString() : null; EmploymentInfo.Designation =
-        // (reader2[Designation] != Convert.DBNull) ? reader2[Designation].ToString() : null;
-        // EmploymentInfo.LastUpdatedDate = (reader2[EmployLastUpdatedDate] != Convert.DBNull) ?
-        // reader2[EmployLastUpdatedDate].ToString() : null;
-
-        // employmentInformationList.Add(EmploymentInfo);
-
-        // Directorship DirectorshipInfo = new Directorship(); DirectorshipInfo.DesignationCode =
-        // (reader2[DesignationCode] != Convert.DBNull) ? reader2[DesignationCode].ToString() :
-        // null; DirectorshipInfo.AppointmentDate = (reader2[AppointmentDate] != Convert.DBNull) ?
-        // reader2[AppointmentDate].ToString() : null; DirectorshipInfo.DirectorStatus =
-        // (reader2[DirectorStatus] != Convert.DBNull) ? reader2[DirectorStatus].ToString() : null;
-        // DirectorshipInfo.DirectorStatusDate = (reader2[DirectorStatusDate] != Convert.DBNull) ?
-        // reader2[DirectorStatusDate].ToString() : null; DirectorshipInfo.CompanyName =
-        // (reader2[CompanyName] != Convert.DBNull) ? reader2[CompanyName].ToString() : null;
-        // DirectorshipInfo.CompanyType = (reader2[CompanyType] != Convert.DBNull) ?
-        // reader2[CompanyType].ToString() : null; DirectorshipInfo.CompanyStatus =
-        // (reader2[CompanyStatus] != Convert.DBNull) ? reader2[CompanyStatus].ToString() : null;
-        // DirectorshipInfo.CompanyStatusCode = (reader2[CompanyStatusCode] != Convert.DBNull) ?
-        // reader2[CompanyStatusCode].ToString() : null; DirectorshipInfo.CompanyRegistrationNumber
-        // = (reader2[CompanyRegistrationNumber] != Convert.DBNull) ?
-        // reader2[CompanyRegistrationNumber].ToString() : null;
-        // DirectorshipInfo.CompanyRegistrationDate = (reader2[CompanyRegistrationDate] !=
-        // Convert.DBNull) ? reader2[CompanyRegistrationDate].ToString() : null;
-        // DirectorshipInfo.CompanyStartDate = (reader2[CompanyStartDate] != Convert.DBNull) ?
-        // reader2[CompanyStartDate].ToString() : null; DirectorshipInfo.CompanyTaxNumber =
-        // (reader2[CompanyTaxNumber] != Convert.DBNull) ? reader2[CompanyTaxNumber].ToString() :
-        // null; DirectorshipInfo.DirectorTypeCode = (reader2[DirectorTypeCode] != Convert.DBNull) ?
-        // reader2[DirectorTypeCode].ToString() : null; DirectorshipInfo.DirectorType =
-        // (reader2[DirectorType] != Convert.DBNull) ? reader2[DirectorType].ToString() : null;
-        // DirectorshipInfo.MemberSize = (reader2[MemberSize] != Convert.DBNull) ?
-        // reader2[MemberSize].ToString() : null; DirectorshipInfo.MemberContribution =
-        // (reader2[MemberContribution] != Convert.DBNull) ? reader2[MemberContribution].ToString()
-        // : null; DirectorshipInfo.MemberContributionType = (reader2[MemberContributionType] !=
-        // Convert.DBNull) ? reader2[MemberContributionType].ToString() : null;
-        // DirectorshipInfo.ResignationDate = (reader2[ResignationDate] != Convert.DBNull) ?
-        // reader2[ResignationDate].ToString() : null;
-
-        // directorshipList.Add(DirectorshipInfo); } ViewData["PersonInfoList"] = personInfoList;
-        // ViewData["PersonInfoListCount"] = personInfoList.Count;
-
-        // ViewData["HomeAffairsInfoList"] = homeAffairsInformationList;
-        // ViewData["HomeAffairsInfoListCount"] = homeAffairsInformationList.Count;
-
-        // ViewData["CreditInfoList"] = creditInformationList; ViewData["CreditInfoListCount"] = creditInformationList.Count;
-
-        // ViewData["dataCountsList"] = dataCountsList; ViewData["dataCountsListCount"]
-        // = dataCountsList.Count;
-
-        // ViewData["debtReviewStatusList"] = debtReviewStatusList;
-        // ViewData["debtReviewStatusListCount"] = debtReviewStatusList.Count;
-
-        // ViewData["consumerstatsList"] = consumerstatsList; ViewData["consumerstatsListCount"] = consumerstatsList.Count;
-
-        // ViewData["nlrstatsList"] = nlrstatsList; ViewData["nlrstatsListCount"] = nlrstatsList.Count;
-
-        // ViewData["ccastatsList"] = ccastatsList; ViewData["ccastatsListCount"] = ccastatsList.Count;
-
-        // ViewData["monthsLists"] = monthsLists; ViewData["monthsListsCount"] = monthsLists.Count;
-
-        // ViewData["cca24monthsList"] = cca24monthsList; ViewData["cca24monthsListsCount"] = cca24monthsList.Count;
-
-        // ViewData["cca36monthsList"] = cca36monthsList; ViewData["cca36monthsListsCount"] = cca36monthsList.Count;
-
-        // ViewData["monthsLists"] = monthsLists; ViewData["monthsListsCount"] = monthsLists.Count;
-
-        // ViewData["monthsLists"] = monthsLists; ViewData["monthsListsCount"] = monthsLists.Count;
-
-        // ViewData["nlr12monthsList"] = nlr12monthsList; ViewData["nlr36monthsListsCount"] = nlr12monthsList.Count;
-
-        // ViewData["enquiryInformationList"] = enquiryInformationList;
-        // ViewData["enquiryInformationListCount"] = enquiryInformationList.Count;
-
-        // ViewData["addressInformationList"] = addressInformationList;
-        // ViewData["addressInformationListCount"] = addressInformationList.Count;
-
-        // ViewData["employmentInformationList"] = employmentInformationList;
-        // ViewData["employmentInformationListCount"] = employmentInformationList.Count;
-
-        // ViewData["addressInformationList"] = addressInformationList;
-        // ViewData["addressInformationListCount"] = addressInformationList.Count;
-
-        // ViewData["telephoneInformationList"] = telephoneInformationList;
-        // ViewData["telephoneInformationListCount"] = telephoneInformationList.Count;
-
-        //    ViewData["directorshipList"] = telephoneInformationList;
-        //    ViewData["directorshipListCount"] = telephoneInformationList.Count;
-        //    conn.Close();
-        //    return View();
-        //}
+        public ActionResult TransUnionConsumerProfileDatabase(DatabaseSearch DbSearch)
+        {
+            System.Collections.Generic.List<PersonInformation> personInfoList = new System.Collections.Generic.List<PersonInformation>();
+            System.Collections.Generic.List<HomeAffairsInformation> homeAffairsInformationList = new System.Collections.Generic.List<HomeAffairsInformation>();
+            System.Collections.Generic.List<CreditInformation> creditInformationList = new System.Collections.Generic.List<CreditInformation>();
+            System.Collections.Generic.List<DataCounts> dataCountsList = new System.Collections.Generic.List<DataCounts>();
+            System.Collections.Generic.List<DebtReviewStatus> debtReviewStatusList = new System.Collections.Generic.List<DebtReviewStatus>();
+            System.Collections.Generic.List<ConsumerStatistics> consumerstatsList = new System.Collections.Generic.List<ConsumerStatistics>();
+            System.Collections.Generic.List<NLRStats> nlrstatsList = new System.Collections.Generic.List<NLRStats>();
+            System.Collections.Generic.List<CCAStats> ccastatsList = new System.Collections.Generic.List<CCAStats>();
+            System.Collections.Generic.List<CCA12months> cca12monthsList = new System.Collections.Generic.List<CCA12months>();
+            System.Collections.Generic.List<CCA24months> cca24monthsList = new System.Collections.Generic.List<CCA24months>();
+            System.Collections.Generic.List<CCA36months> cca36monthsList = new System.Collections.Generic.List<CCA36months>();
+            System.Collections.Generic.List<NLR12months> nlr12monthsList = new System.Collections.Generic.List<NLR12months>();
+            System.Collections.Generic.List<NLR24months> nlr24monthsList = new System.Collections.Generic.List<NLR24months>();
+            System.Collections.Generic.List<NLR36months> nlr36monthsList = new System.Collections.Generic.List<NLR36months>();
+            System.Collections.Generic.List<EnquiryHistory> enquiryInformationList = new System.Collections.Generic.List<EnquiryHistory>();
+            System.Collections.Generic.List<AddressHistory> addressInformationList = new System.Collections.Generic.List<AddressHistory>();
+            System.Collections.Generic.List<EmploymentHistory> employmentInformationList = new System.Collections.Generic.List<EmploymentHistory>();
+            System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
+            System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
+            //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
+            System.Collections.Generic.List<Directorship> directorshipList = new System.Collections.Generic.List<Directorship>();
+
+            //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                                                                                                                   //string query_uid = $"SELECT * FROM personinformation,homeaffairsinformation,creditinformation,datacounts,debtreviewstatus,addresshistory,telephonehistory,consumerstatistics,nlrstats,ccastats,cca12months,cca24months,cca36months,enquiryhistory,employmenthistory,months,months,nlr36months,cpa_accounts WHERE personinformation.SearchToken = '{DbSearch.token}'";
+                                                                                                                   //Add TABLE paymenthistoryaccountdetails!!!!
+
+            using (var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString))
+            {
+                conn.Open();
+
+                //************************************************* Start personal info ***********//
+                string query_uid_personinformation = $"SELECT * FROM personinformation as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_personinformation, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            int DateOfBirth = reader.GetOrdinal("DateOfBirth");
+                            int Title = reader.GetOrdinal("Title");
+                            int FirstName = reader.GetOrdinal("FirstName");
+                            int Surname = reader.GetOrdinal("Surname");
+                            int Fullname = reader.GetOrdinal("Fullname");
+                            int IDNumber = reader.GetOrdinal("IDNumber");
+                            int Gender = reader.GetOrdinal("Gender");
+                            int Age = reader.GetOrdinal("Age");
+                            int MaritalStatus = reader.GetOrdinal("MaritalStatus");
+                            int MiddleName1 = reader.GetOrdinal("MiddleName1");
+                            int Reference = reader.GetOrdinal("Reference");
+                            int HasProperties = reader.GetOrdinal("HasProperties");
+
+                            //PersonInformation
+                            while (reader.Read())
+                            {
+                                PersonInformation personInformation = new PersonInformation();
+                                personInformation.DateOfBirth = (reader[DateOfBirth] != Convert.DBNull) ? reader[DateOfBirth].ToString() : null;
+                                personInformation.Title = (reader[Title] != Convert.DBNull) ? reader[Title].ToString() : null;
+                                personInformation.FirstName = (reader[FirstName] != Convert.DBNull) ? reader[FirstName].ToString() : null;
+                                personInformation.Surname = (reader[Surname] != Convert.DBNull) ? reader[Surname].ToString() : null;
+                                personInformation.Fullname = (reader[Fullname] != Convert.DBNull) ? reader[Fullname].ToString() : null;
+                                personInformation.IDNumber = (reader[IDNumber] != Convert.DBNull) ? reader[IDNumber].ToString() : null;
+                                personInformation.Gender = (reader[Gender] != Convert.DBNull) ? reader[Gender].ToString() : null;
+                                personInformation.Age = (reader[Age] != Convert.DBNull) ? reader[Age].ToString() : null;
+                                personInformation.MaritalStatus = (reader[MaritalStatus] != Convert.DBNull) ? reader[MaritalStatus].ToString() : null;
+                                personInformation.MiddleName1 = (reader[MiddleName1] != Convert.DBNull) ? reader[MiddleName1].ToString() : null;
+                                personInformation.Reference = (reader[Reference] != Convert.DBNull) ? reader[Reference].ToString() : null;
+                                personInformation.HasProperties = (reader[HasProperties] != Convert.DBNull) ? Convert.ToBoolean(reader[HasProperties]) : false;
+                                //add to the list
+                                personInfoList.Add(personInformation);
+                            }
+                        }
+                        ViewData["PersonInfoList"] = personInfoList;
+                        ViewData["PersonInfoListCount"] = personInfoList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //*************************************************END personal info ***********//
+                //************************************************* Start homeaffairsinformation info ***********//
+                string query_uid_homeaffairsinformation = $"SELECT * FROM homeaffairsinformation as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_homeaffairsinformation, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //HomeAffairsInformation
+                            HomeAffairsInformation homeAffairsInformation = new HomeAffairsInformation();
+                            int ExFirstName = reader.GetOrdinal("FirstName");
+                            int DeceasedDate = reader.GetOrdinal("DeceasedDate");
+                            int IDVerified = reader.GetOrdinal("IDVerified");
+                            int SurnameVerified = reader.GetOrdinal("SurnameVerified");
+                            int Warnings = reader.GetOrdinal("Warnings");
+                            int DeceasedStatus = reader.GetOrdinal("DeceasedStatus");
+                            int VerifiedStatus = reader.GetOrdinal("VerifiedStatus");
+                            int InitialsVerified = reader.GetOrdinal("InitialsVerified");
+                            int CauseOfDeath = reader.GetOrdinal("CauseOfDeath");
+                            int VerifiedDate = reader.GetOrdinal("VerifiedDate");
+                            while (reader.Read())
+                            {
+                                homeAffairsInformation.FirstName = (reader[ExFirstName] != Convert.DBNull) ? reader[ExFirstName].ToString() : null;
+                                homeAffairsInformation.IDVerified = (reader[IDVerified] != Convert.DBNull) ? reader[IDVerified].ToString() : null;
+                                homeAffairsInformation.SurnameVerified = (reader[SurnameVerified] != Convert.DBNull) ? reader[SurnameVerified].ToString() : null;
+                                homeAffairsInformation.Warnings = (reader[Warnings] != Convert.DBNull) ? reader[Warnings].ToString() : null;
+                                homeAffairsInformation.DeceasedDate = (reader[DeceasedDate] != Convert.DBNull) ? reader[DeceasedDate].ToString() : null;
+                                homeAffairsInformation.DeceasedStatus = (reader[DeceasedStatus] != Convert.DBNull) ? reader[DeceasedStatus].ToString() : null;
+                                homeAffairsInformation.VerifiedStatus = (reader[VerifiedStatus] != Convert.DBNull) ? reader[VerifiedStatus].ToString() : null;
+                                homeAffairsInformation.InitialsVerified = (reader[InitialsVerified] != Convert.DBNull) ? reader[InitialsVerified].ToString() : null;
+                                homeAffairsInformation.CauseOfDeath = (reader[CauseOfDeath] != Convert.DBNull) ? reader[CauseOfDeath].ToString() : null;
+                                homeAffairsInformation.VerifiedDate = (reader[VerifiedDate] != Convert.DBNull) ? reader[VerifiedDate].ToString() : null;
+                                //add to the list
+                                homeAffairsInformationList.Add(homeAffairsInformation);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["HomeAffairsInfoList"] = homeAffairsInformationList;
+                        ViewData["HomeAffairsInfoListCount"] = homeAffairsInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* END homeaffairsinformation info ***********//
+                //************************************************* Start CreditInformation info ***********//
+                string query_uid_creditinformation = $"SELECT * FROM creditinformation as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_creditinformation, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //CreditInformation
+                            CreditInformation CreditInfo = new CreditInformation();
+
+                            int DelphiScore = reader.GetOrdinal("DelphiScore");
+                            int FlagCount = reader.GetOrdinal("FlagCount");
+                            int FlagDetails = reader.GetOrdinal("FlagDetails");
+                            while (reader.Read())
+                            {
+                                CreditInfo.DelphiScore = (reader[DelphiScore] != Convert.DBNull) ? reader[DelphiScore].ToString() : null;
+                                CreditInfo.FlagCount = (reader[FlagCount] != Convert.DBNull) ? reader[FlagCount].ToString() : null;
+                                CreditInfo.FlagDetails = (reader[FlagDetails] != Convert.DBNull) ? reader[FlagDetails].ToString() : null;
+
+                                //add to the list
+                                creditInformationList.Add(CreditInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["creditInformationList"] = creditInformationList;
+                        ViewData["creditInformationListCount"] = creditInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End CreditInformation info ***********//
+                //************************************************* StartDataCOunts info ***********//
+                string query_uid_DataCOunts = $"SELECT * FROM datacounts as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_DataCOunts, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //DataCountsInformation
+                            DataCounts DataCountInfo = new DataCounts();
+
+                            int Accounts = reader.GetOrdinal("Accounts");
+                            int Enquiries = reader.GetOrdinal("Enquiries");
+                            //int Judgements = reader.GetOrdinal("Judgements");
+                            int Notices = reader.GetOrdinal("Notices");
+                            int BankDefaults = reader.GetOrdinal("BankDefaults");
+                            int Defaults = reader.GetOrdinal("Defaults");
+                            int Collections = reader.GetOrdinal("Collections");
+                            int Directors = reader.GetOrdinal("Directors");
+                            int Addresses = reader.GetOrdinal("Addresses");
+                            int Telephones = reader.GetOrdinal("Telephones");
+                            int Occupants = reader.GetOrdinal("Occupants");
+                            int Employers = reader.GetOrdinal("Employers");
+                            int TraceAlerts = reader.GetOrdinal("TraceAlerts");
+                            int PaymentProfiles = reader.GetOrdinal("PaymentProfiles");
+                            int OwnEnquiries = reader.GetOrdinal("OwnEnquiries");
+                            int AdminOrders = reader.GetOrdinal("AdminOrders");
+                            int PossibleMatches = reader.GetOrdinal("PossibleMatches");
+                            int DefiniteMatches = reader.GetOrdinal("DefiniteMatches");
+                            int Loans = reader.GetOrdinal("Loans");
+                            int FraudAlerts = reader.GetOrdinal("FraudAlerts");
+                            int Companies = reader.GetOrdinal("Companies");
+                            int Properties = reader.GetOrdinal("Properties");
+                            int Documents = reader.GetOrdinal("Documents");
+                            int DemandLetters = reader.GetOrdinal("DemandLetters");
+                            int Trusts = reader.GetOrdinal("Trusts");
+                            int Bonds = reader.GetOrdinal("Bonds");
+                            int Deeds = reader.GetOrdinal("Deeds");
+                            int PublicDefaults = reader.GetOrdinal("PublicDefaults");
+                            int NLRAccounts = reader.GetOrdinal("NLRAccounts");
+                            while (reader.Read())
+                            {
+                                DataCountInfo.Accounts = (reader[Accounts] != Convert.DBNull) ? reader[Accounts].ToString() : null;
+                                DataCountInfo.Enquiries = (reader[Enquiries] != Convert.DBNull) ? reader[Enquiries].ToString() : null;
+                                //DataCountInfo.Judgements = (reader[Judgements] != Convert.DBNull) ? reader[Judgements].ToString() : null;
+                                DataCountInfo.Notices = (reader[Notices] != Convert.DBNull) ?
+                                reader[Notices].ToString() : null; DataCountInfo.BankDefaults =
+                                (reader[BankDefaults] != Convert.DBNull) ? reader[BankDefaults].ToString() : null;
+                                DataCountInfo.Defaults = (reader[Defaults] != Convert.DBNull) ?
+                                reader[Defaults].ToString() : null; DataCountInfo.Collections =
+                                (reader[Collections] != Convert.DBNull) ? reader[Collections].ToString() : null;
+                                DataCountInfo.Directors = (reader[Directors] != Convert.DBNull) ?
+                                reader[Directors].ToString() : null; DataCountInfo.Addresses = (reader[Addresses]
+                                != Convert.DBNull) ? reader[Addresses].ToString() : null; DataCountInfo.Telephones =
+                                (reader[Telephones] != Convert.DBNull) ? reader[Telephones].ToString() : null;
+                                DataCountInfo.Occupants = (reader[Occupants] != Convert.DBNull) ?
+                                reader[Occupants].ToString() : null; DataCountInfo.Employers = (reader[Employers]
+                                != Convert.DBNull) ? reader[Employers].ToString() : null; DataCountInfo.TraceAlerts
+                                = (reader[TraceAlerts] != Convert.DBNull) ? reader[TraceAlerts].ToString() : null;
+                                DataCountInfo.PaymentProfiles = (reader[PaymentProfiles] != Convert.DBNull) ?
+                                reader[PaymentProfiles].ToString() : null; DataCountInfo.OwnEnquiries =
+                                (reader[OwnEnquiries] != Convert.DBNull) ? reader[OwnEnquiries].ToString() : null;
+                                DataCountInfo.AdminOrders = (reader[AdminOrders] != Convert.DBNull) ?
+                                reader[AdminOrders].ToString() : null; DataCountInfo.PossibleMatches =
+                                (reader[PossibleMatches] != Convert.DBNull) ? reader[PossibleMatches].ToString() :
+                                null; DataCountInfo.DefiniteMatches = (reader[DefiniteMatches] != Convert.DBNull) ?
+                                reader[DefiniteMatches].ToString() : null; DataCountInfo.Loans = (reader[Loans] !=
+                                Convert.DBNull) ? reader[Loans].ToString() : null; DataCountInfo.FraudAlerts =
+                                (reader[FraudAlerts] != Convert.DBNull) ? reader[FraudAlerts].ToString() : null;
+                                DataCountInfo.Companies = (reader[Companies] != Convert.DBNull) ?
+                                reader[Companies].ToString() : null; DataCountInfo.Properties = (reader[Properties]
+                                != Convert.DBNull) ? reader[Properties].ToString() : null; DataCountInfo.Documents =
+                                (reader[Documents] != Convert.DBNull) ? reader[Documents].ToString() : null;
+                                DataCountInfo.DemandLetters = (reader[DemandLetters] != Convert.DBNull) ?
+                                reader[DemandLetters].ToString() : null; DataCountInfo.Trusts = (reader[Trusts] !=
+                                Convert.DBNull) ? reader[Trusts].ToString() : null; DataCountInfo.Bonds =
+                                (reader[Bonds] != Convert.DBNull) ? reader[Bonds].ToString() : null;
+                                DataCountInfo.Deeds = (reader[Deeds] != Convert.DBNull) ? reader[Deeds].ToString()
+                                : null; DataCountInfo.PublicDefaults = (reader[PublicDefaults] != Convert.DBNull) ?
+                                reader[PublicDefaults].ToString() : null; DataCountInfo.NLRAccounts =
+                                (reader[NLRAccounts] != Convert.DBNull) ? reader[NLRAccounts].ToString() : null;
+
+                                dataCountsList.Add(DataCountInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["dataCountsList"] = dataCountsList;
+                        ViewData["dataCountsListCount"] = dataCountsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+
+                //************************************************* End DataCOunts info ***********//
+                //************************************************* Start Debtreviewstatus info ***********//
+                string query_uid_debtreviewstatus = $"SELECT * FROM debtreviewstatus as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_debtreviewstatus, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //DebtReviewStatusInformation
+                            DebtReviewStatus DebtReviewInfo = new DebtReviewStatus();
+
+                            int StatusCode = reader.GetOrdinal("StatusCode");
+                            int StatusDate = reader.GetOrdinal("StatusDate");
+                            int StatusDescription = reader.GetOrdinal("StatusDescription");
+                            int ApplicationDate = reader.GetOrdinal("ApplicationDate");
+                            while (reader.Read())
+                            {
+                                DebtReviewInfo.StatusCode = (reader[StatusCode] != Convert.DBNull) ?
+                                reader[StatusCode].ToString() : null; DebtReviewInfo.StatusDate =
+                                (reader[StatusDate] != Convert.DBNull) ? reader[StatusDate].ToString() : null;
+                                DebtReviewInfo.StatusDescription = (reader[StatusDescription] != Convert.DBNull) ?
+                                reader[StatusDescription].ToString() : null; DebtReviewInfo.ApplicationDate =
+                                (reader[ApplicationDate] != Convert.DBNull) ? reader[ApplicationDate].ToString() : null;
+
+                                debtReviewStatusList.Add(DebtReviewInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["debtReviewStatusList"] = debtReviewStatusList;
+                        ViewData["debtReviewStatusListCount"] = debtReviewStatusList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End DebtReviewStatus info ***********//
+                //************************************************* Start ConsumerStatisticsInformation ***********//
+                string query_uid_consumerStatistics = $"SELECT * FROM consumerstatistics as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_consumerStatistics, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //ConsumerStatisticsInformation
+                            ConsumerStatistics ConsumerStatsInfo = new ConsumerStatistics();
+
+                            int HighestJudgment = reader.GetOrdinal("HighestJudgment");
+                            int RevolvingAccounts = reader.GetOrdinal("RevolvingAccounts");
+                            int InstalmentAccounts = reader.GetOrdinal("InstalmentAccounts");
+                            int OpenAccounts = reader.GetOrdinal("OpenAccounts");
+                            int AdverseAccounts = reader.GetOrdinal("AdverseAccounts");
+                            int Percent0ArrearsLast12Histories = reader.GetOrdinal("Percent0ArrearsLast12Histories");
+                            int MonthsOldestOpenedPPSEver = reader.GetOrdinal("MonthsOldestOpenedPPSEver");
+                            int NumberPPSLast12Months = reader.GetOrdinal("NumberPPSLast12Months");
+                            int NLRMicroloansPast12Months = reader.GetOrdinal("NLRMicroloansPast12Months");
+                            while (reader.Read())
+                            {
+                                ConsumerStatsInfo.HighestJudgment = (reader[HighestJudgment] != Convert.DBNull) ?
+                                reader[HighestJudgment].ToString() : null; ConsumerStatsInfo.RevolvingAccounts =
+                                (reader[RevolvingAccounts] != Convert.DBNull) ?
+                                reader[RevolvingAccounts].ToString() : null; ConsumerStatsInfo.InstalmentAccounts =
+                                (reader[InstalmentAccounts] != Convert.DBNull) ?
+                                reader[InstalmentAccounts].ToString() : null; ConsumerStatsInfo.OpenAccounts =
+                                (reader[OpenAccounts] != Convert.DBNull) ? reader[OpenAccounts].ToString() : null;
+                                ConsumerStatsInfo.AdverseAccounts = (reader[AdverseAccounts] != Convert.DBNull) ?
+                                reader[AdverseAccounts].ToString() : null;
+                                ConsumerStatsInfo.Percent0ArrearsLast12Histories =
+                                (reader[Percent0ArrearsLast12Histories] != Convert.DBNull) ?
+                                reader[Percent0ArrearsLast12Histories].ToString() : null;
+                                ConsumerStatsInfo.MonthsOldestOpenedPPSEver = (reader[MonthsOldestOpenedPPSEver] !=
+                                Convert.DBNull) ? reader[MonthsOldestOpenedPPSEver].ToString() : null;
+                                ConsumerStatsInfo.NumberPPSLast12Months = (reader[NumberPPSLast12Months] !=
+                                Convert.DBNull) ? reader[NumberPPSLast12Months].ToString() : null;
+                                ConsumerStatsInfo.NLRMicroloansPast12Months = (reader[NLRMicroloansPast12Months] !=
+                                Convert.DBNull) ? reader[NLRMicroloansPast12Months].ToString() : null;
+
+                                consumerstatsList.Add(ConsumerStatsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["consumerstatsList"] = consumerstatsList;
+                        ViewData["consumerstatsListCount"] = consumerstatsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End ConsumerStatisticsInformation ***********//
+
+                //************************************************* Start nlrstatsInformation ***********//
+                string query_uid_nlrstats = $"SELECT * FROM nlrstats as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_nlrstats, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //NLRStatsInformation
+                            NLRStats NLRStatsInfo = new NLRStats();
+
+                            int ActiveAccounts = reader.GetOrdinal("ActiveAccounts");
+                            int ClosedAccounts = reader.GetOrdinal("ClosedAccounts");
+                            int WorstMonthArrears = reader.GetOrdinal("WorstMonthArrears");
+                            int WorstArrearsStatus = reader.GetOrdinal("WorstArrearsStatus");
+                            int MonthlyInstalment = reader.GetOrdinal("MonthlyInstalment");
+                            int CumulativeArrears = reader.GetOrdinal("CumulativeArrears");
+                            int BalanceExposure = reader.GetOrdinal("BalanceExposure");
+                            while (reader.Read())
+                            {
+                                NLRStatsInfo.ActiveAccounts = (reader[ActiveAccounts] != Convert.DBNull) ? reader[ActiveAccounts].ToString() : null;
+
+                                NLRStatsInfo.ClosedAccounts = (reader[ClosedAccounts] != Convert.DBNull) ? reader[ClosedAccounts].ToString() : null;
+                                NLRStatsInfo.WorstMonthArrears = (reader[WorstMonthArrears] != Convert.DBNull) ? reader[WorstMonthArrears].ToString() : null;
+                                NLRStatsInfo.WorstArrearsStatus = (reader[WorstArrearsStatus] != Convert.DBNull) ? reader[WorstArrearsStatus].ToString() : null;
+                                NLRStatsInfo.MonthlyInstalment = (reader[MonthlyInstalment] != Convert.DBNull) ? reader[MonthlyInstalment].ToString() : null;
+                                NLRStatsInfo.CumulativeArrears = (reader[CumulativeArrears] != Convert.DBNull) ? reader[CumulativeArrears].ToString() : null;
+                                NLRStatsInfo.BalanceExposure = (reader[BalanceExposure] != Convert.DBNull) ? reader[BalanceExposure].ToString() : null;
+
+                                nlrstatsList.Add(NLRStatsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["nlrstatsList"] = nlrstatsList;
+                        ViewData["nlrstatsListCount"] = nlrstatsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End nlrstatsInformation ***********//
+                //************************************************* Start ccastatsInformation ***********//
+                string query_uid_ccastats = $"SELECT * FROM ccastats as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_ccastats, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //NLRStatsInformation
+                            CCAStats ccastatsInfo = new CCAStats();
+
+                            int ActiveAccounts = reader.GetOrdinal("ActiveAccounts");
+                            int ClosedAccounts = reader.GetOrdinal("ClosedAccounts");
+                            int WorstMonthArrears = reader.GetOrdinal("WorstMonthArrears");
+                            int WorstArrearsStatus = reader.GetOrdinal("WorstArrearsStatus");
+                            int MonthlyInstalment = reader.GetOrdinal("MonthlyInstalment");
+                            int CumulativeArrears = reader.GetOrdinal("CumulativeArrears");
+                            int BalanceExposure = reader.GetOrdinal("BalanceExposure");
+                            while (reader.Read())
+                            {
+                                ccastatsInfo.ActiveAccounts = (reader[ActiveAccounts] != Convert.DBNull) ? reader[ActiveAccounts].ToString() : null;
+                                ccastatsInfo.ClosedAccounts = (reader[ClosedAccounts] != Convert.DBNull) ? reader[ClosedAccounts].ToString() : null;
+                                ccastatsInfo.WorstMonthArrears = (reader[WorstMonthArrears] != Convert.DBNull) ? reader[WorstMonthArrears].ToString() : null;
+                                ccastatsInfo.WorstArrearsStatus = (reader[WorstArrearsStatus] != Convert.DBNull) ? reader[WorstArrearsStatus].ToString() : null;
+                                ccastatsInfo.MonthlyInstalment = (reader[MonthlyInstalment] != Convert.DBNull) ? reader[MonthlyInstalment].ToString() : null;
+                                ccastatsInfo.CumulativeArrears = (reader[CumulativeArrears] != Convert.DBNull) ? reader[CumulativeArrears].ToString() : null;
+                                ccastatsInfo.BalanceExposure = (reader[BalanceExposure] != Convert.DBNull) ? reader[BalanceExposure].ToString() : null;
+
+                                ccastatsList.Add(ccastatsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["ccastatsList"] = ccastatsList;
+                        ViewData["ccastatsListCount"] = ccastatsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End ccastatsInformation ***********//
+                //************************************************* Start cca12monthsInformation ***********//
+                string query_uid_cca12months = $"SELECT * FROM cca12months as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_cca12months, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //CCA12monthsInformation
+                            CCA12months cca12monthsInfo = new CCA12months();
+
+                            int EnquiriesByClient = reader.GetOrdinal("EnquiriesByClient");
+                            int EnquiriesByOther = reader.GetOrdinal("EnquiriesByOther");
+                            int PositiveLoans = reader.GetOrdinal("PositiveLoans");
+                            int HighestMonthsInArrears = reader.GetOrdinal("HighestMonthsInArrears");
+                            while (reader.Read())
+                            {
+                                cca12monthsInfo.EnquiriesByClient = (reader[EnquiriesByClient] != Convert.DBNull) ? reader[EnquiriesByClient].ToString() : null;
+                                cca12monthsInfo.EnquiriesByOther = (reader[EnquiriesByOther] != Convert.DBNull) ? reader[EnquiriesByOther].ToString() : null;
+                                cca12monthsInfo.PositiveLoans = (reader[PositiveLoans] != Convert.DBNull) ? reader[PositiveLoans].ToString() : null;
+                                cca12monthsInfo.HighestMonthsInArrears = (reader[HighestMonthsInArrears] != Convert.DBNull) ? reader[HighestMonthsInArrears].ToString() : null;
+
+                                cca12monthsList.Add(cca12monthsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["cca12monthsList"] = cca12monthsList;
+                        ViewData["cca12monthsListCount"] = cca12monthsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* Start cca24monthsInformation ***********//
+                string query_uid_cca24months = $"SELECT * FROM cca24months as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_cca24months, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //CCA24monthsInformation
+                            CCA24months cca24monthsInfo = new CCA24months();
+
+                            int EnquiriesByClient = reader.GetOrdinal("EnquiriesByClient");
+                            int EnquiriesByOther = reader.GetOrdinal("EnquiriesByOther");
+                            int PositiveLoans = reader.GetOrdinal("PositiveLoans");
+                            int HighestMonthsInArrears = reader.GetOrdinal("HighestMonthsInArrears");
+                            while (reader.Read())
+                            {
+                                cca24monthsInfo.EnquiriesByClient = (reader[EnquiriesByClient] != Convert.DBNull) ? reader[EnquiriesByClient].ToString() : null;
+                                cca24monthsInfo.EnquiriesByOther = (reader[EnquiriesByOther] != Convert.DBNull) ? reader[EnquiriesByOther].ToString() : null;
+                                cca24monthsInfo.PositiveLoans = (reader[PositiveLoans] != Convert.DBNull) ? reader[PositiveLoans].ToString() : null;
+                                cca24monthsInfo.HighestMonthsInArrears = (reader[HighestMonthsInArrears] != Convert.DBNull) ? reader[HighestMonthsInArrears].ToString() : null;
+
+                                cca24monthsList.Add(cca24monthsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["cca24monthsList"] = cca24monthsList;
+                        ViewData["cca24monthsListCount"] = cca24monthsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End cca24monthsInformation ***********//
+                //************************************************* Start cca36monthsInformation ***********//
+                string query_uid_cca36months = $"SELECT * FROM cca36months as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_cca36months, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //CCA36monthsInformation
+                            CCA36months cca36monthsInfo = new CCA36months();
+
+                            int EnquiriesByClient = reader.GetOrdinal("EnquiriesByClient");
+                            int EnquiriesByOther = reader.GetOrdinal("EnquiriesByOther");
+                            int PositiveLoans = reader.GetOrdinal("PositiveLoans");
+                            int HighestMonthsInArrears = reader.GetOrdinal("HighestMonthsInArrears");
+                            while (reader.Read())
+                            {
+                                cca36monthsInfo.EnquiriesByClient = (reader[EnquiriesByClient] != Convert.DBNull) ? reader[EnquiriesByClient].ToString() : null;
+                                cca36monthsInfo.EnquiriesByOther = (reader[EnquiriesByOther] != Convert.DBNull) ? reader[EnquiriesByOther].ToString() : null;
+                                cca36monthsInfo.PositiveLoans = (reader[PositiveLoans] != Convert.DBNull) ? reader[PositiveLoans].ToString() : null;
+                                cca36monthsInfo.HighestMonthsInArrears = (reader[HighestMonthsInArrears] != Convert.DBNull) ? reader[HighestMonthsInArrears].ToString() : null;
+
+                                cca36monthsList.Add(cca36monthsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["cca36monthsList"] = cca36monthsList;
+                        ViewData["cca36monthsListCount"] = cca36monthsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End cca36monthsInformation ***********//
+                //************************************************* Start nlr12monthsInformation ***********//
+                string query_uid_nlr12months = $"SELECT * FROM nlr12months as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_nlr12months, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //NLR12monthsInformation
+                            NLR12months nlr12monthsInfo = new NLR12months();
+
+                            int EnquiriesByClient = reader.GetOrdinal("EnquiriesByClient");
+                            int EnquiriesByOther = reader.GetOrdinal("EnquiriesByOther");
+                            int PositiveLoans = reader.GetOrdinal("PositiveLoans");
+                            int HighestMonthsInArrears = reader.GetOrdinal("HighestMonthsInArrears");
+                            while (reader.Read())
+                            {
+                                nlr12monthsInfo.EnquiriesByClient = (reader[EnquiriesByClient] != Convert.DBNull) ? reader[EnquiriesByClient].ToString() : null;
+                                nlr12monthsInfo.EnquiriesByOther = (reader[EnquiriesByOther] != Convert.DBNull) ? reader[EnquiriesByOther].ToString() : null;
+                                nlr12monthsInfo.PositiveLoans = (reader[PositiveLoans] != Convert.DBNull) ? reader[PositiveLoans].ToString() : null;
+                                nlr12monthsInfo.HighestMonthsInArrears = (reader[HighestMonthsInArrears] != Convert.DBNull) ? reader[HighestMonthsInArrears].ToString() : null;
+
+                                nlr12monthsList.Add(nlr12monthsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["nlr12monthsList"] = nlr12monthsList;
+                        ViewData["nlr12monthsListCount"] = nlr12monthsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End nlr12monthsInformation ***********//
+                //************************************************* Start nlr24monthsInformation ***********//
+                string query_uid_nlr24months = $"SELECT * FROM nlr24months as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_nlr24months, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //NLR24monthsInformation
+                            NLR24months nlr24monthsInfo = new NLR24months();
+
+                            int EnquiriesByClient = reader.GetOrdinal("EnquiriesByClient");
+                            int EnquiriesByOther = reader.GetOrdinal("EnquiriesByOther");
+                            int PositiveLoans = reader.GetOrdinal("PositiveLoans");
+                            int HighestMonthsInArrears = reader.GetOrdinal("HighestMonthsInArrears");
+                            while (reader.Read())
+                            {
+                                nlr24monthsInfo.EnquiriesByClient = (reader[EnquiriesByClient] != Convert.DBNull) ? reader[EnquiriesByClient].ToString() : null;
+                                nlr24monthsInfo.EnquiriesByOther = (reader[EnquiriesByOther] != Convert.DBNull) ? reader[EnquiriesByOther].ToString() : null;
+                                nlr24monthsInfo.PositiveLoans = (reader[PositiveLoans] != Convert.DBNull) ? reader[PositiveLoans].ToString() : null;
+                                nlr24monthsInfo.HighestMonthsInArrears = (reader[HighestMonthsInArrears] != Convert.DBNull) ? reader[HighestMonthsInArrears].ToString() : null;
+
+                                nlr24monthsList.Add(nlr24monthsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["nlr24monthsList"] = nlr24monthsList;
+                        ViewData["nlr24monthsListCount"] = nlr24monthsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End nlr24monthsInformation ***********//
+                //************************************************* Start nlr36monthsInformation ***********//
+                string query_uid_nlr36months = $"SELECT * FROM nlr36months as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_nlr36months, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //NLR36monthsInformation
+                            NLR36months nlr36monthsInfo = new NLR36months();
+
+                            int EnquiriesByClient = reader.GetOrdinal("EnquiriesByClient");
+                            int EnquiriesByOther = reader.GetOrdinal("EnquiriesByOther");
+                            int PositiveLoans = reader.GetOrdinal("PositiveLoans");
+                            int HighestMonthsInArrears = reader.GetOrdinal("HighestMonthsInArrears");
+                            while (reader.Read())
+                            {
+                                nlr36monthsInfo.EnquiriesByClient = (reader[EnquiriesByClient] != Convert.DBNull) ? reader[EnquiriesByClient].ToString() : null;
+                                nlr36monthsInfo.EnquiriesByOther = (reader[EnquiriesByOther] != Convert.DBNull) ? reader[EnquiriesByOther].ToString() : null;
+                                nlr36monthsInfo.PositiveLoans = (reader[PositiveLoans] != Convert.DBNull) ? reader[PositiveLoans].ToString() : null;
+                                nlr36monthsInfo.HighestMonthsInArrears = (reader[HighestMonthsInArrears] != Convert.DBNull) ? reader[HighestMonthsInArrears].ToString() : null;
+
+                                nlr36monthsList.Add(nlr36monthsInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["nlr36monthsList"] = nlr36monthsList;
+                        ViewData["nlr36monthsListCount"] = nlr36monthsList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End nlr36monthsInformation ***********//
+
+                //************************************************* Start EnquiryInformation ***********//
+                string query_uid_enquiryHistoryInfo = $"SELECT * FROM enquiryhistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_enquiryHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //EnquiryhistoryInformation
+                            EnquiryHistory EnquiryHistoryInfo = new EnquiryHistory();
+
+                            int EnquiryDate = reader.GetOrdinal("EnquiryDate");
+                            int EnquiredBy = reader.GetOrdinal("EnquiredBy");
+                            int EnquiredByContact = reader.GetOrdinal("EnquiredByContact");
+                            int EnquiredByType = reader.GetOrdinal("EnquiredByType");
+                            int ReasonForEnquiry = reader.GetOrdinal("ReasonForEnquiry");
+                            while (reader.Read())
+                            {
+                                EnquiryHistoryInfo.EnquiryDate = (reader[EnquiryDate] != Convert.DBNull) ? reader[EnquiryDate].ToString() : null;
+                                EnquiryHistoryInfo.EnquiredBy = (reader[EnquiredBy] != Convert.DBNull) ? reader[EnquiredBy].ToString() : null;
+                                EnquiryHistoryInfo.EnquiredByContact = (reader[EnquiredByContact] != Convert.DBNull) ? reader[EnquiredByContact].ToString() : null;
+                                EnquiryHistoryInfo.EnquiredByType = (reader[EnquiredByType] != Convert.DBNull) ? reader[EnquiredByType].ToString() : null;
+                                EnquiryHistoryInfo.ReasonForEnquiry = (reader[ReasonForEnquiry] != Convert.DBNull) ? reader[ReasonForEnquiry].ToString() : null;
+
+                                enquiryInformationList.Add(EnquiryHistoryInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["enquiryInformationList"] = enquiryInformationList;
+                        ViewData["enquiryInformationListCount"] = enquiryInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End EnquiryInformation ***********//
+
+                //************************************************* Start AddressHistoryInformation ***********//
+                string query_uid_AddressHistoryInfo = $"SELECT * FROM addresshistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_AddressHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //addresshistoryInformation
+                            AddressHistory AddressInfo = new AddressHistory();
+
+                            int AddressID = reader.GetOrdinal("AddressID");
+                            int TypeDescription = reader.GetOrdinal("TypeDescription");
+                            int Line1 = reader.GetOrdinal("Line1");
+                            int Line2 = reader.GetOrdinal("Line2");
+                            int Line3 = reader.GetOrdinal("Line3");
+                            int Line4 = reader.GetOrdinal("Line4");
+                            int PostalCode = reader.GetOrdinal("PostalCode");
+                            int FullAddress = reader.GetOrdinal("FullAddress");
+                            int AddressLastUpdatedDate = reader.GetOrdinal("LastUpdatedDate");
+                            while (reader.Read())
+                            {
+                                AddressInfo.AddressID = (reader[AddressID] != Convert.DBNull) ? reader[AddressID].ToString() : null;
+                                AddressInfo.TypeDescription = (reader[TypeDescription] != Convert.DBNull) ? reader[TypeDescription].ToString() : null;
+                                AddressInfo.Line1 = (reader[Line1] != Convert.DBNull) ? reader[Line1].ToString() : null;
+                                AddressInfo.Line2 = (reader[Line2] != Convert.DBNull) ? reader[Line2].ToString() : null;
+                                AddressInfo.Line3 = (reader[Line3] != Convert.DBNull) ? reader[Line3].ToString() : null;
+                                AddressInfo.Line4 = (reader[Line4] != Convert.DBNull) ? reader[Line4].ToString() : null;
+                                AddressInfo.PostalCode = (reader[PostalCode] != Convert.DBNull) ? reader[PostalCode].ToString() : null;
+                                AddressInfo.FullAddress = (reader[FullAddress] != Convert.DBNull) ? reader[FullAddress].ToString() : null;
+                                AddressInfo.LastUpdatedDate = (reader[AddressLastUpdatedDate] != Convert.DBNull) ? reader[AddressLastUpdatedDate].ToString() : null;
+
+                                addressInformationList.Add(AddressInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["addressInformationList"] = addressInformationList;
+                        ViewData["addressInformationListCount"] = addressInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End AddressHistoryInformation ***********//
+
+                //************************************************* Start TelephonehistoryInformation ***********//
+                string query_uid_TelephoneHistoryInfo = $"SELECT * FROM telephonehistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_TelephoneHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //TelephoneHistoryInformation
+                            TelephoneHistory TelephoneInfo = new TelephoneHistory();
+
+                            // //Telephone History
+                            int TypeDescriptionTel = reader.GetOrdinal("TypeDescriptionTel");
+                            int DialCode = reader.GetOrdinal("DialCode");
+                            int Number = reader.GetOrdinal("Number");
+                            int FullNumber = reader.GetOrdinal("FullNumber");
+                            int LastUpdatedDateTel = reader.GetOrdinal("LastUpdatedDateTel");
+
+                            while (reader.Read())
+                            {
+                                TelephoneInfo.TypeDescriptionTel = (reader[TypeDescriptionTel] != Convert.DBNull) ? reader[TypeDescriptionTel].ToString() : null;
+                                TelephoneInfo.DialCode = (reader[DialCode] != Convert.DBNull) ? reader[DialCode].ToString() : null;
+                                TelephoneInfo.Number = (reader[Number] != Convert.DBNull) ? reader[Number].ToString() : null;
+                                TelephoneInfo.FullNumber = (reader[FullNumber] != Convert.DBNull) ? reader[FullNumber].ToString() : null;
+                                TelephoneInfo.LastUpdatedDateTel = (reader[LastUpdatedDateTel] != Convert.DBNull) ? reader[LastUpdatedDateTel].ToString() : null;
+
+                                telephoneInformationList.Add(TelephoneInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["telephoneInformationList"] = telephoneInformationList;
+                        ViewData["telephoneInformationListCount"] = telephoneInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
+
+                //************************************************* Start EmploymenthistoryInformation ***********//
+                string query_uid_EmploymentHistoryInfo = $"SELECT * FROM employmenthistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_EmploymentHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //query_uid_EmploymentHistoryInformation
+                            EmploymentHistory EmploymentInfo = new EmploymentHistory();
+
+                            // EmploymentHistory
+                            int EmployerName = reader.GetOrdinal("EmployerName");
+                            int Designation = reader.GetOrdinal("Designation");
+                            int EmployLastUpdatedDate = reader.GetOrdinal("LastUpdatedDate");
+
+                            while (reader.Read())
+                            {
+                                EmploymentInfo.EmployerName = (reader[EmployerName] != Convert.DBNull) ? reader[EmployerName].ToString() : null;
+                                EmploymentInfo.Designation = (reader[Designation] != Convert.DBNull) ? reader[Designation].ToString() : null;
+                                EmploymentInfo.LastUpdatedDate = (reader[EmployLastUpdatedDate] != Convert.DBNull) ? reader[EmployLastUpdatedDate].ToString() : null;
+
+                                employmentInformationList.Add(EmploymentInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["employmentInformationList"] = employmentInformationList;
+                        ViewData["employmentInformationListCount"] = employmentInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
+
+                //************************************************* Start DirectorShipInformation ***********//
+                string query_uid_DirectorShipInfo = $"SELECT * FROM directorships as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_DirectorShipInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //DirectorshipInformation
+                            Directorship DirectorshipInfo = new Directorship();
+
+                            // DirectorshipHistory
+                            int DesignationCode = reader.GetOrdinal("DesignationCode");
+                            int AppointmentDate = reader.GetOrdinal("AppointmentDate");
+                            int DirectorStatus = reader.GetOrdinal("DirectorStatus");
+                            int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
+                            int CompanyName = reader.GetOrdinal("CompanyName");
+                            int CompanyType = reader.GetOrdinal("CompanyType");
+                            int CompanyStatus = reader.GetOrdinal("CompanyStatus");
+                            int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
+                            int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
+                            int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
+                            int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
+                            int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                            int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
+                            int DirectorType = reader.GetOrdinal("DirectorType");
+                            int MemberSize = reader.GetOrdinal("MemberSize");
+                            int MemberContribution = reader.GetOrdinal("MemberContribution");
+                            int MemberContributionType = reader.GetOrdinal("MemberContributionType");
+                            int ResignationDate = reader.GetOrdinal("ResignationDate");
+
+                            while (reader.Read())
+                            {
+                                DirectorshipInfo.DesignationCode = (reader[DesignationCode] != Convert.DBNull) ? reader[DesignationCode].ToString() : null;
+                                DirectorshipInfo.AppointmentDate = (reader[AppointmentDate] != Convert.DBNull) ? reader[AppointmentDate].ToString() : null;
+                                DirectorshipInfo.DirectorStatus = (reader[DirectorStatus] != Convert.DBNull) ? reader[DirectorStatus].ToString() : null;
+                                DirectorshipInfo.DirectorStatusDate = (reader[DirectorStatusDate] != Convert.DBNull) ?
+                                reader[DirectorStatusDate].ToString() : null; DirectorshipInfo.CompanyName =
+                                (reader[CompanyName] != Convert.DBNull) ? reader[CompanyName].ToString() : null;
+                                DirectorshipInfo.CompanyType = (reader[CompanyType] != Convert.DBNull) ?
+                                reader[CompanyType].ToString() : null; DirectorshipInfo.CompanyStatus =
+                                (reader[CompanyStatus] != Convert.DBNull) ? reader[CompanyStatus].ToString() : null;
+                                DirectorshipInfo.CompanyStatusCode = (reader[CompanyStatusCode] != Convert.DBNull) ?
+                                reader[CompanyStatusCode].ToString() : null; DirectorshipInfo.CompanyRegistrationNumber
+                                = (reader[CompanyRegistrationNumber] != Convert.DBNull) ?
+                                reader[CompanyRegistrationNumber].ToString() : null;
+                                DirectorshipInfo.CompanyRegistrationDate = (reader[CompanyRegistrationDate] !=
+                                Convert.DBNull) ? reader[CompanyRegistrationDate].ToString() : null;
+                                DirectorshipInfo.CompanyStartDate = (reader[CompanyStartDate] != Convert.DBNull) ?
+                                reader[CompanyStartDate].ToString() : null; DirectorshipInfo.CompanyTaxNumber =
+                                (reader[CompanyTaxNumber] != Convert.DBNull) ? reader[CompanyTaxNumber].ToString() :
+                                null; DirectorshipInfo.DirectorTypeCode = (reader[DirectorTypeCode] != Convert.DBNull) ?
+                                reader[DirectorTypeCode].ToString() : null; DirectorshipInfo.DirectorType =
+                                (reader[DirectorType] != Convert.DBNull) ? reader[DirectorType].ToString() : null;
+                                DirectorshipInfo.MemberSize = (reader[MemberSize] != Convert.DBNull) ?
+                                reader[MemberSize].ToString() : null; DirectorshipInfo.MemberContribution =
+                                (reader[MemberContribution] != Convert.DBNull) ? reader[MemberContribution].ToString()
+                                : null; DirectorshipInfo.MemberContributionType = (reader[MemberContributionType] !=
+                                Convert.DBNull) ? reader[MemberContributionType].ToString() : null;
+                                DirectorshipInfo.ResignationDate = (reader[ResignationDate] != Convert.DBNull) ?
+                                reader[ResignationDate].ToString() : null;
+
+                                directorshipList.Add(DirectorshipInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["directorshipList"] = directorshipList;
+                        ViewData["directorshipListCount"] = directorshipList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End DirectorShipInformation***********//
+            }
+            return View();
+        }
 
         public ActionResult TransUnionConsumerTrace()
         {
@@ -4376,8 +5015,8 @@ namespace searchworks.client.Controllers
 
                 JToken token = JToken.Parse(response.Content);
                 System.Diagnostics.Debug.WriteLine(JToken.Parse(response.Content));
-                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                var mes = ViewData["ResponseMessage"].ToString();
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+                var mes = TempData["ResponseMessage"].ToString();
                 if (mes == "NotFound")
                 {
                     ViewData["Message"] = "Not Found";
@@ -4841,9 +5480,9 @@ namespace searchworks.client.Controllers
 
         public ActionResult VeriCredConsumerProfileResults(VeriCred veri)
         {
-            string id = veri.idNumber;
-            string enquiryReason = veri.EnquiryReason;
-            string refe = veri.Reference;
+            string id = veri.idNumber != null ? veri.idNumber : null;
+            string enquiryReason = veri.EnquiryReason != null ? veri.EnquiryReason : null;
+            string refe = veri.Reference != null ? veri.Reference : null;
             try
             {
                 string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -4857,7 +5496,6 @@ namespace searchworks.client.Controllers
                 string page = "VeriCred Consumer Profile";
                 string action = "ID: " + id + "; Enquiry Reason: " + enquiryReason;
                 string user_id = Session["ID"].ToString();
-                System.Diagnostics.Debug.WriteLine(user_id);
                 string us = Session["Name"].ToString();
 
                 ViewData["user"] = Session["Name"].ToString();
@@ -5026,91 +5664,111 @@ namespace searchworks.client.Controllers
                     ViewData["CPAACCOUNTS"] = CPAACCOUNTS;
 
                     //HistoricalInformation
-                    List<AddressHistory> AddressHist;
-                    List<TelephoneHistory> TelHist;
-                    List<EmploymentHistory> EmpHist;
-                    Newtonsoft.Json.Linq.JArray element1, elements2, elements3 = new Newtonsoft.Json.Linq.JArray();
-                    element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                    elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                    elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
-                    //AddressHIstoryValues
-                    String TypeDescription = "";
-                    String Line1 = "";
-                    String Line2 = "";
-                    String Line3 = "";
-                    String PostalCode = "";
-                    String FullAddress = "";
-                    String LastUpdatedDate = "";
+                    JToken AddressExists = rootObject.ResponseObject["HistoricalInformation"].AddressHistory;
+                    if (AddressExists != null)
+                    {
+                        List<AddressHistory> AddressHist;
+                        Newtonsoft.Json.Linq.JArray element1 = new Newtonsoft.Json.Linq.JArray();
+                        element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
+                        String TypeDescription = "";
+                        String Line1 = "";
+                        String Line2 = "";
+                        String Line3 = "";
+                        String PostalCode = "";
+                        String FullAddress = "";
+                        String LastUpdatedDate = "";
+                        AddressHist = new List<AddressHistory>();
+                        for (int count = 0; count < (element1.Count); count++)
+                        {
+                            TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
+                            Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
+                            Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
+                            Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
+                            PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
+                            FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
+                            LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                            saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "VeriCredConsumerProfile");
+                            AddressHist.Add(new AddressHistory
+                            {
+                                TypeDescription = TypeDescription,
+                                Line1 = Line1,
+                                Line2 = Line2,
+                                Line3 = Line3,
+                                PostalCode = PostalCode,
+                                FullAddress = FullAddress,
+                                LastUpdatedDate = LastUpdatedDate,
+                            });
+                        }
+                        ViewData["AddressHist"] = AddressHist;
+                    }
+
                     //TelephoneHIstory
-                    String TypeDescriptionTel = "";
-                    String DialCode = "";
-                    String Number = "";
-                    String FullNumber = "";
-                    String LastUpdatedDateTel = "";
+                    JToken TelephoneExists = rootObject.ResponseObject["HistoricalInformation"].TelephoneHistory;
+                    if (TelephoneExists != null)
+                    {
+                        List<TelephoneHistory> TelHist;
+                        Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
+                        elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
+                        String TypeDescriptionTel = "";
+                        String DialCode = "";
+                        String Number = "";
+                        String FullNumber = "";
+                        String LastUpdatedDateTel = "";
+                        TelHist = new List<TelephoneHistory>();
+                        for (int count = 0; count < (elements2.Count); count++)
+                        {
+                            TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                            DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
+                            Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
+                            FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
+                            LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
+                            saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescriptionTel, null, Number, FullNumber, LastUpdatedDateTel, "VeriCredConsumerProfile");
+                            TelHist.Add(new TelephoneHistory
+                            {
+                                TypeDescriptionTel = TypeDescriptionTel,
+                                DialCode = DialCode,
+                                Number = Number,
+                                FullNumber = FullNumber,
+                                LastUpdatedDateTel = LastUpdatedDateTel,
+                            });
+                        }
+                        ViewData["TelHist"] = TelHist;
+                    }
+
                     //EmploymentHistory
-                    String EmployerName = "";
-                    String Designation = "";
-                    AddressHist = new List<AddressHistory>();
-                    TelHist = new List<TelephoneHistory>();
-                    EmpHist = new List<EmploymentHistory>();
-                    for (int count = 0; count < (element1.Count); count++)
+                    JToken EmploymentExists = rootObject.ResponseObject["HistoricalInformation"].EmploymentHistory;
+                    if (EmploymentExists != null)
                     {
-                        TypeDescription = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].TypeDescription;
-                        Line1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line1;
-                        Line2 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line2;
-                        Line3 = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].Line3;
-                        PostalCode = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].PostalCode;
-                        FullAddress = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].FullAddress;
-                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
-                        saveAddressHistory(SearchToken, Reference, SearchID, null, TypeDescription, Line1, Line2, Line3, null, PostalCode, FullAddress, LastUpdatedDate, "VeriCredConsumerProfile");
-                        AddressHist.Add(new AddressHistory
+                        List<EmploymentHistory> EmpHist;
+                        Newtonsoft.Json.Linq.JArray elements3 = new Newtonsoft.Json.Linq.JArray();
+                        elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
+
+                        String EmployerName = "";
+                        String Designation = "";
+                        String LastUpdatedDate = "";
+                        EmpHist = new List<EmploymentHistory>();
+
+                        for (int count = 0; count < (elements3.Count); count++)
                         {
-                            TypeDescription = TypeDescription,
-                            Line1 = Line1,
-                            Line2 = Line2,
-                            Line3 = Line3,
-                            PostalCode = PostalCode,
-                            FullAddress = FullAddress,
-                            LastUpdatedDate = LastUpdatedDate,
-                        });
+                            EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
+                            LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
+                            saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "VeriCredConsumerProfile");
+                            EmpHist.Add(new EmploymentHistory
+                            {
+                                EmployerName = EmployerName,
+                                Designation = Designation,
+                                LastUpdatedDate = LastUpdatedDate,
+                            });
+                        }
+                        ViewData["EmpHist"] = EmpHist;
                     }
-                    for (int count = 0; count < (elements2.Count); count++)
-                    {
-                        TypeDescriptionTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                        DialCode = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].DialCode;
-                        Number = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].Number;
-                        FullNumber = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].FullNumber;
-                        LastUpdatedDateTel = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory[count].LastUpdatedDateTel;
-                        saveTelephoneHistory(SearchToken, Reference, SearchID, DialCode, null, TypeDescription, null, Number, FullNumber, LastUpdatedDate, "VeriCredConsumerProfile");
-                        TelHist.Add(new TelephoneHistory
-                        {
-                            TypeDescriptionTel = TypeDescriptionTel,
-                            DialCode = DialCode,
-                            Number = Number,
-                            FullNumber = FullNumber,
-                            LastUpdatedDateTel = LastUpdatedDate,
-                        });
-                    }
-                    for (int count = 0; count < (elements3.Count); count++)
-                    {
-                        EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                        LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
-                        saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "VeriCredConsumerProfile");
-                        EmpHist.Add(new EmploymentHistory
-                        {
-                            EmployerName = EmployerName,
-                            LastUpdatedDate = LastUpdatedDate,
-                        });
-                    }
-                    ViewData["AddressHist"] = AddressHist;
-                    ViewData["TelHist"] = TelHist;
-                    ViewData["EmpHist"] = EmpHist;
+
                     return View();
                 }
             }
             catch (Exception e)
             {
-                TempData["msg"] = e.ToString();
+                TempData["msg"] = "Error Occured, Please verify the details that have been entered";
                 return View();
             }
         }
@@ -5137,6 +5795,7 @@ namespace searchworks.client.Controllers
             System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
             System.Collections.Generic.List<CPAaccounts> cppaAccountsList = new System.Collections.Generic.List<CPAaccounts>();
             //System.Collections.Generic.List<PaymentHistoryAccountDetails> paymentHistoryAccountList = new System.Collections.Generic.List<PaymentHistoryAccountDetails>();
+            System.Collections.Generic.List<Directorship> directorshipList = new System.Collections.Generic.List<Directorship>();
 
             //AND SearchToken = 'cc329011-76c8-4c8c-9ff6-4b5ce6c05d13' AND Reference = 'devadmin@ktopportunities.co.za' AND typeOfSearch = 'ExperianConsumerProfile'
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -5780,7 +6439,199 @@ namespace searchworks.client.Controllers
                     }
                 //************************************************* End EnquiryInformation ***********//
 
-                conn.Close();
+                //************************************************* Start AddressHistoryInformation ***********//
+                string query_uid_AddressHistoryInfo = $"SELECT * FROM addresshistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_AddressHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //addresshistoryInformation
+                            AddressHistory AddressInfo = new AddressHistory();
+
+                            int AddressID = reader.GetOrdinal("AddressID");
+                            int TypeDescription = reader.GetOrdinal("TypeDescription");
+                            int Line1 = reader.GetOrdinal("Line1");
+                            int Line2 = reader.GetOrdinal("Line2");
+                            int Line3 = reader.GetOrdinal("Line3");
+                            int Line4 = reader.GetOrdinal("Line4");
+                            int PostalCode = reader.GetOrdinal("PostalCode");
+                            int FullAddress = reader.GetOrdinal("FullAddress");
+                            int AddressLastUpdatedDate = reader.GetOrdinal("LastUpdatedDate");
+                            while (reader.Read())
+                            {
+                                AddressInfo.AddressID = (reader[AddressID] != Convert.DBNull) ? reader[AddressID].ToString() : null;
+                                AddressInfo.TypeDescription = (reader[TypeDescription] != Convert.DBNull) ? reader[TypeDescription].ToString() : null;
+                                AddressInfo.Line1 = (reader[Line1] != Convert.DBNull) ? reader[Line1].ToString() : null;
+                                AddressInfo.Line2 = (reader[Line2] != Convert.DBNull) ? reader[Line2].ToString() : null;
+                                AddressInfo.Line3 = (reader[Line3] != Convert.DBNull) ? reader[Line3].ToString() : null;
+                                AddressInfo.Line4 = (reader[Line4] != Convert.DBNull) ? reader[Line4].ToString() : null;
+                                AddressInfo.PostalCode = (reader[PostalCode] != Convert.DBNull) ? reader[PostalCode].ToString() : null;
+                                AddressInfo.FullAddress = (reader[FullAddress] != Convert.DBNull) ? reader[FullAddress].ToString() : null;
+                                AddressInfo.LastUpdatedDate = (reader[AddressLastUpdatedDate] != Convert.DBNull) ? reader[AddressLastUpdatedDate].ToString() : null;
+
+                                addressInformationList.Add(AddressInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["addressInformationList"] = addressInformationList;
+                        ViewData["addressInformationListCount"] = addressInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End AddressHistoryInformation ***********//
+
+                //************************************************* Start TelephonehistoryInformation ***********//
+                string query_uid_TelephoneHistoryInfo = $"SELECT * FROM telephonehistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_TelephoneHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //TelephoneHistoryInformation
+                            TelephoneHistory TelephoneInfo = new TelephoneHistory();
+
+                            // //Telephone History
+                            int TypeDescriptionTel = reader.GetOrdinal("TypeDescriptionTel");
+                            int DialCode = reader.GetOrdinal("DialCode");
+                            int Number = reader.GetOrdinal("Number");
+                            int FullNumber = reader.GetOrdinal("FullNumber");
+                            int LastUpdatedDateTel = reader.GetOrdinal("LastUpdatedDateTel");
+
+                            while (reader.Read())
+                            {
+                                TelephoneInfo.TypeDescriptionTel = (reader[TypeDescriptionTel] != Convert.DBNull) ? reader[TypeDescriptionTel].ToString() : null;
+                                TelephoneInfo.DialCode = (reader[DialCode] != Convert.DBNull) ? reader[DialCode].ToString() : null;
+                                TelephoneInfo.Number = (reader[Number] != Convert.DBNull) ? reader[Number].ToString() : null;
+                                TelephoneInfo.FullNumber = (reader[FullNumber] != Convert.DBNull) ? reader[FullNumber].ToString() : null;
+                                TelephoneInfo.LastUpdatedDateTel = (reader[LastUpdatedDateTel] != Convert.DBNull) ? reader[LastUpdatedDateTel].ToString() : null;
+
+                                telephoneInformationList.Add(TelephoneInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["telephoneInformationList"] = telephoneInformationList;
+                        ViewData["telephoneInformationListCount"] = telephoneInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
+
+                //************************************************* Start EmploymenthistoryInformation ***********//
+                string query_uid_EmploymentHistoryInfo = $"SELECT * FROM employmenthistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_EmploymentHistoryInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //query_uid_EmploymentHistoryInformation
+                            EmploymentHistory EmploymentInfo = new EmploymentHistory();
+
+                            // EmploymentHistory
+                            int EmployerName = reader.GetOrdinal("EmployerName");
+                            int Designation = reader.GetOrdinal("Designation");
+                            int EmployLastUpdatedDate = reader.GetOrdinal("LastUpdatedDate");
+
+                            while (reader.Read())
+                            {
+                                EmploymentInfo.EmployerName = (reader[EmployerName] != Convert.DBNull) ? reader[EmployerName].ToString() : null;
+                                EmploymentInfo.Designation = (reader[Designation] != Convert.DBNull) ? reader[Designation].ToString() : null;
+                                EmploymentInfo.LastUpdatedDate = (reader[EmployLastUpdatedDate] != Convert.DBNull) ? reader[EmployLastUpdatedDate].ToString() : null;
+
+                                employmentInformationList.Add(EmploymentInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["employmentInformationList"] = employmentInformationList;
+                        ViewData["employmentInformationListCount"] = employmentInformationList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End TelephonehistoryInformation***********//
+
+                //************************************************* Start DirectorShipInformation ***********//
+                string query_uid_DirectorShipInfo = $"SELECT * FROM directorships as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_DirectorShipInfo, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            //DirectorshipInformation
+                            Directorship DirectorshipInfo = new Directorship();
+
+                            // DirectorshipHistory
+                            int DesignationCode = reader.GetOrdinal("DesignationCode");
+                            int AppointmentDate = reader.GetOrdinal("AppointmentDate");
+                            int DirectorStatus = reader.GetOrdinal("DirectorStatus");
+                            int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
+                            int CompanyName = reader.GetOrdinal("CompanyName");
+                            int CompanyType = reader.GetOrdinal("CompanyType");
+                            int CompanyStatus = reader.GetOrdinal("CompanyStatus");
+                            int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
+                            int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
+                            int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
+                            int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
+                            int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                            int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
+                            int DirectorType = reader.GetOrdinal("DirectorType");
+                            int MemberSize = reader.GetOrdinal("MemberSize");
+                            int MemberContribution = reader.GetOrdinal("MemberContribution");
+                            int MemberContributionType = reader.GetOrdinal("MemberContributionType");
+                            int ResignationDate = reader.GetOrdinal("ResignationDate");
+
+                            while (reader.Read())
+                            {
+                                DirectorshipInfo.DesignationCode = (reader[DesignationCode] != Convert.DBNull) ? reader[DesignationCode].ToString() : null;
+                                DirectorshipInfo.AppointmentDate = (reader[AppointmentDate] != Convert.DBNull) ? reader[AppointmentDate].ToString() : null;
+                                DirectorshipInfo.DirectorStatus = (reader[DirectorStatus] != Convert.DBNull) ? reader[DirectorStatus].ToString() : null;
+                                DirectorshipInfo.DirectorStatusDate = (reader[DirectorStatusDate] != Convert.DBNull) ?
+                                reader[DirectorStatusDate].ToString() : null; DirectorshipInfo.CompanyName =
+                                (reader[CompanyName] != Convert.DBNull) ? reader[CompanyName].ToString() : null;
+                                DirectorshipInfo.CompanyType = (reader[CompanyType] != Convert.DBNull) ?
+                                reader[CompanyType].ToString() : null; DirectorshipInfo.CompanyStatus =
+                                (reader[CompanyStatus] != Convert.DBNull) ? reader[CompanyStatus].ToString() : null;
+                                DirectorshipInfo.CompanyStatusCode = (reader[CompanyStatusCode] != Convert.DBNull) ?
+                                reader[CompanyStatusCode].ToString() : null; DirectorshipInfo.CompanyRegistrationNumber
+                                = (reader[CompanyRegistrationNumber] != Convert.DBNull) ?
+                                reader[CompanyRegistrationNumber].ToString() : null;
+                                DirectorshipInfo.CompanyRegistrationDate = (reader[CompanyRegistrationDate] !=
+                                Convert.DBNull) ? reader[CompanyRegistrationDate].ToString() : null;
+                                DirectorshipInfo.CompanyStartDate = (reader[CompanyStartDate] != Convert.DBNull) ?
+                                reader[CompanyStartDate].ToString() : null; DirectorshipInfo.CompanyTaxNumber =
+                                (reader[CompanyTaxNumber] != Convert.DBNull) ? reader[CompanyTaxNumber].ToString() :
+                                null; DirectorshipInfo.DirectorTypeCode = (reader[DirectorTypeCode] != Convert.DBNull) ?
+                                reader[DirectorTypeCode].ToString() : null; DirectorshipInfo.DirectorType =
+                                (reader[DirectorType] != Convert.DBNull) ? reader[DirectorType].ToString() : null;
+                                DirectorshipInfo.MemberSize = (reader[MemberSize] != Convert.DBNull) ?
+                                reader[MemberSize].ToString() : null; DirectorshipInfo.MemberContribution =
+                                (reader[MemberContribution] != Convert.DBNull) ? reader[MemberContribution].ToString()
+                                : null; DirectorshipInfo.MemberContributionType = (reader[MemberContributionType] !=
+                                Convert.DBNull) ? reader[MemberContributionType].ToString() : null;
+                                DirectorshipInfo.ResignationDate = (reader[ResignationDate] != Convert.DBNull) ?
+                                reader[ResignationDate].ToString() : null;
+
+                                directorshipList.Add(DirectorshipInfo);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["directorshipList"] = directorshipList;
+                        ViewData["directorshipListCount"] = directorshipList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+                //************************************************* End DirectorShipInformation***********//
             }
             return View();
         }

@@ -174,7 +174,6 @@
 
 .con {
     display: flex;
-    margin-top: 4%;
     margin-left: 4%;
     /*align-self: center;*/
     justify-content: space-evenly;
@@ -187,25 +186,53 @@
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 10px;
     opacity: 1;
+    margin-top: 2%;
 }
 
-.conSearchHistory {
+.conUsers {
     display: flex;
-    margin-top: 1%;
-     
+    margin-left: 4%;
     /*align-self: center;*/
     justify-content: space-evenly;
     width: 93%;
     align-self: center;
-    height: 523px;
     width: 93%;
     padding: 2.5%;
     /*background: #FFFFFF 0% 0% no-repeat padding-box;*/
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 10px;
     opacity: 1;
+    margin-top: 2%;
 }
 
+.conSearchHistory {
+    display: flex;
+    margin-top: 1%;
+    /*align-self: center;*/
+    justify-content: space-evenly;
+    align-self: center;
+    height: 523px;
+    width: 96%;
+    /* padding: 2.5%;*/
+    /*background: #FFFFFF 0% 0% no-repeat padding-box;*/
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    opacity: 1;
+}
+.conUserMangement {
+    display: flex;
+    margin-top: 1%;
+    /*align-self: center;*/
+    justify-content: space-evenly;
+    align-self: center;
+    height: 523px;
+    width: 96%;
+    /* padding: 2.5%;*/
+    /*background: #FFFFFF 0% 0% no-repeat padding-box;*/
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    opacity: 1;
+}
 .con1 {
     width: 96.5%;
     align-self: center;
@@ -510,7 +537,7 @@ font-size: 12px;*/
 .butn {
    /* top: 200px;*/
     /*left: 290px;*/
-    width:40%;
+    /*width:40%;*/
     height: 32px;
     background: #00B46F 0% 0% no-repeat padding-box;
     border-radius: 5px;
@@ -770,11 +797,12 @@ td {
 
 
 .seaMore {
-    /*float: right;
+    /*
     position: relative;
     width: 85px;
     padding-top: 4px;
     padding-left: 8px;*/
+
     font-family: 'Poppins-SemiBold';
     font-size: 10px;
     height: 25px;
@@ -784,6 +812,7 @@ td {
     opacity: 1;
     transition: 0.7s;
     padding:5%;
+   
 }
 
     .seaMore:hover {
@@ -855,7 +884,6 @@ margin-bottom: 20px;*/
 }
 
 .col_header {
-    /*width: 12%;*/
     width: 100%;
     font-size: 10px;
     /*float: left;*/
@@ -863,6 +891,7 @@ margin-bottom: 20px;*/
     color: white;
     padding: 5px;
     font-weight: bold;
+
 }
  
 
@@ -1040,7 +1069,7 @@ margin-bottom: 20px;*/
     border-radius: 10px;
     background: #00BECE;
     width: 100%;
-    height: 100%;
+    height: 40px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
     outline: none;
 }
@@ -1062,7 +1091,7 @@ margin-bottom: 20px;*/
     border-radius: 10px;
     background: #A1B6C1;
     width: 100%;
-    height: 100%;
+    height: 45px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
     outline: none;
 }
@@ -1159,6 +1188,7 @@ margin-bottom: 20px;*/
 
 td, th {
     vertical-align: middle;
+    word-break: break-all;
 }
 
 .inp {
@@ -1243,13 +1273,33 @@ th, td {
     width: 11.6% !important;
     color: white !important;
 }
-.tdSearch {
+
+.tdUM {
+    width: 11.6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tdSH {
+    width: 11.6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.thCheckBox {
     float: left;
     text-align: center;
-    width: 11.6% !important;
-    display: flex;
-    word-break: break-all
+    margin-left: 4% !important;
+    color: white !important;
+    
 }
+.tdSearch {
+    width: 11.6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
 .t-row {
     display: flex !important;
     align-items: center !important;
@@ -1286,7 +1336,7 @@ height: 424px;
 }
 .row {
 /*display:flex;*/
-flex-wrap:nowrap;
+/*flex-wrap:nowrap;*/
 margin-right:0;
 margin-left:0;
 justify-content:flex-start;
@@ -1393,8 +1443,9 @@ justify-content:flex-start;
 
 .in-mar {
     margin-left: 20px;
+    display:flex;
     position: relative;
-    top: 6px;
+    justify-content:center;
 }
 
 .my-form-inline {
@@ -1470,7 +1521,7 @@ justify-content:flex-start;
 
 .rad2 {
     position: relative;
-    bottom: 62px;
+    /*bottom: 62px;*/
     left: 15px;
     display: flex;
     justify-content: flex-start;
@@ -1516,8 +1567,7 @@ justify-content:flex-start;
     margin-left: 40px;
     justify-items: flex-start;
     width: 91%;
-    padding: 1%;
-}
+    margin:1%
 }
 
 #tabs-close {

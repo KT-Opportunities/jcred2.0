@@ -76,24 +76,23 @@
                         <tbody>
                             @foreach (var item in @ViewBag.ArrayList)
                             {
-
                                 string ID = @item.SearchID;
                                 string Token = @item.SearchToken;
                                 string Ref = @item.Reference;
                                 string Type = @item.ResponseType;
 
                                 <tr scope="row" class="justify-content-around t-row " style="display:flex">
-                                    <td style="" class="">
+                                    <td scope="col" class="tdSearch">
                                         <label class="control control--checkbox">
                                             <input type="checkbox" />
                                             @*<div class="control__indicator"></div>*@
                                         </label>
                                     </td>
-                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
+                                    <td class="tdSearch" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.CallerModule
                                     </td>
-                                    <td class="td" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
+                                    <td class="tdSearch" style="float: left; text-align: center; width: 11.6% !important; word-break: break-all" data-toggle="modal"
                                         data-target="#exampleModal">
                                         @item.SearchDescription
                                     </td>
@@ -113,8 +112,16 @@
                                         data-target="#exampleModal">
                                         @item.ReportDate
                                     </td>
+                                    @if (Type.ToString() == "ExperianConsumerProfile" || Type.ToString() == "TransUnionConsumerProfile" || Type.ToString() == "VeriCredConsumerProfile")
+                                    {
+                                        <td class="tdSearch">@Html.ActionLink("View", Type + "Database", "Credit", new { id = ID, token = Token }, null)</td>
 
-                                    <td>@Html.ActionLink("View", Type + "Database", "Credit", new { id = ID, token = Token }, null)</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="tdSearch"></td>
+
+                                    }
                                 </tr>
 
                             }
@@ -127,7 +134,7 @@
     <div class="modal fade" id="adSearch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg " role="document">
             <div class="modal-content">
-                <div class="modal-header " >
+                <div class="modal-header ">
                     <h5 class="modal-title" id="exampleModalLabel">Advanced search options</h5>
                     <div class="row justify-content-end">
                         <div class="row" style="display: block;position: relative;margin-right:25px">
@@ -186,19 +193,19 @@
                     </div>
                     <div class="col justify-content-start ">
                         <strong class="heading1">Start and end date</strong><br>
- 
+
                         <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="col-6" />
                     </div>
                     @*<div class="row justify-content-center">
-                        <div class="col-6">
-                        </div>
-                        <div class="col-6" style="margin-left: 343px;">
-                            <div class="row justify-content-end">
-                                <button class="btn-b2-cancel btnSpace">Reset Search</button>
-                                <button class="btn-b2 btnSpace">Apply Search</button>
+                            <div class="col-6">
                             </div>
-                        </div>
-                    </div>*@
+                            <div class="col-6" style="margin-left: 343px;">
+                                <div class="row justify-content-end">
+                                    <button class="btn-b2-cancel btnSpace">Reset Search</button>
+                                    <button class="btn-b2 btnSpace">Apply Search</button>
+                                </div>
+                            </div>
+                        </div>*@
                 </div>
             </div>
         </div>
@@ -207,9 +214,6 @@
 
 <script>
 
-    $(window).on('load', function () {
-        $('#adSearch').modal('show');
-    });
       var tab = [];
     // removing duplicates
 

@@ -45,18 +45,18 @@
                 }, " Select CIPC Search Parameter", new { @id = "eqtype", required = "required" })
                 </div>
                 @*<div class="seaType">
-                        <label>Search Criteria</label><br>
+                <label>Search Criteria</label><br>
 
-                        @Html.DropDownList("seatype", new List<SelectListItem>
-                    {
+                @Html.DropDownList("seatype", new List<SelectListItem>
+            {
 
-                          new SelectListItem { Text = "Name", Value = "name"},
-                          new SelectListItem { Text = "ID Number", Value = "idnumber"},
-                          new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
+                  new SelectListItem { Text = "Name", Value = "name"},
+                  new SelectListItem { Text = "ID Number", Value = "idnumber"},
+                  new SelectListItem { Text = "Name and ID Number", Value = "nameandidnumber"},
 
-                    }, "Please Select", new { @id = "seatype", required = "required" })
+            }, "Please Select", new { @id = "seatype", required = "required" })
 
-                    </div>*@
+            </div>*@
                 <div class="firstname">
                     <label>Company Name</label><br>
 
@@ -69,20 +69,18 @@
                 </div>
 
                 @*<div class="idnumber">
-                        <label>ID Number</label><br>
+                <label>ID Number</label><br>
 
-                        @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
-                    </div>*@
-
+                @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
+            </div>*@
                 <div class="tc">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
+                    <div class="checkBoxDiv">
+                        I accept the<a href="#">&nbsp;terms and conditions&nbsp;</a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button onclick="Search()" id="companySearch" class="butn" name="companySearch">Perform Search</button>
+
                 </div>
-
-                <button onclick="Search()" id="companySearch" class="btn" name="companySearch">Perform Search</button>
-
 
             }
 
