@@ -12,16 +12,12 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class search_history
+    public partial class aspnetuserlogin
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public System.DateTime application_date { get; set; }
-        public string applicant_Fname { get; set; }
-        public string applicant_Lname { get; set; }
-        public string status { get; set; }
-        public string id_Number { get; set; }
-        public string account_user { get; set; }
-        public string region { get; set; }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+        public string UserId { get; set; }
+    
+        public virtual aspnetuser aspnetuser { get; set; }
     }
 }

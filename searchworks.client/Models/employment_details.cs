@@ -12,16 +12,20 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class search_history
+    public partial class employment_details
     {
         public int id { get; set; }
-        public int user_id { get; set; }
-        public System.DateTime application_date { get; set; }
-        public string applicant_Fname { get; set; }
-        public string applicant_Lname { get; set; }
+        public string user_email { get; set; }
         public string status { get; set; }
-        public string id_Number { get; set; }
-        public string account_user { get; set; }
-        public string region { get; set; }
+        public string employer { get; set; }
+        public string phone { get; set; }
+        public string gross { get; set; }
+        public string nett { get; set; }
+        public string industry { get; set; }
+        public string position { get; set; }
+        public string time { get; set; }
+        public string contact { get; set; }
+        public string frequency { get; set; }
+        public string day { get; set; }
     }
 }

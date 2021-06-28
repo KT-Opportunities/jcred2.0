@@ -12,11 +12,15 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class orgcategory
+    public partial class orgtenant
     {
-        public int orgcategoryid { get; set; }
-        public string orgcategoryname { get; set; }
-        public string orgcategorycode { get; set; }
+        public int orgtenantid { get; set; }
+        public Nullable<int> parent_orgtenantid { get; set; }
+        public string orgname { get; set; }
+        public string orgcode { get; set; }
+        public Nullable<int> orgcategoryid { get; set; }
+        public string org_regno { get; set; }
+        public string org_vatno { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<bool> deleted { get; set; }

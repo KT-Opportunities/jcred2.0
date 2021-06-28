@@ -12,16 +12,17 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class search_history
+    public partial class debtreviewstatu
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public System.DateTime application_date { get; set; }
-        public string applicant_Fname { get; set; }
-        public string applicant_Lname { get; set; }
-        public string status { get; set; }
-        public string id_Number { get; set; }
-        public string account_user { get; set; }
-        public string region { get; set; }
+        public int ID { get; set; }
+        public string SearchToken { get; set; }
+        public string Reference { get; set; }
+        public string StatusCode { get; set; }
+        public string SearchID { get; set; }
+        public string StatusDate { get; set; }
+        public string StatusDescription { get; set; }
+        public string ApplicationDate { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public string typeOfSearch { get; set; }
     }
 }

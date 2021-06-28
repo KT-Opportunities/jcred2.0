@@ -1,0 +1,1305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="JCredDBContextEntities">
+    <EntitySetMapping Name="countries">
+      <EntityTypeMapping TypeName="Model.country">
+        <MappingFragment StoreEntitySet="country">
+          <ScalarProperty Name="countryid" ColumnName="countryid" />
+          <ScalarProperty Name="country_name" ColumnName="country_name" />
+          <ScalarProperty Name="country_code" ColumnName="country_code" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgcategories">
+      <EntityTypeMapping TypeName="Model.orgcategory">
+        <MappingFragment StoreEntitySet="orgcategory">
+          <ScalarProperty Name="orgcategoryid" ColumnName="orgcategoryid" />
+          <ScalarProperty Name="orgcategoryname" ColumnName="orgcategoryname" />
+          <ScalarProperty Name="orgcategorycode" ColumnName="orgcategorycode" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgregions">
+      <EntityTypeMapping TypeName="Model.orgregion">
+        <MappingFragment StoreEntitySet="orgregion">
+          <ScalarProperty Name="orgregionid" ColumnName="orgregionid" />
+          <ScalarProperty Name="regionname" ColumnName="regionname" />
+          <ScalarProperty Name="regioncode" ColumnName="regioncode" />
+          <ScalarProperty Name="countryid" ColumnName="countryid" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgtenants">
+      <EntityTypeMapping TypeName="Model.orgtenant">
+        <MappingFragment StoreEntitySet="orgtenant">
+          <ScalarProperty Name="orgtenantid" ColumnName="orgtenantid" />
+          <ScalarProperty Name="parent_orgtenantid" ColumnName="parent_orgtenantid" />
+          <ScalarProperty Name="orgname" ColumnName="orgname" />
+          <ScalarProperty Name="orgcode" ColumnName="orgcode" />
+          <ScalarProperty Name="orgcategoryid" ColumnName="orgcategoryid" />
+          <ScalarProperty Name="org_regno" ColumnName="org_regno" />
+          <ScalarProperty Name="org_vatno" ColumnName="org_vatno" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgtenantprivs">
+      <EntityTypeMapping TypeName="Model.orgtenantpriv">
+        <MappingFragment StoreEntitySet="orgtenantpriv">
+          <ScalarProperty Name="orgtenantprivid" ColumnName="orgtenantprivid" />
+          <ScalarProperty Name="orgtenantid" ColumnName="orgtenantid" />
+          <ScalarProperty Name="sysprivid" ColumnName="sysprivid" />
+          <ScalarProperty Name="acl_search" ColumnName="acl_search" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgunits">
+      <EntityTypeMapping TypeName="Model.orgunit">
+        <MappingFragment StoreEntitySet="orgunit">
+          <ScalarProperty Name="orgunitid" ColumnName="orgunitid" />
+          <ScalarProperty Name="parent_orgunitid" ColumnName="parent_orgunitid" />
+          <ScalarProperty Name="orgtenantid" ColumnName="orgtenantid" />
+          <ScalarProperty Name="orgunitname" ColumnName="orgunitname" />
+          <ScalarProperty Name="orgunitcode" ColumnName="orgunitcode" />
+          <ScalarProperty Name="regionid" ColumnName="regionid" />
+          <ScalarProperty Name="telephone" ColumnName="telephone" />
+          <ScalarProperty Name="fax" ColumnName="fax" />
+          <ScalarProperty Name="postal_address" ColumnName="postal_address" />
+          <ScalarProperty Name="postal_code" ColumnName="postal_code" />
+          <ScalarProperty Name="physical_address" ColumnName="physical_address" />
+          <ScalarProperty Name="physical_code" ColumnName="physical_code" />
+          <ScalarProperty Name="isbillable" ColumnName="isbillable" />
+          <ScalarProperty Name="billing_orgname" ColumnName="billing_orgname" />
+          <ScalarProperty Name="billing_address" ColumnName="billing_address" />
+          <ScalarProperty Name="billing_code" ColumnName="billing_code" />
+          <ScalarProperty Name="orgunit_regno" ColumnName="orgunit_regno" />
+          <ScalarProperty Name="orgunit_vatno" ColumnName="orgunit_vatno" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgunitprivmaps">
+      <EntityTypeMapping TypeName="Model.orgunitprivmap">
+        <MappingFragment StoreEntitySet="orgunitprivmap">
+          <ScalarProperty Name="orgunitprivmapid" ColumnName="orgunitprivmapid" />
+          <ScalarProperty Name="orgunitid" ColumnName="orgunitid" />
+          <ScalarProperty Name="sysprivid" ColumnName="sysprivid" />
+          <ScalarProperty Name="acl_search" ColumnName="acl_search" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="orgunituserprivmaps">
+      <EntityTypeMapping TypeName="Model.orgunituserprivmap">
+        <MappingFragment StoreEntitySet="orgunituserprivmap">
+          <ScalarProperty Name="orgunitprivmapid" ColumnName="orgunitprivmapid" />
+          <ScalarProperty Name="aspiden_uid" ColumnName="aspiden_uid" />
+          <ScalarProperty Name="orgunitid" ColumnName="orgunitid" />
+          <ScalarProperty Name="sysprivid" ColumnName="sysprivid" />
+          <ScalarProperty Name="acl_search" ColumnName="acl_search" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="aspnetpasshashhistories">
+      <EntityTypeMapping TypeName="Model.aspnetpasshashhistory">
+        <MappingFragment StoreEntitySet="aspnetpasshashhistory">
+          <ScalarProperty Name="password_valid_days" ColumnName="password_valid_days" />
+          <ScalarProperty Name="passwordexpire_at" ColumnName="passwordexpire_at" />
+          <ScalarProperty Name="passwordcreated_at" ColumnName="passwordcreated_at" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="aspnetuserId" ColumnName="aspnetuserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="aspnetusers">
+      <EntityTypeMapping TypeName="Model.aspnetuser">
+        <MappingFragment StoreEntitySet="aspnetusers">
+          <ScalarProperty Name="passwordcreated_at" ColumnName="passwordcreated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="C__efmigrationshistory">
+      <EntityTypeMapping TypeName="Model.C__efmigrationshistory">
+        <MappingFragment StoreEntitySet="__efmigrationshistory">
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="C__migrationhistory">
+      <EntityTypeMapping TypeName="Model.C__migrationhistory">
+        <MappingFragment StoreEntitySet="__migrationhistory">
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="addresshistories">
+      <EntityTypeMapping TypeName="Model.addresshistory">
+        <MappingFragment StoreEntitySet="addresshistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+          <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="Line4" ColumnName="Line4" />
+          <ScalarProperty Name="Line3" ColumnName="Line3" />
+          <ScalarProperty Name="Line2" ColumnName="Line2" />
+          <ScalarProperty Name="Line1" ColumnName="Line1" />
+          <ScalarProperty Name="TypeDescription" ColumnName="TypeDescription" />
+          <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="aspnetroles">
+      <EntityTypeMapping TypeName="Model.aspnetrole">
+        <MappingFragment StoreEntitySet="aspnetroles">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="aspnetuserclaims">
+      <EntityTypeMapping TypeName="Model.aspnetuserclaim">
+        <MappingFragment StoreEntitySet="aspnetuserclaims">
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="aspnetuserlogins">
+      <EntityTypeMapping TypeName="Model.aspnetuserlogin">
+        <MappingFragment StoreEntitySet="aspnetuserlogins">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bank_preferences">
+      <EntityTypeMapping TypeName="Model.bank_preferences">
+        <MappingFragment StoreEntitySet="bank_preferences">
+          <ScalarProperty Name="account_holder" ColumnName="account_holder" />
+          <ScalarProperty Name="account_type" ColumnName="account_type" />
+          <ScalarProperty Name="account_number" ColumnName="account_number" />
+          <ScalarProperty Name="bank" ColumnName="bank" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cca12months">
+      <EntityTypeMapping TypeName="Model.cca12months">
+        <MappingFragment StoreEntitySet="cca12months">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HighestMonthsInArrears" ColumnName="HighestMonthsInArrears" />
+          <ScalarProperty Name="PositiveLoans" ColumnName="PositiveLoans" />
+          <ScalarProperty Name="EnquiriesByOther" ColumnName="EnquiriesByOther" />
+          <ScalarProperty Name="EnquiriesByClient" ColumnName="EnquiriesByClient" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cca24months">
+      <EntityTypeMapping TypeName="Model.cca24months">
+        <MappingFragment StoreEntitySet="cca24months">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HighestMonthsInArrears" ColumnName="HighestMonthsInArrears" />
+          <ScalarProperty Name="PositiveLoans" ColumnName="PositiveLoans" />
+          <ScalarProperty Name="EnquiriesByOther" ColumnName="EnquiriesByOther" />
+          <ScalarProperty Name="EnquiriesByClient" ColumnName="EnquiriesByClient" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cca36months">
+      <EntityTypeMapping TypeName="Model.cca36months">
+        <MappingFragment StoreEntitySet="cca36months">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HighestMonthsInArrears" ColumnName="HighestMonthsInArrears" />
+          <ScalarProperty Name="PositiveLoans" ColumnName="PositiveLoans" />
+          <ScalarProperty Name="EnquiriesByOther" ColumnName="EnquiriesByOther" />
+          <ScalarProperty Name="EnquiriesByClient" ColumnName="EnquiriesByClient" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ccastats">
+      <EntityTypeMapping TypeName="Model.ccastat">
+        <MappingFragment StoreEntitySet="ccastats">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="CumulativeArrears" ColumnName="CumulativeArrears" />
+          <ScalarProperty Name="MonthlyInstalment" ColumnName="MonthlyInstalment" />
+          <ScalarProperty Name="BalanceExposure" ColumnName="BalanceExposure" />
+          <ScalarProperty Name="WorstArrearsStatus" ColumnName="WorstArrearsStatus" />
+          <ScalarProperty Name="WorstMonthArrears" ColumnName="WorstMonthArrears" />
+          <ScalarProperty Name="ClosedAccounts" ColumnName="ClosedAccounts" />
+          <ScalarProperty Name="ActiveAccounts" ColumnName="ActiveAccounts" />
+          <ScalarProperty Name="CCAStatscol" ColumnName="CCAStatscol" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="check_list">
+      <EntityTypeMapping TypeName="Model.check_list">
+        <MappingFragment StoreEntitySet="check_list">
+          <ScalarProperty Name="summary" ColumnName="summary" />
+          <ScalarProperty Name="results" ColumnName="results" />
+          <ScalarProperty Name="detail_attached_file_name" ColumnName="detail_attached_file_name" />
+          <ScalarProperty Name="checks" ColumnName="checks" />
+          <ScalarProperty Name="checks_id" ColumnName="checks_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="checks">
+      <EntityTypeMapping TypeName="Model.check">
+        <MappingFragment StoreEntitySet="checks">
+          <ScalarProperty Name="summary" ColumnName="summary" />
+          <ScalarProperty Name="results" ColumnName="results" />
+          <ScalarProperty Name="checks" ColumnName="checks" />
+          <ScalarProperty Name="complete_date" ColumnName="complete_date" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="consent_Form" ColumnName="consent_Form" />
+          <ScalarProperty Name="reason" ColumnName="reason" />
+          <ScalarProperty Name="Num_search" ColumnName="Num_search" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="country" ColumnName="country" />
+          <ScalarProperty Name="passportNum" ColumnName="passportNum" />
+          <ScalarProperty Name="IDNum" ColumnName="IDNum" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="maiden_name" ColumnName="maiden_name" />
+          <ScalarProperty Name="first_name" ColumnName="first_name" />
+          <ScalarProperty Name="check_id" ColumnName="check_id" />
+          <ScalarProperty Name="search_date" ColumnName="search_date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="compuscansearchhists">
+      <EntityTypeMapping TypeName="Model.compuscansearchhist">
+        <MappingFragment StoreEntitySet="compuscansearchhist">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="searchDescription" ColumnName="searchDescription" />
+          <ScalarProperty Name="searchType" ColumnName="searchType" />
+          <ScalarProperty Name="dataSupplier" ColumnName="dataSupplier" />
+          <ScalarProperty Name="callerModule" ColumnName="callerModule" />
+          <ScalarProperty Name="searchToken" ColumnName="searchToken" />
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="reportDate" ColumnName="reportDate" />
+          <ScalarProperty Name="searchUserName" ColumnName="searchUserName" />
+          <ScalarProperty Name="searchID" ColumnName="searchID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="consumerstatistics">
+      <EntityTypeMapping TypeName="Model.consumerstatistic">
+        <MappingFragment StoreEntitySet="consumerstatistics">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="NLRMicroloansPast12Months" ColumnName="NLRMicroloansPast12Months" />
+          <ScalarProperty Name="NumberPPSLast12Months" ColumnName="NumberPPSLast12Months" />
+          <ScalarProperty Name="MonthsOldestOpenedPPSEver" ColumnName="MonthsOldestOpenedPPSEver" />
+          <ScalarProperty Name="Percent0ArrearsLast12Histories" ColumnName="Percent0ArrearsLast12Histories" />
+          <ScalarProperty Name="AdverseAccounts" ColumnName="AdverseAccounts" />
+          <ScalarProperty Name="OpenAccounts" ColumnName="OpenAccounts" />
+          <ScalarProperty Name="InstalmentAccounts" ColumnName="InstalmentAccounts" />
+          <ScalarProperty Name="RevolvingAccounts" ColumnName="RevolvingAccounts" />
+          <ScalarProperty Name="HighestJudgment" ColumnName="HighestJudgment" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="contactinformations">
+      <EntityTypeMapping TypeName="Model.contactinformation">
+        <MappingFragment StoreEntitySet="contactinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
+          <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+          <ScalarProperty Name="WorkTelephoneNumber" ColumnName="WorkTelephoneNumber" />
+          <ScalarProperty Name="HomeTelephoneNumber" ColumnName="HomeTelephoneNumber" />
+          <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cpa_accounts">
+      <EntityTypeMapping TypeName="Model.cpa_accounts">
+        <MappingFragment StoreEntitySet="cpa_accounts">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="MonthEndDate" ColumnName="MonthEndDate" />
+          <ScalarProperty Name="PaymentHistoryChart" ColumnName="PaymentHistoryChart" />
+          <ScalarProperty Name="PaymentHistoryStatus" ColumnName="PaymentHistoryStatus" />
+          <ScalarProperty Name="PaymentHistory" ColumnName="PaymentHistory" />
+          <ScalarProperty Name="JointLoanParticipants" ColumnName="JointLoanParticipants" />
+          <ScalarProperty Name="ThirdPartySoldDescription" ColumnName="ThirdPartySoldDescription" />
+          <ScalarProperty Name="ThirdPartySold" ColumnName="ThirdPartySold" />
+          <ScalarProperty Name="ThirdPartyName" ColumnName="ThirdPartyName" />
+          <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+          <ScalarProperty Name="PaymentHistoryChartURL" ColumnName="PaymentHistoryChartURL" />
+          <ScalarProperty Name="IndustryType" ColumnName="IndustryType" />
+          <ScalarProperty Name="StatusCodeDesc" ColumnName="StatusCodeDesc" />
+          <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="RepaymentFrequencyDescription" ColumnName="RepaymentFrequencyDescription" />
+          <ScalarProperty Name="ArrearsPeriod" ColumnName="ArrearsPeriod" />
+          <ScalarProperty Name="InstalmentAmount" ColumnName="InstalmentAmount" />
+          <ScalarProperty Name="OverdueAmount" ColumnName="OverdueAmount" />
+          <ScalarProperty Name="CurrentBalanceIND" ColumnName="CurrentBalanceIND" />
+          <ScalarProperty Name="CurrentBalance" ColumnName="CurrentBalance" />
+          <ScalarProperty Name="OpenBalanceIND" ColumnName="OpenBalanceIND" />
+          <ScalarProperty Name="OpenBalance" ColumnName="OpenBalance" />
+          <ScalarProperty Name="LastPaymentDate" ColumnName="LastPaymentDate" />
+          <ScalarProperty Name="DeferredPaymentDate" ColumnName="DeferredPaymentDate" />
+          <ScalarProperty Name="OpenDate" ColumnName="OpenDate" />
+          <ScalarProperty Name="AccountTypeDescription" ColumnName="AccountTypeDescription" />
+          <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+          <ScalarProperty Name="PaymentTypeDescription" ColumnName="PaymentTypeDescription" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="ReasonDescription" ColumnName="ReasonDescription" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="OwnershipTypeDescription" ColumnName="OwnershipTypeDescription" />
+          <ScalarProperty Name="OwnershipType" ColumnName="OwnershipType" />
+          <ScalarProperty Name="SubAccountNO" ColumnName="SubAccountNO" />
+          <ScalarProperty Name="AccountNO" ColumnName="AccountNO" />
+          <ScalarProperty Name="SubscriberName" ColumnName="SubscriberName" />
+          <ScalarProperty Name="SubscriberCode" ColumnName="SubscriberCode" />
+          <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="creditdeclinereasons">
+      <EntityTypeMapping TypeName="Model.creditdeclinereason">
+        <MappingFragment StoreEntitySet="creditdeclinereason">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="ReasonDescription" ColumnName="ReasonDescription" />
+          <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="creditinformations">
+      <EntityTypeMapping TypeName="Model.creditinformation">
+        <MappingFragment StoreEntitySet="creditinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="TotalNumberClosedNLRAccounts_CompuScan" ColumnName="TotalNumberClosedNLRAccounts_CompuScan" />
+          <ScalarProperty Name="TotalNumberClosedCPAAccounts_CompuScan" ColumnName="TotalNumberClosedCPAAccounts_CompuScan" />
+          <ScalarProperty Name="TotalNumberActiveNLRAccounts_CompuScan" ColumnName="TotalNumberActiveNLRAccounts_CompuScan" />
+          <ScalarProperty Name="TotalNumberActiveCPAAccounts_CompuScan" ColumnName="TotalNumberActiveCPAAccounts_CompuScan" />
+          <ScalarProperty Name="TotalNumberNLRAccounts_CompuScan" ColumnName="TotalNumberNLRAccounts_CompuScan" />
+          <ScalarProperty Name="TotalNumberCPAAccounts_CompuScan" ColumnName="TotalNumberCPAAccounts_CompuScan" />
+          <ScalarProperty Name="TotalInstallmentAmountNLRAccounts_CompuScan" ColumnName="TotalInstallmentAmountNLRAccounts_CompuScan" />
+          <ScalarProperty Name="TotalInstallmentAmountCPAAccounts_CompuScan" ColumnName="TotalInstallmentAmountCPAAccounts_CompuScan" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="FlagDetails" ColumnName="FlagDetails" />
+          <ScalarProperty Name="FlagCount" ColumnName="FlagCount" />
+          <ScalarProperty Name="RiskColour" ColumnName="RiskColour" />
+          <ScalarProperty Name="DelphiScoreChartURL" ColumnName="DelphiScoreChartURL" />
+          <ScalarProperty Name="DelphiScore" ColumnName="DelphiScore" />
+          <ScalarProperty Name="CreditSummaryChartURL" ColumnName="CreditSummaryChartURL" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="datacounts">
+      <EntityTypeMapping TypeName="Model.datacount">
+        <MappingFragment StoreEntitySet="datacounts">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="NLRAccounts" ColumnName="NLRAccounts" />
+          <ScalarProperty Name="PublicDefaults" ColumnName="PublicDefaults" />
+          <ScalarProperty Name="Deeds" ColumnName="Deeds" />
+          <ScalarProperty Name="Bonds" ColumnName="Bonds" />
+          <ScalarProperty Name="Trusts" ColumnName="Trusts" />
+          <ScalarProperty Name="DemandLetters" ColumnName="DemandLetters" />
+          <ScalarProperty Name="Documents" ColumnName="Documents" />
+          <ScalarProperty Name="Properties" ColumnName="Properties" />
+          <ScalarProperty Name="Companies" ColumnName="Companies" />
+          <ScalarProperty Name="FraudAlerts" ColumnName="FraudAlerts" />
+          <ScalarProperty Name="Loans" ColumnName="Loans" />
+          <ScalarProperty Name="DefiniteMatches" ColumnName="DefiniteMatches" />
+          <ScalarProperty Name="PossibleMatches" ColumnName="PossibleMatches" />
+          <ScalarProperty Name="AdminOrders" ColumnName="AdminOrders" />
+          <ScalarProperty Name="OwnEnquiries" ColumnName="OwnEnquiries" />
+          <ScalarProperty Name="PaymentProfiles" ColumnName="PaymentProfiles" />
+          <ScalarProperty Name="TraceAlerts" ColumnName="TraceAlerts" />
+          <ScalarProperty Name="Employers" ColumnName="Employers" />
+          <ScalarProperty Name="Occupants" ColumnName="Occupants" />
+          <ScalarProperty Name="Telephones" ColumnName="Telephones" />
+          <ScalarProperty Name="Addresses" ColumnName="Addresses" />
+          <ScalarProperty Name="Directors" ColumnName="Directors" />
+          <ScalarProperty Name="Collections" ColumnName="Collections" />
+          <ScalarProperty Name="Defaults" ColumnName="Defaults" />
+          <ScalarProperty Name="BankDefaults" ColumnName="BankDefaults" />
+          <ScalarProperty Name="Notices" ColumnName="Notices" />
+          <ScalarProperty Name="Judgments" ColumnName="Judgments" />
+          <ScalarProperty Name="Enquiries" ColumnName="Enquiries" />
+          <ScalarProperty Name="Accounts" ColumnName="Accounts" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="debtreviewstatus">
+      <EntityTypeMapping TypeName="Model.debtreviewstatu">
+        <MappingFragment StoreEntitySet="debtreviewstatus">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+          <ScalarProperty Name="StatusDescription" ColumnName="StatusDescription" />
+          <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="directorships">
+      <EntityTypeMapping TypeName="Model.directorship">
+        <MappingFragment StoreEntitySet="directorships">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="CompanyRegistrationNumber" ColumnName="CompanyRegistrationNumber" />
+          <ScalarProperty Name="CompanyCategory" ColumnName="CompanyCategory" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="DirectorStatus" ColumnName="DirectorStatus" />
+          <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+          <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+          <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="directorsummaries">
+      <EntityTypeMapping TypeName="Model.directorsummary">
+        <MappingFragment StoreEntitySet="directorsummary">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="NoOfCompanyDirectors" ColumnName="NoOfCompanyDirectors" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="documents">
+      <EntityTypeMapping TypeName="Model.document">
+        <MappingFragment StoreEntitySet="documents">
+          <ScalarProperty Name="document1" ColumnName="document" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="emailhistories">
+      <EntityTypeMapping TypeName="Model.emailhistory">
+        <MappingFragment StoreEntitySet="emailhistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="employment_details">
+      <EntityTypeMapping TypeName="Model.employment_details">
+        <MappingFragment StoreEntitySet="employment_details">
+          <ScalarProperty Name="day" ColumnName="day" />
+          <ScalarProperty Name="frequency" ColumnName="frequency" />
+          <ScalarProperty Name="contact" ColumnName="contact" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="position" ColumnName="position" />
+          <ScalarProperty Name="industry" ColumnName="industry" />
+          <ScalarProperty Name="nett" ColumnName="nett" />
+          <ScalarProperty Name="gross" ColumnName="gross" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="employer" ColumnName="employer" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="employmenthistories">
+      <EntityTypeMapping TypeName="Model.employmenthistory">
+        <MappingFragment StoreEntitySet="employmenthistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+          <ScalarProperty Name="EmployerName" ColumnName="EmployerName" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="enquiryhistories">
+      <EntityTypeMapping TypeName="Model.enquiryhistory">
+        <MappingFragment StoreEntitySet="enquiryhistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="ReasonForEnquiry" ColumnName="ReasonForEnquiry" />
+          <ScalarProperty Name="EnquiredByType" ColumnName="EnquiredByType" />
+          <ScalarProperty Name="EnquiredByContact" ColumnName="EnquiredByContact" />
+          <ScalarProperty Name="EnquiredBy" ColumnName="EnquiredBy" />
+          <ScalarProperty Name="EnquiryDate" ColumnName="EnquiryDate" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="fraudindicatorsummaries">
+      <EntityTypeMapping TypeName="Model.fraudindicatorsummary">
+        <MappingFragment StoreEntitySet="fraudindicatorsummary">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="ProtectiveVerification" ColumnName="ProtectiveVerification" />
+          <ScalarProperty Name="EmployerFraudVerification" ColumnName="EmployerFraudVerification" />
+          <ScalarProperty Name="SAFPSListing" ColumnName="SAFPSListing" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfireaggregatedcounters">
+      <EntityTypeMapping TypeName="Model.hangfireaggregatedcounter">
+        <MappingFragment StoreEntitySet="hangfireaggregatedcounter">
+          <ScalarProperty Name="ExpireAt" ColumnName="ExpireAt" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirecounters">
+      <EntityTypeMapping TypeName="Model.hangfirecounter">
+        <MappingFragment StoreEntitySet="hangfirecounter">
+          <ScalarProperty Name="ExpireAt" ColumnName="ExpireAt" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirehashes">
+      <EntityTypeMapping TypeName="Model.hangfirehash">
+        <MappingFragment StoreEntitySet="hangfirehash">
+          <ScalarProperty Name="ExpireAt" ColumnName="ExpireAt" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Field" ColumnName="Field" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirejobs">
+      <EntityTypeMapping TypeName="Model.hangfirejob">
+        <MappingFragment StoreEntitySet="hangfirejob">
+          <ScalarProperty Name="ExpireAt" ColumnName="ExpireAt" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Arguments" ColumnName="Arguments" />
+          <ScalarProperty Name="InvocationData" ColumnName="InvocationData" />
+          <ScalarProperty Name="StateName" ColumnName="StateName" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirejobparameters">
+      <EntityTypeMapping TypeName="Model.hangfirejobparameter">
+        <MappingFragment StoreEntitySet="hangfirejobparameter">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="JobId" ColumnName="JobId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirejobqueues">
+      <EntityTypeMapping TypeName="Model.hangfirejobqueue">
+        <MappingFragment StoreEntitySet="hangfirejobqueue">
+          <ScalarProperty Name="FetchToken" ColumnName="FetchToken" />
+          <ScalarProperty Name="Queue" ColumnName="Queue" />
+          <ScalarProperty Name="FetchedAt" ColumnName="FetchedAt" />
+          <ScalarProperty Name="JobId" ColumnName="JobId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirejobstates">
+      <EntityTypeMapping TypeName="Model.hangfirejobstate">
+        <MappingFragment StoreEntitySet="hangfirejobstate">
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="JobId" ColumnName="JobId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirelists">
+      <EntityTypeMapping TypeName="Model.hangfirelist">
+        <MappingFragment StoreEntitySet="hangfirelist">
+          <ScalarProperty Name="ExpireAt" ColumnName="ExpireAt" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfireservers">
+      <EntityTypeMapping TypeName="Model.hangfireserver">
+        <MappingFragment StoreEntitySet="hangfireserver">
+          <ScalarProperty Name="LastHeartbeat" ColumnName="LastHeartbeat" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfiresets">
+      <EntityTypeMapping TypeName="Model.hangfireset">
+        <MappingFragment StoreEntitySet="hangfireset">
+          <ScalarProperty Name="ExpireAt" ColumnName="ExpireAt" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfirestates">
+      <EntityTypeMapping TypeName="Model.hangfirestate">
+        <MappingFragment StoreEntitySet="hangfirestate">
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="JobId" ColumnName="JobId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="homeaffairsinformations">
+      <EntityTypeMapping TypeName="Model.homeaffairsinformation">
+        <MappingFragment StoreEntitySet="homeaffairsinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="VerifiedDate" ColumnName="VerifiedDate" />
+          <ScalarProperty Name="CauseOfDeath" ColumnName="CauseOfDeath" />
+          <ScalarProperty Name="InitialsVerified" ColumnName="InitialsVerified" />
+          <ScalarProperty Name="VerifiedStatus" ColumnName="VerifiedStatus" />
+          <ScalarProperty Name="DeceasedStatus" ColumnName="DeceasedStatus" />
+          <ScalarProperty Name="Warnings" ColumnName="Warnings" />
+          <ScalarProperty Name="SurnameVerified" ColumnName="SurnameVerified" />
+          <ScalarProperty Name="IDVerified" ColumnName="IDVerified" />
+          <ScalarProperty Name="DeceasedDate" ColumnName="DeceasedDate" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="internalenquiryhistories">
+      <EntityTypeMapping TypeName="Model.internalenquiryhistory">
+        <MappingFragment StoreEntitySet="internalenquiryhistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="EnquiryDate" ColumnName="EnquiryDate" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="logs">
+      <EntityTypeMapping TypeName="Model.log">
+        <MappingFragment StoreEntitySet="logs">
+          <ScalarProperty Name="user" ColumnName="user" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="action" ColumnName="action" />
+          <ScalarProperty Name="page" ColumnName="page" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="members">
+      <EntityTypeMapping TypeName="Model.member">
+        <MappingFragment StoreEntitySet="members">
+          <ScalarProperty Name="user_type" ColumnName="user_type" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="province" ColumnName="province" />
+          <ScalarProperty Name="company" ColumnName="company" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="nlr12months">
+      <EntityTypeMapping TypeName="Model.nlr12months">
+        <MappingFragment StoreEntitySet="nlr12months">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HighestMonthsInArrears" ColumnName="HighestMonthsInArrears" />
+          <ScalarProperty Name="PositiveLoans" ColumnName="PositiveLoans" />
+          <ScalarProperty Name="EnquiriesByOther" ColumnName="EnquiriesByOther" />
+          <ScalarProperty Name="EnquiriesByClient" ColumnName="EnquiriesByClient" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="nlr24months">
+      <EntityTypeMapping TypeName="Model.nlr24months">
+        <MappingFragment StoreEntitySet="nlr24months">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HighestMonthsInArrears" ColumnName="HighestMonthsInArrears" />
+          <ScalarProperty Name="PositiveLoans" ColumnName="PositiveLoans" />
+          <ScalarProperty Name="EnquiriesByOther" ColumnName="EnquiriesByOther" />
+          <ScalarProperty Name="EnquiriesByClient" ColumnName="EnquiriesByClient" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="nlr36months">
+      <EntityTypeMapping TypeName="Model.nlr36months">
+        <MappingFragment StoreEntitySet="nlr36months">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HighestMonthsInArrears" ColumnName="HighestMonthsInArrears" />
+          <ScalarProperty Name="PositiveLoans" ColumnName="PositiveLoans" />
+          <ScalarProperty Name="EnquiriesByOther" ColumnName="EnquiriesByOther" />
+          <ScalarProperty Name="EnquiriesByClient" ColumnName="EnquiriesByClient" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="nlrstats">
+      <EntityTypeMapping TypeName="Model.nlrstat">
+        <MappingFragment StoreEntitySet="nlrstats">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="BalanceExposure" ColumnName="BalanceExposure" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="CumulativeArrears" ColumnName="CumulativeArrears" />
+          <ScalarProperty Name="MonthlyInstalment" ColumnName="MonthlyInstalment" />
+          <ScalarProperty Name="WorstArrearsStatus" ColumnName="WorstArrearsStatus" />
+          <ScalarProperty Name="WorstMonthArrears" ColumnName="WorstMonthArrears" />
+          <ScalarProperty Name="ClosedAccounts" ColumnName="ClosedAccounts" />
+          <ScalarProperty Name="ActiveAccounts" ColumnName="ActiveAccounts" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="paymenthistoryaccountdetails">
+      <EntityTypeMapping TypeName="Model.paymenthistoryaccountdetail">
+        <MappingFragment StoreEntitySet="paymenthistoryaccountdetails">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
+          <ScalarProperty Name="PaymentHistory" ColumnName="PaymentHistory" />
+          <ScalarProperty Name="LastPaymentDate" ColumnName="LastPaymentDate" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="personinformations">
+      <EntityTypeMapping TypeName="Model.personinformation">
+        <MappingFragment StoreEntitySet="personinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HasProperties" ColumnName="HasProperties" />
+          <ScalarProperty Name="VerificationStatus" ColumnName="VerificationStatus" />
+          <ScalarProperty Name="CurrentEmployer" ColumnName="CurrentEmployer" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="NumberOfDependants" ColumnName="NumberOfDependants" />
+          <ScalarProperty Name="SpouseSurname" ColumnName="SpouseSurname" />
+          <ScalarProperty Name="SpouseFirstName" ColumnName="SpouseFirstName" />
+          <ScalarProperty Name="MiddleName2" ColumnName="MiddleName2" />
+          <ScalarProperty Name="MiddleName1" ColumnName="MiddleName1" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="Ref" ColumnName="Ref" />
+          <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+          <ScalarProperty Name="IDNumber_Alternate" ColumnName="IDNumber_Alternate" />
+          <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+          <ScalarProperty Name="InformationDate" ColumnName="InformationDate" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiesbondinformations">
+      <EntityTypeMapping TypeName="Model.propertiesbondinformation">
+        <MappingFragment StoreEntitySet="propertiesbondinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="BondAmount" ColumnName="BondAmount" />
+          <ScalarProperty Name="BondNumber" ColumnName="BondNumber" />
+          <ScalarProperty Name="Institution" ColumnName="Institution" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiesbuyerinfoes">
+      <EntityTypeMapping TypeName="Model.propertiesbuyerinfo">
+        <MappingFragment StoreEntitySet="propertiesbuyerinfo">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HasProperties" ColumnName="HasProperties" />
+          <ScalarProperty Name="PropertySharePercentage" ColumnName="PropertySharePercentage" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="PersonTypeCode" ColumnName="PersonTypeCode" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertieserfinformations">
+      <EntityTypeMapping TypeName="Model.propertieserfinformation">
+        <MappingFragment StoreEntitySet="propertieserfinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiesgeneralinformations">
+      <EntityTypeMapping TypeName="Model.propertiesgeneralinformation">
+        <MappingFragment StoreEntitySet="propertiesgeneralinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="StandNumber" ColumnName="StandNumber" />
+          <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+          <ScalarProperty Name="OldTitleDeedNumber" ColumnName="OldTitleDeedNumber" />
+          <ScalarProperty Name="DeedsOfficeName" ColumnName="DeedsOfficeName" />
+          <ScalarProperty Name="RegisteredSize" ColumnName="RegisteredSize" />
+          <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
+          <ScalarProperty Name="StreetName" ColumnName="StreetName" />
+          <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="Township" ColumnName="Township" />
+          <ScalarProperty Name="Municipality" ColumnName="Municipality" />
+          <ScalarProperty Name="RawPropertyType" ColumnName="RawPropertyType" />
+          <ScalarProperty Name="PropertyType" ColumnName="PropertyType" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiesschemeinformations">
+      <EntityTypeMapping TypeName="Model.propertiesschemeinformation">
+        <MappingFragment StoreEntitySet="propertiesschemeinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiessellerinformations">
+      <EntityTypeMapping TypeName="Model.propertiessellerinformation">
+        <MappingFragment StoreEntitySet="propertiessellerinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="HasProperties" ColumnName="HasProperties" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="PersonTypeCode" ColumnName="PersonTypeCode" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiessuburbinformations">
+      <EntityTypeMapping TypeName="Model.propertiessuburbinformation">
+        <MappingFragment StoreEntitySet="propertiessuburbinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertiestransferinformations">
+      <EntityTypeMapping TypeName="Model.propertiestransferinformation">
+        <MappingFragment StoreEntitySet="propertiestransferinformation">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="TitleDeedNumber" ColumnName="TitleDeedNumber" />
+          <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+          <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+          <ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
+          <ScalarProperty Name="TitleDeedFeeAmount" ColumnName="TitleDeedFeeAmount" />
+          <ScalarProperty Name="AttorneyFileNumber" ColumnName="AttorneyFileNumber" />
+          <ScalarProperty Name="AttorneyFirmNumber" ColumnName="AttorneyFirmNumber" />
+          <ScalarProperty Name="TransferID" ColumnName="TransferID" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="propertysummaries">
+      <EntityTypeMapping TypeName="Model.propertysummary">
+        <MappingFragment StoreEntitySet="propertysummary">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+          <ScalarProperty Name="NoOfProperties" ColumnName="NoOfProperties" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="search_history">
+      <EntityTypeMapping TypeName="Model.search_history">
+        <MappingFragment StoreEntitySet="search_history">
+          <ScalarProperty Name="region" ColumnName="region" />
+          <ScalarProperty Name="account_user" ColumnName="account_user" />
+          <ScalarProperty Name="id_Number" ColumnName="id_Number" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="applicant_Lname" ColumnName="applicant_Lname" />
+          <ScalarProperty Name="applicant_Fname" ColumnName="applicant_Fname" />
+          <ScalarProperty Name="application_date" ColumnName="application_date" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="searchhistories">
+      <EntityTypeMapping TypeName="Model.searchhistory">
+        <MappingFragment StoreEntitySet="searchhistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="searchDescription" ColumnName="searchDescription" />
+          <ScalarProperty Name="searchType" ColumnName="searchType" />
+          <ScalarProperty Name="dataSupplier" ColumnName="dataSupplier" />
+          <ScalarProperty Name="callerModule" ColumnName="callerModule" />
+          <ScalarProperty Name="searchToken" ColumnName="searchToken" />
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="reportDate" ColumnName="reportDate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ResponseType" ColumnName="ResponseType" />
+          <ScalarProperty Name="searchUserName" ColumnName="searchUserName" />
+          <ScalarProperty Name="searchID" ColumnName="searchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="searchresulttypes">
+      <EntityTypeMapping TypeName="Model.searchresulttype">
+        <MappingFragment StoreEntitySet="searchresulttype">
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="searchresulttypecode" ColumnName="searchresulttypecode" />
+          <ScalarProperty Name="searchresulttypename" ColumnName="searchresulttypename" />
+          <ScalarProperty Name="searchresulttypeid" ColumnName="searchresulttypeid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="searchtypes">
+      <EntityTypeMapping TypeName="Model.searchtype">
+        <MappingFragment StoreEntitySet="searchtype">
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="searchtypecode" ColumnName="searchtypecode" />
+          <ScalarProperty Name="searchtypename" ColumnName="searchtypename" />
+          <ScalarProperty Name="searchtypeid" ColumnName="searchtypeid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysprivs">
+      <EntityTypeMapping TypeName="Model.syspriv">
+        <MappingFragment StoreEntitySet="syspriv">
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="sysprivcode" ColumnName="sysprivcode" />
+          <ScalarProperty Name="sysprivname" ColumnName="sysprivname" />
+          <ScalarProperty Name="sysprivid" ColumnName="sysprivid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="telephonehistories">
+      <EntityTypeMapping TypeName="Model.telephonehistory">
+        <MappingFragment StoreEntitySet="telephonehistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+          <ScalarProperty Name="FullNumber" ColumnName="FullNumber" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+          <ScalarProperty Name="TypeDescription" ColumnName="TypeDescription" />
+          <ScalarProperty Name="TelephoneID" ColumnName="TelephoneID" />
+          <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="transunionsearchhistories">
+      <EntityTypeMapping TypeName="Model.transunionsearchhistory">
+        <MappingFragment StoreEntitySet="transunionsearchhistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="searchDescription" ColumnName="searchDescription" />
+          <ScalarProperty Name="searchType" ColumnName="searchType" />
+          <ScalarProperty Name="dataSupplier" ColumnName="dataSupplier" />
+          <ScalarProperty Name="callerModule" ColumnName="callerModule" />
+          <ScalarProperty Name="searchToken" ColumnName="searchToken" />
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="reportDate" ColumnName="reportDate" />
+          <ScalarProperty Name="searchUserName" ColumnName="searchUserName" />
+          <ScalarProperty Name="searchID" ColumnName="searchID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="Model.user">
+        <MappingFragment StoreEntitySet="user">
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users1">
+      <EntityTypeMapping TypeName="Model.user1">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="logo" ColumnName="logo" />
+          <ScalarProperty Name="cover" ColumnName="cover" />
+          <ScalarProperty Name="avatar" ColumnName="avatar" />
+          <ScalarProperty Name="org" ColumnName="org" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="date_added" ColumnName="date_added" />
+          <ScalarProperty Name="uid" ColumnName="uid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="xdssearchhistories">
+      <EntityTypeMapping TypeName="Model.xdssearchhistory">
+        <MappingFragment StoreEntitySet="xdssearchhistory">
+          <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+          <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+          <ScalarProperty Name="deleted" ColumnName="deleted" />
+          <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="searchDescription" ColumnName="searchDescription" />
+          <ScalarProperty Name="searchType" ColumnName="searchType" />
+          <ScalarProperty Name="dataSupplier" ColumnName="dataSupplier" />
+          <ScalarProperty Name="callerModule" ColumnName="callerModule" />
+          <ScalarProperty Name="searchToken" ColumnName="searchToken" />
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="reportDate" ColumnName="reportDate" />
+          <ScalarProperty Name="searchUserName" ColumnName="searchUserName" />
+          <ScalarProperty Name="searchID" ColumnName="searchID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="hangfiredistributedlocks">
+      <EntityTypeMapping TypeName="Model.hangfiredistributedlock">
+        <MappingFragment StoreEntitySet="hangfiredistributedlock">
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="Resource" ColumnName="Resource" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="aspnetuserroles" TypeName="Model.aspnetuserroles" StoreEntitySet="aspnetuserroles">
+      <EndProperty Name="aspnetuser">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+      <EndProperty Name="aspnetrole">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

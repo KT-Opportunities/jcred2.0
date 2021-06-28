@@ -12,16 +12,15 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class search_history
+    public partial class orgregion
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public System.DateTime application_date { get; set; }
-        public string applicant_Fname { get; set; }
-        public string applicant_Lname { get; set; }
-        public string status { get; set; }
-        public string id_Number { get; set; }
-        public string account_user { get; set; }
-        public string region { get; set; }
+        public int orgregionid { get; set; }
+        public string regionname { get; set; }
+        public string regioncode { get; set; }
+        public Nullable<int> countryid { get; set; }
+        public Nullable<System.DateTime> created_at { get; set; }
+        public Nullable<System.DateTime> updated_at { get; set; }
+        public Nullable<bool> deleted { get; set; }
+        public Nullable<System.DateTime> deleted_at { get; set; }
     }
 }

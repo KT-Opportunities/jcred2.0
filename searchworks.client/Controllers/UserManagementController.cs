@@ -14,10 +14,19 @@ namespace searchworks.client.Controllers
 {
     public class UserManagementController : Controller
     {
+        JCredDBContextEntities db = new JCredDBContextEntities();
         // GET: UserManagement
         public ActionResult UserManagementHome()
         {
-            return View();
+            UserManagementViewModel userManagementViewModel = new UserManagementViewModel();
+
+            userManagementViewModel.Company = db.orgtenants.Where(a => a.orgtenantid == 2).Single();
+            var companyOrgUnits   = from s in db.orgunits
+                                    where s.orgtenantid == userManagementViewModel.Company.orgtenantid
+                                    select s;
+            userManagementViewModel.orgunits = companyOrgUnits.ToList<orgunit>();
+
+            return View(userManagementViewModel);
         }
 
         public ActionResult SearchHistory()

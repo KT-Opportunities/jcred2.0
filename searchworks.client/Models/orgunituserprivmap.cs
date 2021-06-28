@@ -12,11 +12,13 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class orgcategory
+    public partial class orgunituserprivmap
     {
-        public int orgcategoryid { get; set; }
-        public string orgcategoryname { get; set; }
-        public string orgcategorycode { get; set; }
+        public int orgunitprivmapid { get; set; }
+        public string aspiden_uid { get; set; }
+        public Nullable<int> orgunitid { get; set; }
+        public Nullable<int> sysprivid { get; set; }
+        public Nullable<bool> acl_search { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<bool> deleted { get; set; }

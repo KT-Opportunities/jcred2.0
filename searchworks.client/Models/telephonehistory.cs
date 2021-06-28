@@ -12,14 +12,19 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class orgcategory
+    public partial class telephonehistory
     {
-        public int orgcategoryid { get; set; }
-        public string orgcategoryname { get; set; }
-        public string orgcategorycode { get; set; }
+        public int ID { get; set; }
+        public string SearchToken { get; set; }
+        public string Reference { get; set; }
+        public string SearchID { get; set; }
+        public string TelephoneID { get; set; }
+        public string TypeDescription { get; set; }
+        public string TypeCode { get; set; }
+        public string Number { get; set; }
+        public string FullNumber { get; set; }
+        public string LastUpdatedDate { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
-        public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<bool> deleted { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
+        public string typeOfSearch { get; set; }
     }
 }

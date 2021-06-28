@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4d981050357743989c8742743b512215" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.country" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgcategory" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgregion" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgtenant" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgtenantpriv" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgunit" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgunitprivmap" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.orgunituserprivmap" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.aspnetpasshashhistory" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.aspnetuser" Width="1.5" PointX="7.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.C__efmigrationshistory" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.C__migrationhistory" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.addresshistory" Width="1.5" PointX="2.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.aspnetrole" Width="1.5" PointX="5.875" PointY="11.125" />
+        <EntityTypeShape EntityType="Model.aspnetuserclaim" Width="1.5" PointX="10.375" PointY="8.625" />
+        <EntityTypeShape EntityType="Model.aspnetuserlogin" Width="1.5" PointX="10.375" PointY="11.375" />
+        <EntityTypeShape EntityType="Model.bank_preferences" Width="1.5" PointX="12.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.cca12months" Width="1.5" PointX="4.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.cca24months" Width="1.5" PointX="12.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.cca36months" Width="1.5" PointX="6.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.ccastat" Width="1.5" PointX="8.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.check_list" Width="1.5" PointX="14.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.check" Width="1.5" PointX="14.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.compuscansearchhist" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.consumerstatistic" Width="1.5" PointX="15.75" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.contactinformation" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.cpa_accounts" Width="1.5" PointX="16.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.creditdeclinereason" Width="1.5" PointX="17.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.creditinformation" Width="1.5" PointX="2.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.datacount" Width="1.5" PointX="10.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.debtreviewstatu" Width="1.5" PointX="17.75" PointY="4.75" />
+        <EntityTypeShape EntityType="Model.directorship" Width="1.5" PointX="4.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.directorsummary" Width="1.5" PointX="18.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.document" Width="1.5" PointX="18.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.emailhistory" Width="1.5" PointX="18.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.employment_details" Width="1.5" PointX="18.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.employmenthistory" Width="1.5" PointX="19.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.enquiryhistory" Width="1.5" PointX="19.75" PointY="4.75" />
+        <EntityTypeShape EntityType="Model.fraudindicatorsummary" Width="1.5" PointX="6.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.hangfireaggregatedcounter" Width="1.5" PointX="12.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.hangfirecounter" Width="1.5" PointX="20.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.hangfirehash" Width="1.5" PointX="20.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.hangfirejob" Width="1.5" PointX="10.75" PointY="3.875" />
+        <EntityTypeShape EntityType="Model.hangfirejobparameter" Width="1.5" PointX="13" PointY="1.25" />
+        <EntityTypeShape EntityType="Model.hangfirejobqueue" Width="1.5" PointX="20.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.hangfirejobstate" Width="1.5" PointX="13" PointY="7.125" />
+        <EntityTypeShape EntityType="Model.hangfirelist" Width="1.5" PointX="20.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.hangfireserver" Width="1.5" PointX="20.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.hangfireset" Width="1.5" PointX="21.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.hangfirestate" Width="1.5" PointX="13" PointY="4" />
+        <EntityTypeShape EntityType="Model.homeaffairsinformation" Width="1.5" PointX="21.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.internalenquiryhistory" Width="1.5" PointX="14.75" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.log" Width="1.5" PointX="22.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.member" Width="1.5" PointX="22.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Model.nlr12months" Width="1.5" PointX="22.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.nlr24months" Width="1.5" PointX="22.75" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.nlr36months" Width="1.5" PointX="23.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.nlrstat" Width="1.5" PointX="0.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.paymenthistoryaccountdetail" Width="1.5" PointX="2.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.personinformation" Width="1.5" PointX="4.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.propertiesbondinformation" Width="1.5" PointX="23.75" PointY="4.75" />
+        <EntityTypeShape EntityType="Model.propertiesbuyerinfo" Width="1.5" PointX="6.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.propertieserfinformation" Width="1.5" PointX="16.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.propertiesgeneralinformation" Width="1.5" PointX="18.75" PointY="23.75" />
+        <EntityTypeShape EntityType="Model.propertiesschemeinformation" Width="1.5" PointX="24.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.propertiessellerinformation" Width="1.5" PointX="24.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Model.propertiessuburbinformation" Width="1.5" PointX="24.75" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.propertiestransferinformation" Width="1.5" PointX="24.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.propertysummary" Width="1.5" PointX="20.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.search_history" Width="1.5" PointX="22.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.searchhistory" Width="1.5" PointX="24.75" PointY="24.75" />
+        <EntityTypeShape EntityType="Model.searchresulttype" Width="1.5" PointX="25.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.searchtype" Width="1.5" PointX="25.75" PointY="4.75" />
+        <EntityTypeShape EntityType="Model.syspriv" Width="1.5" PointX="12.75" PointY="25.75" />
+        <EntityTypeShape EntityType="Model.telephonehistory" Width="1.5" PointX="26.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.transunionsearchhistory" Width="1.5" PointX="8.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.user" Width="1.5" PointX="26.75" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.user1" Width="1.5" PointX="14.75" PointY="26.75" />
+        <EntityTypeShape EntityType="Model.xdssearchhistory" Width="1.5" PointX="26.75" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.hangfiredistributedlock" Width="1.5" PointX="26.75" PointY="22.75" />
+        <AssociationConnector Association="Model.FK_AspNetUserClaims_AspNetUsers_UserId" />
+        <AssociationConnector Association="Model.FK_AspNetUserLogins_AspNetUsers_UserId" />
+        <AssociationConnector Association="Model.FK_HangfireHangFire_State_Job" />
+        <AssociationConnector Association="Model.FK_HangfireJobParameter_Job" />
+        <AssociationConnector Association="Model.FK_HangfireJobState_Job" />
+        <AssociationConnector Association="Model.aspnetuserroles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

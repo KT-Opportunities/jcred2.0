@@ -12,14 +12,22 @@ namespace searchworks.client.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class orgcategory
+    public partial class xdssearchhistory
     {
-        public int orgcategoryid { get; set; }
-        public string orgcategoryname { get; set; }
-        public string orgcategorycode { get; set; }
+        public int ID { get; set; }
+        public string searchID { get; set; }
+        public string searchUserName { get; set; }
+        public string reportDate { get; set; }
+        public string reference { get; set; }
+        public string searchToken { get; set; }
+        public string callerModule { get; set; }
+        public string dataSupplier { get; set; }
+        public string searchType { get; set; }
+        public string searchDescription { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<bool> deleted { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
+        public string typeOfSearch { get; set; }
     }
 }
