@@ -14,7 +14,8 @@ namespace searchworks.client.Models
     
     public partial class searchhistory
     {
-        public int searchID { get; set; }
+        public int ID { get; set; }
+        public string searchID { get; set; }
         public string searchUserName { get; set; }
         public string ResponseType { get; set; }
         public string Name { get; set; }

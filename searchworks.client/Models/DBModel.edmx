@@ -169,7 +169,6 @@
           <Property Name="SearchToken" Type="varchar" MaxLength="45" />
           <Property Name="Reference" Type="varchar" MaxLength="45" />
           <Property Name="SearchID" Type="varchar" MaxLength="45" />
-          <Property Name="CCAStatscol" Type="varchar" MaxLength="45" />
           <Property Name="ActiveAccounts" Type="varchar" MaxLength="45" />
           <Property Name="ClosedAccounts" Type="varchar" MaxLength="45" />
           <Property Name="WorstMonthArrears" Type="varchar" MaxLength="45" />
@@ -339,11 +338,12 @@
         </EntityType>
         <EntityType Name="creditdeclinereason">
           <Key>
-            <PropertyRef Name="SearchToken" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="SearchToken" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SearchID" Type="varchar" MaxLength="200" />
+          <Property Name="SearchToken" Type="varchar" MaxLength="200" />
           <Property Name="Reference" Type="varchar" MaxLength="200" />
-          <Property Name="SearchID" Type="int" />
           <Property Name="ReasonCode" Type="varchar" MaxLength="45" />
           <Property Name="ReasonDescription" Type="varchar" MaxLength="45" />
           <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
@@ -433,19 +433,27 @@
           <Key>
             <PropertyRef Name="SearchToken" />
           </Key>
-          <Property Name="SearchToken" Type="int" Nullable="false" />
+          <Property Name="SearchToken" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Reference" Type="varchar" MaxLength="200" />
           <Property Name="SearchID" Type="varchar" MaxLength="200" />
-          <Property Name="Designation" Type="varchar" MaxLength="200" />
-          <Property Name="AppointmentDate" Type="varchar" MaxLength="45" />
-          <Property Name="PhysicalAddress" Type="varchar" MaxLength="45" />
-          <Property Name="TelephoneNumber" Type="varchar" MaxLength="45" />
-          <Property Name="DirectorStatus" Type="varchar" MaxLength="45" />
-          <Property Name="CompanyName" Type="varchar" MaxLength="45" />
-          <Property Name="CompanyCategory" Type="varchar" MaxLength="45" />
-          <Property Name="CompanyRegistrationNumber" Type="varchar" MaxLength="45" />
-          <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
-          <Property Name="typeOfSearch" Type="varchar" MaxLength="55" />
+          <Property Name="DesignationCode" Type="varchar" MaxLength="200" />
+          <Property Name="AppointmentDate" Type="varchar" MaxLength="200" />
+          <Property Name="DirectorStatus" Type="varchar" MaxLength="200" />
+          <Property Name="DirectorStatusDate" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyType" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyStatus" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyStatusCode" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyRegistrationNumber" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyRegistrationDate" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyStartDate" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyTaxNumber" Type="varchar" MaxLength="200" />
+          <Property Name="DirectorTypeCode" Type="varchar" MaxLength="200" />
+          <Property Name="DirectorType" Type="varchar" MaxLength="200" />
+          <Property Name="MemberSize" Type="varchar" MaxLength="200" />
+          <Property Name="MemberContribution" Type="varchar" MaxLength="200" />
+          <Property Name="MemberContributionType" Type="varchar" MaxLength="200" />
+          <Property Name="ResignationDate" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="directorsummary">
           <Key>
@@ -719,6 +727,56 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
           <Property Name="password" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <EntityType Name="nlr_accounts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SearchToken" Type="varchar" MaxLength="200" />
+          <Property Name="Reference" Type="varchar" MaxLength="200" />
+          <Property Name="SearchID" Type="varchar" MaxLength="200" />
+          <Property Name="Account_ID" Type="varchar" MaxLength="200" />
+          <Property Name="SubscriberCode" Type="varchar" MaxLength="45" />
+          <Property Name="SubscriberName" Type="varchar" MaxLength="45" />
+          <Property Name="AccountNO" Type="varchar" MaxLength="45" />
+          <Property Name="SubAccountNO" Type="varchar" MaxLength="45" />
+          <Property Name="OwnershipType" Type="varchar" MaxLength="45" />
+          <Property Name="OwnershipTypeDescription" Type="varchar" MaxLength="45" />
+          <Property Name="Reason" Type="varchar" MaxLength="45" />
+          <Property Name="ReasonDescription" Type="varchar" MaxLength="45" />
+          <Property Name="PaymentType" Type="varchar" MaxLength="45" />
+          <Property Name="PaymentTypeDescription" Type="varchar" MaxLength="45" />
+          <Property Name="AccountType" Type="varchar" MaxLength="45" />
+          <Property Name="AccountTypeDescription" Type="varchar" MaxLength="45" />
+          <Property Name="OpenDate" Type="varchar" MaxLength="45" />
+          <Property Name="DeferredPaymentDate" Type="varchar" MaxLength="45" />
+          <Property Name="LastPaymentDate" Type="varchar" MaxLength="45" />
+          <Property Name="OpenBalance" Type="varchar" MaxLength="45" />
+          <Property Name="OpenBalanceIND" Type="varchar" MaxLength="45" />
+          <Property Name="CurrentBalance" Type="varchar" MaxLength="45" />
+          <Property Name="CurrentBalanceIND" Type="varchar" MaxLength="45" />
+          <Property Name="OverdueAmount" Type="varchar" MaxLength="45" />
+          <Property Name="InstalmentAmount" Type="varchar" MaxLength="45" />
+          <Property Name="ArrearsPeriod" Type="varchar" MaxLength="45" />
+          <Property Name="RepaymentFrequencyDescription" Type="varchar" MaxLength="45" />
+          <Property Name="Terms" Type="varchar" MaxLength="45" />
+          <Property Name="StatusCode" Type="varchar" MaxLength="45" />
+          <Property Name="StatusCodeDesc" Type="varchar" MaxLength="45" />
+          <Property Name="IndustryType" Type="varchar" MaxLength="45" />
+          <Property Name="PaymentHistoryChartURL" Type="varchar" MaxLength="200" />
+          <Property Name="StatusDate" Type="varchar" MaxLength="45" />
+          <Property Name="ThirdPartyName" Type="varchar" MaxLength="45" />
+          <Property Name="ThirdPartySold" Type="varchar" MaxLength="45" />
+          <Property Name="ThirdPartySoldDescription" Type="varchar" MaxLength="45" />
+          <Property Name="JointLoanParticipants" Type="varchar" MaxLength="45" />
+          <Property Name="PaymentHistory" Type="varchar" MaxLength="45" />
+          <Property Name="PaymentHistoryStatus" Type="varchar" MaxLength="45" />
+          <Property Name="PaymentHistoryChart" Type="varchar" MaxLength="45" />
+          <Property Name="MonthEndDate" Type="varchar" MaxLength="45" />
+          <Property Name="DateCreated" Type="varchar" MaxLength="45" />
+          <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+          <Property Name="typeOfSearch" Type="varchar" MaxLength="55" />
+        </EntityType>
         <EntityType Name="nlr12months">
           <Key>
             <PropertyRef Name="ID" />
@@ -814,6 +872,7 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
           <Property Name="orgtenantid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="parent_orgtenantid" Type="int" />
           <Property Name="orgname" Type="varchar" MaxLength="200" />
+          <Property Name="orgabbreviation" Type="varchar" MaxLength="45" />
           <Property Name="orgcode" Type="varchar" MaxLength="20" />
           <Property Name="orgcategoryid" Type="int" />
           <Property Name="org_regno" Type="varchar" MaxLength="20" />
@@ -876,6 +935,20 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
           <Property Name="deleted" Type="bool" />
           <Property Name="deleted_at" Type="datetime" Precision="0" />
         </EntityType>
+        <EntityType Name="orgunitusermap">
+          <Key>
+            <PropertyRef Name="orgunitprivmapid" />
+          </Key>
+          <Property Name="orgunitprivmapid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="aspiden_uid" Type="varchar" MaxLength="256" />
+          <Property Name="orgtenantid" Type="int" />
+          <Property Name="orgunitid" Type="int" />
+          <Property Name="userid" Type="int" />
+          <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+          <Property Name="updated_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+          <Property Name="deleted" Type="bool" />
+          <Property Name="deleted_at" Type="datetime" Precision="0" />
+        </EntityType>
         <EntityType Name="orgunituserprivmap">
           <Key>
             <PropertyRef Name="orgunitprivmapid" />
@@ -892,9 +965,10 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
         </EntityType>
         <EntityType Name="paymenthistoryaccountdetails">
           <Key>
-            <PropertyRef Name="SearchToken" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="SearchToken" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SearchToken" Type="varchar" MaxLength="200" />
           <Property Name="Reference" Type="varchar" MaxLength="200" />
           <Property Name="SearchID" Type="varchar" MaxLength="200" />
           <Property Name="LastPaymentDate" Type="varchar" MaxLength="45" />
@@ -1083,9 +1157,10 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
         </EntityType>
         <EntityType Name="searchhistory">
           <Key>
-            <PropertyRef Name="searchID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="searchID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="searchID" Type="varchar" MaxLength="200" />
           <Property Name="searchUserName" Type="varchar" MaxLength="200" />
           <Property Name="ResponseType" Type="varchar" MaxLength="200" />
           <Property Name="Name" Type="varchar" MaxLength="200" />
@@ -1146,12 +1221,13 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
           <Property Name="SearchToken" Type="varchar" MaxLength="200" />
           <Property Name="Reference" Type="varchar" MaxLength="200" />
           <Property Name="SearchID" Type="varchar" MaxLength="200" />
+          <Property Name="DialCode" Type="varchar" MaxLength="45" />
           <Property Name="TelephoneID" Type="varchar" MaxLength="200" />
-          <Property Name="TypeDescription" Type="varchar" MaxLength="200" />
+          <Property Name="TypeDescriptionTel" Type="varchar" MaxLength="200" />
           <Property Name="TypeCode" Type="varchar" MaxLength="200" />
           <Property Name="Number" Type="varchar" MaxLength="200" />
           <Property Name="FullNumber" Type="varchar" MaxLength="200" />
-          <Property Name="LastUpdatedDate" Type="varchar" MaxLength="200" />
+          <Property Name="LastUpdatedDateTel" Type="varchar" MaxLength="200" />
           <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
           <Property Name="typeOfSearch" Type="varchar" MaxLength="55" />
         </EntityType>
@@ -1328,6 +1404,9 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_purgehistorydata" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="j-creddb-dev">
+          <Parameter Name="cutOff_DateTime" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="__efmigrationshistory" EntityType="Self.__efmigrationshistory" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="__migrationhistory" EntityType="Self.__migrationhistory" Schema="j-creddb-dev" store:Type="Tables" />
@@ -1377,6 +1456,7 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
           <EntitySet Name="internalenquiryhistory" EntityType="Self.internalenquiryhistory" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="logs" EntityType="Self.logs" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="members" EntityType="Self.members" Schema="j-creddb-dev" store:Type="Tables" />
+          <EntitySet Name="nlr_accounts" EntityType="Self.nlr_accounts" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="nlr12months" EntityType="Self.nlr12months" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="nlr24months" EntityType="Self.nlr24months" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="nlr36months" EntityType="Self.nlr36months" Schema="j-creddb-dev" store:Type="Tables" />
@@ -1387,6 +1467,7 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
           <EntitySet Name="orgtenantpriv" EntityType="Self.orgtenantpriv" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="orgunit" EntityType="Self.orgunit" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="orgunitprivmap" EntityType="Self.orgunitprivmap" Schema="j-creddb-dev" store:Type="Tables" />
+          <EntitySet Name="orgunitusermap" EntityType="Self.orgunitusermap" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="orgunituserprivmap" EntityType="Self.orgunituserprivmap" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="paymenthistoryaccountdetails" EntityType="Self.paymenthistoryaccountdetails" Schema="j-creddb-dev" store:Type="Tables" />
           <EntitySet Name="personinformation" EntityType="Self.personinformation" Schema="j-creddb-dev" store:Type="Tables" />
@@ -1500,6 +1581,7 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="updated_at" Type="DateTime" />
           <Property Name="deleted" Type="Boolean" />
           <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="orgabbreviation" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="orgtenantpriv">
           <Key>
@@ -1589,18 +1671,15 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <EntitySet Name="cca12months" EntityType="Model.cca12months" />
           <EntitySet Name="cca24months" EntityType="Model.cca24months" />
           <EntitySet Name="cca36months" EntityType="Model.cca36months" />
-          <EntitySet Name="ccastats" EntityType="Model.ccastat" />
           <EntitySet Name="check_list" EntityType="Model.check_list" />
           <EntitySet Name="checks" EntityType="Model.check" />
           <EntitySet Name="compuscansearchhists" EntityType="Model.compuscansearchhist" />
           <EntitySet Name="consumerstatistics" EntityType="Model.consumerstatistic" />
           <EntitySet Name="contactinformations" EntityType="Model.contactinformation" />
           <EntitySet Name="cpa_accounts" EntityType="Model.cpa_accounts" />
-          <EntitySet Name="creditdeclinereasons" EntityType="Model.creditdeclinereason" />
           <EntitySet Name="creditinformations" EntityType="Model.creditinformation" />
           <EntitySet Name="datacounts" EntityType="Model.datacount" />
           <EntitySet Name="debtreviewstatus" EntityType="Model.debtreviewstatu" />
-          <EntitySet Name="directorships" EntityType="Model.directorship" />
           <EntitySet Name="directorsummaries" EntityType="Model.directorsummary" />
           <EntitySet Name="documents" EntityType="Model.document" />
           <EntitySet Name="emailhistories" EntityType="Model.emailhistory" />
@@ -1627,7 +1706,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <EntitySet Name="nlr24months" EntityType="Model.nlr24months" />
           <EntitySet Name="nlr36months" EntityType="Model.nlr36months" />
           <EntitySet Name="nlrstats" EntityType="Model.nlrstat" />
-          <EntitySet Name="paymenthistoryaccountdetails" EntityType="Model.paymenthistoryaccountdetail" />
           <EntitySet Name="personinformations" EntityType="Model.personinformation" />
           <EntitySet Name="propertiesbondinformations" EntityType="Model.propertiesbondinformation" />
           <EntitySet Name="propertiesbuyerinfoes" EntityType="Model.propertiesbuyerinfo" />
@@ -1639,11 +1717,9 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <EntitySet Name="propertiestransferinformations" EntityType="Model.propertiestransferinformation" />
           <EntitySet Name="propertysummaries" EntityType="Model.propertysummary" />
           <EntitySet Name="search_history" EntityType="Model.search_history" />
-          <EntitySet Name="searchhistories" EntityType="Model.searchhistory" />
           <EntitySet Name="searchresulttypes" EntityType="Model.searchresulttype" />
           <EntitySet Name="searchtypes" EntityType="Model.searchtype" />
           <EntitySet Name="sysprivs" EntityType="Model.syspriv" />
-          <EntitySet Name="telephonehistories" EntityType="Model.telephonehistory" />
           <EntitySet Name="transunionsearchhistories" EntityType="Model.transunionsearchhistory" />
           <EntitySet Name="users" EntityType="Model.user" />
           <EntitySet Name="users1" EntityType="Model.user1" />
@@ -1673,6 +1749,17 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
             <End Role="aspnetrole" EntitySet="aspnetroles" />
             <End Role="aspnetuser" EntitySet="aspnetusers" />
           </AssociationSet>
+          <EntitySet Name="nlr_accounts" EntityType="Model.nlr_accounts" />
+          <EntitySet Name="orgunitusermaps" EntityType="Model.orgunitusermap" />
+          <FunctionImport Name="sp_purgehistorydata">
+          <Parameter Name="cutOff_DateTime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="searchhistories" EntityType="Model.searchhistory" />
+          <EntitySet Name="creditdeclinereasons" EntityType="Model.creditdeclinereason" />
+          <EntitySet Name="paymenthistoryaccountdetails" EntityType="Model.paymenthistoryaccountdetail" />
+          <EntitySet Name="ccastats" EntityType="Model.ccastat" />
+          <EntitySet Name="telephonehistories" EntityType="Model.telephonehistory" />
+          <EntitySet Name="directorships" EntityType="Model.directorship" />
         </EntityContainer>
         <EntityType Name="aspnetpasshashhistory">
           <Key>
@@ -1828,25 +1915,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="ccastat">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SearchToken" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Reference" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="SearchID" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="CCAStatscol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="ActiveAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="ClosedAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="WorstMonthArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="WorstArrearsStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="BalanceExposure" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="MonthlyInstalment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="CumulativeArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="check_list">
           <Key>
             <PropertyRef Name="id" />
@@ -1992,18 +2060,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="creditdeclinereason">
-          <Key>
-            <PropertyRef Name="SearchToken" />
-          </Key>
-          <Property Name="SearchToken" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="SearchID" Type="Int32" />
-          <Property Name="ReasonCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="ReasonDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="creditinformation">
           <Key>
             <PropertyRef Name="ID" />
@@ -2081,24 +2137,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="StatusDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="StatusDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="ApplicationDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="directorship">
-          <Key>
-            <PropertyRef Name="SearchToken" />
-          </Key>
-          <Property Name="SearchToken" Type="Int32" Nullable="false" />
-          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Designation" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="AppointmentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="PhysicalAddress" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="TelephoneNumber" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="DirectorStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="CompanyName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="CompanyCategory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="CompanyRegistrationNumber" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -2433,19 +2471,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="BalanceExposure" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="paymenthistoryaccountdetail">
-          <Key>
-            <PropertyRef Name="SearchToken" />
-          </Key>
-          <Property Name="SearchToken" Type="Int32" Nullable="false" />
-          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="LastPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="PaymentHistory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="IsEstimated" Type="SByte" />
-          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="personinformation">
           <Key>
             <PropertyRef Name="ID" />
@@ -2624,27 +2649,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="account_user" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="region" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="searchhistory">
-          <Key>
-            <PropertyRef Name="searchID" />
-          </Key>
-          <Property Name="searchID" Type="Int32" Nullable="false" />
-          <Property Name="searchUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="ResponseType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="reportDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="searchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="callerModule" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="dataSupplier" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="searchType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="searchDescription" Type="String" MaxLength="455" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted" Type="Boolean" />
-          <Property Name="deleted_at" Type="DateTime" />
-          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="searchresulttype">
           <Key>
             <PropertyRef Name="searchresulttypeid" />
@@ -2680,23 +2684,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <Property Name="updated_at" Type="DateTime" />
           <Property Name="deleted" Type="Boolean" />
           <Property Name="deleted_at" Type="DateTime" />
-        </EntityType>
-        <EntityType Name="telephonehistory">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="TelephoneID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="TypeDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="TypeCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Number" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="FullNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="LastUpdatedDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="transunionsearchhistory">
           <Key>
@@ -2855,6 +2842,181 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <End Type="Model.aspnetrole" Role="aspnetrole" Multiplicity="*" />
           <End Type="Model.aspnetuser" Role="aspnetuser" Multiplicity="*" />
         </Association>
+        <EntityType Name="nlr_accounts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Account_ID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SubscriberCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="SubscriberName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="AccountNO" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="SubAccountNO" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="OwnershipType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="OwnershipTypeDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Reason" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ReasonDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentTypeDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="AccountType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="AccountTypeDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="OpenDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="DeferredPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="LastPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="OpenBalance" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="OpenBalanceIND" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentBalance" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentBalanceIND" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="OverdueAmount" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="InstalmentAmount" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ArrearsPeriod" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="RepaymentFrequencyDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Terms" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StatusCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="StatusCodeDesc" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="IndustryType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentHistoryChartURL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="StatusDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ThirdPartyName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ThirdPartySold" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ThirdPartySoldDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="JointLoanParticipants" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentHistory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentHistoryStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentHistoryChart" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="MonthEndDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="orgunitusermap">
+          <Key>
+            <PropertyRef Name="orgunitprivmapid" />
+          </Key>
+          <Property Name="orgunitprivmapid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="aspiden_uid" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="orgtenantid" Type="Int32" />
+          <Property Name="orgunitid" Type="Int32" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="updated_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="deleted" Type="Boolean" />
+          <Property Name="deleted_at" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="searchhistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="searchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="searchUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ResponseType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="reportDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="searchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="callerModule" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="dataSupplier" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="searchType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="searchDescription" Type="String" MaxLength="455" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="updated_at" Type="DateTime" />
+          <Property Name="deleted" Type="Boolean" />
+          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="creditdeclinereason">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ReasonCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ReasonDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="paymenthistoryaccountdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LastPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentHistory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="IsEstimated" Type="SByte" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ccastat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchToken" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Reference" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="SearchID" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ClosedAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="WorstMonthArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="WorstArrearsStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="BalanceExposure" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="MonthlyInstalment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="CumulativeArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="telephonehistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DialCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="TelephoneID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TypeDescriptionTel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TypeCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Number" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FullNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LastUpdatedDateTel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="directorship">
+          <Key>
+            <PropertyRef Name="SearchToken" />
+          </Key>
+          <Property Name="SearchToken" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DesignationCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="AppointmentDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DirectorStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DirectorStatusDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyStatusCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyRegistrationNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyRegistrationDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyStartDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyTaxNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DirectorTypeCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DirectorType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MemberSize" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MemberContribution" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MemberContributionType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ResignationDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2904,6 +3066,7 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
           <EntitySetMapping Name="orgtenants">
             <EntityTypeMapping TypeName="Model.orgtenant">
               <MappingFragment StoreEntitySet="orgtenant">
+                <ScalarProperty Name="orgabbreviation" ColumnName="orgabbreviation" />
                 <ScalarProperty Name="orgtenantid" ColumnName="orgtenantid" />
                 <ScalarProperty Name="parent_orgtenantid" ColumnName="parent_orgtenantid" />
                 <ScalarProperty Name="orgname" ColumnName="orgname" />
@@ -3147,26 +3310,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ccastats">
-            <EntityTypeMapping TypeName="Model.ccastat">
-              <MappingFragment StoreEntitySet="ccastats">
-                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="CumulativeArrears" ColumnName="CumulativeArrears" />
-                <ScalarProperty Name="MonthlyInstalment" ColumnName="MonthlyInstalment" />
-                <ScalarProperty Name="BalanceExposure" ColumnName="BalanceExposure" />
-                <ScalarProperty Name="WorstArrearsStatus" ColumnName="WorstArrearsStatus" />
-                <ScalarProperty Name="WorstMonthArrears" ColumnName="WorstMonthArrears" />
-                <ScalarProperty Name="ClosedAccounts" ColumnName="ClosedAccounts" />
-                <ScalarProperty Name="ActiveAccounts" ColumnName="ActiveAccounts" />
-                <ScalarProperty Name="CCAStatscol" ColumnName="CCAStatscol" />
-                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="check_list">
             <EntityTypeMapping TypeName="Model.check_list">
               <MappingFragment StoreEntitySet="check_list">
@@ -3318,19 +3461,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="creditdeclinereasons">
-            <EntityTypeMapping TypeName="Model.creditdeclinereason">
-              <MappingFragment StoreEntitySet="creditdeclinereason">
-                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="ReasonDescription" ColumnName="ReasonDescription" />
-                <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
-                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="creditinformations">
             <EntityTypeMapping TypeName="Model.creditinformation">
               <MappingFragment StoreEntitySet="creditinformation">
@@ -3411,25 +3541,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
                 <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="directorships">
-            <EntityTypeMapping TypeName="Model.directorship">
-              <MappingFragment StoreEntitySet="directorships">
-                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="CompanyRegistrationNumber" ColumnName="CompanyRegistrationNumber" />
-                <ScalarProperty Name="CompanyCategory" ColumnName="CompanyCategory" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="DirectorStatus" ColumnName="DirectorStatus" />
-                <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
-                <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
-                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3784,20 +3895,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="paymenthistoryaccountdetails">
-            <EntityTypeMapping TypeName="Model.paymenthistoryaccountdetail">
-              <MappingFragment StoreEntitySet="paymenthistoryaccountdetails">
-                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
-                <ScalarProperty Name="PaymentHistory" ColumnName="PaymentHistory" />
-                <ScalarProperty Name="LastPaymentDate" ColumnName="LastPaymentDate" />
-                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="personinformations">
             <EntityTypeMapping TypeName="Model.personinformation">
               <MappingFragment StoreEntitySet="personinformation">
@@ -3987,28 +4084,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="searchhistories">
-            <EntityTypeMapping TypeName="Model.searchhistory">
-              <MappingFragment StoreEntitySet="searchhistory">
-                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
-                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
-                <ScalarProperty Name="deleted" ColumnName="deleted" />
-                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="searchDescription" ColumnName="searchDescription" />
-                <ScalarProperty Name="searchType" ColumnName="searchType" />
-                <ScalarProperty Name="dataSupplier" ColumnName="dataSupplier" />
-                <ScalarProperty Name="callerModule" ColumnName="callerModule" />
-                <ScalarProperty Name="searchToken" ColumnName="searchToken" />
-                <ScalarProperty Name="reference" ColumnName="reference" />
-                <ScalarProperty Name="reportDate" ColumnName="reportDate" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ResponseType" ColumnName="ResponseType" />
-                <ScalarProperty Name="searchUserName" ColumnName="searchUserName" />
-                <ScalarProperty Name="searchID" ColumnName="searchID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="searchresulttypes">
             <EntityTypeMapping TypeName="Model.searchresulttype">
               <MappingFragment StoreEntitySet="searchresulttype">
@@ -4045,24 +4120,6 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
                 <ScalarProperty Name="sysprivcode" ColumnName="sysprivcode" />
                 <ScalarProperty Name="sysprivname" ColumnName="sysprivname" />
                 <ScalarProperty Name="sysprivid" ColumnName="sysprivid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="telephonehistories">
-            <EntityTypeMapping TypeName="Model.telephonehistory">
-              <MappingFragment StoreEntitySet="telephonehistory">
-                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
-                <ScalarProperty Name="FullNumber" ColumnName="FullNumber" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
-                <ScalarProperty Name="TypeDescription" ColumnName="TypeDescription" />
-                <ScalarProperty Name="TelephoneID" ColumnName="TelephoneID" />
-                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4161,6 +4218,190 @@ FROM `j-creddb-dev.hangfiredistributedlock` AS `hangfiredistributedlock`</Defini
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="nlr_accounts">
+            <EntityTypeMapping TypeName="Model.nlr_accounts">
+              <MappingFragment StoreEntitySet="nlr_accounts">
+                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="MonthEndDate" ColumnName="MonthEndDate" />
+                <ScalarProperty Name="PaymentHistoryChart" ColumnName="PaymentHistoryChart" />
+                <ScalarProperty Name="PaymentHistoryStatus" ColumnName="PaymentHistoryStatus" />
+                <ScalarProperty Name="PaymentHistory" ColumnName="PaymentHistory" />
+                <ScalarProperty Name="JointLoanParticipants" ColumnName="JointLoanParticipants" />
+                <ScalarProperty Name="ThirdPartySoldDescription" ColumnName="ThirdPartySoldDescription" />
+                <ScalarProperty Name="ThirdPartySold" ColumnName="ThirdPartySold" />
+                <ScalarProperty Name="ThirdPartyName" ColumnName="ThirdPartyName" />
+                <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+                <ScalarProperty Name="PaymentHistoryChartURL" ColumnName="PaymentHistoryChartURL" />
+                <ScalarProperty Name="IndustryType" ColumnName="IndustryType" />
+                <ScalarProperty Name="StatusCodeDesc" ColumnName="StatusCodeDesc" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="Terms" ColumnName="Terms" />
+                <ScalarProperty Name="RepaymentFrequencyDescription" ColumnName="RepaymentFrequencyDescription" />
+                <ScalarProperty Name="ArrearsPeriod" ColumnName="ArrearsPeriod" />
+                <ScalarProperty Name="InstalmentAmount" ColumnName="InstalmentAmount" />
+                <ScalarProperty Name="OverdueAmount" ColumnName="OverdueAmount" />
+                <ScalarProperty Name="CurrentBalanceIND" ColumnName="CurrentBalanceIND" />
+                <ScalarProperty Name="CurrentBalance" ColumnName="CurrentBalance" />
+                <ScalarProperty Name="OpenBalanceIND" ColumnName="OpenBalanceIND" />
+                <ScalarProperty Name="OpenBalance" ColumnName="OpenBalance" />
+                <ScalarProperty Name="LastPaymentDate" ColumnName="LastPaymentDate" />
+                <ScalarProperty Name="DeferredPaymentDate" ColumnName="DeferredPaymentDate" />
+                <ScalarProperty Name="OpenDate" ColumnName="OpenDate" />
+                <ScalarProperty Name="AccountTypeDescription" ColumnName="AccountTypeDescription" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="PaymentTypeDescription" ColumnName="PaymentTypeDescription" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="ReasonDescription" ColumnName="ReasonDescription" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="OwnershipTypeDescription" ColumnName="OwnershipTypeDescription" />
+                <ScalarProperty Name="OwnershipType" ColumnName="OwnershipType" />
+                <ScalarProperty Name="SubAccountNO" ColumnName="SubAccountNO" />
+                <ScalarProperty Name="AccountNO" ColumnName="AccountNO" />
+                <ScalarProperty Name="SubscriberName" ColumnName="SubscriberName" />
+                <ScalarProperty Name="SubscriberCode" ColumnName="SubscriberCode" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orgunitusermaps">
+            <EntityTypeMapping TypeName="Model.orgunitusermap">
+              <MappingFragment StoreEntitySet="orgunitusermap">
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="orgunitid" ColumnName="orgunitid" />
+                <ScalarProperty Name="orgtenantid" ColumnName="orgtenantid" />
+                <ScalarProperty Name="aspiden_uid" ColumnName="aspiden_uid" />
+                <ScalarProperty Name="orgunitprivmapid" ColumnName="orgunitprivmapid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_purgehistorydata" FunctionName="Model.Store.sp_purgehistorydata" />
+          <EntitySetMapping Name="searchhistories">
+            <EntityTypeMapping TypeName="Model.searchhistory">
+              <MappingFragment StoreEntitySet="searchhistory">
+                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="searchDescription" ColumnName="searchDescription" />
+                <ScalarProperty Name="searchType" ColumnName="searchType" />
+                <ScalarProperty Name="dataSupplier" ColumnName="dataSupplier" />
+                <ScalarProperty Name="callerModule" ColumnName="callerModule" />
+                <ScalarProperty Name="searchToken" ColumnName="searchToken" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="reportDate" ColumnName="reportDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ResponseType" ColumnName="ResponseType" />
+                <ScalarProperty Name="searchUserName" ColumnName="searchUserName" />
+                <ScalarProperty Name="searchID" ColumnName="searchID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="creditdeclinereasons">
+            <EntityTypeMapping TypeName="Model.creditdeclinereason">
+              <MappingFragment StoreEntitySet="creditdeclinereason">
+                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="ReasonDescription" ColumnName="ReasonDescription" />
+                <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="paymenthistoryaccountdetails">
+            <EntityTypeMapping TypeName="Model.paymenthistoryaccountdetail">
+              <MappingFragment StoreEntitySet="paymenthistoryaccountdetails">
+                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="IsEstimated" ColumnName="IsEstimated" />
+                <ScalarProperty Name="PaymentHistory" ColumnName="PaymentHistory" />
+                <ScalarProperty Name="LastPaymentDate" ColumnName="LastPaymentDate" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ccastats">
+            <EntityTypeMapping TypeName="Model.ccastat">
+              <MappingFragment StoreEntitySet="ccastats">
+                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="CumulativeArrears" ColumnName="CumulativeArrears" />
+                <ScalarProperty Name="MonthlyInstalment" ColumnName="MonthlyInstalment" />
+                <ScalarProperty Name="BalanceExposure" ColumnName="BalanceExposure" />
+                <ScalarProperty Name="WorstArrearsStatus" ColumnName="WorstArrearsStatus" />
+                <ScalarProperty Name="WorstMonthArrears" ColumnName="WorstMonthArrears" />
+                <ScalarProperty Name="ClosedAccounts" ColumnName="ClosedAccounts" />
+                <ScalarProperty Name="ActiveAccounts" ColumnName="ActiveAccounts" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="telephonehistories">
+            <EntityTypeMapping TypeName="Model.telephonehistory">
+              <MappingFragment StoreEntitySet="telephonehistory">
+                <ScalarProperty Name="typeOfSearch" ColumnName="typeOfSearch" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="LastUpdatedDateTel" ColumnName="LastUpdatedDateTel" />
+                <ScalarProperty Name="FullNumber" ColumnName="FullNumber" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+                <ScalarProperty Name="TypeDescriptionTel" ColumnName="TypeDescriptionTel" />
+                <ScalarProperty Name="TelephoneID" ColumnName="TelephoneID" />
+                <ScalarProperty Name="DialCode" ColumnName="DialCode" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="directorships">
+            <EntityTypeMapping TypeName="Model.directorship">
+              <MappingFragment StoreEntitySet="directorships">
+                <ScalarProperty Name="ResignationDate" ColumnName="ResignationDate" />
+                <ScalarProperty Name="MemberContributionType" ColumnName="MemberContributionType" />
+                <ScalarProperty Name="MemberContribution" ColumnName="MemberContribution" />
+                <ScalarProperty Name="MemberSize" ColumnName="MemberSize" />
+                <ScalarProperty Name="DirectorType" ColumnName="DirectorType" />
+                <ScalarProperty Name="DirectorTypeCode" ColumnName="DirectorTypeCode" />
+                <ScalarProperty Name="CompanyTaxNumber" ColumnName="CompanyTaxNumber" />
+                <ScalarProperty Name="CompanyStartDate" ColumnName="CompanyStartDate" />
+                <ScalarProperty Name="CompanyRegistrationDate" ColumnName="CompanyRegistrationDate" />
+                <ScalarProperty Name="CompanyRegistrationNumber" ColumnName="CompanyRegistrationNumber" />
+                <ScalarProperty Name="CompanyStatusCode" ColumnName="CompanyStatusCode" />
+                <ScalarProperty Name="CompanyStatus" ColumnName="CompanyStatus" />
+                <ScalarProperty Name="CompanyType" ColumnName="CompanyType" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="DirectorStatusDate" ColumnName="DirectorStatusDate" />
+                <ScalarProperty Name="DirectorStatus" ColumnName="DirectorStatus" />
+                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
+                <ScalarProperty Name="DesignationCode" ColumnName="DesignationCode" />
+                <ScalarProperty Name="SearchID" ColumnName="SearchID" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="SearchToken" ColumnName="SearchToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

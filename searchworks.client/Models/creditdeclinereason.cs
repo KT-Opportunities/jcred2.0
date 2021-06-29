@@ -14,9 +14,10 @@ namespace searchworks.client.Models
     
     public partial class creditdeclinereason
     {
+        public int ID { get; set; }
+        public string SearchID { get; set; }
         public string SearchToken { get; set; }
         public string Reference { get; set; }
-        public Nullable<int> SearchID { get; set; }
         public string ReasonCode { get; set; }
         public string ReasonDescription { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }

@@ -52,6 +52,7 @@
     <Property Name="updated_at" Type="DateTime" />
     <Property Name="deleted" Type="Boolean" />
     <Property Name="deleted_at" Type="DateTime" />
+    <Property Name="orgabbreviation" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="orgtenantpriv">
     <Key>
@@ -141,18 +142,15 @@
     <EntitySet Name="cca12months" EntityType="Model.cca12months" />
     <EntitySet Name="cca24months" EntityType="Model.cca24months" />
     <EntitySet Name="cca36months" EntityType="Model.cca36months" />
-    <EntitySet Name="ccastats" EntityType="Model.ccastat" />
     <EntitySet Name="check_list" EntityType="Model.check_list" />
     <EntitySet Name="checks" EntityType="Model.check" />
     <EntitySet Name="compuscansearchhists" EntityType="Model.compuscansearchhist" />
     <EntitySet Name="consumerstatistics" EntityType="Model.consumerstatistic" />
     <EntitySet Name="contactinformations" EntityType="Model.contactinformation" />
     <EntitySet Name="cpa_accounts" EntityType="Model.cpa_accounts" />
-    <EntitySet Name="creditdeclinereasons" EntityType="Model.creditdeclinereason" />
     <EntitySet Name="creditinformations" EntityType="Model.creditinformation" />
     <EntitySet Name="datacounts" EntityType="Model.datacount" />
     <EntitySet Name="debtreviewstatus" EntityType="Model.debtreviewstatu" />
-    <EntitySet Name="directorships" EntityType="Model.directorship" />
     <EntitySet Name="directorsummaries" EntityType="Model.directorsummary" />
     <EntitySet Name="documents" EntityType="Model.document" />
     <EntitySet Name="emailhistories" EntityType="Model.emailhistory" />
@@ -179,7 +177,6 @@
     <EntitySet Name="nlr24months" EntityType="Model.nlr24months" />
     <EntitySet Name="nlr36months" EntityType="Model.nlr36months" />
     <EntitySet Name="nlrstats" EntityType="Model.nlrstat" />
-    <EntitySet Name="paymenthistoryaccountdetails" EntityType="Model.paymenthistoryaccountdetail" />
     <EntitySet Name="personinformations" EntityType="Model.personinformation" />
     <EntitySet Name="propertiesbondinformations" EntityType="Model.propertiesbondinformation" />
     <EntitySet Name="propertiesbuyerinfoes" EntityType="Model.propertiesbuyerinfo" />
@@ -191,11 +188,9 @@
     <EntitySet Name="propertiestransferinformations" EntityType="Model.propertiestransferinformation" />
     <EntitySet Name="propertysummaries" EntityType="Model.propertysummary" />
     <EntitySet Name="search_history" EntityType="Model.search_history" />
-    <EntitySet Name="searchhistories" EntityType="Model.searchhistory" />
     <EntitySet Name="searchresulttypes" EntityType="Model.searchresulttype" />
     <EntitySet Name="searchtypes" EntityType="Model.searchtype" />
     <EntitySet Name="sysprivs" EntityType="Model.syspriv" />
-    <EntitySet Name="telephonehistories" EntityType="Model.telephonehistory" />
     <EntitySet Name="transunionsearchhistories" EntityType="Model.transunionsearchhistory" />
     <EntitySet Name="users" EntityType="Model.user" />
     <EntitySet Name="users1" EntityType="Model.user1" />
@@ -225,6 +220,17 @@
       <End Role="aspnetrole" EntitySet="aspnetroles" />
       <End Role="aspnetuser" EntitySet="aspnetusers" />
     </AssociationSet>
+    <EntitySet Name="nlr_accounts" EntityType="Model.nlr_accounts" />
+    <EntitySet Name="orgunitusermaps" EntityType="Model.orgunitusermap" />
+    <FunctionImport Name="sp_purgehistorydata">
+      <Parameter Name="cutOff_DateTime" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <EntitySet Name="searchhistories" EntityType="Model.searchhistory" />
+    <EntitySet Name="creditdeclinereasons" EntityType="Model.creditdeclinereason" />
+    <EntitySet Name="paymenthistoryaccountdetails" EntityType="Model.paymenthistoryaccountdetail" />
+    <EntitySet Name="ccastats" EntityType="Model.ccastat" />
+    <EntitySet Name="telephonehistories" EntityType="Model.telephonehistory" />
+    <EntitySet Name="directorships" EntityType="Model.directorship" />
   </EntityContainer>
   <EntityType Name="aspnetpasshashhistory">
     <Key>
@@ -380,25 +386,6 @@
     <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="ccastat">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="SearchToken" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="Reference" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="SearchID" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="CCAStatscol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="ActiveAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="ClosedAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="WorstMonthArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="WorstArrearsStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="BalanceExposure" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="MonthlyInstalment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="CumulativeArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="check_list">
     <Key>
       <PropertyRef Name="id" />
@@ -544,18 +531,6 @@
     <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="creditdeclinereason">
-    <Key>
-      <PropertyRef Name="SearchToken" />
-    </Key>
-    <Property Name="SearchToken" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="SearchID" Type="Int32" />
-    <Property Name="ReasonCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="ReasonDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="creditinformation">
     <Key>
       <PropertyRef Name="ID" />
@@ -633,24 +608,6 @@
     <Property Name="StatusDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="StatusDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="ApplicationDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-  </EntityType>
-  <EntityType Name="directorship">
-    <Key>
-      <PropertyRef Name="SearchToken" />
-    </Key>
-    <Property Name="SearchToken" Type="Int32" Nullable="false" />
-    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Designation" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="AppointmentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="PhysicalAddress" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="TelephoneNumber" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="DirectorStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="CompanyName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="CompanyCategory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="CompanyRegistrationNumber" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
   </EntityType>
@@ -985,19 +942,6 @@
     <Property Name="BalanceExposure" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="paymenthistoryaccountdetail">
-    <Key>
-      <PropertyRef Name="SearchToken" />
-    </Key>
-    <Property Name="SearchToken" Type="Int32" Nullable="false" />
-    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="LastPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="PaymentHistory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="IsEstimated" Type="SByte" />
-    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="personinformation">
     <Key>
       <PropertyRef Name="ID" />
@@ -1176,27 +1120,6 @@
     <Property Name="account_user" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="region" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="searchhistory">
-    <Key>
-      <PropertyRef Name="searchID" />
-    </Key>
-    <Property Name="searchID" Type="Int32" Nullable="false" />
-    <Property Name="searchUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="ResponseType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="reportDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="searchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="callerModule" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="dataSupplier" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="searchType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="searchDescription" Type="String" MaxLength="455" FixedLength="false" Unicode="false" />
-    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="updated_at" Type="DateTime" />
-    <Property Name="deleted" Type="Boolean" />
-    <Property Name="deleted_at" Type="DateTime" />
-    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="searchresulttype">
     <Key>
       <PropertyRef Name="searchresulttypeid" />
@@ -1232,23 +1155,6 @@
     <Property Name="updated_at" Type="DateTime" />
     <Property Name="deleted" Type="Boolean" />
     <Property Name="deleted_at" Type="DateTime" />
-  </EntityType>
-  <EntityType Name="telephonehistory">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="TelephoneID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="TypeDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="TypeCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Number" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="FullNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="LastUpdatedDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="transunionsearchhistory">
     <Key>
@@ -1407,4 +1313,179 @@
     <End Type="Model.aspnetrole" Role="aspnetrole" Multiplicity="*" />
     <End Type="Model.aspnetuser" Role="aspnetuser" Multiplicity="*" />
   </Association>
+  <EntityType Name="nlr_accounts">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Account_ID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="SubscriberCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="SubscriberName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="AccountNO" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="SubAccountNO" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="OwnershipType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="OwnershipTypeDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Reason" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ReasonDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentTypeDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="AccountType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="AccountTypeDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="OpenDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="DeferredPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="LastPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="OpenBalance" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="OpenBalanceIND" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="CurrentBalance" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="CurrentBalanceIND" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="OverdueAmount" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="InstalmentAmount" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ArrearsPeriod" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="RepaymentFrequencyDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Terms" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="StatusCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="StatusCodeDesc" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="IndustryType" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentHistoryChartURL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="StatusDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ThirdPartyName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ThirdPartySold" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ThirdPartySoldDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="JointLoanParticipants" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentHistory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentHistoryStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentHistoryChart" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="MonthEndDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="DateCreated" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="orgunitusermap">
+    <Key>
+      <PropertyRef Name="orgunitprivmapid" />
+    </Key>
+    <Property Name="orgunitprivmapid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="aspiden_uid" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="orgtenantid" Type="Int32" />
+    <Property Name="orgunitid" Type="Int32" />
+    <Property Name="userid" Type="Int32" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="updated_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="deleted" Type="Boolean" />
+    <Property Name="deleted_at" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="searchhistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="searchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="searchUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ResponseType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="reportDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="searchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="callerModule" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="dataSupplier" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="searchType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="searchDescription" Type="String" MaxLength="455" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="updated_at" Type="DateTime" />
+    <Property Name="deleted" Type="Boolean" />
+    <Property Name="deleted_at" Type="DateTime" />
+    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="creditdeclinereason">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ReasonCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ReasonDescription" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="paymenthistoryaccountdetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="LastPaymentDate" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentHistory" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="IsEstimated" Type="SByte" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ccastat">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchToken" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Reference" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="SearchID" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ActiveAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ClosedAccounts" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="WorstMonthArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="WorstArrearsStatus" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="BalanceExposure" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="MonthlyInstalment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="CumulativeArrears" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="telephonehistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchToken" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DialCode" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="TelephoneID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="TypeDescriptionTel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="TypeCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Number" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="FullNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="LastUpdatedDateTel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="typeOfSearch" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="directorship">
+    <Key>
+      <PropertyRef Name="SearchToken" />
+    </Key>
+    <Property Name="SearchToken" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Reference" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="SearchID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DesignationCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AppointmentDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DirectorStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DirectorStatusDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyStatusCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyRegistrationNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyRegistrationDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyStartDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyTaxNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DirectorTypeCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DirectorType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MemberSize" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MemberContribution" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MemberContributionType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ResignationDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

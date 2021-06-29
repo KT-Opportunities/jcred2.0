@@ -25,5 +25,6 @@ namespace searchworks.client.Models
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<bool> deleted { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
+        public string orgabbreviation { get; set; }
     }
 }

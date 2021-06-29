@@ -18,7 +18,6 @@ namespace searchworks.client.Models
         public string SearchToken { get; set; }
         public string Reference { get; set; }
         public string SearchID { get; set; }
-        public string CCAStatscol { get; set; }
         public string ActiveAccounts { get; set; }
         public string ClosedAccounts { get; set; }
         public string WorstMonthArrears { get; set; }
