@@ -40,266 +40,261 @@
                 <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
             </div>
         </div>
-        <div id="content">
-            <div class="right_col">
-                <div id="notification" class="seaRes">
-                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
-                </div>
-                <div class="not">
-                    Please note that the search results will automatically be deleted with in 48hours as per NCR
-                    regulations.
-                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
-                </div>
 
-                <div id="notification" class="seaRes">
-                    VeriCred <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
-                </div>
+        <div class="right_col">
+            <div id="notification" class="seaRes">
+                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+            <div class="not">
+                Please note that the search results will automatically be deleted with in 48hours as per NCR
+                regulations.
+                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+            </div>
 
-                <div class="PerInfo">
-                    <table class="table table-striped">
-                        <thead>
+            <div id="notification" class="seaRes">
+                VeriCred <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="PIU" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PITU" style="display:none;">
+                        @foreach (var item in @ViewBag.PersonInfoList)
+                        {
                             <tr>
-                                <th id="PIU" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                <td colspan="2">Date of Birth</td>
+                                <td style="border: none;" colspan="4">@item.DateOfBirth</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
                             </tr>
-                        </thead>
-                        <tbody id="PITU" style="display:none;">
-                            @foreach (var item in @ViewBag.PersonInfoList)
-                            {
-                                <tr>
-                                    <td colspan="2">Date of Birth</td>
-                                    <td style="border: none;" colspan="4">@item.DateOfBirth</td>
+                            <tr>
+                                <td colspan="2">Full Name</td>
+                                <td style="border: none;" colspan="4">@item.Fullname</td>
 
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Full Name</td>
-                                    <td style="border: none;" colspan="4">@item.Fullname</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
 
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
+                            <tr>
+                                <td colspan="2">ID Number</td>
+                                <td style="border: none;" colspan="4">@item.IDNumber</td>
 
-                                <tr>
-                                    <td colspan="2">ID Number</td>
-                                    <td style="border: none;" colspan="4">@item.IDNumber</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Gender</td>
+                                <td style="border: none;" colspan="4">@item.Gender</td>
 
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Gender</td>
-                                    <td style="border: none;" colspan="4">@item.Gender</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Age</td>
+                                <td style="border: none;" colspan="4">@item.Age</td>
 
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Age</td>
-                                    <td style="border: none;" colspan="4">@item.Age</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                            }
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="CIU" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="CITU">
+                        @foreach (var item in @ViewBag.creditInformationList)
+                        {
+                            <tr>
+                                <td colspan="2">DelphiScore</td>
+                                <td style="border: none;" colspan="4">@item.DelphiScore</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Risk Colour</td>
+                                <td style="border: none;" colspan="4">@item.RiskColour</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Delphi Score Chart URL</td>
+                                <td style="border: none;" colspan="4">
+                                    <a href=@item.DelphiScoreChartURL>@item.DelphiScoreChartURL</a>
+                                </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        @foreach (var item in @ViewBag.ccastatsList)
+                        {
+                            <tr>
+                                <td colspan="2">Monthly Instalment</td>
+                                <td style="border: none;" colspan="4">@item.MonthlyInstalment</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th id="CPPA" style="border: none; cursor:pointer;" colspan="2">CPA Accounts</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in @ViewBag.cppaAccountsList)
+                    {
+
+                        <tbody id="CPPAT">
+                            <tr>
+                                <td colspan="2">Account_ID</td>
+                                <td id="" style="border: none; cursor:pointer;" colspan="2">@item.Account_ID</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Subscriber Code</td>
+                                <td style="border: none;" colspan="4">@item.SubscriberCode</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Subscriber Name</td>
+                                <td style="border: none;" colspan="4">@item.SubscriberName</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">AccountNO</td>
+                                <td style="border: none;" colspan="4">@item.AccountNO</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Open Date</td>
+                                <td style="border: none;" colspan="4">@item.OpenDate</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Last Payment Date</td>
+                                <td style="border: none;" colspan="4">@item.LastPaymentDate</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">OpenBalance</td>
+                                <td style="border: none;" colspan="4">@item.OpenBalance</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">OverdueAmount</td>
+                                <td style="border: none;" colspan="4">@item.CurrentBalance</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            <tr>
+                                <td colspan="2">OverdueAmount</td>
+                                <td style="border: none;" colspan="4">@item.OverdueAmount</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">InstalmentAmount</td>
+                                <td style="border: none;" colspan="4">@item.InstalmentAmount</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">StatusCodeDesc</td>
+                                <td style="border: none;" colspan="4">@item.StatusCodeDesc</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">StatusDate</td>
+                                <td style="border: none;" colspan="4">@item.StatusDate</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">IndustryType</td>
+                                <td style="border: none;" colspan="4">@item.IndustryType</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Payment History ChartURL</td>
+                                <td style="border: none;" colspan="4">
+                                    <a href="@item.PaymentHistoryChartURL">@item.PaymentHistoryChartURL</a>
+                                </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Payment History Account Details</td>
+                                <td style="border: none;" colspan="4">
+                                </td>
+                                <td>
+                                    <a class="seaMore" href="#" data-toggle="modal"
+                                       data-target="#paymentHistoryAccountModal">View more</a>
+                                </td>
+                            </tr>
                         </tbody>
-                    </table>
-                </div>
+                        @*<tbody>
+                                <tr>
+                                    <td>
+                                        <div class="modal fade" id="paymentHistoryAccountModal" tabindex="-1" role="dialog"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                            Payment History
+                                                            Account Details
+                                                        </h5>-->
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Last Payment Date</th>
+                                                                    <th>Payment History</th>
+                                                                    <th>Is Estimated</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="CPPAT">
+                                                                @foreach (var account in @item.paymentHistoryAccountList)
+                                                                {
+                                                                    <tr>
+                                                                        <td style="border: none;">
+                                                                            @account.LastPaymentDate
+                                                                        </td>
+                                                                        <td style="border: none;">
+                                                                            @account.PaymentHistory
+                                                                        </td>
+                                                                        <td style="border: none;">
+                                                                            @account.IsEstimated
+                                                                        </td>
+                                                                    </tr>
+
+                                                                }
+                                                            </tbody>
+                                                            <tbody id="CPPAT">
+                                                                <tr>
+                                                                    <td style="border: none;">
+                                                                    </td>
+                                                                    <td style="border: none;">
+                                                                    </td>
+                                                                    <td style="border: none;">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>*@
+                    }
+                </table>
             </div>
         </div>
     </div>
 </div>
 
-<div class="PerInfo">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th id="CIU" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
-            </tr>
-        </thead>
-        <tbody id="CITU">
-            @foreach (var item in @ViewBag.creditInformationList)
-            {
-
-                <tr>
-                    <td colspan="2">DelphiScore</td>
-                    <td style="border: none;" colspan="4">@item.DelphiScore</td>
-
-                    <td><a class="seaMore" href="#">View more</a></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Risk Colour</td>
-                    <td style="border: none;" colspan="4">@item.RiskColour</td>
-
-                    <td><a class="seaMore" href="#">View more</a></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Delphi Score Chart URL</td>
-                    <td style="border: none;" colspan="4">
-                        <a href=@item.DelphiScoreChartURL>@item.DelphiScoreChartURL</a>
-                    </td>
-
-                    <td><a class="seaMore" href="#">View more</a></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Monthly Instalment</td>
-                    <td style="border: none;" colspan="4">@item.MonthlyInstalment</td>
-
-                    <td><a class="seaMore" href="#">View more</a></td>
-                </tr>
-            }
-        </tbody>
-
-        <thead>
-            <tr>
-                <th id="CPPA" style="border: none; cursor:pointer;" colspan="2">CPA Accounts</th>
-            </tr>
-        </thead>
-        @*@foreach (var item in @ViewBag.cppaAccountsList)
-            {
-                <thead>
-                    <tr>
-                        <td colspan="2">Account_ID</td>
-                        <td id="" style="border: none; cursor:pointer;" colspan="2">@item.Account_ID</td>
-                    </tr>
-                </thead>
-
-                <tbody id="CPPAT">
-                    <tr>
-                        <td colspan="2">Subscriber Code</td>
-                        <td style="border: none;" colspan="4">@item.SubscriberCode</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Subscriber Name</td>
-                        <td style="border: none;" colspan="4">@item.SubscriberName</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">AccountNO</td>
-                        <td style="border: none;" colspan="4">@item.AccountNO</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Open Date</td>
-                        <td style="border: none;" colspan="4">@item.OpenDate</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Last Payment Date</td>
-                        <td style="border: none;" colspan="4">@item.LastPaymentDate</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">OpenBalance</td>
-                        <td style="border: none;" colspan="4">@item.OpenBalance</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">OverdueAmount</td>
-                        <td style="border: none;" colspan="4">@item.CurrentBalance</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    <tr>
-                        <td colspan="2">OverdueAmount</td>
-                        <td style="border: none;" colspan="4">@item.OverdueAmount</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">InstalmentAmount</td>
-                        <td style="border: none;" colspan="4">@item.InstalmentAmount</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">StatusCodeDesc</td>
-                        <td style="border: none;" colspan="4">@item.StatusCodeDesc</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">StatusDate</td>
-                        <td style="border: none;" colspan="4">@item.StatusDate</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">IndustryType</td>
-                        <td style="border: none;" colspan="4">@item.IndustryType</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Payment History ChartURL</td>
-                        <td style="border: none;" colspan="4">
-                            <a href="@item.PaymentHistoryChartURL">@item.PaymentHistoryChartURL</a>
-                        </td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Payment History Account Details</td>
-                        <td style="border: none;" colspan="4">
-                        </td>
-                        <td>
-                            <a class="seaMore" href="#" data-toggle="modal"
-                               data-target="#paymentHistoryAccountModal">View more</a>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="modal fade" id="paymentHistoryAccountModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">
-                                                Payment History
-                                                Account Details
-                                            </h5>-->
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true"></span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Last Payment Date</th>
-                                                        <th>Payment History</th>
-                                                        <th>Is Estimated</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="CPPAT">
-                                                    @foreach (var account in @item.paymentHistoryAccountList)
-                                                    {
-                                                        <tr>
-                                                            <td style="border: none;">
-                                                                @account.LastPaymentDate
-                                                            </td>
-                                                            <td style="border: none;">
-                                                                @account.PaymentHistory
-                                                            </td>
-                                                            <td style="border: none;">
-                                                                @account.IsEstimated
-                                                            </td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-                                                <tbody id="CPPAT">
-                                                    <tr>
-                                                        <td style="border: none;">
-                                                        </td>
-                                                        <td style="border: none;">
-                                                        </td>
-                                                        <td style="border: none;">
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            }*@
-    </table>
-</div>
 <script>
     function Export() {
         var pdf = new jsPDF('p', 'pt', 'letter');

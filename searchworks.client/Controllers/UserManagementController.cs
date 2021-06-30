@@ -14,10 +14,60 @@ namespace searchworks.client.Controllers
 {
     public class UserManagementController : Controller
     {
-        // GET: UserManagement
         public ActionResult UserManagementHome()
         {
+            //Fetch Company Informaion for currently logged in user.
+            //string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            //var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            //string query_uid = "SELECT * FROM orgtenant WHERE orgtenantid = 2";
+
+            //conn.Open();
+
+            //var cmd = new MySqlCommand(query_uid, conn);
+            //var reader = cmd.ExecuteReader();
+
+            //System.Collections.Generic.List<UserManagementCompany> UserCompanyList = new System.Collections.Generic.List<UserManagementCompany>();
+            //int parent_orgtenantid = reader.GetOrdinal("parent_orgtenantid");
+            //int orgname = reader.GetOrdinal("orgname");
+            //int orgabbreviation = reader.GetOrdinal("orgabbreviation");
+            //int orgcode = reader.GetOrdinal("orgcode");
+            //int orgcategoryid = reader.GetOrdinal("orgcategoryid");
+            //int org_regno = reader.GetOrdinal("org_regno");
+            //int org_vatno = reader.GetOrdinal("org_vatno");
+
+            //if (reader.Read())
+            //{
+            //    while (reader.Read())
+            //    {
+            //        UserManagementCompany UMCompany = new UserManagementCompany();
+
+            //        UMCompany.parent_orgtenantid = (reader[parent_orgtenantid] != Convert.DBNull) ? reader[parent_orgtenantid].ToString() : null;
+            //        UMCompany.orgname = (reader[orgname] != Convert.DBNull) ? reader[orgname].ToString() : null;
+            //        UMCompany.orgabbreviation = (reader[orgabbreviation] != Convert.DBNull) ? reader[orgabbreviation].ToString() : null;
+            //        UMCompany.orgcode = (reader[orgcode] != Convert.DBNull) ? reader[orgcode].ToString() : null;
+            //        UMCompany.orgcategoryid = (reader[orgcategoryid] != Convert.DBNull) ? reader[orgcategoryid].ToString() : null;
+            //        UMCompany.org_regno = (reader[org_regno] != Convert.DBNull) ? reader[org_regno].ToString() : null;
+            //        UMCompany.org_vatno = (reader[org_vatno] != Convert.DBNull) ? reader[org_vatno].ToString() : null;
+
+            //        UserCompanyList.Add(UMCompany);
+            //    }
+
+            //    ViewData["UserManagementCompany"] = UserCompanyList;
+            //    ViewData["UserManagementCompanyCount"] = UserCompanyList.Count;
+
+            //    reader.Close();
+            //    return View();
+            //}
+            //else
+            //{
+            //    TempData["Message"] = "Error Occured!";
+            //    conn.Close();
+            //    return View();
+            //}
             return View();
+
         }
 
         public ActionResult SearchHistory()
@@ -50,6 +100,7 @@ namespace searchworks.client.Controllers
                 while (reader2.Read())
                 {
                     SearchHistoryModel obj = new SearchHistoryModel();
+
                     obj.SearchToken = (reader2[SearchToken] != Convert.DBNull) ? reader2[SearchToken].ToString() : null;
                     obj.SearchID = (reader2[SearchID] != Convert.DBNull) ? reader2[SearchID].ToString() : null;
                     obj.SearchType = (reader2[SearchType] != Convert.DBNull) ? reader2[SearchType].ToString() : null;

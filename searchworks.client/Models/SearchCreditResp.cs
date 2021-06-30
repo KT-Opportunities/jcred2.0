@@ -34,6 +34,8 @@ namespace searchworks.client.Credit
 
     public class PersonInformation
     {
+        public string InformationDate { get; set; }
+
         public string PersonID { get; set; }
 
         public string Title { get; set; }
@@ -44,8 +46,7 @@ namespace searchworks.client.Credit
         public string Surname { get; set; }
         public string Fullname { get; set; }
         public string IDNumber { get; set; }
-
-        public string IDNumber_Alternative { get; set; }
+        public string IDNumber_Alternate { get; set; }
         public string PassportNumber { get; set; }
         public string EnquiryID { get; set; }
         public string EnquiryResultID { get; set; }
@@ -54,9 +55,28 @@ namespace searchworks.client.Credit
         public string Gender { get; set; }
         public string Initials { get; set; }
         public string MiddleName1 { get; set; }
+        public string MiddleName2 { get; set; }
+        public string SpouseFirstName { get; set; }
+        public string SpouseSurname { get; set; }
+        public string NumberOfDependants { get; set; }
+        public string ConsumerID { get; set; }
+        public string AkaName { get; set; }
+        public string Remarks { get; set; }
+
         public string MaritalStatus { get; set; }
         public string Quality { get; set; }
         public bool HasProperties { get; set; }
+    }
+
+    public class UserManagementCompany
+    {
+        public string parent_orgtenantid { get; set; }
+        public string orgname { get; set; }
+        public string orgabbreviation { get; set; }
+        public string orgcode { get; set; }
+        public string orgcategoryid { get; set; }
+        public string org_regno { get; set; }
+        public string org_vatno { get; set; }
     }
 
     public class HomeAffairsInformation
@@ -84,6 +104,7 @@ namespace searchworks.client.Credit
         public string CreditSummaryChartURL { get; set; }
         public string DelphiScore { get; set; }
         public string DelphiScoreChartURL { get; set; }
+        public string MonthlyInstalment { get; set; }
         public string RiskColour { get; set; }
         public string FlagCount { get; set; }
         public string FlagDetails { get; set; }
@@ -96,6 +117,16 @@ namespace searchworks.client.Credit
         public string TotalNumberClosedCPAAccounts_CompuScan { get; set; }
         public string TotalNumberClosedNLRAccounts_CompuScan { get; set; }
         public string Percent0ArrearsLast12Histories { get; set; }
+    }
+
+    public class ContactInformation
+    {
+        public string EmailAddress { get; set; }
+        public string MobileNumber { get; set; }
+        public string HomeTelephoneNumber { get; set; }
+        public string WorkTelephoneNumber { get; set; }
+        public string PhysicalAddress { get; set; }
+        public string PostalAddress { get; set; }
     }
 
     public class CPAaccounts
@@ -293,11 +324,9 @@ namespace searchworks.client.Credit
     public class DataCounts
     {
         public string Accounts { get; set; }
-        public string Enquiries { get; set; }
-        public string Judgements { get; set; }
+        public string Enquires { get; set; }
         public string Notices { get; set; }
         public string BankDefaults { get; set; }
-        public string Defaults { get; set; }
         public string Collections { get; set; }
         public string Directors { get; set; }
         public string Addresses { get; set; }
@@ -307,6 +336,8 @@ namespace searchworks.client.Credit
         public string TraceAlerts { get; set; }
         public string PaymentProfiles { get; set; }
         public string OwnEnquiries { get; set; }
+        public string Judgements { get; set; }
+        public string Defaults { get; set; }
         public string AdminOrders { get; set; }
         public string PossibleMatches { get; set; }
         public string DefiniteMatches { get; set; }

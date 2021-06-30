@@ -5,177 +5,818 @@
 @model IEnumerable<searchworks.client.Credit.PersonInformation>
 
 @{
-    ViewBag.Title = "Experian Consumer Profile";
+    ViewBag.Title = "ExperianConsumerProfile";
 }
 
 <div class="col-md-10 col-sm-10">
+
     <div class="col-12">
         <input type="button" value="Export PDF" onclick="Export()" class="button btn-b2" />
-        @*<input type="button" value="Export PDF" onclick="location.href='@Url.Action("ExportPDF", "Credit")'" />*@
-    </div>
-    <div id="content">
-        <div class="con2">
-            <div class="left_col">
-                <div class="results">
-                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                    <p>2 Results</p>
-                </div>
-                <p class="num">@ViewData["ExFullname"]</p>
-                <p class="num2">Experian Consumer Profile</p>
+    </div><div class="con2">
 
-                <div class="multi non">
-                    Multiple Results
-                </div>
-                <div class="multi act">
-                    Detailed Information
-                </div>
-
-                <div class="seaInfo">
-                    Search Information
-                </div>
-
-                <div class="userInfo">
-                    <p class="">User:<span>@ViewData["user"]</span></p>
-                    <p class="">Date:<span>@ViewData["date"] </span></p>
-                    <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                    <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
-                </div>
+        <div class="left_col">
+            <div class="results">
+                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                <p>2 Results</p>
             </div>
-            <div class="right_col">
-                <div id="notification" class="seaRes">
-                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
-                </div>
-                <div class="not">
-                    Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
-                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
-                    <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
-                </div>
+            <p class="num">@*@ViewData["ExFullname*@</p>
+            <p class="num2">Experian Consumer Profile</p>
 
-                <div id="notification" class="seaRes">
-                    Experian <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
-                </div>
+            <div class="multi non">
+                Multiple Results
+            </div>
+            <div class="multi act">
+                Detailed Information
+            </div>
 
-                <div class="PerInfo">
-                    <table id="example" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="PIU" style="border: none; cursor:pointer;" colspan="4">Person Information</th>
-                            </tr>
-                        </thead>
+            <div class="seaInfo">
+                Search Information
+            </div>
 
-                        <tbody id="PITU" style="display:none;">
-
-                            @foreach (var item in @ViewBag.PersonInfoList)
-                            {
-                                <tr>
-                                    <td colspan="4">Title</td>
-                                    <td style="border: none;" colspan="4">@item.Title </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Date of Birth</td>
-                                    <td style="border: none;" colspan="4">@item.DateOfBirth</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">First Name</td>
-                                    <td style="border: none;" colspan="4">@item.FirstName</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Middle Name</td>
-                                    <td style="border: none;" colspan="4">@item.MiddleName1</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Surname</td>
-                                    <td style="border: none;" colspan="4">@item.Surname</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">FullName</td>
-                                    <td style="border: none;" colspan="4">@item.Fullname</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">ID Number</td>
-                                    <td style="border: none;" colspan="4">@item.IDNumber</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Gender</td>
-                                    <td style="border: none;" colspan="4">@item.Gender</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Age</td>
-                                    <td style="border: none;" colspan="4">@item.Age</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Marital Status</td>
-                                    <td style="border: none;" colspan="4">@item.MaritalStatus</td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Reference</td>
-                                    <td style="border: none;" colspan="4">@item.Reference</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Has Properties</td>
-                                    <td style="border: none;" colspan="4">@item.HasProperties</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="PerInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HAIU" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
-                            </tr>
-                        </thead>
-                        <tbody id="HAITU" style="display:none;">
-                            @foreach (var hm in ViewBag.HomeAffairsInfoList)
-                            {
-                                <tr>
-                                    <td colspan="2">ID Verified</td>
-                                    <td style="border: none;" colspan="4">@hm.IDVerified</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Surname Verified</td>
-                                    <td style="border: none;" colspan="4">@hm.SurnameVerified</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Initials Verified</td>
-                                    <td style="border: none;" colspan="4">@hm.InitialsVerified</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+            <div class="userInfo">
+                <p class="">User:<span>@*@ViewData["user*@</span></p>
+                <p class="">Date:<span>@*@ViewData["date*@ </span></p>
+                <p class="">Reference:<span>@*@ViewData["ref*@</span></p>
+                <p class="">Request:<br /><span>@*@ViewData["ResponseMessage*@</span></p>
             </div>
         </div>
+        <div class="right_col">
+            <div id="notification" class="seaRes">
+                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+            <div class="not">
+                Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+            </div>
 
+            <div id="notification" class="seaRes">
+                Experian <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="PIU" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PITU" style="display:none;">
+                        @foreach (var p in ViewBag.PersonInfoList)
+                        {
+                            <tr>
+                                <td colspan="2">Title</td>
+                                <td style="border: none;" colspan="4">@p.Title</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Date of Birth</td>
+                                <td style="border: none;" colspan="4">@p.DateOfBirth</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">First Name</td>
+                                <td style="border: none;" colspan="4">@p.FirstName</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Middle Name</td>
+                                <td style="border: none;" colspan="4">@p.MiddleName1</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Surname</td>
+                                <td style="border: none;" colspan="4">@p.Surname</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">FullName</td>
+                                <td style="border: none;" colspan="4">@p.Fullname</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">ID Number</td>
+                                <td style="border: none;" colspan="4">@p.IDNumber</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Gender</td>
+                                <td style="border: none;" colspan="4">@p.Gender</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Age</td>
+                                <td style="border: none;" colspan="4">@p.Age</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Marital Status</td>
+                                <td style="border: none;" colspan="4">@p.MaritalStatus</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">Reference</td>
+                                <td style="border: none;" colspan="4">@p.Reference</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Has Properties</td>
+                                <td style="border: none;" colspan="4">@p.HasProperties</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="HAIU" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="HAITU" style="display:none;">
+                        @foreach (var hm in ViewBag.HomeAffairsInfoList)
+                        {
+                            <tr>
+                                <td colspan="2">ID Verified</td>
+                                <td style="border: none;" colspan="4">@hm.IDVerified</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Surname Verified</td>
+                                <td style="border: none;" colspan="4">@hm.SurnameVerified</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Initials Verified</td>
+                                <td style="border: none;" colspan="4">@hm.InitialsVerified</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="CONI" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="CONIT" style="display:none;">
+                        @*@foreach (var item in ViewBag.contactInformationList)
+                        {
+                            <tr>
+                                <td colspan="2">Physical Address</td>
+                                <td style="border: none;" colspan="4">@item.PhysicalAddress</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }*@
+                    </tbody>
+                </table>
+            </div>
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="CI" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="CIT" style="display:none;">
+                        @foreach (var item in ViewBag.creditInformationList)
+
+                        {
+
+                            <tr>
+                                <td colspan="2">DelphiScore</td>
+                                <td colspan="4" style="border: none;">@item.DelphiScore</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Flag Count</td>
+                                <td colspan="4" style="border: none;">@item.FlagCount</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Flag Details</td>
+                                <td colspan="4" style="border: none;">@item.FlagDetails</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">Data Counts</th>
+                        </tr>
+                        @foreach (var item in ViewBag.dataCountsList)
+                        {
+                            <tr>
+                                <td colspan="2">Accounts</td>
+                                <td colspan="4" style="border: none;">@item.Accounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Enquires</td>
+                                <td colspan="4" style="border: none;">@item.Enquires</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            @*<tr>
+                                <td colspan="2">Judgments</td>
+                                <td colspan="4" style="border: none;">@item.Judgments</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>*@
+                            <tr>
+                                <td colspan="2">Notices</td>
+                                <td colspan="4" style="border: none;">@item.Notices </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Bank Defaults</td>
+                                <td colspan="4" style="border: none;">@item.BankDefaults </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Defaults</td>
+                                <td colspan="4" style="border: none;">@item.Defaults </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Collections</td>
+                                <td colspan="4" style="border: none;">@item.Collections </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Directors</td>
+                                <td colspan="4" style="border: none;">@item.Directors </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Address</td>
+                                <td colspan="4" style="border: none;">@item.Addresses </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Telephones</td>
+                                <td colspan="4" style="border: none;">@item.Telephones </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Occupants</td>
+                                <td colspan="4" style="border: none;">@item.Occupants </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Employers</td>
+                                <td colspan="4" style="border: none;">@item.Employers </td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Trace Alerts</td>
+                                <td colspan="4" style="border: none;">@item.TraceAlerts</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Payment Profiles</td>
+                                <td colspan="4" style="border: none;">@item.PaymentProfiles</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Own Enquires</td>
+                                <td colspan="4" style="border: none;">@item.OwnEnquiries</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Admin Orders</td>
+                                <td colspan="4" style="border: none;">@item.AdminOrders</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Possible Matches</td>
+                                <td colspan="4" style="border: none;">@item.PossibleMatches</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Definite Matches</td>
+                                <td colspan="4" style="border: none;">@item.DefiniteMatches</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Loans</td>
+                                <td colspan="4" style="border: none;">@item.Loans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Fraud Alerts</td>
+                                <td colspan="4" style="border: none;">@item.FraudAlerts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Companies</td>
+                                <td colspan="4" style="border: none;">@item.Companies</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Properties</td>
+                                <td colspan="4" style="border: none;">@item.Properties</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Documents</td>
+                                <td colspan="4" style="border: none;">@item.Documents</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Demand Letters</td>
+                                <td colspan="4" style="border: none;">@item.DemandLetters</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Trusts</td>
+                                <td colspan="4" style="border: none;">@item.Trusts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Bonds</td>
+                                <td colspan="4" style="border: none;">@item.Bonds</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Deeds</td>
+                                <td colspan="4" style="border: none;">@item.Deeds</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Public Defaults</td>
+                                <td colspan="4" style="border: none;">@item.PublicDefaults</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR Accounts</td>
+                                <td colspan="4" style="border: none;">@item.NLRAccounts</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">Debt Review Status</th>
+                        </tr>
+                        @foreach (var Debt in ViewBag.debtReviewStatusList)
+                        {
+                            <tr>
+                                <td colspan="2">Status Code</td>
+                                <td colspan="4" style="border: none;">@Debt.StatusCode</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Status Description</td>
+                                <td colspan="4" style="border: none;">@Debt.StatusDescription</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">Consumer Statistics</th>
+                        </tr>
+                        @foreach (var item in ViewBag.consumerstatsList)
+                        {
+
+                            <tr>
+                                <td colspan="2">Highest Judgment</td>
+                                <td colspan="4">@item.HighestJudgment</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Revolving Accounts</td>
+                                <td colspan="4">@item.RevolvingAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Instalment Accounts</td>
+                                <td colspan="4">@item.InstalmentAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Open Accounts</td>
+                                <td colspan="4">@item.OpenAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Adverse Accounts</td>
+                                <td colspan="4">@item.AdverseAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Percent Arrears</td>
+                                <td colspan="4">@item.Percent0ArrearsLast12Histories</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">PPS Last 12 Months</td>
+                                <td colspan="4">@item.NumberPPSLast12Months</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            @*<tr>
+                                <td colspan="2">Micro loans Past 12 Months</td>
+                                <td colspan="4">@item.MicroloansPast12Months</td>
+
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>*@
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">NLR Stats</th>
+                        </tr>
+                        @foreach (var item in ViewBag.nlrstatsList)
+                        {
+                            <tr>
+                                <td colspan="2">Active Accounts</td>
+                                <td colspan="4">@item.ActiveAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Closed Accounts</td>
+                                <td colspan="4">@item.ClosedAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Worst Month Arrears</td>
+                                <td colspan="4">@item.WorstMonthArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Worst Month Arrears Status</td>
+                                <td colspan="4">@item.WorstArrearsStatus</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Balance Exposure</td>
+                                <td colspan="4">@item.BalanceExposure</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Cumulative Arrears</td>
+                                <td colspan="4">@item.CumulativeArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">CCA Stats</th>
+                        </tr>
+                        @foreach (var item in ViewBag.ccastatsList)
+                        {
+                            <tr>
+                                <td colspan="2">Active Accounts</td>
+                                <td colspan="4">@item.ActiveAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Closed Accounts</td>
+                                <td colspan="4">@item.ClosedAccounts</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Worst Month Arrears</td>
+                                <td colspan="4">@item.WorstMonthArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Balance Exposure</td>
+                                <td colspan="4">@item.BalanceExposure</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Cumulative Arrears</td>
+                                <td colspan="4">@item.CumulativeArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        @foreach (var item in ViewBag.nlr12monthsList)
+                        {
+
+                            <tr>
+                                <th colspan="7" class="col_header">NLR 12 Months</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR12Months Enquiries By Client:</td>
+                                <td colspan="4">@item.EnquiriesByClient</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR12Months Enquiries By Other:</td>
+                                <td colspan="4">@item.EnquiriesByOther</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR12Months Positive Loans:</td>
+                                <td colspan="4">@item.PositiveLoans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR12Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.HighestMonthsInArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        @foreach (var item in ViewBag.NLR12monthsList)
+                        {
+                            <tr>
+                                <th colspan="7" class="col_header">NLR 24 Months</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByClient</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByOther</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.PositiveLoans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.HighestMonthsInArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        @foreach (var item in ViewBag.nlr36monthsList)
+                        {
+                            <tr>
+                                <th colspan="7" class="col_header">NLR 36 Months</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByClient</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByOther</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.PositiveLoans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">NLR36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.HighestMonthsInArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        @foreach (var item in ViewBag.cca12monthsList)
+                        {
+                            <tr>
+                                <th colspan="7" class="col_header">CCA 12 Months</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA12Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByClient</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA12Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByOther</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA12Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.PositiveLoans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA12Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.HighestMonthsInArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">CCA 24 Months</th>
+                        </tr>
+                        @foreach (var item in ViewBag.cca24monthsList)
+                        {
+                            <tr>
+                                <td colspan="2">CCA24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByClient</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByOther</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.PositiveLoans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA24Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.HighestMonthsInArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="7" class="col_header">CCA 36 Months</th>
+                        </tr>
+                        @foreach (var item in ViewBag.cca36monthsList)
+                        {
+                            <tr>
+                                <td colspan="2">CCA36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByClient</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.EnquiriesByOther</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.PositiveLoans</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">CCA36Months Highest Months In Arrears: </td>
+                                <td colspan="4">@item.HighestMonthsInArrears</td>
+                                <td><a class="seaMore" href="#">View more</a></td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <th colspan="7" class="col_header">Enquiry History</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Date</th>
+                            <th colspan="4">By</th>
+                            <th>Contact</th>
+                        </tr>
+
+                        @foreach (var item in @ViewBag.enquiryInformationList)
+                        {
+                            <tr>
+                                <td colspan="2">@item.EnquiryDate</td>
+                                <td colspan="4">@item.EnquiredBy</td>
+                                <td>@item.EnquiredByContact</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="PerInfo">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="HIT" style="display:none;">
+                        <tr>
+                            <th colspan="8" class="col_header">Address History</th>
+                        </tr>
+                        @if (@ViewBag.addressInformationListCount != 0)
+                        {
+
+                            <tr>
+                                <th colspan="2">TypeDescription</th>
+                                <th colspan="1">Line1</th>
+                                <th colspan="1">Line2</th>
+                                <th colspan="1">Line3</th>
+                                <th colspan="1">PostalCode</th>
+                                <th colspan="1">FullAddress</th>
+                                <th colspan="1">LastUpdatedDate</th>
+                            </tr>
+                            foreach (var item in @ViewBag.addressInformationList)
+                            {
+
+                                <tr>
+                                    <td colspan="2">@item.TypeDescription</td>
+                                    <td colspan="1">@item.Line1</td>
+                                    <td colspan="1">@item.Line2</td>
+                                    <td colspan="1">@item.Line3</td>
+                                    <td colspan="1">@item.PostalCode</td>
+                                    <td colspan="1">@item.FullAddress</td>
+                                    <td colspan="1">@item.LastUpdatedDate</td>
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="8">No Data</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <th colspan="8" class="col_header">Telephone History</th>
+                        </tr>
+
+                        @if (@ViewBag.telephoneInformationListCount != 0)
+                        {
+                            <tr>
+                                <th colspan="2">TypeDescription</th>
+                                <th colspan="1">DialCode</th>
+                                <th colspan="1">Number</th>
+                                <th colspan="1">FullNumber</th>
+                                <th colspan="3">LastUpdatedDateTel</th>
+                            </tr>
+
+                        
+
+                            foreach (var item in @ViewBag.telephoneInformationList)
+                            {
+                                <tr>
+                                    <td colspan="2">@item.TypeDescriptionTel</td>
+                                    <td colspan="1">@item.DialCode</td>
+                                    <td colspan="1">@item.Number</td>
+                                    <td colspan="1">@item.FullNumber</td>
+                                    <td colspan="3">@item.LastUpdatedDateTel</td>
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="8">No Data</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="8" class="col_header">Employment History</th>
+                        </tr>
+
+                        @if (@ViewBag.employmentInformationListCount != 0)
+                        {
+                            <tr>
+                                <th colspan="4">EmployerName</th>
+                                <th colspan="4">Designation</th>
+                            </tr>
+                            <tr>
+                                @ViewData["employmentInformationListCount"].ToString()
+                            </tr>
+                            foreach (var item in @ViewBag.employmentInformationList)
+                            {
+                                <tr>
+                                    <td colspan="4">@item.EmployerName</td>
+                                    <td colspan="4">@item.Designation</td>
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="8">No Data</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
 
-  
+    }
+</div>
 <script>
 
 
     function Export() {
-
         $(".PerInfo").show();
         $("#minusPerInfo").show();
         $("#plusPerInfo").hide();
         $("#PITU").toggle();
-
         $(".HomeInfo").show();
         $("#minusHomeInfo").show();
         $("#plusHomeInfo").hide();
         $("#HAITU").toggle();
-
         $(".not").show();
         $("#minusNot").show();
         $("#plusNot").hide();
-
         $("#minusNot").hide();
         $("#plusNot").show();
         $(".not").hide();
-
         var opt = {
             margin: 0.1,
             filename: 'ExperianConsumerProfile.pdf',
@@ -184,32 +825,19 @@
             html2canvas: { scale: 1 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
         };
-
         var element = document.getElementById('content');
         html2pdf().set(opt).from(element).save();
-
         setTimeout(function () {
-
             $("#minusPerInfo").hide();
             $("#plusPerInfo").show();
             $(".PerInfo").hide();
             $("#PITU").toggle();
-
             $("#minusHomeInfo").hide();
             $("#plusHomeInfo").show();
             $(".HomeInfo").hide();
             $("#HAITU").toggle();
-
-
-
         }, 1000);
-
-
     }
-</script>
-<script>
-
-
 
     //CompScan
     $("#PI").click(function () {
@@ -422,272 +1050,3 @@
 
     });
 </script>
-
-@*<div class="PerInfo">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th id="HI" style="border: none; cursor:pointer;" colspan="2">
-                        Historical Information
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="HIT" style="display:none;">
-                <tr>
-                    <th class="col_header" style="width: 677%">Address History</th>
-                </tr>
-                <tr>
-                    <th colspan="1">TypeDescription</th>
-                    <th colspan="1">Line1</th>
-                    <th colspan="1">Line2</th>
-                    <th colspan="1">Line3</th>
-                    <th colspan="1">PostalCode</th>
-                    <th colspan="1">FullAddress</th>
-                    <th colspan="1">LastUpdatedDate</th>
-                </tr>
-                @foreach (var item in @ViewBag.addressInformationList)
-                {
-                    <tr>
-                        <td colspan="1">@item.TypeDescription</td>
-                        <td colspan="1">@item.Line1</td>
-                        <td colspan="1">@item.Line2</td>
-                        <td colspan="1">@item.Line3</td>
-                        <td colspan="1">@item.PostalCode</td>
-                        <td colspan="1">@item.FullAddress</td>
-                        <td colspan="1">@item.LastUpdatedDate</td>
-                    </tr>
-                }
-                <tr>
-                    <th class="col_header" style="width: 677%">Telephone History</th>
-                </tr>
-                <tr>
-                    <th colspan="2">TypeDescription</th>
-                    <th colspan="1">DialCode</th>
-                    <th colspan="1">Number</th>
-                    <th colspan="1">FullNumber</th>
-                    <th colspan="2">LastUpdatedDateTel</th>
-                </tr>
-                @foreach (var item in @ViewBag.telephoneInformationList)
-                {
-                    <tr>
-                        <td colspan="2">@item.TypeDescriptionTel</td>
-                        <td colspan="1">@item.DialCode</td>
-                        <td colspan="1">@item.Number</td>
-                        <td colspan="1">@item.FullNumber</td>
-                        <td colspan="2">@item.LastUpdatedDateTel</td>
-                    </tr>
-                }
-                <tr>
-                    <th class="col_header" style="width: 677%">Employment History</th>
-                </tr>
-                <tr>
-                    <th colspan="4">Employer Name</th>
-                    <th colspan="4">Last Updated Date</th>
-                </tr>
-                @foreach (var item in @ViewBag.employmentInformationList)
-                {
-                    <tr>
-                        <td colspan="4">@item.EmployerName</td>
-                        <td colspan="4">@item.LastUpdatedDate</td>
-                    </tr>
-                }
-            </tbody>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <div class="PerInfo">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th id="CIU" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
-                </tr>
-            </thead>
-            <tbody id="CITU">
-                @foreach (var item in @ViewBag.CreditInfoList)
-                {
-
-                    <tr>
-                        <td colspan="2">DelphiScore</td>
-                        <td style="border: none;" colspan="4">@item.DelphiScore</td>
-
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Risk Colour</td>
-                        <td style="border: none;" colspan="4">@item.RiskColour</td>
-
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Delphi Score Chart URL</td>
-                        <td style="border: none;" colspan="4">
-                            <a href=@item.DelphiScoreChartURL>@item.DelphiScoreChartURL</a>
-                        </td>
-
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-    <tr>
-            <td colspan="2">Monthly Instalment</td>
-            <td style="border: none;" colspan="4">@item.MonthlyInstalment</td>
-
-            <td><a class="seaMore" href="#">View more</a></td>
-        </tr>
-                }
-            </tbody>
-
-            <thead>
-                <tr>
-                    <th id="CPPA" style="border: none; cursor:pointer;" colspan="2">CPA Accounts</th>
-                </tr>
-            </thead>
-            @foreach (var item in @ViewBag.cppaAccountsList)
-            {
-                <thead>
-                    <tr>
-                        <td colspan="2">Account_ID</td>
-                        <td id="" style="border: none; cursor:pointer;" colspan="2">@item.Account_ID</td>
-                    </tr>
-                </thead>
-
-                <tbody id="CPPAT">
-                    <tr>
-                        <td colspan="2">Subscriber Code</td>
-                        <td style="border: none;" colspan="4">@item.SubscriberCode</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Subscriber Name</td>
-                        <td style="border: none;" colspan="4">@item.SubscriberName</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">AccountNO</td>
-                        <td style="border: none;" colspan="4">@item.AccountNO</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Open Date</td>
-                        <td style="border: none;" colspan="4">@item.OpenDate</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Last Payment Date</td>
-                        <td style="border: none;" colspan="4">@item.LastPaymentDate</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">OpenBalance</td>
-                        <td style="border: none;" colspan="4">@item.OpenBalance</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">OverdueAmount</td>
-                        <td style="border: none;" colspan="4">@item.CurrentBalance</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    <tr>
-                        <td colspan="2">OverdueAmount</td>
-                        <td style="border: none;" colspan="4">@item.OverdueAmount</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">InstalmentAmount</td>
-                        <td style="border: none;" colspan="4">@item.InstalmentAmount</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">StatusCodeDesc</td>
-                        <td style="border: none;" colspan="4">@item.StatusCodeDesc</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">StatusDate</td>
-                        <td style="border: none;" colspan="4">@item.StatusDate</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">IndustryType</td>
-                        <td style="border: none;" colspan="4">@item.IndustryType</td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Payment History ChartURL</td>
-                        <td style="border: none;" colspan="4">
-                            <a href="@item.PaymentHistoryChartURL">@item.PaymentHistoryChartURL</a>
-                        </td>
-                        <td><a class="seaMore" href="#">View more</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Payment History Account Details</td>
-                        <td style="border: none;" colspan="4">
-                        </td>
-                        <td>
-                            <a class="seaMore" href="#" data-toggle="modal"
-                               data-target="#paymentHistoryAccountModal">View more</a>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="modal fade" id="paymentHistoryAccountModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">
-                                                Payment History
-                                                Account Details
-                                            </h5>-->
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                      aria-label="Close">
-                                                <span aria-hidden="true"></span>
-                                            </button>
-     </div>
-    <div class="modal-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Last Payment Date</th>
-                    <th>Payment History</th>
-                    <th>Is Estimated</th>
-                </tr>
-            </thead>-->
-     <tbody id="CPPAT">
-            @foreach (var account in @item.paymentHistoryAccountList)
-            {
-                <tr>
-                    <td style="border: none;">
-                        @account.LastPaymentDate
-                    </td>
-                    <td style="border: none;">
-                        @account.PaymentHistory
-                    </td>
-                    <td style="border: none;">
-                        @account.IsEstimated
-                    </td>
-                </tr>
-
-            }
-        </tbody><tbody id="CPPAT">
-        <tr>
-            <td style="border: none;">
-            </td>
-            <td style="border: none;">
-            </td>
-            <td style="border: none;">
-            </td>
-        </tr>
-    </tbody>
-     </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            }
-        </table>
-    </div>*@

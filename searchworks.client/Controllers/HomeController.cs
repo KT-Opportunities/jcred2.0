@@ -1072,7 +1072,17 @@ namespace searchworks.client.Controllers
             return View();
         }
 
+        public ActionResult DatabasePropertyCompanyResults()
+        {
+            return View();
+        }
+
         public ActionResult DeedsOfficeRecordsCompany()
+        {
+            return View();
+        }
+
+        public ActionResult DeedsOfficeRecordsCompanyResult()
         {
             return View();
         }

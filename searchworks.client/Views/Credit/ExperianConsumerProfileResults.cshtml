@@ -5,14 +5,14 @@
 @model IEnumerable<searchworks.client.Credit.PersonInformation>
 
 @{
-    ViewBag.Title = "Experian Consumer Profile";
+    ViewBag.Title = "ExperianConsumerProfile";
 }
 
 <div class="col-md-10 col-sm-10">
     @if (TempData["msg"] != null)
     {
 
-        <div>@TempData["msg"].ToString()  </div>
+        <div>@TempData["msg"].ToString()</div>
         <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
 
     }
@@ -50,7 +50,7 @@
                     NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
                 <div class="not">
-                    Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
                     We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
                     <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
                 </div>
@@ -448,7 +448,7 @@
                                 <tr>
                                     <th colspan="7" class="col_header">CCA Stats</th>
                                 </tr>
-                                @*<tr>
+                                <tr>
                                     <td colspan="2">Active Accounts</td>
                                     <td colspan="4">@ViewData["ExCCAActiveAccounts"]</td>
                                     <td><a class="seaMore" href="#">View more</a></td>
@@ -474,72 +474,163 @@
                                     <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="2">NLR Enquiries By Client:</th>
-                                    <th colspan="2">NLR Enquiries By Other:</th>
-                                    <th colspan="2">NLR Positive Loans:</th>
-                                    <th colspan="2">NLR Highest Months In Arrears: </th>
+                                    <th colspan="7" class="col_header">NLR 12 Months</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">12months: @ViewData["ExNLR12MonthsEnquiriesByClient"]</td>
-                                    <td colspan="2">@ViewData["ExNLR12MonthsEnquiriesByOther"]</td>
-                                    <td colspan="2">@ViewData["ExNLR12MonthsPositiveLoans"]</td>
-                                    <td colspan="2">@ViewData["ExNLR12MonthsHighestMonthsInArrears"]</td>
+                                    <td colspan="2">NLR12Months Enquiries By Client:</td>
+                                    <td colspan="4">@ViewData["ExNLR12MonthsEnquiriesByClient"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR12Months Enquiries By Other:</td>
+                                    <td colspan="4">@ViewData["ExNLR12MonthsEnquiriesByOther"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR12Months Positive Loans:</td>
+                                    <td colspan="4">@ViewData["ExNLR12MonthsPositiveLoans"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR12Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR12MonthsHighestMonthsInArrears"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+
                                 </tr>
 
                                 <tr>
-                                    <td colspan="2">24months: @ViewData["ExNLR24MonthsEnquiriesByClient"]</td>
-                                    <td colspan="3">@ViewData["ExNLR24MonthsEnquiriesByOther"]</td>
-                                    <td colspan="1">@ViewData["ExNLR24MonthsPositiveLoans"]</td>
-                                    <td colspan="2">@ViewData["ExNLR24MonthsHighestMonthsInArrears"]</td>
+                                    <th colspan="7" class="col_header">NLR 24 Months</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR24MonthsEnquiriesByClient"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR24MonthsEnquiriesByOther"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR24MonthsPositiveLoans"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR24MonthsHighestMonthsInArrears"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="7" class="col_header">NLR 36 Months</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR36MonthsEnquiriesByClient"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR36MonthsEnquiriesByOther"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR36MonthsPositiveLoans"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExNLR36MonthsHighestMonthsInArrears"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="7" class="col_header">CCA 12 Months</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA12MonthsEnquiriesByClient"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA12MonthsEnquiriesByOther"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA12MonthsPositiveLoans"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA12MonthsHighestMonthsInArrears"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="7" class="col_header">CCA 24 Months</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA24MonthsEnquiriesByClient"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA24MonthsEnquiriesByOther"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA24MonthsPositiveLoans"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA24MonthsHighestMonthsInArrears"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="7" class="col_header">CCA 36 Months</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA36MonthsEnquiriesByClient"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA36MonthsEnquiriesByOther"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA36MonthsPositiveLoans"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears: </td>
+                                    <td colspan="4">@ViewData["ExCCA36MonthsHighestMonthsInArrears"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
                                 </tr>
 
                                 <tr>
-                                    <td colspan="1">36months: @ViewData["ExNLR36MonthsEnquiriesByClient"]</td>
-                                    <td colspan="3">@ViewData["ExNLR36MonthsEnquiriesByOther"]</td>
-                                    <td colspan="1">@ViewData["ExNLR36MonthsPositiveLoans"]</td>
-                                    <td colspan="2">@ViewData["ExNLR36MonthsHighestMonthsInArrears"]</td>
+                                    <th colspan="7" class="col_header">Enquiry History</th>
                                 </tr>
                                 <tr>
-                                    <th colspan="1">CCA Enquiries By Client:</th>
-                                    <th colspan="3">CCA Enquiries By Other:</th>
-                                    <th colspan="1">CCA Positive Loans:</th>
-                                    <th colspan="2">CCA Highest Months In Arrears: </th>
-                                </tr>
-                                <tr>
-                                    <td colspan="1">12months: @ViewData["ExCCA12MonthsEnquiriesByClient"]</td>
-                                    <td colspan="3">@ViewData["ExCCA12MonthsEnquiriesByOther"]</td>
-                                    <td colspan="1">@ViewData["ExCCA12MonthsPositiveLoans"]</td>
-                                    <td colspan="2">@ViewData["ExCCA12MonthsHighestMonthsInArrears"]</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1">12months: @ViewData["ExCCA24MonthsEnquiriesByClient"]</td>
-                                    <td colspan="3">@ViewData["ExCCA24MonthsEnquiriesByOther"]</td>
-                                    <td colspan="1">@ViewData["ExCCA24MonthsPositiveLoans"]</td>
-                                    <td colspan="2">@ViewData["ExCCA24MonthsHighestMonthsInArrears"]</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1">12months: @ViewData["ExCCA36MonthsEnquiriesByClient"]</td>
-                                    <td colspan="3">@ViewData["ExCCA36MonthsEnquiriesByOther"]</td>
-                                    <td colspan="1">@ViewData["ExCCA36MonthsPositiveLoans"]</td>
-                                    <td colspan="2">@ViewData["ExCCA36MonthsHighestMonthsInArrears"]</td>
-                                </tr>
-                                <tr>
-                                    <th colspan="8" class="col_header">Enquiry History</th>
-                                </tr>
-                                <tr>
-                                    <th colspan="1">Date</th>
+                                    <th colspan="2">Date</th>
                                     <th colspan="4">By</th>
-                                    <th colspan="4">Contact</th>
+                                    <th colspan="">Contact</th>
                                 </tr>
 
                                 @foreach (var item in @ViewBag.EnqHIst)
                                 {
                                     <tr>
-                                        <td colspan="1">@item.EnquiryDate</td>
+                                        <td colspan="2">@item.EnquiryDate</td>
                                         <td colspan="4">@item.EnquiredBy</td>
-                                        <td colspan="4">@item.EnquiredByContact</td>
+                                        <td colspan="">@item.EnquiredByContact</td>
                                     </tr>
-                                }*@
+                                }
                             </tbody>
                         </table>
                     </div>

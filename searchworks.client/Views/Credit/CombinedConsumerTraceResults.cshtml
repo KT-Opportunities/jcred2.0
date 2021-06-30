@@ -9,16 +9,16 @@
 }
 
 <div class="col-md-10 col-sm-10">
-     
+
     <div class="con2">
-        @if (@ViewData["Message"].ToString() == "Service is offline" || 
+        @if (@ViewData["Message"].ToString() == "Service is offline" ||
             @ViewData["Message"].ToString() == "Branch defined search limit has been reached.")
         {
-        <div>@ViewData["Message"].ToString()</div>
-         <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
-            
-            
-            }
+            <div>@ViewData["Message"].ToString()</div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+
+
+        }
         else
         {
             <div class="left_col">
@@ -52,7 +52,7 @@
                     NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
                 <div class="not">
-                    Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
                     We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
                     <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
                 </div>
@@ -220,7 +220,7 @@
                                     foreach (var item in @ViewBag.ArrayList)
                                     {
                                         <tr>
-                                            <td colspan="2">@item.TypeCode</td>
+                                            <td colspan="2">@item.TypeDescription</td>
                                             <td colspan="1">@item.Line1</td>
                                             <td colspan="1">@item.Line2</td>
                                             <td colspan="1">@item.Line3</td>
@@ -239,125 +239,125 @@
                                 }
                             </tbody>
 
-                                @*<tbody id="addT" style="display:none;">
-                <tr>
-                    <td>
-                        <div class="colspaceHeading"></div>
-                        <div class="colspaceHeading">Line 1</div>
-                        <div class="colspaceHeading">Line 2</div>
-                        <div class="colspaceHeading">Line 3</div>
-                        <div class="colspaceHeading">Line 4</div>
-                        <div class="colspaceHeading">Postal Code</div>
-                        <div class="colspaceHeading">Last Updated</div>
+                            @*<tbody id="addT" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <div class="colspaceHeading"></div>
+                                            <div class="colspaceHeading">Line 1</div>
+                                            <div class="colspaceHeading">Line 2</div>
+                                            <div class="colspaceHeading">Line 3</div>
+                                            <div class="colspaceHeading">Line 4</div>
+                                            <div class="colspaceHeading">Postal Code</div>
+                                            <div class="colspaceHeading">Last Updated</div>
 
-                        @foreach (var key in ViewBag.ArrayList)
-                        {
-                            <div class="colspace"> @key.Value</div>
-                        }
-                    </td>
-                </tr>
-            </tbody>
-            <thead>
-                <tr>
-                    <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                </tr>
-            </thead>
-            <tbody id="telT" style="display:none;">
-                <tr>
-                    <td>
-                        <div class="col_headerTel">Type</div>
-                        <div class="col_headerTel">Number</div>
-                        <div class="col_headerTel">Last Updated Date</div>
-                        @foreach (var key in ViewBag.TelArrayList)
-                        {
-                            <div class="colspaceTel"> @key.Value</div>
-                        }
-                    </td>
-                </tr>
-            </tbody>
+                                            @foreach (var key in ViewBag.ArrayList)
+                                            {
+                                                <div class="colspace"> @key.Value</div>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="telT" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <div class="col_headerTel">Type</div>
+                                            <div class="col_headerTel">Number</div>
+                                            <div class="col_headerTel">Last Updated Date</div>
+                                            @foreach (var key in ViewBag.TelArrayList)
+                                            {
+                                                <div class="colspaceTel"> @key.Value</div>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
 
-            <thead>
-                <tr>
-                    <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                </tr>
-            </thead>
-            <tbody id="emT" style="display:none;">
-                <tr>
-                    <td>
-                        <div class="col_headerTel">Employer Name</div>
-                        <div class="col_headerTel">Designation</div>
-                        <div class="col_headerTel">Last Updated Date</div>
-                        @foreach (var key in ViewBag.EMArrayList)
-                        {
-                            <div class="colspaceTel"> @key.Value</div>
-                        }
-                    </td>
-                </tr>
-            </tbody>*@
+                                <thead>
+                                    <tr>
+                                        <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emT" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <div class="col_headerTel">Employer Name</div>
+                                            <div class="col_headerTel">Designation</div>
+                                            <div class="col_headerTel">Last Updated Date</div>
+                                            @foreach (var key in ViewBag.EMArrayList)
+                                            {
+                                                <div class="colspaceTel"> @key.Value</div>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>*@
                         </table>
 
                         @*<div style="display:none;" id="addT">
 
-            <div class="thatrow">
-                <div class="col_header">Code Type</div>
-                <div class="col_header">Line 1</div>
-                <div class="col_header">Line 2</div>
-                <div class="col_header">Line 3</div>
-                <div class="col_header">Line 4</div>
-                <div class="col_header">Postal Code</div>
-                <div class="col_header">Last Updated Date</div>
+                                <div class="thatrow">
+                                    <div class="col_header">Code Type</div>
+                                    <div class="col_header">Line 1</div>
+                                    <div class="col_header">Line 2</div>
+                                    <div class="col_header">Line 3</div>
+                                    <div class="col_header">Line 4</div>
+                                    <div class="col_header">Postal Code</div>
+                                    <div class="col_header">Last Updated Date</div>
 
-                @foreach (var key in ViewBag.ArrayList)
-                {
-                    <div class="colspace"> @key.Value</div>
-                }
-            </div>
-            <table class="table table-striped">
-                <thead>
-                </thead>
-                <tbody id="CIT" style="display:none;">
-                </tbody>
-            </table>
-        </div>
+                                    @foreach (var key in ViewBag.ArrayList)
+                                    {
+                                        <div class="colspace"> @key.Value</div>
+                                    }
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    </thead>
+                                    <tbody id="CIT" style="display:none;">
+                                    </tbody>
+                                </table>
+                            </div>
 
-        <div style="display:none;" id="telT">
-            <div class="thatrow">
-                <div class="col_headerTel">Type</div>
-                <div class="col_headerTel">Number</div>
-                <div class="col_headerTel">Last Updated Date</div>
+                            <div style="display:none;" id="telT">
+                                <div class="thatrow">
+                                    <div class="col_headerTel">Type</div>
+                                    <div class="col_headerTel">Number</div>
+                                    <div class="col_headerTel">Last Updated Date</div>
 
-                @foreach (var key in ViewBag.TelArrayList)
-                {
-                    <div class="colspaceTel"> @key.Value</div>
-                }
-            </div>
-            <table class="table table-striped">
-                <thead>
-                </thead>
-                <tbody id="CIT" style="display:none;">
-                </tbody>
-            </table>
-        </div>
+                                    @foreach (var key in ViewBag.TelArrayList)
+                                    {
+                                        <div class="colspaceTel"> @key.Value</div>
+                                    }
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    </thead>
+                                    <tbody id="CIT" style="display:none;">
+                                    </tbody>
+                                </table>
+                            </div>
 
-        <div style="display:none;" id="emT">
+                            <div style="display:none;" id="emT">
 
-            <div class="thatrow">
-                <div class="col_headerTel">Employer Name</div>
-                <div class="col_headerTel">Designation</div>
-                <div class="col_headerTel">Last Updated Date</div>
+                                <div class="thatrow">
+                                    <div class="col_headerTel">Employer Name</div>
+                                    <div class="col_headerTel">Designation</div>
+                                    <div class="col_headerTel">Last Updated Date</div>
 
-                @foreach (var key in ViewBag.EMArrayList)
-                {
-                    <div class="colspaceTel"> @key.Value</div>
-                }
-            </div>
-            <table class="table table-striped">
-                <thead>
-                </thead>
-                <tbody id="CIT" style="display:none;">
-                </tbody>
-            </table>
-        </div>*@
+                                    @foreach (var key in ViewBag.EMArrayList)
+                                    {
+                                        <div class="colspaceTel"> @key.Value</div>
+                                    }
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    </thead>
+                                    <tbody id="CIT" style="display:none;">
+                                    </tbody>
+                                </table>
+                            </div>*@
                     </div>
                 }
                 else if (@ViewData["Message"].ToString() == "Service is offline")
@@ -365,7 +365,7 @@
                     <div class="no_results">
                         <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
                         <div class="no_res">
-                            @ViewData["Message2"]
+                            @ViewData["CompuScan"]
                         </div>
                     </div>
 
@@ -564,85 +564,110 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th id="HIU" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                    <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
                                 </tr>
                             </thead>
+                            <tr>
+                                <th colspan="8" class="col_header">Address History</th>
+                            </tr>
+                            @if (@ViewBag.AddressHist != null)
+                            {
+
+                                <tr>
+                                    <th class="col_header">TypeDescription</th>
+                                    <th class="col_header">Line1</th>
+                                    <th class="col_header">Line2</th>
+                                    <th class="col_header">Line3</th>
+                                    <th class="col_header">Line4</th>
+                                    <th class="col_header">PostalCode</th>
+                                    <th class="col_header">FullAddress</th>
+                                    <th class="col_header">LastUpdatedDate</th>
+
+                                </tr>
+                                foreach (var item in @ViewBag.AddressHist)
+                                {
+
+                                    <tr>
+                                        <td colspan="2">@item.TypeDescription</td>
+                                        <td colspan="1">@item.Line1</td>
+                                        <td colspan="1">@item.Line2</td>
+                                        <td colspan="1">@item.Line3</td>
+                                        <td colspan="1">@item.Line4</td>
+                                        <td colspan="1">@item.PostalCode</td>
+                                        <td colspan="1">@item.FullAddress</td>
+                                        <td colspan="1">@item.LastUpdatedDate</td>
+
+                                    </tr>
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+
+                                    <td colspan="8">No Data</td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <th colspan="8" class="col_header">Telephone History</th>
+                            </tr>
+                            @if (@ViewBag.TelHist != null)
+                            {
+                                <tr>
+                                    <th colspan="2">TypeDescription</th>
+                                    <th colspan="1">Number</th>
+                                    <th colspan="3">Last Updated</th>
+                                </tr>
+                                foreach (var item in @ViewBag.TelHist)
+                                {
+                                    <tr>
+                                        <td colspan="2">@item.TypeDescriptionTel</td>
+                                        <td colspan="1">@item.Number</td>
+                                        <td colspan="3">@item.LastUpdatedDateTel</td>
+                                    </tr>
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+
+                                    <td colspan="8">No Data</td>
+                                </tr>
+                            }
+                            <tr>
+                                <th colspan="8" class="col_header">Employment History</th>
+                            </tr>
+                            @if (@ViewBag.EMArrayList != null)
+                            {
+                                <tr>
+                                    <th colspan="4">EmployerName</th>
+                                    <th colspan="4">Designation</th>
+                                    <th colspan="4">Last Updated Date</th>
+
+                                </tr>
+
+                                foreach (var item in @ViewBag.EmpHist)
+                                {
+                                    <tr>
+                                        <td colspan="4">@item.EmployerName</td>
+                                        <td colspan="4">@item.Designation</td>
+                                        <td colspan="4">@item.LastUpdatedDate</td>
+
+                                    </tr>
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+
+                                    <td colspan="8">No Data</td>
+                                </tr>
+                            }
                         </table>
-                        <table style="display:none;" id="HITU" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="addU" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                                </tr>
-                                <tr>
-                                    <th id="telU" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                                </tr>
-                                <tr>
-                                    <th id="emU" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div style="display:none;" id="addTU">
-                            <div class="thatrow">
-                                <div class="col_header">Code Type</div>
-                                <div class="col_header">Line 1</div>
-                                <div class="col_header">Line 2</div>
-                                <div class="col_header">Line 3</div>
-                                <div class="col_header">Line 4</div>
-                                <div class="col_header">Postal Code</div>
-                                <div class="col_header">Last Updated Date</div>
 
-                                @foreach (var key in ViewBag.ArrayList)
-                                {
-                                    <div class="colspace"> @key.Value</div>
-                                }
-                            </div>
-                            <table class="table table-striped">
-                                <thead>
-                                </thead>
-                                <tbody id="CITU" style="display:none;">
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div style="display:none;" id="telTU">
-
-                            <div class="thatrow">
-                                <div class="col_headerTel">Type</div>
-                                <div class="col_headerTel">Number</div>
-                                <div class="col_headerTel">Last Updated Date</div>
-
-                                @foreach (var key in ViewBag.TelArrayList)
-                                {
-                                    <div class="colspaceTel"> @key.Value</div>
-                                }
-                            </div>
-                            <table class="table table-striped">
-                                <thead>
-                                </thead>
-                                <tbody id="CITU" style="display:none;">
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div style="display:none;" id="emTU">
-
-                            <div class="thatrow">
-                                <div class="col_headerTel">Employer Name</div>
-                                <div class="col_headerTel">Designation</div>
-                                <div class="col_headerTel">Last Updated Date</div>
-
-                                @foreach (var key in ViewBag.EMArrayList)
-                                {
-                                    <div class="colspaceTel"> @key.Value</div>
-                                }
-                            </div>
-                            <table class="table table-striped">
-                                <thead>
-                                </thead>
-                                <tbody id="CIT" style="display:none;">
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 }
                 else if (@ViewData["Message"].ToString() == "Service is offline")
@@ -650,281 +675,15 @@
                     <div class="no_results">
                         <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
                         <div class="no_res">
-                            @ViewData["Message2"]
+                            @ViewData["TransUnion"]
                         </div>
                     </div>
 
                 }
 
-                <div id="notification" class="seaRes">
-                    XDS<span id="plusHomeInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHomeInfo" class="coll"><i class="fas fa-minus"></i></span>
-                </div>
-                @if (@ViewData["Message"].ToString() == "good" && @ViewData["XDSMessage"].ToString() == "Found")
-                {
-                    <div class="HomeInfo">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="PIX" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
-                                </tr>
-                            </thead>
-                            <tbody id="PITX" style="display:none;">
 
-                                <tr>
-                                    <td colspan="2">Person ID</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoPersonID"] </td>
 
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
 
-                                <tr>
-                                    <td colspan="2">Title</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoTitle"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Date of Birth</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoDateOfBirth"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Initials</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoInitials"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">First Name</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoFirstName"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Surname</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoSurname"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Fullname</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoFullname"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">ID Number</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoIDNumber"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Passport Number</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoPassportNumber"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Marital Status</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoMaritalStatus"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Gender</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoGender"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Age</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoAge"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Middle Name 1</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoMiddleName1"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Middle Name 2</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoMiddleName2"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Reference</td>
-                                    <td style="border: none;" colspan="4">@ViewData["TransUnionInfoReference"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Has Properties</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoHasProperties"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="HomeInfo">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="HAIX" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
-                                </tr>
-                            </thead>
-                            <tbody id="HAITX" style="display:none;">
-                                <tr>
-                                    <td colspan="2">Deceased Status</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoDeceasedStatus"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Deceased Date</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoDeceasedDate"]</td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Verified Status</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoVerifiedStatus"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="HomeInfo">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="CIX" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
-                                </tr>
-                            </thead>
-                            <tbody id="CITX" style="display:none;">
-                                <tr>
-                                    <td colspan="2">Protective Verification</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoProtectiveVerification"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">SAFPS Listing</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoSAFPSListing"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="2">Employer Fraud Verification</td>
-                                    <td style="border: none;" colspan="4">@ViewData["XDSInfoEmployerFraudVerification"] </td>
-
-                                    <td><a class="seaMore" href="#">View more</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="HomeInfo">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="HIX" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <table id="HITX" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th id="addX" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                                </tr>
-                            </thead>
-                            <tbody id="addTX" style="display:none;">
-                                <tr>
-                                    <td>
-                                        <div class="colspaceHeading">Code Type</div>
-                                        <div class="colspaceHeading">Line 1</div>
-                                        <div class="colspaceHeading">Line 2</div>
-                                        <div class="colspaceHeading">Line 3</div>
-                                        <div class="colspaceHeading">Line 4</div>
-                                        <div class="colspaceHeading">Postal Code</div>
-                                        <div class="colspaceHeading">Updated Date</div>
-                                        @foreach (var key in ViewBag.ArrayList)
-                                        {
-                                            <div class="colspace"> @key.Value</div>
-                                        }
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <thead>
-                                <tr>
-                                    <th id="telX" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                                </tr>
-                            </thead>
-                            <tbody id="telTX" style="display:none;">
-                                <tr>
-                                    <td>
-                                        <div class="col_headerTel">Type</div>
-                                        <div class="col_headerTel">Number</div>
-                                        <div class="col_headerTel">Last Updated Date</div>
-
-                                        @foreach (var key in ViewBag.TelArrayList)
-                                        {
-                                            <div class="colspaceTel"> @key.Value</div>
-                                        }
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <thead>
-                                <tr>
-                                    <th id="emX" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                                </tr>
-                            </thead>
-                            <tbody id="emTX" style="display:none;">
-                                <tr>
-                                    <td>
-
-                                        <div class="col_headerTel">Employer Name</div>
-                                        <div class="col_headerTel">Designation</div>
-                                        <div class="col_headerTel">Last Updated Date</div>
-
-                                        @foreach (var key in ViewBag.EMArrayList)
-                                        {
-                                            <div class="colspaceTel"> @key.Value</div>
-                                        }
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                }
-                else if (@ViewData["Message"].ToString() == "Service is offline")
-                {
-                    <div class="no_results">
-                        <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                        <div class="no_res">
-                            @ViewData["Message2"]
-                        </div>
-                    </div>
-
-                }
                 <div id="notification" class="seaRes">
                     VeriCred <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
@@ -1055,10 +814,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        @foreach (var key in ViewBag.ArrayList)
-                                        {
-                                            <div class="colspace">@key.Value</div>
-                                        }
+                                        @*@foreach (var key in ViewBag.ArrayList)
+                                            {
+                                                <div class="colspace">@key.Value</div>
+                                            }*@
                                     </td>
                                 </tr>
                             </tbody>
@@ -1077,10 +836,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        @foreach (var key in ViewBag.TelArrayList)
-                                        {
-                                            <div class="colspaceTel"> @key.Value</div>
-                                        }
+                                        @*@foreach (var key in ViewBag.TelArrayList)
+                                            {
+                                                <div class="colspaceTel"> @key.Value</div>
+                                            }*@
                                     </td>
                                 </tr>
                             </tbody>
@@ -1099,10 +858,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        @foreach (var key in ViewBag.EMArrayList)
-                                        {
-                                            <div class="colspaceTel"> @key.Value</div>
-                                        }
+                                        @*@foreach (var key in ViewBag.EMArrayList)
+                                            {
+                                                <div class="colspaceTel"> @key.Value</div>
+                                            }*@
                                     </td>
                                 </tr>
                             </tbody>
@@ -1185,13 +944,16 @@
                     <div class="no_results">
                         <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
                         <div class="no_res">
-                            @ViewData["Message2"]
+                            @ViewData["VeriCred"]
                         </div>
                     </div>
                 }
             </div>
 
         }
+
+
+
     </div>
 </div>
 
@@ -1405,3 +1167,50 @@
 
     });
 </script>
+
+@*XDS onbined Seaech Resuts STarts Here*@
+@*@foreach (var key in ViewBag.ArrayList)
+    {
+        <div class="colspace"> @key.Value</div>
+
+    }*@
+<!--</td>
+    </tr>
+</tbody>
+<thead>
+    <tr>
+        <th id="telX" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+    </tr>
+</thead>
+<tbody id="telTX" style="display:none;">
+    <tr>
+        <td>
+            <div class="col_headerTel">Type</div>
+            <div class="col_headerTel">Number</div>
+            <div class="col_headerTel">Last Updated Date</div>-->
+@*@foreach (var key in ViewBag.TelArrayList)
+    {
+        <div class="colspaceTel"> @key.Value</div>
+
+
+
+    }*@
+<!--</td>
+    </tr>
+</tbody>
+<thead>
+    <tr>
+        <th id="emX" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+    </tr>
+</thead>
+<tbody id="emTX" style="display:none;">
+    <tr>
+        <td>
+
+            <div class="col_headerTel">Employer Name</div>
+            <div class="col_headerTel">Designation</div>
+            <div class="col_headerTel">Last Updated Date</div>-->
+@*@foreach (var key in ViewBag.EMArrayList)
+    {
+        <div class="colspaceTel"> @key.Value</div>
+    }*@

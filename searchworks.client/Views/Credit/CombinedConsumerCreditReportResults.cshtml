@@ -9,14 +9,12 @@
 }
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea non">SEARCH RESULTS</div>
-    <div class="sea non">Combined Credit Report</div>
-    <div class="sea act">@ViewData["refe"]</div>
+
     <div class="con2">
 
-        @if (@ViewData["Message"].ToString() != "")
+        @if (@ViewData["msg"] != null)
         {
-            <div>@ViewData["Message"].ToString()</div>
+            <div>@ViewData["msg"].ToString()</div>
             <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
         }
         else
@@ -53,7 +51,7 @@
                     NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
                 <div class="not">
-                    Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
                     We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
                     <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
                 </div>
@@ -415,90 +413,90 @@
                     </div>
 
                     <div class="SeaInfo">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <table style="display:none;" id="HIT" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th id="add" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                                    </tr>
-                                    <tr>
-                                        <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                                    </tr>
-                                    <tr>
-                                        <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <div style="display:none;" id="addT">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table style="display:none;" id="HIT" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="add" style="border: none; cursor:pointer;" colspan="2">Address History</th>
+                                </tr>
+                                <tr>
+                                    <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                </tr>
+                                <tr>
+                                    <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div style="display:none;" id="addT">
 
-                                <div class="thatrow">
-                                    <div class="col_header">Code Type</div>
-                                    <div class="col_header">Line 1</div>
-                                    <div class="col_header">Line 2</div>
-                                    <div class="col_header">Line 3</div>
-                                    <div class="col_header">Line 4</div>
-                                    <div class="col_header">Postal Code</div>
-                                    <div class="col_header">Last Updated Date</div>
+                            <div class="thatrow">
+                                <div class="col_header">Code Type</div>
+                                <div class="col_header">Line 1</div>
+                                <div class="col_header">Line 2</div>
+                                <div class="col_header">Line 3</div>
+                                <div class="col_header">Line 4</div>
+                                <div class="col_header">Postal Code</div>
+                                <div class="col_header">Last Updated Date</div>
 
-                                    @foreach (var key in ViewBag.ArrayList)
+                                @*@foreach (var key in ViewBag.ArrayList)
                                     {
                                         <div class="colspace"> @key.Value</div>
-                                    }
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                    </thead>
-                                    <tbody id="CIT" style="display:none;">
-                                    </tbody>
-                                </table>
+                                    }*@
                             </div>
-
-                            <div style="display:none;" id="telT">
-
-                                <div class="thatrow">
-                                    <div class="col_headerTel">Type</div>
-                                    <div class="col_headerTel">Number</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-
-                                    @foreach (var key in ViewBag.TelArrayList)
-                                    {
-                                        <div class="colspaceTel"> @key.Value</div>
-                                    }
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                    </thead>
-                                    <tbody id="CIT" style="display:none;">
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div style="display:none;" id="emT">
-
-                                <div class="thatrow">
-                                    <div class="col_headerTel">Employer Name</div>
-                                    <div class="col_headerTel">Designation</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-
-                                    @foreach (var key in ViewBag.EMArrayList)
-                                    {
-                                        <div class="colspaceTel"> @key.Value</div>
-                                    }
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                    </thead>
-                                    <tbody id="CIT" style="display:none;">
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
                         </div>
+
+                        <div style="display:none;" id="telT">
+
+                            <div class="thatrow">
+                                <div class="col_headerTel">Type</div>
+                                <div class="col_headerTel">Number</div>
+                                <div class="col_headerTel">Last Updated Date</div>
+
+                                @*@foreach (var key in ViewBag.TelArrayList)
+                                    {
+                                        <div class="colspaceTel"> @key.Value</div>
+                                    }*@
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display:none;" id="emT">
+
+                            <div class="thatrow">
+                                <div class="col_headerTel">Employer Name</div>
+                                <div class="col_headerTel">Designation</div>
+                                <div class="col_headerTel">Last Updated Date</div>
+
+                                @*@foreach (var key in ViewBag.EMArrayList)
+                                    {
+                                        <div class="colspaceTel"> @key.Value</div>
+                                    }*@
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 }
                 else if (@ViewData["Message"].ToString() == "Service is offline")
                 {

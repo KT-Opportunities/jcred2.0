@@ -76,7 +76,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecordsResults(CSI csi)
         {
-            var arraylist = new ArrayList();
             string name = csi.FirstName;
             string sur = csi.Surname;
             string id = csi.IDNumber;
@@ -688,6 +687,11 @@ namespace searchworks.client.Controllers
             return View();
         }
 
+        public ActionResult DatabasePropertyIndividualResults(Deeds deed)
+        {
+            return View();
+        }
+
         public ActionResult DeedsOfficeRecordsIndividual()
         {
             return View();
@@ -695,11 +699,11 @@ namespace searchworks.client.Controllers
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
-            string name = deed.Firstname;
-            string deeds = deed.DeedsOffice;
-            string sur = deed.Surname;
-            string id = deed.IDNumber;
-            string refe = deed.Reference;
+            string name = deed.Firstname != null ? deed.Firstname.Trim() : null;
+            string deeds = deed.DeedsOffice != null ? deed.DeedsOffice.Trim() : null;
+            string sur = deed.Surname != null ? deed.Surname.Trim() : null;
+            string id = deed.IDNumber != null ? deed.IDNumber.Trim() : null;
+            string refe = deed.Reference != null ? deed.Reference.Trim() : null;
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -716,29 +720,17 @@ namespace searchworks.client.Controllers
             //request headers
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-Type", "application/json");
-            System.Diagnostics.Debug.WriteLine(authtoken, deed, sur, name, id, "here");
 
-            //object containing input parameter data for company() API method
-            //var apiInput = new
-            //{
-            //    SessionToken = authtoken,
-            //    DeedsOffice = deed,//company name contains: See documentation
-            //    Reference = authtoken,//search reference: probably store in logs
-            //    Surname = sur,
-            //    Firstname = name,
-            //    IDNumber = id,
-            //    Sequestration = "false",
-            //};
             try
             {
                 var apiInput = new
                 {
                     SessionToken = authtoken,
-                    DeedsOfficeIDs = "3",//company name contains: See documentation
-                    Reference = "",//search reference: probably store in logs
-                    Surname = "Thoriso",
-                    Firstname = "Rangata",
-                    IDNumber = "9303195109086",
+                    DeedsOfficeIDs = deeds,
+                    Reference = refe,
+                    Surname = sur,
+                    Firstname = name,
+                    IDNumber = id,
                     Sequestration = "false"
                 };
 
@@ -798,22 +790,11 @@ namespace searchworks.client.Controllers
         private List<DeedsInformation> getCompanyList(IRestResponse response)
         {
             List<DeedsInformation> lst = new List<DeedsInformation>();
-            //IRestResponse response = client.Execute<RootObject>(request);
+
             dynamic respContent = JObject.Parse(response.Content);
 
-            JObject rawList = respContent;
-            System.Diagnostics.Debug.WriteLine("YList: " + JObject.Parse(response.Content), rawList);
-            //var rawList = respContent.ResponseObject;
-
-            //foreach (JObject responseObject in rawList)
-            ////foreach (ResponseObject responseObject in rawList)
-            //{
-            //    //ResponseObject res = responseObject.ToObject<ResponseObject>;
-            //    //res.SearchInformation = responseObject.SearchInformation;
-            //    System.Diagnostics.Debug.WriteLine("ANother 1", responseObject);
-            //    //lst.Add(responseObject.DeedsInformation);
-            //}
-
+            //List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             return lst;
         }
     }
