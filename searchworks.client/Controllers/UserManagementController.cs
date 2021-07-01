@@ -16,27 +16,13 @@ namespace searchworks.client.Controllers
 {
     public class UserManagementController : Controller
     {
-        JCredDBContextEntities db = new JCredDBContextEntities();
+        private JCredDBContextEntities db = new JCredDBContextEntities();
+
         public ActionResult UserManagementHome()
         {
             UserManagementViewModel userManagementViewModel = new UserManagementViewModel(2);
-            /*
-            userManagementViewModel.Company = db.orgtenants.Where(a => a.orgtenantid == 2).Single();
-            var companyOrgUnits   = from s in db.orgunits
-                                    where s.orgtenantid == userManagementViewModel.Company.orgtenantid
-                                    select s;
-            userManagementViewModel.orgunits = companyOrgUnits.ToList<orgunit>();
-            */
-
-            /*
-            using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
-            {
-                userManagementViewModel.Company  = db.Query<orgtenant>("Select * From orgtenant where orgtenantid=2").FirstOrDefault();
-                userManagementViewModel.orgunits = db.Query<orgunit>("Select * From orgunit where orgtenantid="+ userManagementViewModel.Company.orgtenantid).ToList();
-            }
-            */
-
-                return View(userManagementViewModel);
+            
+            return View(userManagementViewModel);
         }
 
         public ActionResult SearchHistory()

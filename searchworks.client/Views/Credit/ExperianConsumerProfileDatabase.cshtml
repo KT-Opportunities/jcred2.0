@@ -68,75 +68,51 @@
                             <tr>
                                 <td colspan="2">Title</td>
                                 <td style="border: none;" colspan="4">@p.Title</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Date of Birth</td>
                                 <td style="border: none;" colspan="4">@p.DateOfBirth</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">First Name</td>
                                 <td style="border: none;" colspan="4">@p.FirstName</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Middle Name</td>
                                 <td style="border: none;" colspan="4">@p.MiddleName1</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Surname</td>
                                 <td style="border: none;" colspan="4">@p.Surname</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">FullName</td>
                                 <td style="border: none;" colspan="4">@p.Fullname</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">ID Number</td>
                                 <td style="border: none;" colspan="4">@p.IDNumber</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Gender</td>
                                 <td style="border: none;" colspan="4">@p.Gender</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Age</td>
                                 <td style="border: none;" colspan="4">@p.Age</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Marital Status</td>
                                 <td style="border: none;" colspan="4">@p.MaritalStatus</td>
-
-                                
                             </tr>
 
                             <tr>
                                 <td colspan="2">Reference</td>
                                 <td style="border: none;" colspan="4">@p.Reference</td>
-
-                                
                             </tr>
                             <tr>
                                 <td colspan="2">Has Properties</td>
                                 <td style="border: none;" colspan="4">@p.HasProperties</td>
-
-                                
                             </tr>
                         }
                     </tbody>
@@ -177,13 +153,12 @@
                     </thead>
                     <tbody id="CONIT" style="display:none;">
                         @*@foreach (var item in ViewBag.contactInformationList)
-                        {
-                            <tr>
-                                <td colspan="2">Physical Address</td>
-                                <td style="border: none;" colspan="4">@item.PhysicalAddress</td>
-                                
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td colspan="2">Physical Address</td>
+                                    <td style="border: none;" colspan="4">@item.PhysicalAddress</td>
+                                </tr>
+                            }*@
                     </tbody>
                 </table>
             </div>
@@ -195,316 +170,266 @@
                         </tr>
                     </thead>
                     <tbody id="CIT" style="display:none;">
-                       @* @if (@ViewBag.creditInformationList != null)
-                        {
-                            foreach (var item in ViewBag.creditInformationList)
+                        @* @if (@ViewBag.creditInformationList != null)
+                            {
+                                foreach (var item in ViewBag.creditInformationList)
 
+                                {
+                                    <tr>
+                                        <td colspan="2">DelphiScore</td>
+                                        <td style="border: none;" colspan="4">@item.DelphiScore</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Flag Count</td>
+                                        <td style="border: none;" colspan="4">@item.FlagCount</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Flag Details</td>
+                                        <td style="border: none;" colspan="4">@item.FlagDetails</td>
+                                    </tr>
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td colspan="2">DelphiScore</td>
-                                    <td style="border: none;" colspan="4">@item.DelphiScore</td>
+                                    <td colspan="7">No Data</td>
                                 </tr>
-                                <tr>
-                                    <td colspan="2">Flag Count</td>
-                                    <td style="border: none;" colspan="4">@item.FlagCount</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">Flag Details</td>
-                                    <td style="border: none;" colspan="4">@item.FlagDetails</td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="7">No Data</td>
-                            </tr>
-                        }*@
+                            }*@
 
                         @*<tr>
-                            <th colspan="7" class="col_header">Data Counts</th>
-                        </tr>*@
+                                <th colspan="7" class="col_header">Data Counts</th>
+                            </tr>*@
                         @foreach (var item in ViewBag.dataCountsList)
                         {
                             @*<tr>
-                                <td colspan="2">Accounts</td>
-                                <td colspan="4" style="border: none;">@item.Accounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Enquires</td>
-                                <td colspan="4" style="border: none;">@item.Enquires</td>
-
-                            </tr>*@
+                                    <td colspan="2">Accounts</td>
+                                    <td colspan="4" style="border: none;">@item.Accounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Enquires</td>
+                                    <td colspan="4" style="border: none;">@item.Enquires</td>
+                                </tr>*@
                             @*<tr>
-                            <td colspan="2">Judgments</td>
-                            <td colspan="4" style="border: none;">@item.Judgments</td>
-                            </tr>
+                                <td colspan="2">Judgments</td>
+                                <td colspan="4" style="border: none;">@item.Judgments</td>
+                                </tr>
                             *@
                             @*<tr>
-                                <td colspan="2">Notices</td>
-                                <td colspan="4" style="border: none;">@item.Notices</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Bank Defaults</td>
-                                <td colspan="4" style="border: none;">@item.BankDefaults</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Defaults</td>
-                                <td colspan="4" style="border: none;">@item.Defaults</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Collections</td>
-                                <td colspan="4" style="border: none;">@item.Collections</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Directors</td>
-                                <td colspan="4" style="border: none;">@item.Directors</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Address</td>
-                                <td colspan="4" style="border: none;">@item.Addresses</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Telephones</td>
-                                <td colspan="4" style="border: none;">@item.Telephones</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Occupants</td>
-                                <td colspan="4" style="border: none;">@item.Occupants</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Employers</td>
-                                <td colspan="4" style="border: none;">@item.Employers</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Trace Alerts</td>
-                                <td colspan="4" style="border: none;">@item.TraceAlerts</td>
-
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Payment Profiles</td>
-                                <td colspan="4" style="border: none;">@item.PaymentProfiles</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Own Enquires</td>
-                                <td colspan="4" style="border: none;">@item.OwnEnquiries</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Admin Orders</td>
-                                <td colspan="4" style="border: none;">@item.AdminOrders</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Possible Matches</td>
-                                <td colspan="4" style="border: none;">@item.PossibleMatches</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Definite Matches</td>
-                                <td colspan="4" style="border: none;">@item.DefiniteMatches</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Loans</td>
-                                <td colspan="4" style="border: none;">@item.Loans</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Fraud Alerts</td>
-                                <td colspan="4" style="border: none;">@item.FraudAlerts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Companies</td>
-                                <td colspan="4" style="border: none;">@item.Companies</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Properties</td>
-                                <td colspan="4" style="border: none;">@item.Properties</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Documents</td>
-                                <td colspan="4" style="border: none;">@item.Documents</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Demand Letters</td>
-                                <td colspan="4" style="border: none;">@item.DemandLetters</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Trusts</td>
-                                <td colspan="4" style="border: none;">@item.Trusts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Bonds</td>
-                                <td colspan="4" style="border: none;">@item.Bonds</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Deeds</td>
-                                <td colspan="4" style="border: none;">@item.Deeds</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Public Defaults</td>
-                                <td colspan="4" style="border: none;">@item.PublicDefaults</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR Accounts</td>
-                                <td colspan="4" style="border: none;">@item.NLRAccounts</td>
-
-
-                            </tr>*@
+                                    <td colspan="2">Notices</td>
+                                    <td colspan="4" style="border: none;">@item.Notices</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Bank Defaults</td>
+                                    <td colspan="4" style="border: none;">@item.BankDefaults</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Defaults</td>
+                                    <td colspan="4" style="border: none;">@item.Defaults</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Collections</td>
+                                    <td colspan="4" style="border: none;">@item.Collections</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Directors</td>
+                                    <td colspan="4" style="border: none;">@item.Directors</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Address</td>
+                                    <td colspan="4" style="border: none;">@item.Addresses</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Telephones</td>
+                                    <td colspan="4" style="border: none;">@item.Telephones</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Occupants</td>
+                                    <td colspan="4" style="border: none;">@item.Occupants</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Employers</td>
+                                    <td colspan="4" style="border: none;">@item.Employers</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Trace Alerts</td>
+                                    <td colspan="4" style="border: none;">@item.TraceAlerts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment Profiles</td>
+                                    <td colspan="4" style="border: none;">@item.PaymentProfiles</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Own Enquires</td>
+                                    <td colspan="4" style="border: none;">@item.OwnEnquiries</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Admin Orders</td>
+                                    <td colspan="4" style="border: none;">@item.AdminOrders</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Possible Matches</td>
+                                    <td colspan="4" style="border: none;">@item.PossibleMatches</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Definite Matches</td>
+                                    <td colspan="4" style="border: none;">@item.DefiniteMatches</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Loans</td>
+                                    <td colspan="4" style="border: none;">@item.Loans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Fraud Alerts</td>
+                                    <td colspan="4" style="border: none;">@item.FraudAlerts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Companies</td>
+                                    <td colspan="4" style="border: none;">@item.Companies</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Properties</td>
+                                    <td colspan="4" style="border: none;">@item.Properties</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Documents</td>
+                                    <td colspan="4" style="border: none;">@item.Documents</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Demand Letters</td>
+                                    <td colspan="4" style="border: none;">@item.DemandLetters</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Trusts</td>
+                                    <td colspan="4" style="border: none;">@item.Trusts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Bonds</td>
+                                    <td colspan="4" style="border: none;">@item.Bonds</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Deeds</td>
+                                    <td colspan="4" style="border: none;">@item.Deeds</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Public Defaults</td>
+                                    <td colspan="4" style="border: none;">@item.PublicDefaults</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR Accounts</td>
+                                    <td colspan="4" style="border: none;">@item.NLRAccounts</td>
+                                </tr>*@
                         }
                         <tr>
                             <th colspan="7" class="col_header">Debt Review Status</th>
                         </tr>
-                       @* @foreach (var Debt in ViewBag.debtReviewStatusList)
-                        {
+                        @* @foreach (var Debt in ViewBag.debtReviewStatusList)
+                            {
+                                <tr>
+                                    <td colspan="2">Status Code</td>
+                                    <td colspan="4" style="border: none;">@Debt.StatusCode</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Status Description</td>
+                                    <td colspan="4" style="border: none;">@Debt.StatusDescription</td>
+                                </tr>
+
+                            }
                             <tr>
-                                <td colspan="2">Status Code</td>
-                                <td colspan="4" style="border: none;">@Debt.StatusCode</td>
-
+                                <th colspan="7" class="col_header">Consumer Statistics</th>
                             </tr>
-                            <tr>
-                                <td colspan="2">Status Description</td>
-                                <td colspan="4" style="border: none;">@Debt.StatusDescription</td>
+                            @foreach (var item in ViewBag.consumerstatsList)
+                            {
 
-                            </tr>
-
-                        }
-                        <tr>
-                            <th colspan="7" class="col_header">Consumer Statistics</th>
-                        </tr>
-                        @foreach (var item in ViewBag.consumerstatsList)
-                        {
-
-                            <tr>
-                                <td colspan="2">Highest Judgment</td>
-                                <td colspan="4">@item.HighestJudgment</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Revolving Accounts</td>
-                                <td colspan="4">@item.RevolvingAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Instalment Accounts</td>
-                                <td colspan="4">@item.InstalmentAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Open Accounts</td>
-                                <td colspan="4">@item.OpenAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Adverse Accounts</td>
-                                <td colspan="4">@item.AdverseAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Percent Arrears</td>
-                                <td colspan="4">@item.Percent0ArrearsLast12Histories</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">PPS Last 12 Months</td>
-                                <td colspan="4">@item.NumberPPSLast12Months</td>
-
-                            </tr>
-                            //Comment out next line of code.
-                            <tr>
-                            <td colspan="2">Micro loans Past 12 Months</td>
-                            <td colspan="4">@item.MicroloansPast12Months</td>
-                            </tr>
-                        }*@
+                                <tr>
+                                    <td colspan="2">Highest Judgment</td>
+                                    <td colspan="4">@item.HighestJudgment</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Revolving Accounts</td>
+                                    <td colspan="4">@item.RevolvingAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Instalment Accounts</td>
+                                    <td colspan="4">@item.InstalmentAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Open Accounts</td>
+                                    <td colspan="4">@item.OpenAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Adverse Accounts</td>
+                                    <td colspan="4">@item.AdverseAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Percent Arrears</td>
+                                    <td colspan="4">@item.Percent0ArrearsLast12Histories</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">PPS Last 12 Months</td>
+                                    <td colspan="4">@item.NumberPPSLast12Months</td>
+                                </tr>
+                                //Comment out next line of code.
+                                <tr>
+                                <td colspan="2">Micro loans Past 12 Months</td>
+                                <td colspan="4">@item.MicroloansPast12Months</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">NLR Stats</th>
                         </tr>
                         @*@foreach (var item in ViewBag.nlrstatsList)
-                        {
-                            <tr>
-                                <td colspan="2">Active Accounts</td>
-                                <td colspan="4">@item.ActiveAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Closed Accounts</td>
-                                <td colspan="4">@item.ClosedAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Worst Month Arrears</td>
-                                <td colspan="4">@item.WorstMonthArrears</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Worst Month Arrears Status</td>
-                                <td colspan="4">@item.WorstArrearsStatus</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Balance Exposure</td>
-                                <td colspan="4">@item.BalanceExposure</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Cumulative Arrears</td>
-                                <td colspan="4">@item.CumulativeArrears</td>
-
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td colspan="2">Active Accounts</td>
+                                    <td colspan="4">@item.ActiveAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Closed Accounts</td>
+                                    <td colspan="4">@item.ClosedAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Worst Month Arrears</td>
+                                    <td colspan="4">@item.WorstMonthArrears</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Worst Month Arrears Status</td>
+                                    <td colspan="4">@item.WorstArrearsStatus</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Balance Exposure</td>
+                                    <td colspan="4">@item.BalanceExposure</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Cumulative Arrears</td>
+                                    <td colspan="4">@item.CumulativeArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">CCA Stats</th>
                         </tr>
                         @*@foreach (var item in ViewBag.ccastatsList)
-                        {
-                            <tr>
-                                <td colspan="2">Active Accounts</td>
-                                <td colspan="4">@item.ActiveAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Closed Accounts</td>
-                                <td colspan="4">@item.ClosedAccounts</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Worst Month Arrears</td>
-                                <td colspan="4">@item.WorstMonthArrears</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Balance Exposure</td>
-                                <td colspan="4">@item.BalanceExposure</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Cumulative Arrears</td>
-                                <td colspan="4">@item.CumulativeArrears</td>
-
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td colspan="2">Active Accounts</td>
+                                    <td colspan="4">@item.ActiveAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Closed Accounts</td>
+                                    <td colspan="4">@item.ClosedAccounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Worst Month Arrears</td>
+                                    <td colspan="4">@item.WorstMonthArrears</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Balance Exposure</td>
+                                    <td colspan="4">@item.BalanceExposure</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Cumulative Arrears</td>
+                                    <td colspan="4">@item.CumulativeArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">NLR 12 Months</th>
                         </tr>
@@ -515,153 +440,133 @@
                             <td>Highest Months In Arrears:</td>
                         </tr>
                         @*@foreach (var item in ViewBag.nlr12monthsList)
-                        {
-                            <tr>
-                                <td colspan="1">@item.EnquiriesByClient</td>
-                            </tr>
-                            <tr>
-                                <td colspan="1">@item.EnquiriesByOther</td>
-                            </tr>
-                            <tr>
-                                <td colspan="1">@item.PositiveLoans</td>
-                            </tr>
-                            <tr>
-                                <td colspan="1">@item.HighestMonthsInArrears</td>
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td colspan="1">@item.EnquiriesByClient</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">@item.EnquiriesByOther</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">@item.PositiveLoans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">@item.HighestMonthsInArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">NLR 24 Months</th>
                         </tr>
-                       @* @foreach (var item in ViewBag.NLR12monthsList)
-                        {
+                        @* @foreach (var item in ViewBag.NLR12monthsList)
+                            {
 
-                            <tr>
-                                <td colspan="2">NLR24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByClient</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByOther</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.PositiveLoans</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.HighestMonthsInArrears</td>
-
-                            </tr>
-                        }*@
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByClient</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByOther</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.PositiveLoans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.HighestMonthsInArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">NLR 36 Months</th>
                         </tr>
-                       @* @foreach (var item in ViewBag.nlr36monthsList)
-                        {
+                        @* @foreach (var item in ViewBag.nlr36monthsList)
+                            {
 
-                            <tr>
-                                <td colspan="2">NLR36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByClient</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByOther</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.PositiveLoans</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">NLR36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.HighestMonthsInArrears</td>
-
-                            </tr>
-                        }*@
+                                <tr>
+                                    <td colspan="2">NLR36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByClient</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByOther</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.PositiveLoans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.HighestMonthsInArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">CCA 12 Months</th>
                         </tr>
-                       @* @foreach (var item in ViewBag.cca12monthsList)
-                        {
+                        @* @foreach (var item in ViewBag.cca12monthsList)
+                            {
 
-                            <tr>
-                                <td colspan="2">CCA12Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByClient</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA12Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByOther</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA12Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.PositiveLoans</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA12Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.HighestMonthsInArrears</td>
-
-                            </tr>
-                        }*@
+                                <tr>
+                                    <td colspan="2">CCA12Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByClient</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA12Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByOther</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA12Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.PositiveLoans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA12Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.HighestMonthsInArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">CCA 24 Months</th>
                         </tr>
                         @*@foreach (var item in ViewBag.cca24monthsList)
-                        {
-                            <tr>
-                                <td colspan="2">CCA24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByClient</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByOther</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.PositiveLoans</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA24Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.HighestMonthsInArrears</td>
-
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td colspan="2">CCA24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByClient</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByOther</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.PositiveLoans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA24Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.HighestMonthsInArrears</td>
+                                </tr>
+                            }*@
                         <tr>
                             <th colspan="7" class="col_header">CCA 36 Months</th>
                         </tr>
                         @*@foreach (var item in ViewBag.cca36monthsList)
-                        {
-                            <tr>
-                                <td colspan="2">CCA36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByClient</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.EnquiriesByOther</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.PositiveLoans</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">CCA36Months Highest Months In Arrears:</td>
-                                <td colspan="4">@item.HighestMonthsInArrears</td>
-
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td colspan="2">CCA36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByClient</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.EnquiriesByOther</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.PositiveLoans</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">CCA36Months Highest Months In Arrears:</td>
+                                    <td colspan="4">@item.HighestMonthsInArrears</td>
+                                </tr>
+                            }*@
 
                         <tr>
                             <th colspan="7" class="col_header">Enquiry History</th>
@@ -743,8 +648,6 @@
                                 <th colspan="3">LastUpdatedDateTel</th>
                             </tr>
 
-                        
-
                             foreach (var item in @ViewBag.telephoneInformationList)
                             {
                                 <tr>
@@ -802,7 +705,6 @@
     }
 </div>
 <script>
-
 
     function Export() {
         $(".PerInfo").show();

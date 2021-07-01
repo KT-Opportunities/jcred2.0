@@ -18,14 +18,13 @@ namespace searchworks.client.Models
 
         public UserManagementViewModel()
         {
-
         }
 
         public UserManagementViewModel(int intorgtenant)
         {
             using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
             {
-                this.Company = db.Query<orgtenant>("Select * From orgtenant where orgtenantid="+ intorgtenant).FirstOrDefault();
+                this.Company = db.Query<orgtenant>("Select * From orgtenant where orgtenantid=" + intorgtenant).FirstOrDefault();
                 this.orgunits = db.Query<orgunit>("Select * From orgunit where orgtenantid=" + this.Company.orgtenantid).ToList();
             }
         }

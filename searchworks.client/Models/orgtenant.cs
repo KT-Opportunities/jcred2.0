@@ -11,11 +11,13 @@ namespace searchworks.client.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class orgtenant
     {
         public int orgtenantid { get; set; }
         public Nullable<int> parent_orgtenantid { get; set; }
+        [DisplayName("Company Name")]
         public string orgname { get; set; }
         public string orgcode { get; set; }
         public Nullable<int> orgcategoryid { get; set; }
