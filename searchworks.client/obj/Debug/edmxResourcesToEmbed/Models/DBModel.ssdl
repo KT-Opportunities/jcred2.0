@@ -164,7 +164,6 @@
     <Property Name="SearchToken" Type="varchar" MaxLength="45" />
     <Property Name="Reference" Type="varchar" MaxLength="45" />
     <Property Name="SearchID" Type="varchar" MaxLength="45" />
-    <Property Name="CCAStatscol" Type="varchar" MaxLength="45" />
     <Property Name="ActiveAccounts" Type="varchar" MaxLength="45" />
     <Property Name="ClosedAccounts" Type="varchar" MaxLength="45" />
     <Property Name="WorstMonthArrears" Type="varchar" MaxLength="45" />
@@ -334,11 +333,12 @@
   </EntityType>
   <EntityType Name="creditdeclinereason">
     <Key>
-      <PropertyRef Name="SearchToken" />
+      <PropertyRef Name="ID" />
     </Key>
-    <Property Name="SearchToken" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchID" Type="varchar" MaxLength="200" />
+    <Property Name="SearchToken" Type="varchar" MaxLength="200" />
     <Property Name="Reference" Type="varchar" MaxLength="200" />
-    <Property Name="SearchID" Type="int" />
     <Property Name="ReasonCode" Type="varchar" MaxLength="45" />
     <Property Name="ReasonDescription" Type="varchar" MaxLength="45" />
     <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
@@ -428,19 +428,27 @@
     <Key>
       <PropertyRef Name="SearchToken" />
     </Key>
-    <Property Name="SearchToken" Type="int" Nullable="false" />
+    <Property Name="SearchToken" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Reference" Type="varchar" MaxLength="200" />
     <Property Name="SearchID" Type="varchar" MaxLength="200" />
-    <Property Name="Designation" Type="varchar" MaxLength="200" />
-    <Property Name="AppointmentDate" Type="varchar" MaxLength="45" />
-    <Property Name="PhysicalAddress" Type="varchar" MaxLength="45" />
-    <Property Name="TelephoneNumber" Type="varchar" MaxLength="45" />
-    <Property Name="DirectorStatus" Type="varchar" MaxLength="45" />
-    <Property Name="CompanyName" Type="varchar" MaxLength="45" />
-    <Property Name="CompanyCategory" Type="varchar" MaxLength="45" />
-    <Property Name="CompanyRegistrationNumber" Type="varchar" MaxLength="45" />
-    <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
-    <Property Name="typeOfSearch" Type="varchar" MaxLength="55" />
+    <Property Name="DesignationCode" Type="varchar" MaxLength="200" />
+    <Property Name="AppointmentDate" Type="varchar" MaxLength="200" />
+    <Property Name="DirectorStatus" Type="varchar" MaxLength="200" />
+    <Property Name="DirectorStatusDate" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyType" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyStatus" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyStatusCode" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyRegistrationNumber" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyRegistrationDate" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyStartDate" Type="varchar" MaxLength="200" />
+    <Property Name="CompanyTaxNumber" Type="varchar" MaxLength="200" />
+    <Property Name="DirectorTypeCode" Type="varchar" MaxLength="200" />
+    <Property Name="DirectorType" Type="varchar" MaxLength="200" />
+    <Property Name="MemberSize" Type="varchar" MaxLength="200" />
+    <Property Name="MemberContribution" Type="varchar" MaxLength="200" />
+    <Property Name="MemberContributionType" Type="varchar" MaxLength="200" />
+    <Property Name="ResignationDate" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="directorsummary">
     <Key>
@@ -714,6 +722,56 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
     <Property Name="password" Type="varchar" MaxLength="128" Nullable="false" />
     <Property Name="user_type" Type="varchar" MaxLength="255" Nullable="false" />
   </EntityType>
+  <EntityType Name="nlr_accounts">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchToken" Type="varchar" MaxLength="200" />
+    <Property Name="Reference" Type="varchar" MaxLength="200" />
+    <Property Name="SearchID" Type="varchar" MaxLength="200" />
+    <Property Name="Account_ID" Type="varchar" MaxLength="200" />
+    <Property Name="SubscriberCode" Type="varchar" MaxLength="45" />
+    <Property Name="SubscriberName" Type="varchar" MaxLength="45" />
+    <Property Name="AccountNO" Type="varchar" MaxLength="45" />
+    <Property Name="SubAccountNO" Type="varchar" MaxLength="45" />
+    <Property Name="OwnershipType" Type="varchar" MaxLength="45" />
+    <Property Name="OwnershipTypeDescription" Type="varchar" MaxLength="45" />
+    <Property Name="Reason" Type="varchar" MaxLength="45" />
+    <Property Name="ReasonDescription" Type="varchar" MaxLength="45" />
+    <Property Name="PaymentType" Type="varchar" MaxLength="45" />
+    <Property Name="PaymentTypeDescription" Type="varchar" MaxLength="45" />
+    <Property Name="AccountType" Type="varchar" MaxLength="45" />
+    <Property Name="AccountTypeDescription" Type="varchar" MaxLength="45" />
+    <Property Name="OpenDate" Type="varchar" MaxLength="45" />
+    <Property Name="DeferredPaymentDate" Type="varchar" MaxLength="45" />
+    <Property Name="LastPaymentDate" Type="varchar" MaxLength="45" />
+    <Property Name="OpenBalance" Type="varchar" MaxLength="45" />
+    <Property Name="OpenBalanceIND" Type="varchar" MaxLength="45" />
+    <Property Name="CurrentBalance" Type="varchar" MaxLength="45" />
+    <Property Name="CurrentBalanceIND" Type="varchar" MaxLength="45" />
+    <Property Name="OverdueAmount" Type="varchar" MaxLength="45" />
+    <Property Name="InstalmentAmount" Type="varchar" MaxLength="45" />
+    <Property Name="ArrearsPeriod" Type="varchar" MaxLength="45" />
+    <Property Name="RepaymentFrequencyDescription" Type="varchar" MaxLength="45" />
+    <Property Name="Terms" Type="varchar" MaxLength="45" />
+    <Property Name="StatusCode" Type="varchar" MaxLength="45" />
+    <Property Name="StatusCodeDesc" Type="varchar" MaxLength="45" />
+    <Property Name="IndustryType" Type="varchar" MaxLength="45" />
+    <Property Name="PaymentHistoryChartURL" Type="varchar" MaxLength="200" />
+    <Property Name="StatusDate" Type="varchar" MaxLength="45" />
+    <Property Name="ThirdPartyName" Type="varchar" MaxLength="45" />
+    <Property Name="ThirdPartySold" Type="varchar" MaxLength="45" />
+    <Property Name="ThirdPartySoldDescription" Type="varchar" MaxLength="45" />
+    <Property Name="JointLoanParticipants" Type="varchar" MaxLength="45" />
+    <Property Name="PaymentHistory" Type="varchar" MaxLength="45" />
+    <Property Name="PaymentHistoryStatus" Type="varchar" MaxLength="45" />
+    <Property Name="PaymentHistoryChart" Type="varchar" MaxLength="45" />
+    <Property Name="MonthEndDate" Type="varchar" MaxLength="45" />
+    <Property Name="DateCreated" Type="varchar" MaxLength="45" />
+    <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+    <Property Name="typeOfSearch" Type="varchar" MaxLength="55" />
+  </EntityType>
   <EntityType Name="nlr12months">
     <Key>
       <PropertyRef Name="ID" />
@@ -809,6 +867,7 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
     <Property Name="orgtenantid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="parent_orgtenantid" Type="int" />
     <Property Name="orgname" Type="varchar" MaxLength="200" />
+    <Property Name="orgabbreviation" Type="varchar" MaxLength="45" />
     <Property Name="orgcode" Type="varchar" MaxLength="20" />
     <Property Name="orgcategoryid" Type="int" />
     <Property Name="org_regno" Type="varchar" MaxLength="20" />
@@ -871,6 +930,20 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
     <Property Name="deleted" Type="bool" />
     <Property Name="deleted_at" Type="datetime" Precision="0" />
   </EntityType>
+  <EntityType Name="orgunitusermap">
+    <Key>
+      <PropertyRef Name="orgunitprivmapid" />
+    </Key>
+    <Property Name="orgunitprivmapid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="aspiden_uid" Type="varchar" MaxLength="256" />
+    <Property Name="orgtenantid" Type="int" />
+    <Property Name="orgunitid" Type="int" />
+    <Property Name="userid" Type="int" />
+    <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+    <Property Name="updated_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+    <Property Name="deleted" Type="bool" />
+    <Property Name="deleted_at" Type="datetime" Precision="0" />
+  </EntityType>
   <EntityType Name="orgunituserprivmap">
     <Key>
       <PropertyRef Name="orgunitprivmapid" />
@@ -887,9 +960,10 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
   </EntityType>
   <EntityType Name="paymenthistoryaccountdetails">
     <Key>
-      <PropertyRef Name="SearchToken" />
+      <PropertyRef Name="ID" />
     </Key>
-    <Property Name="SearchToken" Type="int" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchToken" Type="varchar" MaxLength="200" />
     <Property Name="Reference" Type="varchar" MaxLength="200" />
     <Property Name="SearchID" Type="varchar" MaxLength="200" />
     <Property Name="LastPaymentDate" Type="varchar" MaxLength="45" />
@@ -1078,9 +1152,10 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
   </EntityType>
   <EntityType Name="searchhistory">
     <Key>
-      <PropertyRef Name="searchID" />
+      <PropertyRef Name="ID" />
     </Key>
-    <Property Name="searchID" Type="int" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="searchID" Type="varchar" MaxLength="200" />
     <Property Name="searchUserName" Type="varchar" MaxLength="200" />
     <Property Name="ResponseType" Type="varchar" MaxLength="200" />
     <Property Name="Name" Type="varchar" MaxLength="200" />
@@ -1141,12 +1216,13 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
     <Property Name="SearchToken" Type="varchar" MaxLength="200" />
     <Property Name="Reference" Type="varchar" MaxLength="200" />
     <Property Name="SearchID" Type="varchar" MaxLength="200" />
+    <Property Name="DialCode" Type="varchar" MaxLength="45" />
     <Property Name="TelephoneID" Type="varchar" MaxLength="200" />
-    <Property Name="TypeDescription" Type="varchar" MaxLength="200" />
+    <Property Name="TypeDescriptionTel" Type="varchar" MaxLength="200" />
     <Property Name="TypeCode" Type="varchar" MaxLength="200" />
     <Property Name="Number" Type="varchar" MaxLength="200" />
     <Property Name="FullNumber" Type="varchar" MaxLength="200" />
-    <Property Name="LastUpdatedDate" Type="varchar" MaxLength="200" />
+    <Property Name="LastUpdatedDateTel" Type="varchar" MaxLength="200" />
     <Property Name="created_at" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
     <Property Name="typeOfSearch" Type="varchar" MaxLength="55" />
   </EntityType>
@@ -1323,6 +1399,9 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="sp_purgehistorydata" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="j-creddb-dev">
+    <Parameter Name="cutOff_DateTime" Type="datetime" Mode="In" />
+  </Function>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="__efmigrationshistory" EntityType="Self.__efmigrationshistory" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="__migrationhistory" EntityType="Self.__migrationhistory" Schema="j-creddb-dev" store:Type="Tables" />
@@ -1372,6 +1451,7 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
     <EntitySet Name="internalenquiryhistory" EntityType="Self.internalenquiryhistory" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="logs" EntityType="Self.logs" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="members" EntityType="Self.members" Schema="j-creddb-dev" store:Type="Tables" />
+    <EntitySet Name="nlr_accounts" EntityType="Self.nlr_accounts" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="nlr12months" EntityType="Self.nlr12months" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="nlr24months" EntityType="Self.nlr24months" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="nlr36months" EntityType="Self.nlr36months" Schema="j-creddb-dev" store:Type="Tables" />
@@ -1382,6 +1462,7 @@ warning 6002: The table/view 'def.j-creddb-dev.hangfiredistributedlock' does not
     <EntitySet Name="orgtenantpriv" EntityType="Self.orgtenantpriv" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="orgunit" EntityType="Self.orgunit" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="orgunitprivmap" EntityType="Self.orgunitprivmap" Schema="j-creddb-dev" store:Type="Tables" />
+    <EntitySet Name="orgunitusermap" EntityType="Self.orgunitusermap" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="orgunituserprivmap" EntityType="Self.orgunituserprivmap" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="paymenthistoryaccountdetails" EntityType="Self.paymenthistoryaccountdetails" Schema="j-creddb-dev" store:Type="Tables" />
     <EntitySet Name="personinformation" EntityType="Self.personinformation" Schema="j-creddb-dev" store:Type="Tables" />

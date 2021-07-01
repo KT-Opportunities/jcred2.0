@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace JCred.Admin.Models
+namespace searchworks.client.Models
 {
     using System;
     using System.Collections.Generic;

@@ -18,12 +18,13 @@ namespace searchworks.client.Models
         public string SearchToken { get; set; }
         public string Reference { get; set; }
         public string SearchID { get; set; }
+        public string DialCode { get; set; }
         public string TelephoneID { get; set; }
-        public string TypeDescription { get; set; }
+        public string TypeDescriptionTel { get; set; }
         public string TypeCode { get; set; }
         public string Number { get; set; }
         public string FullNumber { get; set; }
-        public string LastUpdatedDate { get; set; }
+        public string LastUpdatedDateTel { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public string typeOfSearch { get; set; }
     }

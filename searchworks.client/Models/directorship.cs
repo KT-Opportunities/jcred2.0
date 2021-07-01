@@ -17,15 +17,23 @@ namespace searchworks.client.Models
         public int SearchToken { get; set; }
         public string Reference { get; set; }
         public string SearchID { get; set; }
-        public string Designation { get; set; }
+        public string DesignationCode { get; set; }
         public string AppointmentDate { get; set; }
-        public string PhysicalAddress { get; set; }
-        public string TelephoneNumber { get; set; }
         public string DirectorStatus { get; set; }
+        public string DirectorStatusDate { get; set; }
         public string CompanyName { get; set; }
-        public string CompanyCategory { get; set; }
+        public string CompanyType { get; set; }
+        public string CompanyStatus { get; set; }
+        public string CompanyStatusCode { get; set; }
         public string CompanyRegistrationNumber { get; set; }
-        public Nullable<System.DateTime> created_at { get; set; }
-        public string typeOfSearch { get; set; }
+        public string CompanyRegistrationDate { get; set; }
+        public string CompanyStartDate { get; set; }
+        public string CompanyTaxNumber { get; set; }
+        public string DirectorTypeCode { get; set; }
+        public string DirectorType { get; set; }
+        public string MemberSize { get; set; }
+        public string MemberContribution { get; set; }
+        public string MemberContributionType { get; set; }
+        public string ResignationDate { get; set; }
     }
 }

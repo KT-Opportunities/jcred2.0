@@ -2,7 +2,7 @@
     ViewBag.Title = "User Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@Model UserManagementViewModel
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
@@ -57,6 +57,9 @@
                             = "3",
                             maxlength = "30"
                             })
+                        </div>
+                        <div>
+                            @ViewBag.UserManagementCompanyCount
                         </div>
                         <div>
                             <label>Abbreviation</label><br>

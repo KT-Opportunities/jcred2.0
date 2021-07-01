@@ -12,6 +12,8 @@ namespace searchworks.client.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class JCredDBContextEntities : DbContext
     {
@@ -45,18 +47,15 @@ namespace searchworks.client.Models
         public virtual DbSet<cca12months> cca12months { get; set; }
         public virtual DbSet<cca24months> cca24months { get; set; }
         public virtual DbSet<cca36months> cca36months { get; set; }
-        public virtual DbSet<ccastat> ccastats { get; set; }
         public virtual DbSet<check_list> check_list { get; set; }
         public virtual DbSet<check> checks { get; set; }
         public virtual DbSet<compuscansearchhist> compuscansearchhists { get; set; }
         public virtual DbSet<consumerstatistic> consumerstatistics { get; set; }
         public virtual DbSet<contactinformation> contactinformations { get; set; }
         public virtual DbSet<cpa_accounts> cpa_accounts { get; set; }
-        public virtual DbSet<creditdeclinereason> creditdeclinereasons { get; set; }
         public virtual DbSet<creditinformation> creditinformations { get; set; }
         public virtual DbSet<datacount> datacounts { get; set; }
         public virtual DbSet<debtreviewstatu> debtreviewstatus { get; set; }
-        public virtual DbSet<directorship> directorships { get; set; }
         public virtual DbSet<directorsummary> directorsummaries { get; set; }
         public virtual DbSet<document> documents { get; set; }
         public virtual DbSet<emailhistory> emailhistories { get; set; }
@@ -83,7 +82,6 @@ namespace searchworks.client.Models
         public virtual DbSet<nlr24months> nlr24months { get; set; }
         public virtual DbSet<nlr36months> nlr36months { get; set; }
         public virtual DbSet<nlrstat> nlrstats { get; set; }
-        public virtual DbSet<paymenthistoryaccountdetail> paymenthistoryaccountdetails { get; set; }
         public virtual DbSet<personinformation> personinformations { get; set; }
         public virtual DbSet<propertiesbondinformation> propertiesbondinformations { get; set; }
         public virtual DbSet<propertiesbuyerinfo> propertiesbuyerinfoes { get; set; }
@@ -95,15 +93,30 @@ namespace searchworks.client.Models
         public virtual DbSet<propertiestransferinformation> propertiestransferinformations { get; set; }
         public virtual DbSet<propertysummary> propertysummaries { get; set; }
         public virtual DbSet<search_history> search_history { get; set; }
-        public virtual DbSet<searchhistory> searchhistories { get; set; }
         public virtual DbSet<searchresulttype> searchresulttypes { get; set; }
         public virtual DbSet<searchtype> searchtypes { get; set; }
         public virtual DbSet<syspriv> sysprivs { get; set; }
-        public virtual DbSet<telephonehistory> telephonehistories { get; set; }
         public virtual DbSet<transunionsearchhistory> transunionsearchhistories { get; set; }
         public virtual DbSet<User> users { get; set; }
         public virtual DbSet<user1> users1 { get; set; }
         public virtual DbSet<xdssearchhistory> xdssearchhistories { get; set; }
         public virtual DbSet<hangfiredistributedlock> hangfiredistributedlocks { get; set; }
+        public virtual DbSet<nlr_accounts> nlr_accounts { get; set; }
+        public virtual DbSet<orgunitusermap> orgunitusermaps { get; set; }
+        public virtual DbSet<searchhistory> searchhistories { get; set; }
+        public virtual DbSet<creditdeclinereason> creditdeclinereasons { get; set; }
+        public virtual DbSet<paymenthistoryaccountdetail> paymenthistoryaccountdetails { get; set; }
+        public virtual DbSet<ccastat> ccastats { get; set; }
+        public virtual DbSet<telephonehistory> telephonehistories { get; set; }
+        public virtual DbSet<directorship> directorships { get; set; }
+    
+        public virtual int sp_purgehistorydata(Nullable<System.DateTime> cutOff_DateTime)
+        {
+            var cutOff_DateTimeParameter = cutOff_DateTime.HasValue ?
+                new ObjectParameter("cutOff_DateTime", cutOff_DateTime) :
+                new ObjectParameter("cutOff_DateTime", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_purgehistorydata", cutOff_DateTimeParameter);
+        }
     }
 }

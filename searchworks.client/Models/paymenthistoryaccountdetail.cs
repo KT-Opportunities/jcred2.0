@@ -14,7 +14,8 @@ namespace searchworks.client.Models
     
     public partial class paymenthistoryaccountdetail
     {
-        public int SearchToken { get; set; }
+        public int ID { get; set; }
+        public string SearchToken { get; set; }
         public string Reference { get; set; }
         public string SearchID { get; set; }
         public string LastPaymentDate { get; set; }
