@@ -14,6 +14,7 @@ namespace searchworks.client.Controllers
 {
     public class UserManagementController : Controller
     {
+        JCredDBContextEntities db = new JCredDBContextEntities();
         public ActionResult UserManagementHome()
         {
             //Fetch Company Informaion for currently logged in user.
@@ -43,19 +44,21 @@ namespace searchworks.client.Controllers
             //    {
             //        UserManagementCompany UMCompany = new UserManagementCompany();
 
-            //        UMCompany.parent_orgtenantid = (reader[parent_orgtenantid] != Convert.DBNull) ? reader[parent_orgtenantid].ToString() : null;
-            //        UMCompany.orgname = (reader[orgname] != Convert.DBNull) ? reader[orgname].ToString() : null;
-            //        UMCompany.orgabbreviation = (reader[orgabbreviation] != Convert.DBNull) ? reader[orgabbreviation].ToString() : null;
-            //        UMCompany.orgcode = (reader[orgcode] != Convert.DBNull) ? reader[orgcode].ToString() : null;
-            //        UMCompany.orgcategoryid = (reader[orgcategoryid] != Convert.DBNull) ? reader[orgcategoryid].ToString() : null;
-            //        UMCompany.org_regno = (reader[org_regno] != Convert.DBNull) ? reader[org_regno].ToString() : null;
-            //        UMCompany.org_vatno = (reader[org_vatno] != Convert.DBNull) ? reader[org_vatno].ToString() : null;
+            // UMCompany.parent_orgtenantid = (reader[parent_orgtenantid] != Convert.DBNull) ?
+            // reader[parent_orgtenantid].ToString() : null; UMCompany.orgname = (reader[orgname] !=
+            // Convert.DBNull) ? reader[orgname].ToString() : null; UMCompany.orgabbreviation =
+            // (reader[orgabbreviation] != Convert.DBNull) ? reader[orgabbreviation].ToString() :
+            // null; UMCompany.orgcode = (reader[orgcode] != Convert.DBNull) ?
+            // reader[orgcode].ToString() : null; UMCompany.orgcategoryid = (reader[orgcategoryid]
+            // != Convert.DBNull) ? reader[orgcategoryid].ToString() : null; UMCompany.org_regno =
+            // (reader[org_regno] != Convert.DBNull) ? reader[org_regno].ToString() : null;
+            // UMCompany.org_vatno = (reader[org_vatno] != Convert.DBNull) ?
+            // reader[org_vatno].ToString() : null;
 
-            //        UserCompanyList.Add(UMCompany);
-            //    }
+            // UserCompanyList.Add(UMCompany); }
 
-            //    ViewData["UserManagementCompany"] = UserCompanyList;
-            //    ViewData["UserManagementCompanyCount"] = UserCompanyList.Count;
+            // ViewData["UserManagementCompany"] = UserCompanyList;
+            // ViewData["UserManagementCompanyCount"] = UserCompanyList.Count;
 
             //    reader.Close();
             //    return View();
@@ -66,20 +69,19 @@ namespace searchworks.client.Controllers
             //    conn.Close();
             //    return View();
             //}
-            return View();
 
-            /* JCredDBContextEntities db = new JCredDBContextEntities();
+            
             // GET: UserManagement
 
             UserManagementViewModel userManagementViewModel = new UserManagementViewModel();
 
-            userManagementViewModel.Company = db.orgtenants.Where(a => a.orgtenantid == 2).Single();
-            var companyOrgUnits   = from s in db.orgunits
-                                    where s.orgtenantid == userManagementViewModel.Company.orgtenantid
-                                    select s;
+            userManagementViewModel.Company = new orgtenant() { orgtenantid = 2, orgname = "ABSA",orgcode= "ABSA" };// db.orgtenants.Where(a => a.orgtenantid == 2).Single();
+            var companyOrgUnits = from s in db.orgunits
+                                  where s.orgtenantid == userManagementViewModel.Company.orgtenantid
+                                  select s;
             userManagementViewModel.orgunits = companyOrgUnits.ToList<orgunit>();
 
-            return View(userManagementViewModel); */
+            return View(userManagementViewModel);
         }
 
         public ActionResult SearchHistory()

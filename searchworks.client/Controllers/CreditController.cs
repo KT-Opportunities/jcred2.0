@@ -498,7 +498,7 @@ namespace searchworks.client.Controllers
 
         {
             string user_id = Session["ID"].ToString();
-            string loginToken = "";
+            string loginToken;
             var userName = api_username;
             var password = api_password;
             var host = "https://rest.searchworks.co.za/auth/login/";
@@ -2193,9 +2193,9 @@ namespace searchworks.client.Controllers
 
                                 for (int count = 0; count < (elements.Count); count++)
                                 {
-                                    String EnquiryDate = "";
-                                    String EnquiredBy = "";
-                                    String EnquiredByContact = "";
+                                    String EnquiryDate;
+                                    String EnquiredBy;
+                                    String EnquiredByContact;
 
                                     EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate;
                                     EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy;
@@ -2227,13 +2227,13 @@ namespace searchworks.client.Controllers
                                 List<AddressHistory> AddressHist;
                                 AddressHist = new List<AddressHistory>();
 
-                                String TypeDescription = "";
-                                String Line1 = "";
-                                String Line2 = "";
-                                String Line3 = "";
-                                String PostalCode = "";
-                                String FullAddress = "";
-                                String LastUpdatedDate = "";
+                                String TypeDescription;
+                                String Line1;
+                                String Line2;
+                                String Line3;
+                                String PostalCode;
+                                String FullAddress;
+                                String LastUpdatedDate;
 
                                 elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
                                 for (int count = 0; count < (elements1.Count); count++)
@@ -2268,11 +2268,11 @@ namespace searchworks.client.Controllers
                                 List<TelephoneHistory> TelHist;
                                 TelHist = new List<TelephoneHistory>();
 
-                                String TypeDescriptionTel = "";
-                                String DialCode = "";
-                                String Number = "";
-                                String FullNumber = "";
-                                String LastUpdatedDateTel = "";
+                                String TypeDescriptionTel;
+                                String DialCode;
+                                String Number;
+                                String FullNumber;
+                                String LastUpdatedDateTel;
 
                                 elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
 
@@ -2301,8 +2301,8 @@ namespace searchworks.client.Controllers
                             JToken EmploymentExists = rootObject.ResponseObject["HistoricalInformation"].EmploymentHistory;
                             if (EmploymentExists != null)
                             {
-                                String EmployerName = "";
-                                String Designation = "";
+                                String EmployerName;
+                                String Designation;
                                 List<EmploymentHistory> EmpHist;
                                 EmpHist = new List<EmploymentHistory>();
                                 elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
@@ -3548,9 +3548,9 @@ namespace searchworks.client.Controllers
                         List<EnquiryHistory> EnqHIst;
                         Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
                         elements = rootObject.ResponseObject.CreditInformation.EnquiryHistory;
-                        String EnquiryDate = "";
-                        String EnquiredBy = "";
-                        String EnquiredByContact = "";
+                        String EnquiryDate;
+                        String EnquiredBy;
+                        String EnquiredByContact;
                         EnqHIst = new List<EnquiryHistory>();
                         for (int count = 0; count < (elements.Count); count++)
                         {
@@ -3583,13 +3583,13 @@ namespace searchworks.client.Controllers
                         List<AddressHistory> AddressHist;
                         Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
                         elements1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                        String TypeDescription = "";
-                        String Line1 = "";
-                        String Line2 = "";
-                        String Line3 = "";
-                        String PostalCode = "";
-                        String FullAddress = "";
-                        String LastUpdatedDate = "";
+                        String TypeDescription;
+                        String Line1;
+                        String Line2;
+                        String Line3;
+                        String PostalCode;
+                        String FullAddress;
+                        String LastUpdatedDate;
                         AddressHist = new List<AddressHistory>();
 
                         for (int count = 0; count < (elements1.Count); count++)
@@ -3623,11 +3623,11 @@ namespace searchworks.client.Controllers
                         Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
 
                         elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                        String TypeDescriptionTel = "";
-                        String DialCode = "";
-                        String Number = "";
-                        String FullNumber = "";
-                        String LastUpdatedDateTel = "";
+                        String TypeDescriptionTel;
+                        String DialCode;
+                        String Number;
+                        String FullNumber;
+                        String LastUpdatedDateTel;
 
                         TelHist = new List<TelephoneHistory>();
                         for (int count = 0; count < (elements2.Count); count++)
@@ -3658,8 +3658,8 @@ namespace searchworks.client.Controllers
                         EmpHist = new List<EmploymentHistory>();
                         Newtonsoft.Json.Linq.JArray elements3 = new Newtonsoft.Json.Linq.JArray();
                         elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
-                        String EmployerName = "";
-                        String Designation = "";
+                        String EmployerName;
+                        String Designation;
 
                         for (int count = 0; count < (elements3.Count); count++)
                         {
@@ -3686,11 +3686,11 @@ namespace searchworks.client.Controllers
 
                     elements5 = rootObject.ResponseObject.InternalEnquiryHistory;
 
-                    string CompanyName = "";
-                    string IntEnquiryDate = "";
-                    string ContactPerson = "";
-                    string PhoneNumber = "";
-                    string EmailAddress = "";
+                    string CompanyName;
+                    string IntEnquiryDate;
+                    string ContactPerson;
+                    string PhoneNumber;
+                    string EmailAddress;
 
                     IntEnqHistory = new List<InternalEnquiryHistory>();
 
@@ -3748,6 +3748,7 @@ namespace searchworks.client.Controllers
             System.Collections.Generic.List<NLR24months> nlr24monthsList = new System.Collections.Generic.List<NLR24months>();
             System.Collections.Generic.List<NLR36months> nlr36monthsList = new System.Collections.Generic.List<NLR36months>();
             System.Collections.Generic.List<EnquiryHistory> enquiryInformationList = new System.Collections.Generic.List<EnquiryHistory>();
+            System.Collections.Generic.List<InternalEnquiryHistory> InternalEnqHistoryList = new System.Collections.Generic.List<InternalEnquiryHistory>();
             System.Collections.Generic.List<AddressHistory> addressInformationList = new System.Collections.Generic.List<AddressHistory>();
             System.Collections.Generic.List<EmploymentHistory> employmentInformationList = new System.Collections.Generic.List<EmploymentHistory>();
             System.Collections.Generic.List<TelephoneHistory> telephoneInformationList = new System.Collections.Generic.List<TelephoneHistory>();
@@ -4704,6 +4705,43 @@ namespace searchworks.client.Controllers
                         System.Diagnostics.Debug.WriteLine(err);
                     }
                 //************************************************* End CPAAccountsInformation***********//
+                //************************************************* Start InternalEnquiryHistroy*********//
+                string query_uid_InternalEnquiryHistory = $"SELECT * FROM internalenquiryhistory as a WHERE a.SearchToken = '{DbSearch.token}'";
+                using (var cmd = new MySqlCommand(query_uid_InternalEnquiryHistory, conn))
+                    try
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            InternalEnquiryHistory IntEnqHist = new InternalEnquiryHistory();
+
+                            int CompanyName = reader.GetOrdinal("CompanyName");
+                            int IntEnquiryDate = reader.GetOrdinal("IntEnquiryDate");
+                            int ContactPerson = reader.GetOrdinal("ContactPerson");
+                            int PhoneNumber = reader.GetOrdinal("PhoneNumber");
+                            int EmailAddress = reader.GetOrdinal("EmailAddress");
+
+                            while (reader.Read())
+                            {
+                                IntEnqHist.CompanyName = (reader[CompanyName] != Convert.DBNull) ? reader[CompanyName].ToString() : null;
+                                IntEnqHist.IntEnquiryDate = (reader[IntEnquiryDate] != Convert.DBNull) ? reader[IntEnquiryDate].ToString() : null;
+                                IntEnqHist.ContactPerson = (reader[ContactPerson] != Convert.DBNull) ? reader[ContactPerson].ToString() : null;
+                                IntEnqHist.PhoneNumber = (reader[PhoneNumber] != Convert.DBNull) ? reader[PhoneNumber].ToString() : null;
+                                IntEnqHist.EmailAddress = (reader[EmailAddress] != Convert.DBNull) ? reader[EmailAddress].ToString() : null;
+
+                                InternalEnqHistoryList.Add(IntEnqHist);
+                            }
+                        }
+
+                        //add list to the viewbagviewdata
+                        ViewData["InternalEnqHistoryList"] = InternalEnqHistoryList;
+                        ViewData["InternalEnqHistoryListCount"] = InternalEnqHistoryList.Count;
+                    }
+                    catch (Exception err)
+                    {
+                        System.Diagnostics.Debug.WriteLine(err);
+                    }
+
+                //************************************************* End InternalEnquiryHistroy***********//
             }
             return View();
         }
@@ -4853,20 +4891,20 @@ namespace searchworks.client.Controllers
                         JToken CPAACCOUNTSExists = rootObject.ResponseObject.CreditInformation.CPA_Accounts;
                         if (CPAACCOUNTSExists != null)
                         {
-                            String Account_ID = "";
-                            String SubscriberCode = "";
-                            String SubscriberName = "";
-                            String AccountNO = "";
-                            String OpenDate = "";
-                            String LastPaymentDate = "";
-                            String OpenBalance = "";
-                            String CurrentBalance = "";
-                            String OverdueAmount = "";
-                            String InstalmentAmount = "";
-                            String StatusCodeDesc = "";
-                            String StatusDate = "";
-                            String IndustryType = "";
-                            String PaymentHistoryChartURL = "";
+                            String Account_ID;
+                            String SubscriberCode;
+                            String SubscriberName;
+                            String AccountNO;
+                            String OpenDate;
+                            String LastPaymentDate;
+                            String OpenBalance;
+                            String CurrentBalance;
+                            String OverdueAmount;
+                            String InstalmentAmount;
+                            String StatusCodeDesc;
+                            String StatusDate;
+                            String IndustryType;
+                            String PaymentHistoryChartURL;
                             Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails = new Newtonsoft.Json.Linq.JArray();
                             CPAACCOUNTS = new List<CPAaccounts>();
 
@@ -4929,13 +4967,13 @@ namespace searchworks.client.Controllers
                             List<AddressHistory> AddressHist;
                             Newtonsoft.Json.Linq.JArray element1 = new Newtonsoft.Json.Linq.JArray();
                             element1 = rootObject.ResponseObject.HistoricalInformation.AddressHistory;
-                            String TypeDescription = "";
-                            String Line1 = "";
-                            String Line2 = "";
-                            String Line3 = "";
-                            String PostalCode = "";
-                            String FullAddress = "";
-                            String LastUpdatedDate = "";
+                            String TypeDescription;
+                            String Line1;
+                            String Line2;
+                            String Line3;
+                            String PostalCode;
+                            String FullAddress;
+                            String LastUpdatedDate;
                             AddressHist = new List<AddressHistory>();
                             for (int count = 0; count < (element1.Count); count++)
                             {
@@ -4968,11 +5006,11 @@ namespace searchworks.client.Controllers
                             List<TelephoneHistory> TelHist;
                             Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
                             elements2 = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory;
-                            String TypeDescriptionTel = "";
-                            String DialCode = "";
-                            String Number = "";
-                            String FullNumber = "";
-                            String LastUpdatedDateTel = "";
+                            String TypeDescriptionTel;
+                            String DialCode;
+                            String Number;
+                            String FullNumber;
+                            String LastUpdatedDateTel;
                             TelHist = new List<TelephoneHistory>();
                             for (int count = 0; count < (elements2.Count); count++)
                             {
@@ -5002,15 +5040,16 @@ namespace searchworks.client.Controllers
                             Newtonsoft.Json.Linq.JArray elements3 = new Newtonsoft.Json.Linq.JArray();
                             elements3 = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory;
 
-                            String EmployerName = "";
-                            String Designation = "";
-                            String LastUpdatedDate = "";
+                            String EmployerName;
+                            String Designation;
+                            String LastUpdatedDate;
                             EmpHist = new List<EmploymentHistory>();
 
                             for (int count = 0; count < (elements3.Count); count++)
                             {
                                 EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                                LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate; ;
+                                LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                                Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation;
                                 saveEmploymentHistory(SearchToken, Reference, SearchID, EmployerName, Designation, LastUpdatedDate, "VeriCredConsumerProfile");
                                 EmpHist.Add(new EmploymentHistory
                                 {
@@ -5864,7 +5903,7 @@ namespace searchworks.client.Controllers
                             CPAaccounts cppaAccounts = new CPAaccounts();
 
                             int Account_ID = reader.GetOrdinal("Account_ID");
-                            int SubscriberCode = reader.GetOrdinal("SubscriberCode");
+                            /*int SubscriberCode = reader.GetOrdinal("SubscriberCode");
                             int SubscriberName = reader.GetOrdinal("SubscriberName");
                             int AccountNO = reader.GetOrdinal("AccountNO");
                             int SubAccountNO = reader.GetOrdinal("SubAccountNO");
@@ -5903,7 +5942,7 @@ namespace searchworks.client.Controllers
                             int PaymentHistoryStatus = reader.GetOrdinal("PaymentHistoryStatus");
                             int PaymentHistoryChart = reader.GetOrdinal("PaymentHistoryChart");
                             int MonthEndDate = reader.GetOrdinal("MonthEndDate");
-                            int DateCreated = reader.GetOrdinal("DateCreated");
+                            int DateCreated = reader.GetOrdinal("DateCreated");*/
                             //Fetch PaymenyHistory Array
                             //public string PaymentHistoryChartURL { get; set; }
                             //public Newtonsoft.Json.Linq.JArray PaymentHistoryAccountDetails { get; set; }
@@ -5912,7 +5951,7 @@ namespace searchworks.client.Controllers
                             while (reader.Read())
                             {
                                 cppaAccounts.Account_ID = (reader[Account_ID] != Convert.DBNull) ? reader[Account_ID].ToString() : null;
-                                cppaAccounts.SubscriberCode = (reader[SubscriberCode] != Convert.DBNull) ? reader[SubscriberCode].ToString() : null;
+                                /*cppaAccounts.SubscriberCode = (reader[SubscriberCode] != Convert.DBNull) ? reader[SubscriberCode].ToString() : null;
                                 cppaAccounts.SubscriberName = (reader[SubscriberName] != Convert.DBNull) ? reader[SubscriberName].ToString() : null;
                                 cppaAccounts.AccountNO = (reader[AccountNO] != Convert.DBNull) ? reader[AccountNO].ToString() : null;
                                 cppaAccounts.SubAccountNO = (reader[SubAccountNO] != Convert.DBNull) ? reader[SubAccountNO].ToString() : null;
@@ -5951,17 +5990,16 @@ namespace searchworks.client.Controllers
                                 cppaAccounts.PaymentHistoryStatus = (reader[PaymentHistoryStatus] != Convert.DBNull) ? reader[PaymentHistoryStatus].ToString() : null;
                                 cppaAccounts.PaymentHistoryChart = (reader[PaymentHistoryChart] != Convert.DBNull) ? reader[PaymentHistoryChart].ToString() : null;
                                 cppaAccounts.MonthEndDate = (reader[MonthEndDate] != Convert.DBNull) ? reader[MonthEndDate].ToString() : null;
-                                cppaAccounts.DateCreated = (reader[DateCreated] != Convert.DBNull) ? reader[DateCreated].ToString() : null;
+                                cppaAccounts.DateCreated = (reader[DateCreated] != Convert.DBNull) ? reader[DateCreated].ToString() : null;*/
 
                                 //Read PaymentHistoryAccountDetails
 
                                 cppaAccountsList.Add(cppaAccounts);
                             }
+                            //add list to the viewbagviewdata cppaAccountsList
+                            ViewData["cppaAccountsList"] = cppaAccountsList;
+                            ViewData["cppaAccountsListCount"] = cppaAccountsList.Count;
                         }
-
-                        //add list to the viewbagviewdata
-                        ViewData["cppaAccountsList"] = cppaAccountsList;
-                        ViewData["cppaAccountsList"] = cppaAccountsList.Count;
                     }
                     catch (Exception err)
                     {

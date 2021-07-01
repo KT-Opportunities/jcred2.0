@@ -14,19 +14,19 @@ namespace searchworks.client.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+
     public partial class JCredDBContextEntities : DbContext
     {
         public JCredDBContextEntities()
             : base("name=JCredDBContextEntities")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<country> countries { get; set; }
         public virtual DbSet<orgcategory> orgcategories { get; set; }
         public virtual DbSet<orgregion> orgregions { get; set; }
@@ -109,13 +109,13 @@ namespace searchworks.client.Models
         public virtual DbSet<ccastat> ccastats { get; set; }
         public virtual DbSet<telephonehistory> telephonehistories { get; set; }
         public virtual DbSet<directorship> directorships { get; set; }
-    
+
         public virtual int sp_purgehistorydata(Nullable<System.DateTime> cutOff_DateTime)
         {
             var cutOff_DateTimeParameter = cutOff_DateTime.HasValue ?
                 new ObjectParameter("cutOff_DateTime", cutOff_DateTime) :
                 new ObjectParameter("cutOff_DateTime", typeof(System.DateTime));
-    
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_purgehistorydata", cutOff_DateTimeParameter);
         }
     }
