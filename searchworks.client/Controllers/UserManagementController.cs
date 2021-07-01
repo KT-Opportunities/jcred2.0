@@ -8,6 +8,8 @@ using MySql.Data.MySqlClient;
 using System.Configuration;
 using searchworks.client.Models;
 using searchworks.client.Credit;
+using Dapper;
+using System.Data;
 
 namespace searchworks.client.Controllers
 
@@ -17,71 +19,24 @@ namespace searchworks.client.Controllers
         JCredDBContextEntities db = new JCredDBContextEntities();
         public ActionResult UserManagementHome()
         {
-            //Fetch Company Informaion for currently logged in user.
-            //string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-
-            //var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
-
-            //string query_uid = "SELECT * FROM orgtenant WHERE orgtenantid = 2";
-
-            //conn.Open();
-
-            //var cmd = new MySqlCommand(query_uid, conn);
-            //var reader = cmd.ExecuteReader();
-
-            //System.Collections.Generic.List<UserManagementCompany> UserCompanyList = new System.Collections.Generic.List<UserManagementCompany>();
-            //int parent_orgtenantid = reader.GetOrdinal("parent_orgtenantid");
-            //int orgname = reader.GetOrdinal("orgname");
-            //int orgabbreviation = reader.GetOrdinal("orgabbreviation");
-            //int orgcode = reader.GetOrdinal("orgcode");
-            //int orgcategoryid = reader.GetOrdinal("orgcategoryid");
-            //int org_regno = reader.GetOrdinal("org_regno");
-            //int org_vatno = reader.GetOrdinal("org_vatno");
-
-            //if (reader.Read())
-            //{
-            //    while (reader.Read())
-            //    {
-            //        UserManagementCompany UMCompany = new UserManagementCompany();
-
-            // UMCompany.parent_orgtenantid = (reader[parent_orgtenantid] != Convert.DBNull) ?
-            // reader[parent_orgtenantid].ToString() : null; UMCompany.orgname = (reader[orgname] !=
-            // Convert.DBNull) ? reader[orgname].ToString() : null; UMCompany.orgabbreviation =
-            // (reader[orgabbreviation] != Convert.DBNull) ? reader[orgabbreviation].ToString() :
-            // null; UMCompany.orgcode = (reader[orgcode] != Convert.DBNull) ?
-            // reader[orgcode].ToString() : null; UMCompany.orgcategoryid = (reader[orgcategoryid]
-            // != Convert.DBNull) ? reader[orgcategoryid].ToString() : null; UMCompany.org_regno =
-            // (reader[org_regno] != Convert.DBNull) ? reader[org_regno].ToString() : null;
-            // UMCompany.org_vatno = (reader[org_vatno] != Convert.DBNull) ?
-            // reader[org_vatno].ToString() : null;
-
-            // UserCompanyList.Add(UMCompany); }
-
-            // ViewData["UserManagementCompany"] = UserCompanyList;
-            // ViewData["UserManagementCompanyCount"] = UserCompanyList.Count;
-
-            //    reader.Close();
-            //    return View();
-            //}
-            //else
-            //{
-            //    TempData["Message"] = "Error Occured!";
-            //    conn.Close();
-            //    return View();
-            //}
-
-            
-            // GET: UserManagement
-
-            UserManagementViewModel userManagementViewModel = new UserManagementViewModel();
-
-            userManagementViewModel.Company = new orgtenant() { orgtenantid = 2, orgname = "ABSA",orgcode= "ABSA" };// db.orgtenants.Where(a => a.orgtenantid == 2).Single();
-            var companyOrgUnits = from s in db.orgunits
-                                  where s.orgtenantid == userManagementViewModel.Company.orgtenantid
-                                  select s;
+            UserManagementViewModel userManagementViewModel = new UserManagementViewModel(2);
+            /*
+            userManagementViewModel.Company = db.orgtenants.Where(a => a.orgtenantid == 2).Single();
+            var companyOrgUnits   = from s in db.orgunits
+                                    where s.orgtenantid == userManagementViewModel.Company.orgtenantid
+                                    select s;
             userManagementViewModel.orgunits = companyOrgUnits.ToList<orgunit>();
+            */
 
-            return View(userManagementViewModel);
+            /*
+            using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
+            {
+                userManagementViewModel.Company  = db.Query<orgtenant>("Select * From orgtenant where orgtenantid=2").FirstOrDefault();
+                userManagementViewModel.orgunits = db.Query<orgunit>("Select * From orgunit where orgtenantid="+ userManagementViewModel.Company.orgtenantid).ToList();
+            }
+            */
+
+                return View(userManagementViewModel);
         }
 
         public ActionResult SearchHistory()
