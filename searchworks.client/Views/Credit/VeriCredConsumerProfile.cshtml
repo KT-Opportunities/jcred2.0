@@ -22,7 +22,7 @@
         @*<a href="~/Views/Credit/VeriCredConsumerProfile.cshtml">~/Views/Credit/VeriCredConsumerProfile.cshtml</a>*@
         <button>RESET</button>
     </div>
-    <div class="con" style="height: 700px">
+    <div class="con2" style="height: 700px">
         <div class="col-md-6 col-sm-6 left" style="height: 640px">
             @using (Html.BeginForm("VeriCredConsumerProfileResults", "Credit", FormMethod.Post))
             {
@@ -54,24 +54,24 @@
                 }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
                 </div>
 
-                <div class="firstname" style=" margin-top: -62px;">
+                <div class="firstname">
                     <label>ID Number</label><br>
 
                     @Html.TextBox("idNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
                 </div>
 
-                <div class="tc" style=" margin-top: 150px;">
+                <div class="tc">
                     <div class="checkBoxDiv">
-                        I accept the <a href="#">terms and conditions</a>
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
                     <div class="checkBoxDiv">
-                        <a href="#">Consumer consent</a>acquired
+                        <a href="#">Consumer consent</a>&nbsp;acquired &nbsp;
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button id="combinedComSearch" class="butn" name="combinedComSearch">Perform Search</button>
                 </div>
 
-                <button id="combinedComSearch" class="btn" name="combinedComSearch" style=" margin-top: 162px;">Perform Search</button>
 
             }
         </div>

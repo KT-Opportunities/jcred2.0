@@ -1,4 +1,6 @@
-﻿@{
+﻿@model searchworks.client.Models.UserManagementViewModel
+
+@{
     ViewBag.Title = "User Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,12 +8,16 @@
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
+    <div>
+        <p>
+            @Html.LabelFor(m => m.Company.orgname)
+            @Html.DisplayFor(m => m.Company.orgname)
+        </p>
+    </div>
+    <div class="btn-row">
 
-    <div class="row btn-row">
         <div class="col-md-6 col-sm-6">
             <div class="row">
                 <div class="col-md-4 col-sm-1">
@@ -36,168 +42,172 @@
         </div>
     </div>
 
-    <div id="companies" style="display:block">
-        <div class="row com-row">
-            <div class="com-div">
-                <strong>
-                    <p class="com-p">COMPANY INFORMATION</p>
-                </strong>
+    <div id="companies" style="display: block; padding-top: 28px">
+        @*<div class="row com-row">
+            </div>*@
+        <div class="sea_bar" @*class="row com-row"*@>
+            <div class="col-6">
+                <label>COMPANY INFORMATION</label>
             </div>
         </div>
         <div class="row ro-2">
-            <div class="con">
-                <div class="row ro">
-                    <div class="col-md-6 col-sm-6 pls">
-                        <p>Please remember to keep your company information up to date</p>
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                    </div>
+            <div class="con2">
+                <div class="col-md-6 col-sm-6 left">
+                    @using (Html.BeginForm("CSIPersonalRecordsResults", "Individual", FormMethod.Post))
+                    {
+                        //Use Editor For on TextBox
+                        <div class="">
+                            <label>Company Name</label><br>
+                            @Html.EditorFor(m => m.Company.orgname, new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           minlength = "3",
+                           maxlength = "30"
+                       })
+
+                           
+                        </div>
+                        
+                        <div>
+                            <label>Abbreviation</label><br>
+                            @Html.TextBox("abbreviation", null, new
+                             {
+                             @id = "FirstName",
+                             @class = "cus-input",
+                             minlength
+                             = "3",
+                             maxlength = "30"
+                             })
+                        </div>
+                        <label>Category</label><br>
+                        @Html.DropDownList("seaType", new List<SelectListItem>
+                            {
+                            new SelectListItem { Text = "Name", Value = "name"},
+                            new SelectListItem { Text = "Registration Number", Value = "regNum"},
+                            }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
+                        <div class="">
+                            <label>Registration Number</label><br>
+                            @Html.TextBox("RegistrationNumber", null, new
+                            {
+                            @id = "FirstName",
+                            @class = "cus-input"
+                            })
+                        </div>
+                        <div class="vatregnum">
+                            <label>Vat Registration Number</label><br>
+                            @Html.TextBox("VatRegistrationNumber", null, new
+                            {
+                            @id = "FirstName",
+                            @class
+                            = "cus-input"
+                            })
+                        </div>
+                        <div class="tc">
+
+                            <button onclick="Search()" id="individualSearch" class="butn" name="combinedComSearch">Request Change</button>
+                        </div>
+                    }
+
+                    @*<div class="col-md-6 col-sm-6">
+                        </div>*@
                 </div>
-                <div class="row ro-3 my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
-                    <div class="col-md-6 col-sm-6 com-form">
-                        @using (Html.BeginForm("CSIPersonalRecordsResults", "Individual", FormMethod.Post))
-                        {
-                            <div class="">
-                                <label>Company Name</label><br>
-                                @Html.TextBox("CompanyName", null, new
-                                {
-                                @id = "FirstName",
-                                @class = "cus-input",
-                                minlength
-                                = "3",
-                                maxlength = "30"
-                                })
-                            </div>
-                            <div>
-                                <label>Abbreviation</label><br>
-                                @Html.TextBox("abbreviation", null, new
-                                 {
-                                 @id = "FirstName",
-                                 @class = "cus-input",
-                                 minlength
-                                 = "3",
-                                 maxlength = "30"
-                                 })
-                            </div>
-                            <label>Category</label><br>
-                            @Html.DropDownList("seaType", new List<SelectListItem>
-                                {
-                                new SelectListItem { Text = "Name", Value = "name"},
-                                new SelectListItem { Text = "Registration Number", Value = "regNum"},
-                                }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
-                            <div class="">
-                                <label>Registration Number</label><br>
-                                @Html.TextBox("RegistrationNumber", null, new
-                                {
-                                @id = "FirstName",
-                                @class = "cus-input"
-                                })
-                            </div>
-                            <div class="vatregnum">
-                                <label>Vat Registration Number</label><br>
-                                @Html.TextBox("VatRegistrationNumber", null, new
-                                {
-                                @id = "FirstName",
-                                @class
-                                = "cus-input"
-                                })
-                            </div>
-                            <button onclick="Search()" id="individualSearch" class="com-btn" name="individualSearch">
-                                Request Change
-                            </button>
-                        }
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                    </div>
+                <div class="col-md-6 col-sm-6 right">
+                    <p>Please remember to keep your company information up to date</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="branches" style="display:none">
-        <div class="row com-row">
-            <div class="com-div">
-                <div class="row">
-                    <div class="col-6">
-                        <form class="form-inline my-form-inline">
+    <div id="branches" style="display: none; padding-top: 28px">
+        @*<div class="row com-row ">
+                <div class="com-div">
+                    <div class="row">
+                        <div class="col-6">
+                            <form class="form-inline my-form-inline">
 
-                            <div class="form-group mb-2 in-mar">
-                                <label for="inputPassword" class="col-form-label search-label">Search by</label>
-                                <div class="in-mar">
-                                    <input type="text" class="form-control" id="inputPassword">
+                                <div class="form-group mb-2 in-mar">
+                                    <label for="inputPassword" class="col-form-label search-label">Search by</label>
+                                    <div class="in-mar">
+                                        <input type="text" class="form-control" id="inputPassword">
+                                    </div>
                                 </div>
-                            </div>
-                            <button type="submit" class="btn-b">Search</button>
-                        </form>
-                    </div>
+                                <button type="submit" class="btn-b">Search</button>
+                            </form>
+                        </div>
 
-                    <div class="col-6">
-                        <button class="btn-b2">Create branch</button>
+                        <div class="col-6">
+                            <button class="btn-b2">Create branch</button>
+                        </div>
                     </div>
                 </div>
+            </div>*@
+        <div class="sea_bar" @*class="row com-row"*@>
+            <div class="col-6" style="display: flex;">
+                <label>Search History</label>
+                <input name="search" />
+                <button data-toggle="modal" data-target="#adSearch">Search</button>
             </div>
         </div>
-
         <div class="row ro-2">
             <div class="con1">
                 <table class="table table-borderless custom-table">
                     <thead>
-                        <tr>
-                            <th scope="col" class="color">
+                        <tr class="justify-content-around t-row" style="display:flex">
+                            <th scope="col" class="thSearch color">
                                 <label class="control control--checkbox">
                                     <input type="checkbox" class="js-check-all" />
-                                    <div class="control__indicator"></div>
+                                    @*<div class="control__indicator"></div>*@
                                 </label>
                             </th>
-                            <th scope="col" class="color">Branch Name</th>
-                            <th scope="col" class="color">Telephone</th>
-                            <th scope="col" class="color">Fax</th>
-                            <th scope="col" class="color" ">Users</th>
-                            <th scope=" col" class="color">Plus</th>
-                            <th scope="col" class="color">Enabled</th>
-                            <th scope="col" class="color"></th>
+                            <th scope="col" class="thSearch color">Branch Name</th>
+                            <th scope="col" class="thSearch color">Telephone</th>
+                            <th scope="col" class="thSearch color">Fax</th>
+                            <th scope="col" class="thSearch color">Users</th>
+                            <th scope="col" class="thSearch color">Plus</th>
+                            <th scope="col" class="thSearch color">Enabled</th>
+                            <th scope="col" class="thSearch color"></th>
                         </tr>
                     </thead>
                 </table>
             </div>
         </div>
 
-        <div class="row ro-2">
-
-            <div class="con">
+        <div class="rowTable ro-2">
+            <div class="conSearchHistory">
                 <div class="table-responsive my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
 
-                    <table class="table table-borderless table-hover custom-table">
+                    <table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
 
                         <tbody>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
+                            <tr scope="row" class="justify-content-around t-row ">
+                                <td scope="col" class="tdUM">
                                     <label class="control control--checkbox">
                                         <input type="checkbox" />
-                                        <div class="control__indicator"></div>
+                                        @*<div class="control__indicator"></div>*@
                                     </label>
                                 </td>
-                                <td class="bran-u" data-toggle="modal"
+                                <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
                                     Midrand
                                 </td>
-                                <td class="tel-u" data-toggle="modal"
+                                <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
                                     +27102938475
                                 </td>
-                                <td class="fax-u" data-toggle="modal"
+                                <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
                                     +27112938475
                                 </td>
-                                <td class="us-u" data-toggle="modal"
+                                <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
                                     6 Users
                                 </td>
-                                <td class="plu-u" data-toggle="modal"
+                                <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
                                     -
                                 </td>
-                                <td class="pl-0 en-u">
+                                <td class="pl-0 en-u tdUM">
                                     <div class=" align-items-center">
                                         <label class="custom-control ios-switch">
                                             <input type="checkbox" class="ios-switch-control-input" checked="">
@@ -205,158 +215,47 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="ey-u" data-toggle="modal"
+                                <td class="ey-u tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
                                     <i class="fa fa-eye" aria-hidden="true"></i> View
                                 </td>
                             </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    Midrand
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    +27102938475
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    +27112938475
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    6 Users
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    -
-                                </td>
-                                <td class="pl-0 en-u">
-                                    <div class=" align-items-center">
-                                        <label class="custom-control ios-switch">
-                                            <input type="checkbox" class="ios-switch-control-input">
-                                            <span class="ios-switch-control-indicator"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td class="ey-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="fa fa-eye" aria-hidden="true"></i> View
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    Midrand
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    +27102938475
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    +27112938475
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    6 Users
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    -
-                                </td>
-                                <td class="pl-0 en-u">
-                                    <div class=" align-items-center">
-                                        <label class="custom-control ios-switch">
-                                            <input type="checkbox" class="ios-switch-control-input">
-                                            <span class="ios-switch-control-indicator"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td class="ey-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="fa fa-eye" aria-hidden="true"></i> View
-                                </td>
-                            </tr>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td class="bran-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    Midrand
-                                </td>
-                                <td class="tel-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    +27102938475
-                                </td>
-                                <td class="fax-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    +27112938475
-                                </td>
-                                <td class="us-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    6 Users
-                                </td>
-                                <td class="plu-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    -
-                                </td>
-                                <td class="pl-0 en-u">
-                                    <div class=" align-items-center">
-                                        <label class="custom-control ios-switch">
-                                            <input type="checkbox" class="ios-switch-control-input" checked="">
-                                            <span class="ios-switch-control-indicator"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td class="ey-u" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="fa fa-eye" aria-hidden="true"></i> View
-                                </td>
-                            </tr>
-
                         </tbody>
-
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="users" style="display:none">
-        <div class="row com-row">
+    <div id="users" style="display: none; padding-top: 28px">
+        <div class="sea_bar" @*class="row com-row"*@>
+            <div class="col-6" style="display: flex;">
+                <label>Search History</label>
+                <input name="search" />
+                <button data-toggle="modal" data-target="#adSearch">Search</button>
+            </div>
+
+            <div class="col-6">
+                <button class="btn-b2" data-toggle="modal" data-target="#userModal" style="background-color: #00B46F; cursor: pointer ">Create user</button>
+            </div>
+        </div>
+        <!--<div class="row com-row">
             <div class="com-div">
                 <div class="row">
-                    <div class="col-6">
-                        @*<div class="row">
-                                <div class="col-3">
-                                    <p><strong>Search By</strong></p>
-                                </div>
-                                <div class="col-6">
-                                    <input class="inp-b" name="search" />
-                                </div>
-                                <div class="col-3">
-                                    <button class="btn-b">Search</button>
-                                </div>
-                            </div>*@
+                    <div class="col-6">-->
+        @*<div class="row">
+                <div class="col-3">
+                    <p><strong>Search By</strong></p>
+                </div>
+                <div class="col-6">
+                    <input class="inp-b" name="search" />
+                </div>
+                <div class="col-3">
+                    <button class="btn-b">Search</button>
+                </div>
+            </div>*@
 
-                        <form class="form-inline my-form-inline">
+        <!--<form class="form-inline my-form-inline">
 
                             <div class="form-group mb-2 in-mar">
                                 <label for="inputPassword" class="col-form-label search-label">Search by</label>
@@ -373,69 +272,70 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
+
         <div class="row ro-2">
             <div class="con1">
                 <table class="table table-borderless custom-table">
                     <thead>
-                        <tr style="display:flex;">
-                            <th scope="col" class="color">
+                        <tr class="justify-content-around t-row" style="display:flex">
+                            <th scope="col" class="thSearch color">
                                 <label class="control control--checkbox">
                                     <input type="checkbox" class="js-check-all" />
                                     <div class="control__indicator"></div>
                                 </label>
                             </th>
-                            <th scope="col" class="color">Name</th>
-                            <th scope="col" class="color">Branch Name</th>
-                            <th scope="col" class="color">Mobile</th>
-                            <th scope="col" class="color">Email</th>
-                            <th scope="col" class="color">CC Role</th>
-                            <th scope="col" class="color">SW Role</th>
-                            <th scope="col" class="color">Enabled</th>
-                            <th scope="col" class="color"></th>
+                            <th scope="col" class="thSearch color">Name</th>
+                            <th scope="col" class="thSearch color">Branch Name</th>
+                            <th scope="col" class="thSearch color">Mobile</th>
+                            <th scope="col" class="thSearch color">Email</th>
+                            <th scope="col" class="thSearch color">CC Role</th>
+                            <th scope="col" class="thSearch color">SW Role</th>
+                            <th scope="col" class="thSearch color">Enabled</th>
+                            <th scope="col" class="thSearch color"></th>
                         </tr>
                     </thead>
                 </table>
             </div>
         </div>
-        <div class="row ro-2">
-            <div class="con">
+        <div class="rowTable ro-2">
+            <div class="conUserMangement">
                 <div class="table-responsive my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
-                    <table class="table table-borderless table-hover custom-table">
+                    <table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
 
                         <tbody>
-                            <tr scope="row" class="t-row" style="cursor:pointer">
-                                <td class="t-col">
+                            <tr scope="row" class="justify-content-around t-row ">
+                                <td scope="col" class="tdSH">
                                     <label class="control control--checkbox">
                                         <input type="checkbox" />
                                         <div class="control__indicator"></div>
                                     </label>
                                 </td>
-                                <td class="bran-u" data-toggle="modal"
+                                <td scope="col" class="tdSH" data-toggle="modal"
                                     data-target="#userModal">
                                     Walt
                                 </td>
-                                <td class="tel-u" data-toggle="modal"
+                                <td scope="col" class="tdSH" data-toggle="modal"
                                     data-target="#userModal">
                                     Midrand
                                 </td>
-                                <td class="fax-u" data-toggle="modal"
+                                <td scope="col" class="tdSH" data-toggle="modal"
                                     data-target="#userModal">
                                     +27 107 7897
                                 </td>
-                                <td class="us-u" data-toggle="modal"
+                                <td scope="col" class="tdSH" data-toggle="modal"
                                     data-target="#userModal">
                                     walt@ktopportunities.co.za
                                 </td>
-                                <td class="us-u viewBtn" data-toggle="modal"
+                                <td scope="col" class="tdSH" data-toggle="modal"
                                     data-target="#userModal">
                                     User
                                 </td>
-                                <td class="us-u viewBtn" data-toggle="modal"
+                                <td scope="col" class="tdSH" data-toggle="modal"
                                     data-target="#userModal">
                                     User
                                 </td>
-                                <td class="pl-0 en-u">
+                                <td class="pl-0 en-u tdSH">
                                     <div class=" align-items-center">
                                         <label class="custom-control ios-switch">
                                             <input type="checkbox" class="ios-switch-control-input" checked="">
@@ -444,7 +344,7 @@
                                         @*<a href="#">James Yates</a>*@
                                     </div>
                                 </td>
-                                <td class="ey-u" data-toggle="modal" data-target="#userModal"><i class="fa fa-eye" aria-hidden="true"></i> View</td>
+                                <td class="ey-u tdSH" data-toggle="modal" data-target="#userModal"><i class="fa fa-eye" aria-hidden="true"></i> View</td>
                             </tr>
                         </tbody>
                     </table>
@@ -453,10 +353,6 @@
         </div>
     </div>
 </div>
-
-
- 
-
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -500,9 +396,7 @@
                             </button>
                         </div>
                         <div class="col-md-2 col-sm-2">
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -510,7 +404,7 @@
 
                 <div id="branchInfo" class="con" style="display:flex; ">
 
-                    <div class="container">
+                    <div class="justify-content-between" style="display:flex;flex-direction:column">
 
                         <div class="row justify-content-center">
                             <div class="col-6">
@@ -522,7 +416,6 @@
                                minlength = "3",
                                maxlength = "30"
                            })
-
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Vat Number</strong><br>
@@ -534,7 +427,6 @@
                                    maxlength = "30"
                                })
                             </div>
-
                         </div>
 
                         <div class="row justify-content-center">
@@ -547,12 +439,9 @@
                                minlength = "3",
                                maxlength = "30"
                            })
-
                             </div>
                             <div class="col-6">
-
                             </div>
-
                         </div>
 
                         <div class="row justify-content-center">
@@ -566,7 +455,6 @@
                                @rows = "10",
 
                            })
-
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Postal Addres</strong><br>
@@ -579,7 +467,6 @@
 
                            })
                             </div>
-
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-6">
@@ -591,7 +478,6 @@
                                minlength = "3",
                                maxlength = "30"
                            })
-
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Fax Number</strong><br>
@@ -610,26 +496,19 @@
                             </div>
                             <div class="col-6" style="margin-left: 343px;">
                                 <div class="row justify-content-end">
-                                    <button class="btn-b2-cancel btnSpace">Cancel</button>
+                                    <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
                                     <button class="btn-b2 btnSpace">Save Changes</button>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-
-
                 </div>
-
-
-
             </div>
 
             @*<div class="modal-body modalBod">*@
             <div id="acctPersons" class="con"
-                 style="display:none;justify-content:center">
-                <div class="container" style="display: flex; flex-direction: column; margin-top: 26px;">
+                 style="display:none;">
+                <div class="container" style="display: flex; flex-direction: column;justify-content:space-between; margin-top: 26px;">
                     <div class="row"
                          style="display: flex; align-content: center;background: #212529 0% 0% no-repeat padding-box; height: 40px; width: 96.5%; align-self: center; box-shadow: 0px 3px 6px #00000029; border-radius: 10px; opacity: 1;">
                         <div class="col-sm heading">
@@ -646,7 +525,6 @@
                         </div>
                     </div>
 
-
                     <div class="row justify-content-center ap">
                         <div class="col-6">
                             @* <strong class="heading1">Telephone Number</strong><br>*@
@@ -657,7 +535,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             @*  <strong class="heading1">Fax Number</strong><br>*@
@@ -681,7 +558,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             @*<strong class="heading1">Fax Number</strong><br>*@
@@ -698,24 +574,18 @@
                     <div class="row justify-content-center" style="margin-right: 12px;">
                         <div class="col-6">
                         </div>
-                        <div class="col-6" style="margin-left: 343px;">
+                        <div class="col-6">
                             <div class="row justify-content-end">
-                                <button class="btn-b2-cancel btnSpace">Cancel</button>
+                                <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
                                 <button class="btn-b2 btnSpace">Save Changes</button>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
-                @*  *@
             </div>
-            @* </div>  *@
             <div style="margin-top: 17px !important;"></div>
 
-            <div id="billingInfo" class="con" style="display:none;">
+            <div id="billingInfo" class="con" style="display:none;overflow:scroll">
                 <div class="container my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass"
                      style="display: flex; flex-direction: column;">
 
@@ -723,7 +593,6 @@
                          style="align-items:center;padding:10px">
 
                         <strong>EXISTING BILLING INFORMATION</strong>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -736,7 +605,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             <strong class="heading1">Use Bank Account</strong><br>
@@ -748,7 +616,6 @@
                                maxlength = "30"
                            })
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -768,13 +635,9 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="col-6">
-
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -787,7 +650,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             <strong class="heading1">Bank Branch Name</strong><br>
@@ -799,9 +661,7 @@
                                maxlength = "30"
                            })
                         </div>
-
                     </div>
-
 
                     <div class="row justify-content-center">
                         <div class="col-6">
@@ -813,7 +673,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             <strong class="heading1">Account Holder</strong><br>
@@ -825,7 +684,6 @@
                                maxlength = "30"
                            })
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -838,7 +696,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             <strong class="heading1">Account Type</strong><br>
@@ -850,9 +707,7 @@
                                maxlength = "30"
                            })
                         </div>
-
                     </div>
-
 
                     <div class="row justify-content-center">
                         <div class="col-6">
@@ -864,7 +719,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             <strong class="heading1">Purchase Order</strong><br>
@@ -876,7 +730,6 @@
                                maxlength = "30"
                            })
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -890,7 +743,6 @@
                                    maxlength = "30",
                                    placeholder = "Street",
                                })
-
 
                             @Html.TextBox("Town", null, new
                                {
@@ -910,7 +762,6 @@
                                   placeholder = "City",
                               })
 
-
                             @Html.TextBox("PostalCode", null, new
                                {
                                    @id = "FirstName",
@@ -919,10 +770,8 @@
                                    maxlength = "30",
                                    placeholder = "Postal Code",
                                })
-
                         </div>
                     </div>
-
 
                     <div class="row justify-content-center">
                         <div class="col-6">
@@ -934,7 +783,6 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
                             <strong class="heading1">Telephone Number</strong><br>
@@ -946,7 +794,6 @@
                                maxlength = "30"
                            })
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -959,12 +806,9 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
-
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -984,8 +828,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="col-6">
 
@@ -1004,11 +846,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
-
                     </div>
 
                     <div class="row justify-content-center">
@@ -1021,46 +859,35 @@
                            minlength = "3",
                            maxlength = "30"
                        })
-
                         </div>
                         <div class="col-6">
-
                         </div>
-
                     </div>
-
                 </div>
 
                 <div class="row justify-content-center" style="margin-right: 12px;">
                     <div class="col-6">
                     </div>
-                    <div class="col-6" style="margin-left: 314px;">
+                    <div class="col-6">
                         <div class="row justify-content-end">
-                            <button class="btn-b2-cancel btnSpace">Cancel</button>
+                            <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
                             <button class="btn-b2 btnSpace">Save Changes</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-
             <div style="margin-top: 17px !important;"></div>
-
-
         </div>
     </div>
 </div>
-
- 
-
-
 
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog"
      aria-labelledby="userModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content modal-back" style="width: 126% !important;">
             <div class="modal-header" style="height: 63px;">
-                <strong class="textLabel"z>USER INFORMATION</strong>
+                <strong class="textLabel" z>USER INFORMATION</strong>
                 <div class="row justify-content-end">
 
                     <div class="row" style="display: block;
@@ -1091,15 +918,13 @@
                         </div>
                         <div class="col-md-3 col-sm-3">
                             @*<button onclick="myFunction('billingInfo')"
-                                    style="cursor: pointer;color:white" type="button"
-                                    class="btns ">
-                                BILLING INFO
-                            </button>*@
+                                        style="cursor: pointer;color:white" type="button"
+                                        class="btns ">
+                                    BILLING INFO
+                                </button>*@
                         </div>
                         <div class="col-md-2 col-sm-2">
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -1107,348 +932,276 @@
 
                 @*<div id="j-cred" class="con" style="display:flex; ">*@
 
-                    <div class="">
+                <div id="userInfo" class="con jc" style="display:block;">
+                    <div class="container my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass"
+                         style="display: flex; flex-direction: column;">
 
-                        <div id="userInfo" class="con jc" style="display:block;">
-                            <div class="container my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass"
-                                 style="display: flex; flex-direction: column;">
+                        @*<div class="row justify-content-between"
+                                 style="align-items:center;padding:10px">
 
-                                @*<div class="row justify-content-between"
-                                     style="align-items:center;padding:10px">
+                                <strong>user Info</strong>
+                            </div>*@
 
-                                    <strong>user Info</strong>
-
-                                </div>*@
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Company</strong><br>
-                                        @Html.TextBox("Company", null, new
-                                   {
-                                       @id = "FirstName",
-                                       @class = "cus-input",
-                                       minlength = "3",
-                                       maxlength = "30"
-                                   })
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Branch</strong><br>
-                                        @Html.TextBox("Branch", null, new
-                                       {
-                                           @id = "FirstName",
-                                           @class = "cus-input",
-                                           minlength = "3",
-                                           maxlength = "30"
-                                       })
-                                    </div>
-
-                                </div>
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">First Name</strong><br>
-                                        @Html.TextBox("FistName", null, new
-                                           {
-                                               @id = "FirstName",
-                                               @class = "cus-input",
-                                               minlength = "3",
-                                               maxlength = "30"
-                                           })
-
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Last Name</strong><br>
-                                        @Html.TextBox("LastName", null, new
-                                   {
-                                       @id = "FirstName",
-                                       @class = "cus-input",
-                                       minlength = "3",
-                                       maxlength = "30"
-                                   })
-                                    </div>
-
-                                </div>
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Role</strong><br>
-                                        @Html.DropDownList("role", new List<SelectListItem>
-                                           {
-                                           new SelectListItem { Text = "Admin", Value = "admin"},
-                                           new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
-                                           }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
-
-                                    </div>
-                                    <div class="col-6">
-                                       
-                                    </div>
-
-                                </div>
-
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Office Number</strong><br>
-                                        @Html.TextBox("officeNumber", null, new
-                                       {
-                                           @id = "FirstName",
-                                           @class = "cus-input",
-                                           minlength = "3",
-                                           maxlength = "30"
-                                       })
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Mobile Number</strong><br>
-                                        @Html.TextBox("mobileNumber", null, new
-                                       {
-                                           @id = "FirstName",
-                                           @class = "cus-input",
-                                           minlength = "3",
-                                           maxlength = "30"
-                                       })
-                                    </div>
-
-                                </div>
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Email Address</strong><br>
-                                        @Html.TextBox("emailAddress", null, new
-                                       {
-                                           @id = "FirstName",
-                                           @class = "cus-input",
-                                           minlength = "3",
-                                           maxlength = "30"
-                                       })
-                                    </div>
-                                    <div class="col-6">
-
-                                        <strong class="heading1">Fax Number</strong><br>
-                                        @Html.TextBox("FaxNumber", null, new
-                                   {
-                                       @id = "FirstName",
-                                       @class = "cus-input",
-                                       minlength = "3",
-                                       maxlength = "30"
-                                   })
-
-                                    
-                                    </div>
-
-                                </div>
-
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Password</strong><br>
-                                        @Html.Password("password", null, new
-                                   {
-                                       @id = "FirstName",
-                                       @class = "cus-input",
-                                       minlength = "3",
-                                       maxlength = "30"
-                                   })
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Confirm Password</strong><br>
-                                        @Html.Password("confirmPassword", null, new
-                                       {
-                                           @id = "FirstName",
-                                           @class = "cus-input",
-                                           minlength = "3",
-                                           maxlength = "30"
-                                       })
-                                    </div>
-
-                                </div>
-
-                           
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="rad">
-                                                <div class="col-6">
-                                                    <p class="rad-lab">Bill Selected Branch</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="align-items-center" style="float: right;">
-                                                        <label class="custom-control ios-switch">
-                                                            <input type="checkbox" class="ios-switch-control-input" checked="">
-                                                            <span class="ios-switch-control-indicator"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="col-6">
-
-                                     
-
-
-                                    </div>
-
-                                </div>
-
-
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Company</strong><br>
+                                @Html.TextBox("Company", null, new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30"
+                           })
                             </div>
-
-
-                            <div class="row justify-content-center" style="margin-right: 12px;">
-                                <div class="col-6">
-                                </div>
-                                <div class="col-6" style="margin-left: 314px;">
-                                    <div class="row justify-content-end">
-                                        <button class="btn-b2-cancel btnSpace">Cancel</button>
-                                        <button class="btn-b2 btnSpace">Save Changes</button>
-                                    </div>
-                                </div>
+                            <div class="col-6">
+                                <strong class="heading1">Branch</strong><br>
+                                @Html.TextBox("Branch", null, new
+                               {
+                                   @id = "FirstName",
+                                   @class = "cus-input",
+                                   minlength = "3",
+                                   maxlength = "30"
+                               })
                             </div>
-
                         </div>
 
-
-                        <div id="jcred" class="con jc" style="display:none;">
-                            <div class="container my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass"
-                                 style="display: flex; flex-direction: column;">
-
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Reference</strong><br>
-                                        @Html.DropDownList("reference", new List<SelectListItem>
-                                           {
-                                           new SelectListItem { Text = "Admin", Value = "admin"},
-                                           new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
-                                           }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
-
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Role</strong><br>
-                                        @Html.DropDownList("role", new List<SelectListItem>
-                                           {
-                                           new SelectListItem { Text = "Admin", Value = "admin"},
-                                           new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
-                                           }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Deeds Office</strong><br>
-                                        @Html.DropDownList("deedsOffice", new List<SelectListItem>
-                                           {
-                                           new SelectListItem { Text = "Admin", Value = "admin"},
-                                           new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
-                                           }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
-
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Last Name</strong><br>
-                                        @Html.TextBox("LastName", null, new
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">First Name</strong><br>
+                                @Html.TextBox("FistName", null, new
                                    {
                                        @id = "FirstName",
                                        @class = "cus-input",
                                        minlength = "3",
                                        maxlength = "30"
                                    })
+                            </div>
+                            <div class="col-6">
+                                <strong class="heading1">Last Name</strong><br>
+                                @Html.TextBox("LastName", null, new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30"
+                           })
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Role</strong><br>
+                                @Html.DropDownList("role", new List<SelectListItem>
+                                   {
+                                   new SelectListItem { Text = "Admin", Value = "admin"},
+                                   new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
+                                   }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
+                            </div>
+                            <div class="col-6">
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Office Number</strong><br>
+                                @Html.TextBox("officeNumber", null, new
+                               {
+                                   @id = "FirstName",
+                                   @class = "cus-input",
+                                   minlength = "3",
+                                   maxlength = "30"
+                               })
+                            </div>
+                            <div class="col-6">
+                                <strong class="heading1">Mobile Number</strong><br>
+                                @Html.TextBox("mobileNumber", null, new
+                               {
+                                   @id = "FirstName",
+                                   @class = "cus-input",
+                                   minlength = "3",
+                                   maxlength = "30"
+                               })
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Email Address</strong><br>
+                                @Html.TextBox("emailAddress", null, new
+                               {
+                                   @id = "FirstName",
+                                   @class = "cus-input",
+                                   minlength = "3",
+                                   maxlength = "30"
+                               })
+                            </div>
+                            <div class="col-6">
+
+                                <strong class="heading1">Fax Number</strong><br>
+                                @Html.TextBox("FaxNumber", null, new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30"
+                           })
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Password</strong><br>
+                                @Html.Password("password", null, new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30"
+                           })
+                            </div>
+                            <div class="col-6">
+                                <strong class="heading1">Confirm Password</strong><br>
+                                @Html.Password("confirmPassword", null, new
+                               {
+                                   @id = "FirstName",
+                                   @class = "cus-input",
+                                   minlength = "3",
+                                   maxlength = "30"
+                               })
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="rad">
+                                        <div class="col-6">
+                                            <p class="rad-lab">Bill Selected Branch</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="align-items-center" style="float: right;">
+                                                <label class="custom-control ios-switch">
+                                                    <input type="checkbox" class="ios-switch-control-input" checked="">
+                                                    <span class="ios-switch-control-indicator"></span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
+                            </div>
+                            <div class="col-6">
+                            </div>
+                        </div>
+                    </div>
 
-                                <div class="row justify-content-center">
-                                    <div class="col-6">
-                                        <strong class="heading1">Enabled Search Types</strong><br>
-                                      
-                                        @Html.ListBox("enableSearch", new List<SelectListItem>
+                    <div class="row justify-content-center" style="margin-right: 12px;">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6" style="margin-left: 314px;">
+                            <div class="row justify-content-end">
+                                <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
+                                <button class="btn-b2 btnSpace">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="jcred" class="conUsers jc" style="display:none;height: none">
+                    <div class="container my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass"
+                         style="display: flex; flex-direction: column;">
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Reference</strong><br>
+                                @Html.DropDownList("reference", new List<SelectListItem>
+                                   {
+                                   new SelectListItem { Text = "Admin", Value = "admin"},
+                                   new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
+                                   }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
+                            </div>
+                            <div class="col-6">
+                                <strong class="heading1">Role</strong><br>
+                                @Html.DropDownList("role", new List<SelectListItem>
+                                   {
+                                   new SelectListItem { Text = "Admin", Value = "admin"},
+                                   new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
+                                   }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Deeds Office</strong><br>
+                                @Html.DropDownList("deedsOffice", new List<SelectListItem>
+                                   {
+                                   new SelectListItem { Text = "Admin", Value = "admin"},
+                                   new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
+                                   }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
+                            </div>
+                            <div class="col-6">
+                                <strong class="heading1">Last Name</strong><br>
+                                @Html.TextBox("LastName", null, new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30"
+                           })
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <strong class="heading1">Enabled Search Types</strong><br>
+
+                                @Html.ListBox("enableSearch", new List<SelectListItem>
+                           {
+                               //new SelectListItem { Text = "Admin", Value = "admin"},
+                               //new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
+                           }, new { @id = "listBox", @class = "cus-input my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass", required = "required", Size = "6" })
+
+                                <div class="row">
+                                    <div class="rad2">
+                                        <button class="btn-b2 btnSpace" style="width: 100%;">Enable</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <strong class="heading1">Disabled Search Types</strong><br>
+                                @Html.ListBox("enableSearch", new List<SelectListItem>
                                    {
                                        //new SelectListItem { Text = "Admin", Value = "admin"},
                                        //new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
-                                   } ,new { @id = "listBox", @class = "cus-input my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass", required = "required", Size= "6" })
+                                   }, new { @id = "listBox", @class = "cus-input my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass", required = "required", Size = "6" })
 
-
-
-                                        <div class="row">
-                                            <div class="rad2">
-                                                <button class="btn-b2 btnSpace" style="width: 100%;">Enable</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="heading1">Disabled Search Types</strong><br>
-                                        @Html.ListBox("enableSearch", new List<SelectListItem>
-                                           {
-                                               //new SelectListItem { Text = "Admin", Value = "admin"},
-                                               //new SelectListItem { Text = "Super-Admin", Value = "super-admin"},
-                                           }, new { @id = "listBox", @class = "cus-input my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass", required = "required", Size = "6" })
-
-                                        <div class="row">
-                                            <div class="rad2">
-                                                <button class="btn-b2 btnSpace" style="width: 100%;">Disable</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-
-
-                            </div>
-
-                            <div class="row justify-content-center" style="margin-right: 12px;">
-                                <div class="col-6">
-                                </div>
-                                <div class="col-6" style="margin-left: 314px;">
-                                    <div class="row justify-content-end">
-                                        <button class="btn-b2-cancel btnSpace">Cancel</button>
-                                        <button class="btn-b2 btnSpace">Save Changes</button>
+                                <div class="row">
+                                    <div class="rad2">
+                                        <button class="btn-b2 btnSpace" style="width: 100%;">Disable</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-
-
-
-
-
-
-
-
-                   
-
-
+                    <div class="row justify-content-center" style="margin-right: 12px;">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                            <div class="row justify-content-end">
+                                <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
+                                <button class="btn-b2 btnSpace">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-
-
             </div>
 
-            <div style="margin-top: 17px !important;"></div>
+            @*<div style="margin-top: 17px !important;"></div>*@
+        </div>
     </div>
 </div>
 
-
-
-
-
 @* modal user end *@
-
-
 
 <script>
     function myFunction(div) {
@@ -1464,7 +1217,6 @@
 
         var userInfo = document.getElementById("userInfo");
         var jcred = document.getElementById("jcred")
-
 
         if (div === 'branchInfo') {
             branchInfo.style.display = "block";
@@ -1543,9 +1295,6 @@
             `top: ${this.scrollTop}px!important; height: 400px; right: ${-this.scrollLeft}px`;
     };
 
-
-
-
       var tab = [];
     // removing duplicates
 
@@ -1557,22 +1306,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('USER MANAGEMENT');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -1584,7 +1326,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -1680,5 +1421,4 @@
 
         console.log($(event.target).text());
     };
-
 </script>

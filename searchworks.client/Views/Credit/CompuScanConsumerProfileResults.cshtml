@@ -8,1057 +8,1040 @@
     ViewBag.Title = "Consumer Profile Report";
 }
 
-
-
 <div class="col-md-10 col-sm-10">
-    <div class="sea non">SEARCH RESULTS</div>
-    <div class="sea non">Consumer Profile Report</div>
-    <div class="sea act">@ViewData["refe"]</div>
-    <div class="con2">
-        <div class="left_col">
-            <div class="results">
-                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                <p>2 Results</p>
-            </div>
-            <p class="num">@ViewData["refe"]</p>
-            <p class="num2">Consumer Profile Report</p>
+    @if (TempData["msg"] != null)
+    {
+        <div>@TempData["msg"] </div>
+        <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+    }
+    else
+    {
+        <div class="con2">
+            <div class="left_col">
+                <div class="results">
+                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                    <p>2 Results</p>
+                </div>
+                <p class="num">@ViewData["refe"]</p>
+                <p class="num2">Consumer Profile Report</p>
 
-            <div class="multi non">
-                Multiple Results
-            </div>
-            <div class="multi act">
-                Detailed Information
-            </div>
-
-            <div class="seaInfo">
-                Search Information
-            </div>
-
-            <div class="userInfo">
-                <p class="">User:<span>@ViewData["user"]</span></p>
-                <p class="">Date:<span>@ViewData["date"] </span></p>
-                <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
-
-            </div>
-
-        </div>
-        <div class="right_col">
-            <div id="notification" class="seaRes">
-                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="not">
-                Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
-                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
-                <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
-            </div>
-
-            <div id="notification" class="seaRes">
-                CompuScan <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            @if (@ViewData["Message"].ToString() == "good" && @ViewData["PersonInformationMessage"].ToString() != "")
-            {
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="PI" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="PIT" style="display:none;">
-                            <tr>
-                                <td colspan="2">Date of Birth</td>
-                                <td style="border: none;" colspan="4">@ViewData["DateOfBirth"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">First Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["FirstName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Surname</td>
-                                <td style="border: none;" colspan="4">@ViewData["Surname"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">ID Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["IDNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Gender</td>
-                                <td style="border: none;" colspan="4">@ViewData["Gender"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Age</td>
-                                <td style="border: none;" colspan="4">@ViewData["Age"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Verification Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["VerificationStatus"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Country</td>
-                                <td style="border: none;" colspan="4">@ViewData["Country"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Has Properties</td>
-                                <td style="border: none;" colspan="4">@ViewData["HasProperties"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                <div class="multi non">
+                    Multiple Results
+                </div>
+                <div class="multi act">
+                    Detailed Information
                 </div>
 
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HAI" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="HAIT" style="display:none;">
-                            <tr>
-                                <td colspan="2">DelphiScore</td>
-                                <td style="border: none;" colspan="4">@ViewData["DelphiScore"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Risk</td>
-                                <td style="border: none;" colspan="4">@ViewData["Risk"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Accounts</td>
-                                <td style="border: none;" colspan="4">@ViewData["Accounts"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Enquires</td>
-                                <td style="border: none;" colspan="4">@ViewData["Enquiries"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Judgments</td>
-                                <td style="border: none;" colspan="4">@ViewData["Judgments"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Notices</td>
-                                <td style="border: none;" colspan="4">@ViewData["Notices"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Bank Defaults</td>
-                                <td style="border: none;" colspan="4">@ViewData["BankDefaults"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Defaults</td>
-                                <td style="border: none;" colspan="4">@ViewData["Defaults"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Collections</td>
-                                <td style="border: none;" colspan="4">@ViewData["Collections"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Directors</td>
-                                <td style="border: none;" colspan="4">@ViewData["Directors"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Address</td>
-                                <td style="border: none;" colspan="4">@ViewData["Addresses"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Telepohnes</td>
-                                <td style="border: none;" colspan="4">@ViewData["Telephones"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Occupants</td>
-                                <td style="border: none;" colspan="4">@ViewData["Occupants"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Employers</td>
-                                <td style="border: none;" colspan="4">@ViewData["Employers"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Trace Alerts</td>
-                                <td style="border: none;" colspan="4">@ViewData["TraceAlerts"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Payment Profiles</td>
-                                <td style="border: none;" colspan="4">@ViewData["PaymentProfiles"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Own Enquires</td>
-                                <td style="border: none;" colspan="4">@ViewData["OwnEnquiries"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Admin Orders</td>
-                                <td style="border: none;" colspan="4">@ViewData["AdminOrders"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Possible Matches</td>
-                                <td style="border: none;" colspan="4">@ViewData["PossibleMatches"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Definite Matches</td>
-                                <td style="border: none;" colspan="4">@ViewData["DefiniteMatches"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Loans</td>
-                                <td style="border: none;" colspan="4">@ViewData["Loans"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Fraud Alerts</td>
-                                <td style="border: none;" colspan="4">@ViewData["FraudAlerts"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Companies</td>
-                                <td style="border: none;" colspan="4">@ViewData["Companies"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Properties</td>
-                                <td style="border: none;" colspan="4">@ViewData["Properties"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Documents</td>
-                                <td style="border: none;" colspan="4">@ViewData["Documents"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Demand Letters</td>
-                                <td style="border: none;" colspan="4">@ViewData["DemandLetters"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Trusts</td>
-                                <td style="border: none;" colspan="4">@ViewData["Trusts"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Bonds</td>
-                                <td style="border: none;" colspan="4">@ViewData["Bonds"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Public Defaults</td>
-                                <td style="border: none;" colspan="4">@ViewData["PublicDefaults"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">NLR Accounts</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLRAccounts"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Application Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["ApplicationDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
+                <div class="seaInfo">
+                    Search Information
                 </div>
 
-            <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="CPA" style="border: none; cursor:pointer;" colspan="2">CPA Accounts</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="CPAT" style="display:none;">
-                            <tr>
-                                <td colspan="2">Subscriber Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["SubscriberCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Subscriber Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["SubscriberName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Branch Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["BranchCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Account NO</td>
-                                <td style="border: none;" colspan="4">@ViewData["AccountNO"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Sub Account NO</td>
-                                <td style="border: none;" colspan="4">@ViewData["SubAccountNO"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Ownership Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["OwnershipType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Ownership Type Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["OwnershipTypeDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Reason</td>
-                                <td style="border: none;" colspan="4">@ViewData["Reason"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Reason Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["ReasonDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Payment Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["PaymentType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Payment Type Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["PaymentTypeDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Account Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["AccountType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Account Type Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["AccountTypeDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Open Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["OpenDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Deferred Payment Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["DeferredPaymentDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Last Payment Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["LastPaymentDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Open Balance</td>
-                                <td style="border: none;" colspan="4">@ViewData["OpenBalance"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Open Balance IND</td>
-                                <td style="border: none;" colspan="4">@ViewData["OpenBalanceIND"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Current Balance</td>
-                                <td style="border: none;" colspan="4">@ViewData["CurrentBalance"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Current Balance IND</td>
-                                <td style="border: none;" colspan="4">@ViewData["CurrentBalanceIND"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Overdue Amount</td>
-                                <td style="border: none;" colspan="4">@ViewData["OverdueAmount"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Overdue Amount IND</td>
-                                <td style="border: none;" colspan="4">@ViewData["OverdueAmountIND"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Instalment Amount</td>
-                                <td style="border: none;" colspan="4">@ViewData["InstalmentAmount"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Arrears Period</td>
-                                <td style="border: none;" colspan="4">@ViewData["ArrearsPeriod"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Repayment Frequency</td>
-                                <td style="border: none;" colspan="4">@ViewData["RepaymentFrequency"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Repayment Frequency Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["RepaymentFrequencyDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Terms</td>
-                                <td style="border: none;" colspan="4">@ViewData["Terms"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">StatusCode</td>
-                                <td style="border: none;" colspan="4">@ViewData["StatusCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Status Code Desc</td>
-                                <td style="border: none;" colspan="4">@ViewData["StatusCodeDesc"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Status Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["StatusDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Third Party Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["ThirdPartyName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2">Third Party Sold</td>
-                                <td style="border: none;" colspan="4">@ViewData["ThirdPartySold"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2">Third Party Sold Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["ThirdPartySoldDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2">Joint Loan Participants</td>
-                                <td style="border: none;" colspan="4">@ViewData["JointLoanParticipants"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2">Payment History</td>
-                                <td style="border: none;" colspan="4">@ViewData["PaymentHistory"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2">Payment History Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["PaymentHistoryStatus"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2">Payment History Chart</td>
-                                <td style="border: none;" colspan="4">@ViewData["PaymentHistoryChart"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Month End Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["MonthEndDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Date Created</td>
-                                <td style="border: none;" colspan="4">@ViewData["DateCreated"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-            
+                <div class="userInfo">
+                    <p class="">User:<span>@ViewData["user"]</span></p>
+                    <p class="">Date:<span>@ViewData["date"] </span></p>
+                    <p class="">Reference:<span>@ViewData["ref"]</span></p>
+                    <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
+                </div>
             </div>
+            <div class="right_col">
+                <div id="notification" class="seaRes">
+                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="not">
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                    <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                </div>
 
-            <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="NLR" style="border: none; cursor:pointer;" colspan="2">NLR Accounts</th>
+                <div id="notification" class="seaRes">
+                    CompuScan <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                @if (@ViewData["Message"].ToString() == "good")
+                {
+                    <div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="PI" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                </tr>
+                            </thead>
+                            <tbody id="PIT" style="display:none;">
+                                <tr>
+                                    <td colspan="2">Date of Birth</td>
+                                    <td style="border: none;" colspan="4">@ViewData["DateOfBirth"]</td>
 
-                            </tr>
-                        </thead>
-                        <tbody id="NLRT" style="display:none;">
-                            <tr>
-                                <td colspan="2"> Subscriber Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_SubscriberCode"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">First Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["FirstName"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Subscriber Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_SubscriberName"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Surname</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Surname"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Branch Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_BranchCode"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Account NO</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_AccountNO"]</td>
+                                <tr>
+                                    <td colspan="2">ID Number</td>
+                                    <td style="border: none;" colspan="4">@ViewData["IDNumber"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Sub Account NO</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_SubAccountNO"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Gender</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Gender"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Ownership Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OwnershipType"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Age</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Age"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Ownership Type Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OwnershipTypeDescription"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Verification Status</td>
+                                    <td style="border: none;" colspan="4">@ViewData["VerificationStatus"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Reason</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_Reason"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Country</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Country"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Reason Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_ReasonDescription"]</td>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Has Properties</td>
+                                    <td style="border: none;" colspan="4">@ViewData["HasProperties"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Payment Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_PaymentType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Payment Type Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_PaymentTypeDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Account Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_AccountType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Account Type Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_AccountTypeDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Open Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OpenDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Deferred Payment Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_DeferredPaymentDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Last Payment Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_LastPaymentDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Open Balance</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OpenBalance"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Open Balance IND</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OpenBalanceIND"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Current Balance</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_CurrentBalance"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Current Balance IND</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_CurrentBalanceIND"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Overdue Amount</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OverdueAmount"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Overdue Amount IND</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_OverdueAmountIND"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Instalment Amount</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_InstalmentAmount"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Arrears Period</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_ArrearsPeriod"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Repayment Frequency</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_RepaymentFrequency"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Repayment Frequency Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_RepaymentFrequencyDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Terms</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_Terms"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Status Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_StatusCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Status Code Desc</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_StatusCodeDesc"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Status Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_StatusDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Third Party Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_ThirdPartyName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Third Party Sold</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_ThirdPartySold"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Third Party Sold Description</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_ThirdPartySoldDescription"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Joint Loan Participants</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_JointLoanParticipants"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                             <tr>
-                                <td colspan="2"> Payment History</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_PaymentHistory"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Payment History Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_PaymentHistoryStatus"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Payment History Chart</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_PaymentHistoryChart"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Month End Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_MonthEndDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="2"> Date Created</td>
-                                <td style="border: none;" colspan="4">@ViewData["NLR_DateCreated"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr> 
-
-                        </tbody>
-                    </table>
-            
-            </div>
-
-                        <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="DIR" style="border: none; cursor:pointer;" colspan="2">Directorship</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="DIRT" style="display:none;">
-                            <tr>
-                                <td colspan="2"> Designation Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_DesignationCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Appointment Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_AppointmentDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Director Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_DirectorStatus"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Director Status Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_DirectorStatusDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyStatus"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Status Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyStatusCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Registration Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyRegistrationNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Registration Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyRegistrationDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> Company Start Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyStartDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Company Tax Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_CompanyTaxNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Director Type Code</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_DirectorTypeCode"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Director Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_DirectorType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Member Size</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_MemberSize"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Member Contribution</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_MemberContribution"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Member Contribution Type</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_MemberContributionType"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                             <tr>
-                                <td colspan="2"> Resignation Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["D_ResignationDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                        </tbody>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
                         </table>
-                     </div>
+                    </div>
 
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="CI" style="border: none; cursor:pointer;" colspan="2">Consumer Statistics</th>
+                    <div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="HAI" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
+                                </tr>
+                            </thead>
+                            <tbody id="HAIT" style="display:none;">
+                                <tr>
+                                    <td colspan="2">DelphiScore</td>
+                                    <td style="border: none;" colspan="4">@ViewData["DelphiScore"]</td>
 
-                            </tr>
-                        </thead>
-                        <tbody id="">
-                        </tbody>
-                    </table>
-                    <div id="CIT" class="row com" style="display:none;">
-                        <div class="col-md-4 col-sm-4 " style="padding-left: 20px;">
-                            <p><b>Highest Judgment: </b>@ViewData["HighestJudgment"]</p>
-                            <p><b>Revolving Accounts: </b>@ViewData["RevolvingAccounts"]</p>
-                            <p><b>Instalment Accounts: </b>@ViewData["InstalmentAccounts"]</p>
-                            <p><b>Open Accounts: </b>@ViewData["OpenAccounts"]</p>
-                            <p><b>Adverse Accounts: </b>@ViewData["AdverseAccounts"]</p>
-                        </div>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Risk</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Risk"]</td>
 
-                        <div class="col-md-4 col-sm-4 ">
-                            <h5> NLR Stats</h5>
-                            <p><b>Active Accounts: </b>@ViewData["NLRStats_ActiveAccounts"]</p>
-                            <p><b>Closed Accounts: </b>@ViewData["NLRStats_ClosedAccounts"]</p>
-                            <p><b>Worst Month Arrears: </b>@ViewData["NLRStats_WorstMonthArrears"]</p>
-                            <p><b>Balance Exposure: </b>@ViewData["NLRStats_BalanceExposure"]</p>
-                            <p><b>Cumulative Arrears: </b>@ViewData["NLRStats_CumulativeArrears"]</p>
-                            <p><b>Monthly Instalment: </b>@ViewData["NLRStats_MonthlyInstalment"]</p>
-                            <hr />
-                            <h5> NLR 12 Months</h5>
-                            <p><b>Enquiries By Client: </b>@ViewData["NLR12Months_EnquiriesByClient"]</p>
-                            <p><b>Enquiries By Other: </b>@ViewData["NLR12Months_EnquiriesByOther"]</p>
-                            <p><b>Postive Loans: </b>@ViewData["NLR12Months_PositiveLoans"]</p>
-                            <p><b>Highest Months In Arrears: </b>@ViewData["NLR12Months_HighestMonthsInArrears"]</p>
-                            <hr />
-                            <h5> NLR 24 Months</h5>
-                            <p><b>Enquiries By Client: </b>@ViewData["NLR24Months_EnquiriesByClient"]</p>
-                            <p><b>Enquiries By Other: </b>@ViewData["NLR24Months_EnquiriesByOther"]</p>
-                            <p><b>Postive Loans: </b>@ViewData["NLR24Months_PositiveLoans"]</p>
-                            <p><b>Highest Months In Arrears: </b>@ViewData["NLR24Months_HighestMonthsInArrears"]</p>
-                            <hr />
-                            <h5> NLR 36 Months</h5>
-                            <p><b>Enquiries By Client: </b>@ViewData["NLR36Months_EnquiriesByClient"]</p>
-                            <p><b>Enquiries By Other: </b>@ViewData["NLR36Months_EnquiriesByOther"]</p>
-                            <p><b>Postive Loans: </b>@ViewData["NLR36Months_PositiveLoans"]</p>
-                            <p><b>Highest Months In Arrears: </b>@ViewData["NLR36Months_HighestMonthsInArrears"]</p>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Accounts</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Accounts"]</td>
 
-                        </div>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Enquires</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Enquiries"]</td>
 
-                        <div class="col-md-4 col-sm-4 ">
-                            <h5> CCA Stats</h5>
-                            <p><b>Active Accounts: </b>@ViewData["CCAStats_ActiveAccounts"]</p>
-                            <p><b>Closed Accounts: </b>@ViewData["CCAStats_ClosedAccounts"]</p>
-                            <p><b>Worst Month Arrears: </b>@ViewData["CCAStats_WorstMonthArrears"]</p>
-                            <p><b>Balance Exposure: </b>@ViewData["CCAStats_BalanceExposure"]</p>
-                            <p><b>Cumulative Arrears: </b>@ViewData["CCAStats_CumulativeArrears"]</p>
-                            <p><b>Monthly Instalment: </b>@ViewData["CCAStats_MonthlyInstalment"]</p>
-                            <hr />
-                            <h5> CCA 12 Months</h5>
-                            <p><b>Enquiries By Client: </b>@ViewData["CCA12Months_EnquiriesByClient"]</p>
-                            <p><b>Enquiries By Other: </b>@ViewData["CCA12Months_EnquiriesByOther"]</p>
-                            <p><b>Postive Loans: </b>@ViewData["CCA12Months_PositiveLoans"]</p>
-                            <p><b>Highest Months In Arrears: </b>@ViewData["CCA12Months_HighestMonthsInArrears"]</p>
-                            <hr />
-                            <h5> CCA 24 Months</h5>
-                            <p><b>Enquiries By Client: </b>@ViewData["CCA24Months_EnquiriesByClient"]</p>
-                            <p><b>Enquiries By Other: </b>@ViewData["CCA24Months_EnquiriesByOther"]</p>
-                            <p><b>Postive Loans: </b>@ViewData["CCA24Months_PositiveLoans"]</p>
-                            <p><b>Highest Months In Arrears: </b>@ViewData["CCA24Months_HighestMonthsInArrears"]</p>
-                            <hr />
-                            <h5> CCA 36 Months</h5>
-                            <p><b>Enquiries By Client: </b>@ViewData["CCA36Months_EnquiriesByClient"]</p>
-                            <p><b>Enquiries By Other: </b>@ViewData["CCA36Months_EnquiriesByOther"]</p>
-                            <p><b>Postive Loans: </b>@ViewData["CCA36Months_PositiveLoans"]</p>
-                            <p><b>Highest Months In Arrears: </b>@ViewData["CCA36Months_HighestMonthsInArrears"]</p>
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Judgments</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Judgments"] </td>
 
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Notices</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Notices"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Bank Defaults</td>
+                                    <td style="border: none;" colspan="4">@ViewData["BankDefaults"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Defaults</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Defaults"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Collections</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Collections"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Directors</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Directors"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Address</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Addresses"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Telepohnes</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Telephones"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Occupants</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Occupants"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Employers</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Employers"] </td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Trace Alerts</td>
+                                    <td style="border: none;" colspan="4">@ViewData["TraceAlerts"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Payment Profiles</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PaymentProfiles"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Own Enquires</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OwnEnquiries"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Admin Orders</td>
+                                    <td style="border: none;" colspan="4">@ViewData["AdminOrders"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Possible Matches</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PossibleMatches"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Definite Matches</td>
+                                    <td style="border: none;" colspan="4">@ViewData["DefiniteMatches"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Loans</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Loans"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Fraud Alerts</td>
+                                    <td style="border: none;" colspan="4">@ViewData["FraudAlerts"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Companies</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Companies"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Properties</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Properties"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Documents</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Documents"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Demand Letters</td>
+                                    <td style="border: none;" colspan="4">@ViewData["DemandLetters"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Trusts</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Trusts"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Bonds</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Bonds"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Public Defaults</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PublicDefaults"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">NLR Accounts</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLRAccounts"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Application Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["ApplicationDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="CPA" style="border: none; cursor:pointer;" colspan="2">CPA Accounts</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CPAT" style="display:none;">
+                                <tr>
+                                    <td colspan="2">Subscriber Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["SubscriberCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Subscriber Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["SubscriberName"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Branch Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["BranchCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Account NO</td>
+                                    <td style="border: none;" colspan="4">@ViewData["AccountNO"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Sub Account NO</td>
+                                    <td style="border: none;" colspan="4">@ViewData["SubAccountNO"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Ownership Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OwnershipType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Ownership Type Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OwnershipTypeDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Reason</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Reason"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Reason Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["ReasonDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PaymentType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment Type Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PaymentTypeDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Account Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["AccountType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Account Type Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["AccountTypeDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Open Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OpenDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Deferred Payment Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["DeferredPaymentDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Last Payment Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["LastPaymentDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Open Balance</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OpenBalance"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Open Balance IND</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OpenBalanceIND"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Current Balance</td>
+                                    <td style="border: none;" colspan="4">@ViewData["CurrentBalance"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Current Balance IND</td>
+                                    <td style="border: none;" colspan="4">@ViewData["CurrentBalanceIND"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Overdue Amount</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OverdueAmount"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Overdue Amount IND</td>
+                                    <td style="border: none;" colspan="4">@ViewData["OverdueAmountIND"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Instalment Amount</td>
+                                    <td style="border: none;" colspan="4">@ViewData["InstalmentAmount"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Arrears Period</td>
+                                    <td style="border: none;" colspan="4">@ViewData["ArrearsPeriod"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Repayment Frequency</td>
+                                    <td style="border: none;" colspan="4">@ViewData["RepaymentFrequency"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Repayment Frequency Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["RepaymentFrequencyDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Terms</td>
+                                    <td style="border: none;" colspan="4">@ViewData["Terms"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">StatusCode</td>
+                                    <td style="border: none;" colspan="4">@ViewData["StatusCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Status Code Desc</td>
+                                    <td style="border: none;" colspan="4">@ViewData["StatusCodeDesc"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Status Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["StatusDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Third Party Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["ThirdPartyName"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Third Party Sold</td>
+                                    <td style="border: none;" colspan="4">@ViewData["ThirdPartySold"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Third Party Sold Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["ThirdPartySoldDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Joint Loan Participants</td>
+                                    <td style="border: none;" colspan="4">@ViewData["JointLoanParticipants"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment History</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PaymentHistory"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment History Status</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PaymentHistoryStatus"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment History Chart</td>
+                                    <td style="border: none;" colspan="4">@ViewData["PaymentHistoryChart"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Month End Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["MonthEndDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Date Created</td>
+                                    <td style="border: none;" colspan="4">@ViewData["DateCreated"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="NLR" style="border: none; cursor:pointer;" colspan="2">NLR Accounts</th>
+                                </tr>
+                            </thead>
+                            <tbody id="NLRT" style="display:none;">
+                                <tr>
+                                    <td colspan="2"> Subscriber Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_SubscriberCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Subscriber Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_SubscriberName"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Branch Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_BranchCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Account NO</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_AccountNO"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Sub Account NO</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_SubAccountNO"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Ownership Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OwnershipType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Ownership Type Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OwnershipTypeDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Reason</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_Reason"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Reason Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_ReasonDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Payment Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_PaymentType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Payment Type Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_PaymentTypeDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Account Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_AccountType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Account Type Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_AccountTypeDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Open Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OpenDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Deferred Payment Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_DeferredPaymentDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Last Payment Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_LastPaymentDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Open Balance</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OpenBalance"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Open Balance IND</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OpenBalanceIND"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Current Balance</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_CurrentBalance"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Current Balance IND</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_CurrentBalanceIND"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Overdue Amount</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OverdueAmount"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Overdue Amount IND</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_OverdueAmountIND"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Instalment Amount</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_InstalmentAmount"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Arrears Period</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_ArrearsPeriod"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Repayment Frequency</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_RepaymentFrequency"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Repayment Frequency Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_RepaymentFrequencyDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Terms</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_Terms"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Status Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_StatusCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Status Code Desc</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_StatusCodeDesc"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Status Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_StatusDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Third Party Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_ThirdPartyName"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Third Party Sold</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_ThirdPartySold"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Third Party Sold Description</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_ThirdPartySoldDescription"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Joint Loan Participants</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_JointLoanParticipants"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Payment History</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_PaymentHistory"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Payment History Status</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_PaymentHistoryStatus"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Payment History Chart</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_PaymentHistoryChart"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Month End Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_MonthEndDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Date Created</td>
+                                    <td style="border: none;" colspan="4">@ViewData["NLR_DateCreated"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="DIR" style="border: none; cursor:pointer;" colspan="2">Directorship</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DIRT" style="display:none;">
+                                <tr>
+                                    <td colspan="2"> Designation Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_DesignationCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Appointment Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_AppointmentDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Director Status</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_DirectorStatus"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Director Status Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_DirectorStatusDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Name</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyName"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Status</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyStatus"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Status Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyStatusCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Registration Number</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyRegistrationNumber"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Registration Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyRegistrationDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Start Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyStartDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Company Tax Number</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_CompanyTaxNumber"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Director Type Code</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_DirectorTypeCode"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Director Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_DirectorType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Member Size</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_MemberSize"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Member Contribution</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_MemberContribution"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Member Contribution Type</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_MemberContributionType"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> Resignation Date</td>
+                                    <td style="border: none;" colspan="4">@ViewData["D_ResignationDate"]</td>
+
+                                    <td><a class="seaMore" href="#">View more</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="SeaInfo">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="CI" style="border: none; cursor:pointer;" colspan="2">Consumer Statistics</th>
+                                </tr>
+                            </thead>
+                            <tbody id="">
+                            </tbody>
+                        </table>
+                        <div id="CIT" class="row com" style="display:none;">
+                            <div class="col-md-4 col-sm-4 " style="padding-left: 20px;">
+                                <p><b>Highest Judgment: </b>@ViewData["HighestJudgment"]</p>
+                                <p><b>Revolving Accounts: </b>@ViewData["RevolvingAccounts"]</p>
+                                <p><b>Instalment Accounts: </b>@ViewData["InstalmentAccounts"]</p>
+                                <p><b>Open Accounts: </b>@ViewData["OpenAccounts"]</p>
+                                <p><b>Adverse Accounts: </b>@ViewData["AdverseAccounts"]</p>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 ">
+                                <h5> NLR Stats</h5>
+                                <p><b>Active Accounts: </b>@ViewData["NLRStats_ActiveAccounts"]</p>
+                                <p><b>Closed Accounts: </b>@ViewData["NLRStats_ClosedAccounts"]</p>
+                                <p><b>Worst Month Arrears: </b>@ViewData["NLRStats_WorstMonthArrears"]</p>
+                                <p><b>Balance Exposure: </b>@ViewData["NLRStats_BalanceExposure"]</p>
+                                <p><b>Cumulative Arrears: </b>@ViewData["NLRStats_CumulativeArrears"]</p>
+                                <p><b>Monthly Instalment: </b>@ViewData["NLRStats_MonthlyInstalment"]</p>
+                                <hr />
+                                <h5> NLR 12 Months</h5>
+                                <p><b>Enquiries By Client: </b>@ViewData["NLR12Months_EnquiriesByClient"]</p>
+                                <p><b>Enquiries By Other: </b>@ViewData["NLR12Months_EnquiriesByOther"]</p>
+                                <p><b>Postive Loans: </b>@ViewData["NLR12Months_PositiveLoans"]</p>
+                                <p><b>Highest Months In Arrears: </b>@ViewData["NLR12Months_HighestMonthsInArrears"]</p>
+                                <hr />
+                                <h5> NLR 24 Months</h5>
+                                <p><b>Enquiries By Client: </b>@ViewData["NLR24Months_EnquiriesByClient"]</p>
+                                <p><b>Enquiries By Other: </b>@ViewData["NLR24Months_EnquiriesByOther"]</p>
+                                <p><b>Postive Loans: </b>@ViewData["NLR24Months_PositiveLoans"]</p>
+                                <p><b>Highest Months In Arrears: </b>@ViewData["NLR24Months_HighestMonthsInArrears"]</p>
+                                <hr />
+                                <h5> NLR 36 Months</h5>
+                                <p><b>Enquiries By Client: </b>@ViewData["NLR36Months_EnquiriesByClient"]</p>
+                                <p><b>Enquiries By Other: </b>@ViewData["NLR36Months_EnquiriesByOther"]</p>
+                                <p><b>Postive Loans: </b>@ViewData["NLR36Months_PositiveLoans"]</p>
+                                <p><b>Highest Months In Arrears: </b>@ViewData["NLR36Months_HighestMonthsInArrears"]</p>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 ">
+                                <h5> CCA Stats</h5>
+                                <p><b>Active Accounts: </b>@ViewData["CCAStats_ActiveAccounts"]</p>
+                                <p><b>Closed Accounts: </b>@ViewData["CCAStats_ClosedAccounts"]</p>
+                                <p><b>Worst Month Arrears: </b>@ViewData["CCAStats_WorstMonthArrears"]</p>
+                                <p><b>Balance Exposure: </b>@ViewData["CCAStats_BalanceExposure"]</p>
+                                <p><b>Cumulative Arrears: </b>@ViewData["CCAStats_CumulativeArrears"]</p>
+                                <p><b>Monthly Instalment: </b>@ViewData["CCAStats_MonthlyInstalment"]</p>
+                                <hr />
+                                <h5> CCA 12 Months</h5>
+                                <p><b>Enquiries By Client: </b>@ViewData["CCA12Months_EnquiriesByClient"]</p>
+                                <p><b>Enquiries By Other: </b>@ViewData["CCA12Months_EnquiriesByOther"]</p>
+                                <p><b>Postive Loans: </b>@ViewData["CCA12Months_PositiveLoans"]</p>
+                                <p><b>Highest Months In Arrears: </b>@ViewData["CCA12Months_HighestMonthsInArrears"]</p>
+                                <hr />
+                                <h5> CCA 24 Months</h5>
+                                <p><b>Enquiries By Client: </b>@ViewData["CCA24Months_EnquiriesByClient"]</p>
+                                <p><b>Enquiries By Other: </b>@ViewData["CCA24Months_EnquiriesByOther"]</p>
+                                <p><b>Postive Loans: </b>@ViewData["CCA24Months_PositiveLoans"]</p>
+                                <p><b>Highest Months In Arrears: </b>@ViewData["CCA24Months_HighestMonthsInArrears"]</p>
+                                <hr />
+                                <h5> CCA 36 Months</h5>
+                                <p><b>Enquiries By Client: </b>@ViewData["CCA36Months_EnquiriesByClient"]</p>
+                                <p><b>Enquiries By Other: </b>@ViewData["CCA36Months_EnquiriesByOther"]</p>
+                                <p><b>Postive Loans: </b>@ViewData["CCA36Months_PositiveLoans"]</p>
+                                <p><b>Highest Months In Arrears: </b>@ViewData["CCA36Months_HighestMonthsInArrears"]</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="SeaInfo">
+                    <div class="SeaInfo">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
                                 </tr>
-
                             </thead>
                         </table>
                         <table style="display:none;" id="HIT" class="table table-striped">
@@ -1072,7 +1055,6 @@
                                 <tr>
                                     <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
                                 </tr>
-
                             </thead>
                         </table>
                         <div style="display:none;" id="addT">
@@ -1149,13 +1131,12 @@
 
                                         <td><a class="seaMore" href="#">View more</a></td>
                                     </tr>
-                                    
                                 </tbody>
                             </table>
                         </div>
 
                         <div style="display:none;" id="emT">
-                             <table class="table table-striped">
+                            <table class="table table-striped">
                                 <thead>
                                 </thead>
                                 <tbody>
@@ -1177,39 +1158,28 @@
 
                                         <td><a class="seaMore" href="#">View more</a></td>
                                     </tr>
-                                    
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
-            }
-            else if (@ViewData["Message"].ToString() == "Service is offline")
-            {
-                <div class="no_results">
-                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                    <div class="no_res">
-                        @ViewData["Message2"]
+                }
+                else if (@ViewData["Message"].ToString() == "Service is offline")
+                {
+                    <div class="no_results">
+                        <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                        <div class="no_res">
+                            @ViewData["Message2"]
+                        </div>
                     </div>
-                </div>
 
-            }
-            
-
-
-
-
-
+                }
+            </div>
         </div>
 
-
-    </div>
+    }
 </div>
 
-
 <script>
-
-
 
     //CompScan
     $("#PI").click(function () {
@@ -1218,13 +1188,13 @@
     $("#HAI").click(function () {
         $("#HAIT").toggle();
     });
-       $("#CPA").click(function () {
+    $("#CPA").click(function () {
         $("#CPAT").toggle();
     });
-           $("#NLR").click(function () {
+    $("#NLR").click(function () {
         $("#NLRT").toggle();
     });
-          $("#DIR").click(function () {
+    $("#DIR").click(function () {
         $("#DIRT").toggle();
     });
     $("#CI").click(function () {
@@ -1273,7 +1243,6 @@
     $("#emU").click(function () {
         $("#emTU").toggle();
     });
-
 
     //XDS
     $("#PIX").click(function () {
@@ -1329,16 +1298,9 @@
         $("#emTV").toggle();
     });
 
-
-
-
-
-
-
     $(document).ready(function () {
         $(".not").hide();
         $("#minusNot").hide();
-
 
         $('#plusNot').on('click', function () {
             $(".not").show();
@@ -1353,8 +1315,6 @@
             $(".not").hide();
 
         });
-
-
 
         $("#minusSeaInfo").hide();
         $(".SeaInfo").hide();
@@ -1372,8 +1332,6 @@
             $(".SeaInfo").hide();
         });
 
-
-
         $("#minusPerInfo").hide();
         $(".PerInfo").hide();
 
@@ -1389,8 +1347,6 @@
             $("#plusPerInfo").show();
             $(".PerInfo").hide();
         });
-
-
 
         $("#minusHomeInfo").hide();
         $(".HomeInfo").hide();
@@ -1408,8 +1364,6 @@
             $(".HomeInfo").hide();
         });
 
-
-
         $("#minusTeleHis").hide();
         $(".TeleHis").hide();
 
@@ -1426,7 +1380,6 @@
             $(".TeleHis").hide();
         });
 
-
         $("#minusEmpHis").hide();
         $(".EmpHis").hide();
 
@@ -1442,7 +1395,6 @@
             $("#plusEmpHis").show();
             $(".EmpHis").hide();
         });
-
 
     });
 </script>

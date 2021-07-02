@@ -9,11 +9,9 @@
 @{
     ViewBag.Title = "CSI Company Records";
     var type = @TempData["type"].ToString();
-    var mes = @ViewData["Message"].ToString();
 }
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea act">SEARCH RESULTS</div>
     <div class="con2">
         @if (TempData["msg"] != null)
         {

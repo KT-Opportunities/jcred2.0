@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Data;
 using System.Configuration;
+using ServiceStack.Text.Json;
 
 namespace searchworks.client.Controllers
 {
@@ -31,8 +32,6 @@ namespace searchworks.client.Controllers
 
         public string GetLoginToken(string api_username, string api_password)
         {
-            CheckLoginState();
-
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
@@ -71,16 +70,11 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecords()
         {
-            CheckLoginState();
-
             return View();
         }
 
         public ActionResult CSIPersonalRecordsResults(CSI csi)
         {
-            CheckLoginState();
-
-            var arraylist = new ArrayList();
             string name = csi.FirstName;
             string sur = csi.Surname;
             string id = csi.IDNumber;
@@ -98,16 +92,16 @@ namespace searchworks.client.Controllers
             string time_add = time.ToString("T");
             string page = "CSI Person " + eqType + "By " + seaType;
             string action = "Name:" + name + "; Surname:" + sur;
-            string user_id;
-            try
+            string user_id = "";
+            System.Diagnostics.Debug.WriteLine(Session["ID"]);
+            if (Session["ID"] == null)
+            {
+                RedirectToAction("Logout", "Home");
+            }
+            else
             {
                 user_id = Session["ID"].ToString();
             }
-            catch (Exception e)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             string us = Session["Name"].ToString();
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -133,16 +127,18 @@ namespace searchworks.client.Controllers
             //request headers
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-Type", "application/json");
-
-            IRestResponse response = client.Execute<RootObject>(request);
+            IRestResponse response;
             dynamic rootObject;
             JObject o;
             JToken token;
+
             try
             {
                 switch (seaType + "|" + eqType)
                 {
                     case "idnumber|trace":
+                        Debug.WriteLine("idnumber|trace");
+
                         url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -402,8 +398,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecordsDetails(string indiID)
         {
-            CheckLoginState();
-
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
@@ -486,10 +480,6 @@ namespace searchworks.client.Controllers
             bool TelephoneHistoryExists = rootObject.ResponseObject.HistoricalInformation.TelephoneHistory != null;
             bool AddressHistoryExists = rootObject.ResponseObject.HistoricalInformation.AddressHistory != null;
             bool EmploymentHistoryExists = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory != null;
-
-            System.Diagnostics.Debug.WriteLine(TelephoneHistoryExists);
-            System.Diagnostics.Debug.WriteLine(AddressHistoryExists);
-            System.Diagnostics.Debug.WriteLine(EmploymentHistoryExists);
 
             if (TelephoneHistoryExists == true)
 
@@ -696,6 +686,11 @@ namespace searchworks.client.Controllers
             return View();
         }
 
+        public ActionResult DatabasePropertyIndividualResults(Deeds deed)
+        {
+            return View();
+        }
+
         public ActionResult DeedsOfficeRecordsIndividual()
         {
             return View();
@@ -703,13 +698,11 @@ namespace searchworks.client.Controllers
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
-            CheckLoginState();
-
-            string name = deed.Firstname;
-            string deeds = deed.DeedsOffice;
-            string sur = deed.Surname;
-            string id = deed.IDNumber;
-            string refe = deed.Reference;
+            string name = deed.Firstname != null ? deed.Firstname.Trim() : null;
+            string deeds = deed.DeedsOffice != null ? deed.DeedsOffice.Trim() : null;
+            string sur = deed.Surname != null ? deed.Surname.Trim() : null;
+            string id = deed.IDNumber != null ? deed.IDNumber.Trim() : null;
+            string refe = deed.Reference != null ? deed.Reference.Trim() : null;
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
@@ -718,8 +711,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/deedsoffice/person/";
-
+            var url = "https://uatrest.searchworks.co.za/deedsoffice/crossdeeds/person/";
             //create RestSharp client and POST request object
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
@@ -727,64 +719,71 @@ namespace searchworks.client.Controllers
             //request headers
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-Type", "application/json");
-            //object containing input parameter data for company() API method
-            var apiInput = new
+
+            try
             {
-                SessionToken = authtoken,
-                DeedsOffice = deed,//company name contains: See documentation
-                Reference = authtoken,//search reference: probably store in logs
-                Surname = sur,
-                Firstname = name,
-                IDNumber = id,
-                Sequestration = "false",
-            };
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    DeedsOfficeIDs = deeds,
+                    Reference = refe,
+                    Surname = sur,
+                    Firstname = name,
+                    IDNumber = id,
+                    Sequestration = "false"
+                };
 
-            //add parameters and token to request
-            request.Parameters.Clear();
-            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            //ApiResponse is a class to model the data we want from the API response
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
 
-            //make the API request and get a response
-            IRestResponse response = client.Execute<RootObject>(request);
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content), "Response");
+                //dynamic rootObject = JObject.Parse(response.Content);
+                //ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
 
-            dynamic rootObject = JObject.Parse(response.Content);
+                //extract list of companies returned
+                List<DeedsInformation> lst = getCompanyList(response);
 
-            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-            ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
-            //extract list of companies returned
-            List<DeedsInformation> lst = getCompanyList(response);
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                DateTime time = DateTime.Now;
 
-            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "CIPC Company Records";
+                string action = "Company Name:" + name;
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
 
-            DateTime time = DateTime.Now;
+                ViewData["user"] = Session["Name"].ToString();
+                ViewData["date"] = DateTime.Today.ToShortDateString();
+                ViewData["ref"] = refe;
+                ViewData["ComName"] = name;
 
-            string date_add = DateTime.Today.ToShortDateString();
-            string time_add = time.ToString("T");
-            string page = "CIPC Company Records";
-            string action = "Company Name:" + name;
-            string user_id = Session["ID"].ToString();
-            string us = Session["Name"].ToString();
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
-            ViewData["user"] = Session["Name"].ToString();
-            ViewData["date"] = DateTime.Today.ToShortDateString();
-            ViewData["ref"] = refe;
-            ViewData["ComName"] = name;
+                conn.Open();
 
-            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+                var cmd2 = new MySqlCommand(query_uid, conn);
 
-            conn.Open();
+                var reader2 = cmd2.ExecuteReader();
 
-            var cmd2 = new MySqlCommand(query_uid, conn);
+                conn.Close();
 
-            var reader2 = cmd2.ExecuteReader();
-
-            conn.Close();
-
-            return View(lst);
+                return View(lst);
+            }
+            catch (Exception e)
+            {
+                TempData["Msg"] = e.ToString();
+                return View();
+            }
         }
 
         private List<DeedsInformation> getCompanyList(IRestResponse response)
@@ -793,18 +792,8 @@ namespace searchworks.client.Controllers
 
             dynamic respContent = JObject.Parse(response.Content);
 
-            List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
-            System.Diagnostics.Debug.WriteLine("YList: " + rawList);
-            //var rawList = respContent.ResponseObject;
-
-            //foreach (JObject responseObject in rawList)
-            foreach (ResponseObject responseObject in rawList)
-            {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
-                lst.Add(responseObject.DeedsInformation);
-            }
-
+            //List<ResponseObject> rawList = respContent.ResponseObject.ToObject<List<ResponseObject>>();
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
             return lst;
         }
     }

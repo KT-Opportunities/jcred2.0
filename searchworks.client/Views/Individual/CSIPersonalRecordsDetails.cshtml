@@ -5,18 +5,18 @@
 @{ ViewBag.Title = "CSI Personal Records"; }
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea non">SEARCH RESULTS</div>
-    <div class="sea non">CSI Person Records</div>
-    <div class="sea act">@TempData["SearchType"]</div>
+    @*<div class="sea non"></div>
+        <div class="sea non"></div>
+        <div class="sea act"></div>*@
     <div class="con2">
         <div class="left_col">
             <div class="results">
                 <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                <p>2 Results</p>
+                @*<p>2 Results</p>*@
             </div>
 
             <p class="num">@TempData["Fullname"]</p>
-            <p class="num2">CSI Person Recordsss</p>
+            <p class="num2">CSI Person Records</p>
 
             <div class="multi non">
                 Multiple Results
@@ -37,19 +37,18 @@
             </div>
         </div>
 
-
         <div class="right_col">
             <div id="notification" class="seaRes">
                 NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
             </div>
             <div class="not">
-                Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
+                Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
                 We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
                 <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
             </div>
 
             <div id="notification" class="seaRes">
-                SSSEARCH INFORMATION <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
+                SEARCH INFORMATION <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
             </div>
             <div class="SeaInfo">
                 <table class="table table-striped">
@@ -79,7 +78,7 @@
                             <th>Surname</th>
                             <th>ID Number</th>
                             <th>Age</th>
-                            <th class="last">Gender</th>
+                            <th @*class="last"*@>Gender</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -142,31 +141,31 @@
                 </table>
             </div>
             @*<div id="notification" class="seaRes">
-                ADDRESS HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
+                                ADDRESS HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
+                            </div>
 
-            <div class="plusEmpHis">
-                <table class="table table-striped">
-                    <thead>
+                            <div class="plusEmpHis">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Type Description</th>
+                                            <th>Type Code</th>
+                                            <th>Number</th>
+                                            <th class="last">Last Updated Date</th>
+                                        </tr>
+                                    </thead>
+
+                                    @foreach (var item in @ViewBag.telH)
+                                    {
                         <tr>
-                            <th>Type Description</th>
-                            <th>Type Code</th>
-                            <th>Number</th>
-                            <th class="last">Last Updated Date</th>
+                            <td>@item.TypeDescription</td>
+                            <td>@item.TypeCode</td>
+                            <td>@item.Number</td>
+                            <td>@item.LastUpdatedDate</td>
                         </tr>
-                    </thead>
-
-                    @foreach (var item in @ViewBag.telH)
-                    {
-        <tr>
-            <td>@item.TypeDescription</td>
-            <td>@item.TypeCode</td>
-            <td>@item.Number</td>
-            <td>@item.LastUpdatedDate</td>
-        </tr>
-}
-                </table>
-            </div>*@
+                }
+                                </table>
+                            </div>*@
 
             <div id="notification" class="seaRes">
                 TELEPHONE HISTORY <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
@@ -184,13 +183,13 @@
 
                     @foreach (var item in @ViewBag.telH)
                     {
-        <tr>
-            <td>@item.TypeDescription</td>
-            <td>@item.TypeCode</td>
-            <td>@item.Number</td>
-            <td>@item.LastUpdatedDate</td>
-        </tr>
-}
+                        <tr>
+                            <td>@item.TypeDescription</td>
+                            <td>@item.TypeCode</td>
+                            <td>@item.Number</td>
+                            <td>@item.LastUpdatedDate</td>
+                        </tr>
+                    }
                 </table>
             </div>
 
@@ -211,22 +210,22 @@
 
                     @foreach (var item in @ViewBag.empH)
                     {
-        <tr>
+                        <tr>
 
-            <td>@item.EmployerName</td>
-            <td>@item.Designation</td>
-            <td>@item.LastUpdatedDate</td>
-        </tr>
-}
+                            <td>@item.EmployerName</td>
+                            <td>@item.Designation</td>
+                            <td>@item.LastUpdatedDate</td>
+                        </tr>
+                    }
 
                     @*<tr>*@
                     @* @foreach (EmploymentHistory item in @ViewBag.ArrayList1)*@
                     @*@foreach (KeyValuePair<string, string> item in @ViewBag.ArrayList1)
-                {
+                        {
 
-                    <td> @item.Value </td>*@
+                            <td> @item.Value </td>*@
                     @*<td> @item.Value[1] </td>
-                <td> @item.Value[2] </td>*@
+                        <td> @item.Value[2] </td>*@
 
                     @*  }*@
 
@@ -234,25 +233,25 @@
                 </table>
 
                 @*<table>
-                <thead>
-                    <tr>
-                        <th>Employer Name</th>
-                        <th>Designation</th>
-                        <th class="last">Last Updated Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @{ foreach (KeyValuePair<string, string> item in (ViewBag.MianArrayList[0]))
+                        <thead>
+                            <tr>
+                                <th>Employer Name</th>
+                                <th>Designation</th>
+                                <th class="last">Last Updated Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @{ foreach (KeyValuePair<string, string> item in (ViewBag.MianArrayList[0]))
 
-                            {
-                                <td> @item.Value</td>
-                            }
+                                    {
+                                        <td> @item.Value</td>
+                                    }
 
-                        }
-                    </tr>
-                </tbody>
-            </table>*@
+                                }
+                            </tr>
+                        </tbody>
+                    </table>*@
             </div>
         </div>
     </div>

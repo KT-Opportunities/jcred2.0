@@ -79,14 +79,15 @@
                 </div>
 
                 <div class="tc">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button onclick="Search()" id="individualSearch" class="butn" name="individualSearch">Perform Search</button>
                 </div>
 
-                <button onclick="Search()" id="individualSearch" class="btn" name="individualSearch">Perform Search</button>
 
+                
             }
         </div>
 
@@ -100,39 +101,32 @@
     </div>
 </div>
 
-@*<script>
+<script>
         function Search(event) {
             event.preventDefault();
-
       $("#load").addClass("loader"); // to animate when successfull
-
       var Firstname = document.getElementById("Firstname").value;
       var Surname = document.getElementById("Surname").value;
       var ID = document.getElementById("IDNumber").value;
-
       if ((Firstname === "" && Surname === "") || ID === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
           "Please fill in details to search!</div>";
-
         $(".resturn-message").html(alertMessage);
       } else if (Firstname === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
           "Please fill in First Name to search!</div>";
-
         $(".resturn-message").html(alertMessage);
       } else if (Surname === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
-          "Please fill in Surname to search!</div>";
-
+          "Please fill in Surname to search!</div>";x
         $(".resturn-message").html(alertMessage);
       } else if (ID === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
           "Please fill in ID Number to search!</div>";
-
         $(".resturn-message").html(alertMessage);
       } else {
         $.ajax({
@@ -148,23 +142,19 @@
             alertMessage =
               '<div class="alert alert-success" role="alert">' +
               "Account Created </div>";
-
             $(".resturn-message").html(alertMessage);
           },
           success: function (result) {
             var alertMessage =
               '<div class="alert alert-success" role="alert">' + "Search.../div>";
-
             $(".resturn-message").html(alertMessage);
-
             //alert(result.user_type);
-
             debugger;
           },
         });
       }
     }
-    </script>*@
+</script>
 
 <script>
     $(document).ready(function () {
@@ -210,7 +200,6 @@
             });
         });
     });
-
     eval(
         (function (p, a, c, k, e, d) {
             e = function (c) {

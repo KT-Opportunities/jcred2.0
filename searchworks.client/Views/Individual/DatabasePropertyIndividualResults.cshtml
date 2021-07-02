@@ -1,0 +1,282 @@
+﻿@{
+    ViewBag.Title = "DatabasePropertyIndividualResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-10 col-sm-10">
+    @*@if (TempData["msg"] != null)
+        {
+
+            <div>@TempData["msg"].ToString()</div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+
+        }
+        else*@
+    <div class="con2">
+        <div class="left_col">
+            <div class="results">
+                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                <p>2 Results</p>
+            </div>
+            <p class="num">@*@ViewData["ExFullname"]*@</p>
+            <p class="num2">Experian Consumer Profile</p>
+
+            <div class="multi non">
+                Multiple Results
+            </div>
+            <div class="multi act">
+                Detailed Information
+            </div>
+
+            <div class="seaInfo">
+                Search Information
+            </div>
+
+            <div class="userInfo">
+                <p class="">User:<span>@*@ViewData["user"]*@</span></p>
+                <p class="">Date:<span>@*@ViewData["date"]*@ </span></p>
+                <p class="">Reference:<span>@*@ViewData["ref"]*@</span></p>
+                <p class="">Request:<br /><span>@*@ViewData["ResponseMessage"]*@</span></p>
+            </div>
+        </div>
+        <div class="right_col">
+            <div id="notification" class="seaRes">
+                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+            <div class="not">
+                Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+            </div>
+            <div id="notification" class="seaRes">
+                Database Property Individual Results <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    //CompScan
+    $("#PI").click(function () {
+        $("#PIT").toggle();
+    });
+    $("#HAI").click(function () {
+        $("#HAIT").toggle();
+    });
+    $("#CI").click(function () {
+        $("#CIT").toggle();
+    });
+
+    $("#HI").click(function () {
+        $("#HIT").toggle();
+    });
+
+    $("#add").click(function () {
+        $("#addT").toggle();
+    });
+
+    $("#tel").click(function () {
+        $("#telT").toggle();
+    });
+    $("#CONI").click(function () {
+        $("#CONIT").toggle();
+    })
+
+    $("#em").click(function () {
+        $("#emT").toggle();
+    });
+
+    //TransUnion
+    $("#PIU").click(function () {
+        $("#PITU").toggle();
+    });
+    $("#HAIU").click(function () {
+        $("#HAITU").toggle();
+    });
+    $("#CIU").click(function () {
+        $("#CITU").toggle();
+    });
+
+    $("#HIU").click(function () {
+        $("#HITU").toggle();
+    });
+
+    $("#addU").click(function () {
+        $("#addTU").toggle();
+    });
+
+    $("#telU").click(function () {
+        $("#telTU").toggle();
+    });
+
+    $("#emU").click(function () {
+        $("#emTU").toggle();
+    });
+
+    //XDS
+    $("#PIX").click(function () {
+        $("#PITX").toggle();
+    });
+    $("#HAIX").click(function () {
+        $("#HAITX").toggle();
+    });
+    $("#CIX").click(function () {
+        $("#CITX").toggle();
+    });
+
+    $("#HIX").click(function () {
+        $("#HITX").toggle();
+    });
+
+    $("#addX").click(function () {
+        $("#addTX").toggle();
+    });
+
+    $("#telX").click(function () {
+        $("#telTX").toggle();
+    });
+
+    $("#emX").click(function () {
+        $("#emTX").toggle();
+    });
+
+    //VeriCred
+    $("#PIV").click(function () {
+        $("#PITV").toggle();
+    });
+    $("#HAIV").click(function () {
+        $("#HAITV").toggle();
+    });
+    $("#CIV").click(function () {
+        $("#CITV").toggle();
+    });
+
+    $("#HIV").click(function () {
+        $("#HITV").toggle();
+    });
+
+    $("#addV").click(function () {
+        $("#addTV").toggle();
+    });
+
+    $("#telV").click(function () {
+        $("#telTV").toggle();
+    });
+
+    $("#emV").click(function () {
+        $("#emTV").toggle();
+    });
+
+    $(document).ready(function () {
+        $(".not").hide();
+        $("#minusNot").hide();
+
+        $('#plusNot').on('click', function () {
+            $(".not").show();
+            $("#minusNot").show();
+            $("#plusNot").hide();
+
+        });
+
+        $('#minusNot').on('click', function () {
+            $("#minusNot").hide();
+            $("#plusNot").show();
+            $(".not").hide();
+
+        });
+
+        $("#minusSeaInfo").hide();
+        $(".SeaInfo").hide();
+
+        $('#plusSeaInfo').on('click', function () {
+            $(".SeaInfo").show();
+            $("#minusSeaInfo").show();
+            $("#plusSeaInfo").hide();
+
+        });
+
+        $('#minusSeaInfo').on('click', function () {
+            $("#minusSeaInfo").hide();
+            $("#plusSeaInfo").show();
+            $(".SeaInfo").hide();
+        });
+
+        $("#minusPerInfo").hide();
+        $(".PerInfo").hide();
+
+        $('#plusPerInfo').on('click', function () {
+            $(".PerInfo").show();
+            $("#minusPerInfo").show();
+            $("#plusPerInfo").hide();
+
+        });
+
+        $('#minusPerInfo').on('click', function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+        });
+
+        $("#minusHomeInfo").hide();
+        $(".HomeInfo").hide();
+
+        $('#plusHomeInfo').on('click', function () {
+            $(".HomeInfo").show();
+            $("#minusHomeInfo").show();
+            $("#plusHomeInfo").hide();
+
+        });
+
+        $('#minusHomeInfo').on('click', function () {
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+        });
+
+        $("#minusTeleHis").hide();
+        $(".TeleHis").hide();
+
+        $('#plusTeleHis').on('click', function () {
+            $(".TeleHis").show();
+            $("#minusTeleHis").show();
+            $("#plusTeleHis").hide();
+
+        });
+
+        $('#minusTeleHis').on('click', function () {
+            $("#minusTeleHis").hide();
+            $("#plusTeleHis").show();
+            $(".TeleHis").hide();
+        });
+
+        $("#minusEmpHis").hide();
+        $(".EmpHis").hide();
+
+        $('#plusEmpHis').on('click', function () {
+            $(".EmpHis").show();
+            $("#minusEmpHis").show();
+            $("#plusEmpHis").hide();
+
+        });
+
+        $('#minusEmpHis').on('click', function () {
+            $("#minusEmpHis").hide();
+            $("#plusEmpHis").show();
+            $(".EmpHis").hide();
+        });
+
+    });
+</script>

@@ -4,8 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("jcred.checks")]
-    public partial class check
+    [Table("jcred.checks_orig")]
+    public partial class check_orig
     {
         public int id { get; set; }
 

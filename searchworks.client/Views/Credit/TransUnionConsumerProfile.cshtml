@@ -50,59 +50,59 @@
                 </div>
 
 
-                <div class="firstname" style=" margin-top: -62px;">
+                <div class="eqType" >
                     <label>Contact Name</label><br>
 
                     @Html.TextBox("ContactName", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
                 </div>
-                <div class="surname" style=" margin-top: -65px;">
+                <div class="eqType" >
                     <label>Contact Number</label><br>
 
                     @Html.TextBox("ContactNumber", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: -68px;">
+                <div class="eqType" >
                     <label>ID Number</label><br>
 
                     @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: 34px;">
+                <div class="eqType" >
                     <label>Surname</label><br>
 
                     @Html.TextBox("Surname", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: -21px;">
+                <div class="eqType">
                     <label>First Name</label><br>
 
                     @Html.TextBox("FirstName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: 92px;">
+                <div class="eqType">
                     <label>Passport Number</label><br>
 
                     @Html.TextBox("PassportNumber", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: 155px;">
+                <div class="eqType">
                     <label>Date Of Birth</label><br>
 
                     @Html.TextBox("DateOfBirth", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="tc" style=" margin-top: 150px;">
+                <div class="tc">
                     <div class="checkBoxDiv">
-                        I accept the <a href="#">terms and conditions</a>
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
                     <div class="checkBoxDiv">
-                        <a href="#">Consumer consent</a>acquired
+                        <a href="#">Consumer consent</a>&nbsp;acquired &nbsp;
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button id="combinedComSearch" class="butn" name="combinedComSearch">Perform Search</button>
                 </div>
 
-                <button id="combinedComSearch" class="btn" name="combinedComSearch" style=" margin-top: 162px;">Perform Search</button>
 
 
             }

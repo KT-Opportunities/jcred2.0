@@ -24,11 +24,11 @@
         <input name="search" />
         <button>RESET</button>
     </div>
-    <div class="con" style="height: 700px">
-        <div class="col-md-6 col-sm-6 left" style="height: 640px">
+    <div class="con">
+        <div class="col-md-6 col-sm-6 left" >
             @using (Html.BeginForm("DeedsOfficeRecordsIndividualResults", "Individual", FormMethod.Post))
             {
-                <div class="ref">
+                <div class="eqType">
                     <label>Reference</label><br>
 
                     @Html.TextBox("Reference", null, new { @id = "Ref" })
@@ -36,24 +36,24 @@
 
 
 
-                <div class="firstname" style=" margin-top: -62px;">
+                <div class="eqType">
                     <label>ID Number</label><br>
 
                     @Html.TextBox("IDNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
                 </div>
-                <div class="surname" style=" margin-top: -65px;">
+                <div class="eqType">
                     <label>First Name</label><br>
 
                     @Html.TextBox("Firstname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: -68px;">
+                <div class="eqType">
                     <label>Surname</label><br>
 
                     @Html.TextBox("Surname", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-                <div class="idnumber" style=" margin-top: 34px;">
+                <div class="eqType">
                     <label>Deeds Office</label><br>
 
                     @Html.DropDownList("DeedsOffice", new List<SelectListItem>
@@ -73,19 +73,18 @@
                 }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
                 </div>
 
-                
-
-
-
-
-                <div class="tc" style=" margin-top: 150px;">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
+                <div class="tc">
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button id="combinedComSearch" class="butn" name="combinedComSearch" >Perform Search</button>
+
                 </div>
 
-                <button id="combinedComSearch" class="btn" name="combinedComSearch" style=" margin-top: 162px;">Perform Search</button>
+
+
+
 
 
             }

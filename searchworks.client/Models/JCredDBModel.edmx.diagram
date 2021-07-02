@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ccf863ab52834f8bafb0f7685550d135" Name="Diagram1">
+        <EntityTypeShape EntityType="JCredModel.addresshistory" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.aspnetpasshashhistory" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.aspnetrole" Width="1.5" PointX="5.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.aspnetuserclaim" Width="1.5" PointX="10.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.aspnetuserlogin" Width="1.5" PointX="10.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.aspnetuser" Width="1.5" PointX="8" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.bank_preferences" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.cca12months" Width="1.5" PointX="7.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.cca24months" Width="1.5" PointX="9.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.cca36months" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.ccastat" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.check_list" Width="1.5" PointX="4.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.check" Width="1.5" PointX="11.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.compuscansearchhist" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.consumerstatistic" Width="1.5" PointX="11.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.contactinformation" Width="1.5" PointX="13.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.country" Width="1.5" PointX="6.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.cpa_accounts" Width="1.5" PointX="8.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.creditdeclinereason" Width="1.5" PointX="13.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.creditinformation" Width="1.5" PointX="13.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.datacount" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.debtreviewstatu" Width="1.5" PointX="0.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.directorship" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.directorsummary" Width="1.5" PointX="15.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.document" Width="1.5" PointX="15.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.emailhistory" Width="1.5" PointX="15.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.employment_details" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.employmenthistory" Width="1.5" PointX="4.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.enquiryhistory" Width="1.5" PointX="17.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.fraudindicatorsummary" Width="1.5" PointX="17.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfireaggregatedcounter" Width="1.5" PointX="10.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirecounter" Width="1.5" PointX="17.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirehash" Width="1.5" PointX="17.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirejob" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirejobparameter" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirejobqueue" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirejobstate" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirelist" Width="1.5" PointX="19.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfireserver" Width="1.5" PointX="19.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfireset" Width="1.5" PointX="19.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfirestate" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.homeaffairsinformation" Width="1.5" PointX="19.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.internalenquiryhistory" Width="1.5" PointX="15.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.log" Width="1.5" PointX="19.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.member" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.nlr_accounts" Width="1.5" PointX="12.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.nlr12months" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.nlr24months" Width="1.5" PointX="0.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.nlr36months" Width="1.5" PointX="2.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.nlrstat" Width="1.5" PointX="21.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgcategory" Width="1.5" PointX="4.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgregion" Width="1.5" PointX="21.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgtenant" Width="1.5" PointX="21.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgtenantpriv" Width="1.5" PointX="21.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgunit" Width="1.5" PointX="17.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgunitprivmap" Width="1.5" PointX="19.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.orgunituserprivmap" Width="1.5" PointX="21.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.paymenthistoryaccountdetail" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.personinformation" Width="1.5" PointX="23.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiesbondinformation" Width="1.5" PointX="23.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiesbuyerinfo" Width="1.5" PointX="14.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertieserfinformation" Width="1.5" PointX="23.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiesgeneralinformation" Width="1.5" PointX="23.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiesschemeinformation" Width="1.5" PointX="6.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiessellerinformation" Width="1.5" PointX="8.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiessuburbinformation" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertiestransferinformation" Width="1.5" PointX="0.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.propertysummary" Width="1.5" PointX="2.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.search_history" Width="1.5" PointX="25.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.searchhistory" Width="1.5" PointX="25.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.searchresulttype" Width="1.5" PointX="25.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.searchtype" Width="1.5" PointX="25.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.syspriv" Width="1.5" PointX="19.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.telephonehistory" Width="1.5" PointX="25.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.transunionsearchhistory" Width="1.5" PointX="21.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.user" Width="1.5" PointX="23.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.user1" Width="1.5" PointX="25.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.xdssearchhistory" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="JCredModel.hangfiredistributedlock" Width="1.5" PointX="27.75" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="JCredModel.FK_AspNetUserClaims_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="JCredModel.FK_AspNetUserLogins_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="JCredModel.FK_HangfireHangFire_State_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="JCredModel.FK_HangfireJobParameter_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="JCredModel.FK_HangfireJobState_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="JCredModel.aspnetuserroles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
