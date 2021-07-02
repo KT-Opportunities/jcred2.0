@@ -309,14 +309,13 @@ namespace searchworks.client.Controllers
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
-            var host = "https://rest.searchworks.co.za/auth/login/";
+            var host = "https://uatrest.searchworks.co.za/auth/login/";
             var body_credentials = new
             {
                 Username = api_username,
                 Password = api_password
             };
-            //string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";//change back
-            string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
+            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
 
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
@@ -364,7 +363,7 @@ namespace searchworks.client.Controllers
             try
             {
                 //company search API call
-                var url = "https://rest.searchworks.co.za/cipc/company/";
+                var url = "https://uatrest.searchworks.co.za/cipc/company/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -460,7 +459,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/cipc/company/companyid/";
+                var url = "https://uatrest.searchworks.co.za/cipc/company/companyid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -640,7 +639,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/companyname/";
+                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyname/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -732,7 +731,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -823,7 +822,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
+                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -895,7 +894,7 @@ namespace searchworks.client.Controllers
             {
                 //exit with a warning
             }
-            var url = "https://rest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+            var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
 
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
@@ -921,11 +920,9 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
             dynamic rootObject = JObject.Parse(response.Content);
-            Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
-            Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
+   
 
-            elements1 = rootObject.ResponseObject.CapitalInformation;
-            elements2 = rootObject.ResponseObject.Directors;
+        
 
             string CapitalType = "";
             string CompanyCapitalID = "";
@@ -936,8 +933,6 @@ namespace searchworks.client.Controllers
             string Premium = "";
             string ShareAmount = "";
 
-            List<CapitalInformation> CapInfo;
-            List<Directors> DirecD;
             TempData["ResponseMessage"] = rootObject.ResponseMessage;
             ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
             ViewData["CompanyName"] = rootObject.ResponseObject.CompanyInformation.CompanyName;
@@ -962,8 +957,15 @@ namespace searchworks.client.Controllers
             ViewData["PostalAddressLine4"] = rootObject.ResponseObject.CompanyInformation.PostalAddressLine4;
             ViewData["PostalPostCode"] = rootObject.ResponseObject.CompanyInformation.PostalPostCode;
             TempData.Keep();
-            if (rootObject.ResponseObject.Directors[0].DirectorID != null)
+            ViewData["DirectorsDetails"] = null;
+
+            if (rootObject.ResponseObject["Directors"] != null)
             {
+              List<Directors> DirecD;
+
+                Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
+                elements2 = rootObject.ResponseObject.Directors;
+
                 DirecD = new List<Directors>();
                 for (int count = 0; count < (elements2.Count); count++)
                 {
@@ -1012,9 +1014,15 @@ namespace searchworks.client.Controllers
                     ViewData["DirectorsDetails"] = DirecD;
                 }
             }
-
-            if (rootObject.ResponseObject.CapitalInformation[0].CapitalType != null)
+            ViewData["CapInfo"] = null;
+            if (rootObject.ResponseObject["CapitalInformation "] != null)
             {
+                List<CapitalInformation> CapInfo;
+
+                Newtonsoft.Json.Linq.JArray elements1 = new Newtonsoft.Json.Linq.JArray();
+
+                elements1 = rootObject.ResponseObject.CapitalInformation;
+
                 CapInfo = new List<CapitalInformation>();
 
                 for (int count = 0; count < (elements1.Count); count++)

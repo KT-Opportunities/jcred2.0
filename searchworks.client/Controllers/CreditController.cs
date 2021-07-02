@@ -501,14 +501,13 @@ namespace searchworks.client.Controllers
             string loginToken;
             var userName = api_username;
             var password = api_password;
-            var host = "https://rest.searchworks.co.za/auth/login/";
+            var host = "https://uatrest.searchworks.co.za/auth/login/";
             var body_credentials = new
             {
                 Username = api_username,
                 Password = api_password
             };
-            //string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
-            string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
+            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
             //var request = new RestRequest("login", Method.POST);
@@ -586,7 +585,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/combinedreport/consumer/";
+            var url = "https://uatrest.searchworks.co.za/credit/combinedreport/consumer/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -1107,7 +1106,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/combinedreport/trace/";
+                var url = "https://uatrest.searchworks.co.za/credit/combinedreport/trace/";
                 //var url = "https://uatuatrest.searchworks.co.za/credit/combinedreport/trace/";
 
                 //create RestSharp client and POST request object
@@ -1931,7 +1930,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/experian/consumerprofile/";
+                var url = "https://uatrest.searchworks.co.za/credit/experian/consumerprofile/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -3376,7 +3375,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/consumerprofile/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumerprofile/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -4792,7 +4791,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/vericred/consumerprofile/";
+                var url = "https://uatrest.searchworks.co.za/credit/vericred/consumerprofile/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6058,7 +6057,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
+            var url = "https://uatrest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -6154,7 +6153,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6258,7 +6257,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/transunion/contactinfo/";
+            var url = "https://uatrest.searchworks.co.za/credit/transunion/contactinfo/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -6366,7 +6365,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/transunion/idverification/";
+            var url = "https://uatrest.searchworks.co.za/credit/transunion/idverification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -6527,7 +6526,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/consumertrace/enquiryid/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/enquiryid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6613,7 +6612,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/consumertrace/idnumber/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/idnumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6746,7 +6745,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/consumertrace/mobilenumber/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/mobilenumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6825,7 +6824,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/consumertrace/dateofbirthsurname/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/dateofbirthsurname/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6905,7 +6904,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/transunion/consumertrace/telephonenumber/";
+                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/telephonenumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -7005,7 +7004,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/vericred/AccountVerification/";
+            var url = "https://uatrest.searchworks.co.za/credit/vericred/AccountVerification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -7147,7 +7146,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/vericred/contactinfo/";
+            var url = "https://uatrest.searchworks.co.za/credit/vericred/contactinfo/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -7272,7 +7271,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/vericred/idphotoverification/";
+            var url = "https://uatrest.searchworks.co.za/vericred/idphotoverification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -7405,7 +7404,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/vericred/incomeestimate/";
+            var url = "https://uatrest.searchworks.co.za/credit/vericred/incomeestimate/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -7537,7 +7536,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/credit/vericred/personverification/";
+            var url = "https://uatrest.searchworks.co.za/credit/vericred/personverification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -7680,7 +7679,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/xds/idphotoverification/";
+                var url = "https://uatrest.searchworks.co.za/xds/idphotoverification/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -7819,7 +7818,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/idverification/enquiryid/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/idverification/enquiryid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -7893,7 +7892,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/idverification/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/idverification/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8041,7 +8040,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/consumertrace/address/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/address/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8148,7 +8147,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/consumertrace/enquiryid/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/enquiryid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8222,7 +8221,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/consumertrace/idnumber/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/idnumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8336,7 +8335,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/consumertrace/name/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/name/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8451,7 +8450,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/consumertrace/passportnumber/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/passportnumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8581,7 +8580,7 @@ namespace searchworks.client.Controllers
                 }
 
                 //company search API call
-                var url = "https://rest.searchworks.co.za/credit/xds/consumertrace/telephonenumber/";
+                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/telephonenumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -8706,7 +8705,7 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/documents/compuscan/bankcodes/"; //create RestSharp client and
+// "https://uatrest.searchworks.co.za/documents/compuscan/bankcodes/"; //create RestSharp client and
 // POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
@@ -8774,7 +8773,7 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/compuscan/bankcodes/idnumber/"; //create RestSharp client and
+// "https://uatrest.searchworks.co.za/compuscan/bankcodes/idnumber/"; //create RestSharp client and
 // POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
@@ -8842,9 +8841,9 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/consumerprofile/"; //create RestSharp client and
-// POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
-// ViewData["user"] = Session["Name"].ToString();
+// "https://uatrest.searchworks.co.za/credit/compuscan/consumerprofile/"; //create RestSharp client
+// and POST request object var client = new RestClient(url); var request = new
+// RestRequest(Method.POST); ViewData["user"] = Session["Name"].ToString();
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
 // "application/json"); //object containing input parameter data for company() API method var
@@ -9442,7 +9441,7 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/consumertrace/idnumber/"; //create RestSharp
+// "https://uatrest.searchworks.co.za/credit/compuscan/consumertrace/idnumber/"; //create RestSharp
 // client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
@@ -9571,7 +9570,7 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/consumertrace/telephonenumber/"; //create
+// "https://uatrest.searchworks.co.za/credit/compuscan/consumertrace/telephonenumber/"; //create
 // RestSharp client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
@@ -9646,8 +9645,8 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/consumertrace/telephoneid/"; //create RestSharp
-// client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+// "https://uatrest.searchworks.co.za/credit/compuscan/consumertrace/telephoneid/"; //create
+// RestSharp client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
 // "application/json"); //object containing input parameter data for company() API method var
@@ -9704,11 +9703,6 @@ namespace searchworks.client.Controllers
 // var reader2 = cmd2.ExecuteReader();
 
 // conn.Close();
-
-// string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
-// (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/contactinformation/"; //create RestSharp client
-// and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
 // "application/json"); //object containing input parameter data for company() API method var
@@ -9826,8 +9820,8 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/EmploymentConfidenceIndex/"; //create RestSharp
-// client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
+// "https://uatrest.searchworks.co.za/credit/compuscan/EmploymentConfidenceIndex/"; //create
+// RestSharp client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
 // "application/json"); //object containing input parameter data for company() API method var
@@ -9935,7 +9929,7 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/credit/compuscan/grossmonthlyincome/idnumber/"; //create
+// "https://uatrest.searchworks.co.za/credit/compuscan/grossmonthlyincome/idnumber/"; //create
 // RestSharp client and POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",
@@ -10026,7 +10020,7 @@ namespace searchworks.client.Controllers
 
 // string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); if
 // (!tokenValid(authtoken)) { //exit with a warning } //company search API call var url =
-// "https://rest.searchworks.co.za/compuscan/idphotoverification/"; //create RestSharp client and
+// "https://uatrest.searchworks.co.za/compuscan/idphotoverification/"; //create RestSharp client and
 // POST request object var client = new RestClient(url); var request = new RestRequest(Method.POST);
 
 // //request headers request.RequestFormat = DataFormat.Json; request.AddHeader("Content-Type",

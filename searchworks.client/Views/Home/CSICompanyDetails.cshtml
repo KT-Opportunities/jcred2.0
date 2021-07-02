@@ -113,143 +113,151 @@
                 Capital Information@*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
             </div>
             <div class="CapInfo">
-
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>ID</th>
-                            <th>CompanyID</th>
-                            <th>RegistrationNumber</th>
-                            <th>NoShares</th>
-                            <th>ParriValue</th>
-                            <th>Premium</th>
-                            <th>ShareAmount</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in @ViewBag.CapInfo)
-                        {
-
+                @if (@ViewBag.CapInfo != null)
+                {
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>@item.CapitalType</td>
-                                <td>@item.CompanyCapitalID</td>
-                                <td>@item.CompanyID</td>
-                                <td>@item.CompanyRegistrationNumber</td>
-                                <td>@item.NoShares</td>
-                                <td>@item.ParriValue</td>
-                                <td>@item.Premium</td>
-                                <td>@item.ShareAmount</td>
+                                <th>Type</th>
+                                <th>ID</th>
+                                <th>CompanyID</th>
+                                <th>RegistrationNumber</th>
+                                <th>NoShares</th>
+                                <th>ParriValue</th>
+                                <th>Premium</th>
+                                <th>ShareAmount</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in @ViewBag.CapInfo)
+                            {
+                                <tr>
+                                    <td>@item.CapitalType</td>
+                                    <td>@item.CompanyCapitalID</td>
+                                    <td>@item.CompanyID</td>
+                                    <td>@item.CompanyRegistrationNumber</td>
+                                    <td>@item.NoShares</td>
+                                    <td>@item.ParriValue</td>
+                                    <td>@item.Premium</td>
+                                    <td>@item.ShareAmount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <table class="table table-striped">
 
-                        }
-                    </tbody>
-                </table>
+                        <tbody>
+                            <tr>
+                                No Data
+                            </tr>
+                        </tbody>
+                    </table>}
             </div>
         </div>
     </div>
-    else{}
 </div>
-    @*<script>
-            $(document).ready(function () {
+@*<script>
+        $(document).ready(function () {
 
-                $(".not").hide();
-                $("#minusNot").hide();
+            $(".not").hide();
+            $("#minusNot").hide();
 
-                $('#plusNot').on('click', function () {
-                    $(".not").show();
-                    $("#minusNot").show();
-                    $("#plusNot").hide();
-
-                });
-
-                $('#minusNot').on('click', function () {
-                    $("#minusNot").hide();
-                    $("#plusNot").show();
-                    $(".not").hide();
-
-                });
-
-                $("#minusSeaInfo").hide();
-                $(".SeaInfo").hide();
-
-                $('#plusSeaInfo').on('click', function () {
-                    $(".SeaInfo").show();
-                    $("#minusSeaInfo").show();
-                    $("#plusSeaInfo").hide();
-
-                });
-
-                $('#minusSeaInfo').on('click', function () {
-                    $("#minusSeaInfo").hide();
-                    $("#plusSeaInfo").show();
-                    $(".SeaInfo").hide();
-                });
-
-                $("#minusConInfo").hide();
-                $(".ConInfo").hide();
-
-                $('#plusConInfo').on('click', function () {
-                    $(".ConInfo").show();
-                    $("#minusConInfo").show();
-                    $("#plusConInfo").hide();
-
-                });
-
-                $('#minusConInfo').on('click', function () {
-                    $("#minusConInfo").hide();
-                    $("#plusConInfo").show();
-                    $(".ConInfo").hide();
-                });
-
-                $("#minusHomeInfo").hide();
-                $(".HomeInfo").hide();
-
-                $('#plusHomeInfo').on('click', function () {
-                    $(".HomeInfo").show();
-                    $("#minusHomeInfo").show();
-                    $("#plusHomeInfo").hide();
-
-                });
-
-                $('#minusHomeInfo').on('click', function () {
-                    $("#minusHomeInfo").hide();
-                    $("#plusHomeInfo").show();
-                    $(".HomeInfo").hide();
-                });
-
-                $("#minusDirecDetail").hide();
-                $(".DirecDetail").hide();
-
-                $('#plusDirecDetail').on('click', function () {
-                    $(".DirecDetail").show();
-                    $("#minusDirecDetail").show();
-                    $("#plusDirecDetail").hide();
-
-                });
-
-                $('#minusDirecDetail').on('click', function () {
-                    $("#minusDirecDetail").hide();
-                    $("#plusDirecDetail").show();
-                    $(".DirecDetail").hide();
-                });
-
-                $("#minusCapInfo").hide();
-                $(".CapInfo").hide();
-
-                $('#plusCapInfo').on('click', function () {
-                    $(".CapInfo").show();
-                    $("#minusCapInfo").show();
-                    $("#plusCapInfo").hide();
-
-                });
-
-                $('#minusCapInfo').on('click', function () {
-                    $("#minusCapInfo").hide();
-                    $("#plusCapInfo").show();
-                    $(".CapInfo").hide();
-                });
+            $('#plusNot').on('click', function () {
+                $(".not").show();
+                $("#minusNot").show();
+                $("#plusNot").hide();
 
             });
-        </script>*@
+
+            $('#minusNot').on('click', function () {
+                $("#minusNot").hide();
+                $("#plusNot").show();
+                $(".not").hide();
+
+            });
+
+            $("#minusSeaInfo").hide();
+            $(".SeaInfo").hide();
+
+            $('#plusSeaInfo').on('click', function () {
+                $(".SeaInfo").show();
+                $("#minusSeaInfo").show();
+                $("#plusSeaInfo").hide();
+
+            });
+
+            $('#minusSeaInfo').on('click', function () {
+                $("#minusSeaInfo").hide();
+                $("#plusSeaInfo").show();
+                $(".SeaInfo").hide();
+            });
+
+            $("#minusConInfo").hide();
+            $(".ConInfo").hide();
+
+            $('#plusConInfo').on('click', function () {
+                $(".ConInfo").show();
+                $("#minusConInfo").show();
+                $("#plusConInfo").hide();
+
+            });
+
+            $('#minusConInfo').on('click', function () {
+                $("#minusConInfo").hide();
+                $("#plusConInfo").show();
+                $(".ConInfo").hide();
+            });
+
+            $("#minusHomeInfo").hide();
+            $(".HomeInfo").hide();
+
+            $('#plusHomeInfo').on('click', function () {
+                $(".HomeInfo").show();
+                $("#minusHomeInfo").show();
+                $("#plusHomeInfo").hide();
+
+            });
+
+            $('#minusHomeInfo').on('click', function () {
+                $("#minusHomeInfo").hide();
+                $("#plusHomeInfo").show();
+                $(".HomeInfo").hide();
+            });
+
+            $("#minusDirecDetail").hide();
+            $(".DirecDetail").hide();
+
+            $('#plusDirecDetail').on('click', function () {
+                $(".DirecDetail").show();
+                $("#minusDirecDetail").show();
+                $("#plusDirecDetail").hide();
+
+            });
+
+            $('#minusDirecDetail').on('click', function () {
+                $("#minusDirecDetail").hide();
+                $("#plusDirecDetail").show();
+                $(".DirecDetail").hide();
+            });
+
+            $("#minusCapInfo").hide();
+            $(".CapInfo").hide();
+
+            $('#plusCapInfo').on('click', function () {
+                $(".CapInfo").show();
+                $("#minusCapInfo").show();
+                $("#plusCapInfo").hide();
+
+            });
+
+            $('#minusCapInfo').on('click', function () {
+                $("#minusCapInfo").hide();
+                $("#plusCapInfo").show();
+                $(".CapInfo").hide();
+            });
+
+        });
+    </script>*@

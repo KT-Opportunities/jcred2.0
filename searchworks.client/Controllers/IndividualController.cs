@@ -35,14 +35,13 @@ namespace searchworks.client.Controllers
             string loginToken = "";
             var userName = api_username;
             var password = api_password;
-            var host = "https://rest.searchworks.co.za/auth/login/";
+            var host = "https://uatrest.searchworks.co.za/auth/login/";
             var body_credentials = new
             {
                 Username = api_username,
                 Password = api_password
             };
-            /* string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }"; *///Change Back
-            string authBody = "{  \"Username\": \"" + "api@ktopportunities.co.za" + "\",  \"Password\": \"" + "P@ssw0rd!" + "\" }";
+            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
             //var request = new RestRequest("login", Method.POST);
@@ -140,7 +139,7 @@ namespace searchworks.client.Controllers
                     case "idnumber|trace":
                         Debug.WriteLine("idnumber|trace");
 
-                        url = "https://rest.searchworks.co.za/individual/csipersontrace/idnumber/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
                         var apiIdTrace = new
@@ -179,7 +178,7 @@ namespace searchworks.client.Controllers
 
                         Debug.WriteLine("name|trace");
 
-                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -223,7 +222,7 @@ namespace searchworks.client.Controllers
 
                     case "nameandidnumber|trace":
                         Debug.WriteLine("nameandidnumber|trace");
-                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
 
@@ -265,7 +264,7 @@ namespace searchworks.client.Controllers
 
                     case "idnumber|verification":
                         //company search API call
-                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
                         //create RestSharp client and POST request object
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -308,7 +307,7 @@ namespace searchworks.client.Controllers
                     case "name|verification":
                         Debug.WriteLine("name|verification");
 
-                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -349,7 +348,7 @@ namespace searchworks.client.Controllers
 
                     case "nameandidnumber|verification":
                         Debug.WriteLine("nameandidnumber|verification");
-                        url = "https://rest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
 
@@ -406,7 +405,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/individual/csipersontrace/idnumber/";
+            var url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -712,7 +711,7 @@ namespace searchworks.client.Controllers
             }
 
             //company search API call
-            var url = "https://rest.searchworks.co.za/deedsoffice/crossdeeds/person/";
+            var url = "https://uatrest.searchworks.co.za/deedsoffice/crossdeeds/person/";
             //create RestSharp client and POST request object
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);

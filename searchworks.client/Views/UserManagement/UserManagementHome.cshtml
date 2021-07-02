@@ -58,20 +58,17 @@
                         //Use Editor For on TextBox
                         <div class="">
                             <label>Company Name</label><br>
-                            @Html.EditorFor(m => m.Company.orgname)
+                            @Html.EditorFor(m => m.Company.orgname, new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           minlength = "3",
+                           maxlength = "30"
+                       })
 
-                            @Html.TextBox("CompanyName", null, new
-                            {
-                            @id = "FirstName",
-                            @class = "cus-input",
-                            minlength
-                            = "3",
-                            maxlength = "30"
-                            })
+                           
                         </div>
-                        <div>
-                            @ViewBag.UserManagementCompanyCount
-                        </div>
+                        
                         <div>
                             <label>Abbreviation</label><br>
                             @Html.TextBox("abbreviation", null, new
