@@ -93,7 +93,6 @@ namespace searchworks.client.Controllers
             string page = "CSI Person " + eqType + "By " + seaType;
             string action = "Name:" + name + "; Surname:" + sur;
             string user_id = "";
-            System.Diagnostics.Debug.WriteLine(Session["ID"]);
             if (Session["ID"] == null)
             {
                 RedirectToAction("Logout", "Home");
@@ -688,6 +687,74 @@ namespace searchworks.client.Controllers
 
         public ActionResult DatabasePropertyIndividualResults(Deeds deed)
         {
+            /* string Reference = deed.Reference != null ? deed.Reference.Trim() : null;*/
+            string Reference = " ";
+            string DeedsOffice = deed.DeedsOffice != null ? deed.DeedsOffice.Trim() : null;
+            string Surname = deed.Surname != null ? deed.Surname.Trim() : null;
+            string FirstName = deed.FirstName != null ? deed.FirstName.Trim() : null;
+            string IDNumber = deed.IDNumber != null ? deed.IDNumber.Trim() : null;
+
+            string user_id = Session["ID"].ToString();
+            string us = Session["Name"].ToString();
+            DateTime time = DateTime.Now;
+            string date_add = DateTime.Today.ToShortDateString();
+            string time_add = time.ToString("T");
+            string page = "Database Property Individual";
+            string action = "Name:" + FirstName + "; Surname:" + Surname;
+
+            ViewData["user"] = Session["Name"].ToString();
+            ViewData["date"] = DateTime.Today.ToShortDateString();
+            ViewData["ref"] = Reference;
+
+            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+
+            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            if (!tokenValid(authtoken))
+            {
+                //exit with a warning
+            }
+
+            //company search API call
+            var url = "https://uatrest.searchworks.co.za/databaseproperty/person/";
+
+            //create RestSharp client and POST request object
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            //request headers
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+
+            var apiInput = new
+            {
+                SessionToken = authtoken,
+                Reference = Reference,
+                DeedsOffice = DeedsOffice,
+                Surname = Surname,
+                Firstname = FirstName,
+                IDNumber = IDNumber
+                 
+            };
+            //add parameters and token to request
+            request.Parameters.Clear();
+            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+            
+            IRestResponse response = client.Execute<RootObject>(request);
+           
+            dynamic rootObject = JObject.Parse(response.Content);
+            JObject o = JObject.Parse(response.Content);
+
+            System.Diagnostics.Debug.WriteLine(o);
             return View();
         }
 
@@ -698,7 +765,7 @@ namespace searchworks.client.Controllers
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
-            string name = deed.Firstname != null ? deed.Firstname.Trim() : null;
+            string name = deed.FirstName != null ? deed.FirstName.Trim() : null;
             string deeds = deed.DeedsOffice != null ? deed.DeedsOffice.Trim() : null;
             string sur = deed.Surname != null ? deed.Surname.Trim() : null;
             string id = deed.IDNumber != null ? deed.IDNumber.Trim() : null;

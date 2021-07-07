@@ -116,8 +116,9 @@ namespace searchworks.client.Individual
         public string Reference { get; set; }
         public string DeedsOffice { get; set; }
         public string Surname { get; set; }
-        public string Firstname { get; set; }
+        public string FirstName { get; set; }
         public string IDNumber { get; set; }
+        public string eqType { get; set; }
     }
 
     public class DeedsInformation

@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\emman\Documents\Local Publish Jcred</_PublishTargetUrl>
-    <History>True|2021-06-30T05:54:46.4439519Z;True|2021-06-24T06:37:02.0553868+02:00;True|2021-06-23T11:41:03.9246159+02:00;True|2021-06-21T06:30:06.0762833+02:00;True|2021-06-15T06:56:24.1757757+02:00;True|2021-06-14T08:33:24.0403162+02:00;True|2021-06-09T08:56:00.7918686+02:00;True|2021-06-04T12:59:21.4525790+02:00;True|2021-06-03T13:07:40.6861266+02:00;</History>
+    <History>True|2021-07-02T09:40:31.1148947Z;True|2021-06-30T07:54:46.4439519+02:00;True|2021-06-24T06:37:02.0553868+02:00;True|2021-06-23T11:41:03.9246159+02:00;True|2021-06-21T06:30:06.0762833+02:00;True|2021-06-15T06:56:24.1757757+02:00;True|2021-06-14T08:33:24.0403162+02:00;True|2021-06-09T08:56:00.7918686+02:00;True|2021-06-04T12:59:21.4525790+02:00;True|2021-06-03T13:07:40.6861266+02:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include=".gitignore">
@@ -58,6 +58,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/BouncyCastle.Crypto.xml">
       <publishTime>02/19/2021 20:45:46</publishTime>
+    </File>
+    <File Include="bin/Dapper.dll">
+      <publishTime>04/29/2021 13:22:54</publishTime>
+    </File>
+    <File Include="bin/Dapper.xml">
+      <publishTime>04/29/2021 13:22:54</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/16/2020 22:38:42</publishTime>
@@ -222,7 +228,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/25/2021 16:58:26</publishTime>
     </File>
     <File Include="bin/MySql.Data.EntityFramework.xml">
-      <publishTime>03/25/2021 16:58:02</publishTime>
+      <publishTime>06/30/2021 10:05:42</publishTime>
     </File>
     <File Include="bin/MySql.Data.xml">
       <publishTime>03/25/2021 16:57:54</publishTime>
@@ -246,10 +252,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:31:20</publishTime>
     </File>
     <File Include="bin/searchworks.client.dll">
-      <publishTime>06/30/2021 09:54:33</publishTime>
+      <publishTime>07/02/2021 16:52:29</publishTime>
     </File>
     <File Include="bin/searchworks.client.pdb">
-      <publishTime>06/30/2021 09:54:33</publishTime>
+      <publishTime>07/02/2021 16:52:29</publishTime>
     </File>
     <File Include="bin/ServiceStack.Text.dll">
       <publishTime>05/24/2021 15:31:28</publishTime>
@@ -489,7 +495,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/21/2021 14:56:49</publishTime>
     </File>
     <File Include="bin/System.Runtime.CompilerServices.Unsafe.dll">
-      <publishTime>04/16/2021 10:14:02</publishTime>
+      <publishTime>05/24/2021 15:31:30</publishTime>
     </File>
     <File Include="bin/System.Runtime.CompilerServices.VisualC.dll">
       <publishTime>06/21/2021 14:56:49</publishTime>
@@ -966,7 +972,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:39:59</publishTime>
     </File>
     <File Include="Content/css/home.css">
-      <publishTime>06/24/2021 12:35:42</publishTime>
+      <publishTime>07/02/2021 16:20:24</publishTime>
     </File>
     <File Include="Content/css/landing.css">
       <publishTime>05/24/2021 15:39:59</publishTime>
@@ -2169,16 +2175,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Controllers/CreditController.cs">
-      <publishTime>06/30/2021 07:22:33</publishTime>
+      <publishTime>07/02/2021 15:50:03</publishTime>
     </File>
     <File Include="Controllers/DocumentsController.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Controllers/HomeController.cs">
-      <publishTime>06/27/2021 05:48:25</publishTime>
+      <publishTime>07/01/2021 20:29:29</publishTime>
     </File>
     <File Include="Controllers/IndividualController.cs">
-      <publishTime>06/25/2021 16:29:14</publishTime>
+      <publishTime>07/01/2021 19:25:36</publishTime>
     </File>
     <File Include="Controllers/IntelligenceReportController.cs">
       <publishTime>06/13/2021 00:36:43</publishTime>
@@ -2190,7 +2196,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Controllers/UserManagementController.cs">
-      <publishTime>06/28/2021 18:46:58</publishTime>
+      <publishTime>07/01/2021 15:44:17</publishTime>
     </File>
     <File Include="Controllers/VehicleController.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -2213,29 +2219,188 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Models/AccountViewModels.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/addresshistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/Admin.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Models/al.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/aspnetpasshashhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/aspnetrole.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/aspnetuser.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/aspnetuserclaim.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/aspnetuserlogin.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/bank_preferences.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/cca12months.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/cca24months.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/cca36months.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/ccastat.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/check.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/checkList.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Models/checks.cs">
-      <publishTime>05/24/2021 15:40:00</publishTime>
+      <publishTime>06/30/2021 10:05:36</publishTime>
     </File>
     <File Include="Models/check_list.cs">
-      <publishTime>05/24/2021 15:40:00</publishTime>
+      <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="Models/CompanyInformationViewModel.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/compuscansearchhist.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/consumerstatistic.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/contactinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/country.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/cpa_accounts.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/creditdeclinereason.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/creditinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/C__efmigrationshistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/C__migrationhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/DashboardNoAuthorizationFilter.cs">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/datacount.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/dbChecks.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/DBModel.Context.cs">
+      <publishTime>07/01/2021 11:59:24</publishTime>
+    </File>
+    <File Include="Models/DBModel.Context.tt">
+      <publishTime>06/30/2021 15:36:49</publishTime>
+    </File>
+    <File Include="Models/DBModel.cs">
+      <publishTime>06/30/2021 15:37:40</publishTime>
+    </File>
+    <File Include="Models/DBModel.Designer.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/DBModel.edmx">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/DBModel.edmx.diagram">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/DBModel.tt">
+      <publishTime>06/30/2021 15:36:49</publishTime>
+    </File>
+    <File Include="Models/DBModel1.Designer.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/debtreviewstatu.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/directorship.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/directorsummary.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/document.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/emailhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/employmenthistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/employment_details.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/enquiryhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/ExistingClient.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
+    </File>
+    <File Include="Models/fraudindicatorsummary.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfireaggregatedcounter.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirecounter.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfiredistributedlock.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirehash.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirejob.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirejobparameter.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirejobqueue.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirejobstate.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirelist.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfireserver.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfireset.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/hangfirestate.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/homeaffairsinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="Models/IdentityModels.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -2243,26 +2408,134 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Models/IntelligenceReport.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/internalenquiryhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.Context.cs">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.Context.tt">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.cs">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.Designer.cs">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.edmx">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.edmx.diagram">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/JCredDBModel.tt">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/log.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/Login.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Models/ManageViewModels.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/member.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/MysqlClass.cs">
-      <publishTime>05/24/2021 15:40:00</publishTime>
+      <publishTime>06/30/2021 11:05:59</publishTime>
     </File>
     <File Include="Models/NewClient.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/nlr12months.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/nlr24months.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/nlr36months.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/nlrstat.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/nlr_accounts.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/OrgCategory.cs">
-      <publishTime>05/25/2021 20:06:29</publishTime>
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/orgregion.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/orgtenant.cs">
+      <publishTime>07/01/2021 15:43:03</publishTime>
+    </File>
+    <File Include="Models/orgtenantpriv.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/orgunit.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/orgunitprivmap.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/orgunitusermap.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/orgunituserprivmap.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/PagedList.cs">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/paymenthistoryaccountdetail.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/personinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/ProlongExpirationTimeAttribute.cs">
+      <publishTime>06/30/2021 10:05:36</publishTime>
+    </File>
+    <File Include="Models/propertiesbondinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertiesbuyerinfo.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertieserfinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertiesgeneralinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertiesschemeinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertiessellerinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertiessuburbinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertiestransferinformation.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/propertysummary.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="Models/SearchCompanyResp.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Models/SearchCreditResp.cs">
       <publishTime>06/29/2021 16:01:17</publishTime>
+    </File>
+    <File Include="Models/searchhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="Models/SearchIndiResp - Copy.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -2273,20 +2546,44 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Models/SearchInformationViewModel.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
+    <File Include="Models/searchresulttype.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/searchtype.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
     <File Include="Models/search_history.cs">
-      <publishTime>06/15/2021 13:32:04</publishTime>
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/syspriv.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/telephonehistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/transunionsearchhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="Models/User.cs">
-      <publishTime>05/24/2021 15:40:00</publishTime>
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/user1.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
+    </File>
+    <File Include="Models/UserManagementViewModel.cs">
+      <publishTime>07/02/2021 11:54:11</publishTime>
     </File>
     <File Include="Models/users.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
+    </File>
+    <File Include="Models/xdssearchhistory.cs">
+      <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="ngrok.exe">
       <publishTime>06/15/2021 13:32:05</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>06/30/2021 09:29:11</publishTime>
+      <publishTime>07/02/2021 11:29:56</publishTime>
     </File>
     <File Include="packages/Antlr.3.5.0.2/Antlr.3.5.0.2.nupkg">
       <publishTime>06/15/2021 13:32:05</publishTime>
@@ -9177,7 +9474,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Properties/PublishProfiles/FolderProfile5.pubxml.user">
-      <publishTime>06/30/2021 08:36:33</publishTime>
+      <publishTime>07/02/2021 11:55:51</publishTime>
     </File>
     <File Include="Properties/PublishProfiles/jcred - FTP.pubxml">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -9582,10 +9879,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="searchworks.client.csproj">
-      <publishTime>06/30/2021 09:29:33</publishTime>
+      <publishTime>07/02/2021 11:29:58</publishTime>
     </File>
     <File Include="searchworks.client.csproj.user">
-      <publishTime>06/30/2021 09:54:23</publishTime>
+      <publishTime>07/02/2021 16:52:23</publishTime>
     </File>
     <File Include="searchworks.client/obj/Release/AspnetCompileMerge/Source/Views/Credit/CompuScanEmploymentConfidenceIndexResults.cshtml">
       <publishTime>06/13/2021 12:30:11</publishTime>
@@ -9717,10 +10014,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/22/2021 06:30:11</publishTime>
     </File>
     <File Include="Views/Credit/ExperianConsumerProfileDatabase.cshtml">
-      <publishTime>06/30/2021 07:28:10</publishTime>
+      <publishTime>07/01/2021 14:39:27</publishTime>
     </File>
     <File Include="Views/Credit/ExperianConsumerProfileResults.cshtml">
-      <publishTime>06/28/2021 12:38:38</publishTime>
+      <publishTime>07/02/2021 14:58:54</publishTime>
     </File>
     <File Include="Views/Credit/LetterOfDemand.cshtml">
       <publishTime>06/15/2021 13:32:04</publishTime>
@@ -9750,10 +10047,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/22/2021 06:11:41</publishTime>
     </File>
     <File Include="Views/Credit/TransUnionConsumerProfileDatabase.cshtml">
-      <publishTime>06/30/2021 07:51:42</publishTime>
+      <publishTime>07/01/2021 11:18:36</publishTime>
     </File>
     <File Include="Views/Credit/TransUnionConsumerProfileResults.cshtml">
-      <publishTime>06/30/2021 06:43:53</publishTime>
+      <publishTime>07/02/2021 15:50:25</publishTime>
     </File>
     <File Include="Views/Credit/TransUnionConsumerTrace.cshtml">
       <publishTime>06/15/2021 13:32:04</publishTime>
@@ -9777,10 +10074,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Views/Credit/VeriCredConsumerProfileDatabase.cshtml">
-      <publishTime>06/30/2021 05:10:25</publishTime>
+      <publishTime>07/01/2021 11:20:22</publishTime>
     </File>
     <File Include="Views/Credit/VeriCredConsumerProfileResults.cshtml">
-      <publishTime>06/30/2021 05:27:00</publishTime>
+      <publishTime>07/01/2021 11:10:43</publishTime>
     </File>
     <File Include="Views/Credit/VeriCredContactInfoByIDNumber.cshtml">
       <publishTime>06/15/2021 13:32:04</publishTime>
@@ -9858,7 +10155,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Views/Home/CSICompanyDetails.cshtml">
-      <publishTime>06/15/2021 13:32:04</publishTime>
+      <publishTime>07/01/2021 20:21:34</publishTime>
     </File>
     <File Include="Views/Home/CSICompanyRecords.cshtml">
       <publishTime>06/22/2021 12:13:35</publishTime>
@@ -9954,7 +10251,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>06/27/2021 06:15:02</publishTime>
+      <publishTime>07/02/2021 16:51:43</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -9966,7 +10263,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/27/2021 06:11:28</publishTime>
     </File>
     <File Include="Views/UserManagement/UserManagementHome.cshtml">
-      <publishTime>06/28/2021 14:30:39</publishTime>
+      <publishTime>07/02/2021 09:56:41</publishTime>
     </File>
     <File Include="Views/Vehicle/TransUnionAutoReport.cshtml">
       <publishTime>06/15/2021 13:32:05</publishTime>
@@ -9981,7 +10278,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/30/2021 09:29:29</publishTime>
+      <publishTime>07/02/2021 11:32:45</publishTime>
     </File>
     <File Include="Web.Debug.config">
       <publishTime>05/24/2021 15:40:00</publishTime>

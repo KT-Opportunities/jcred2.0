@@ -7,7 +7,8 @@
         @if (TempData["msg"] != null)
         {
             <div>@TempData["msg"] </div>
-            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>}
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+        }
         else
         {
             <div class="left_col">
@@ -45,7 +46,7 @@
                     We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
                     <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
                 </div>
-            
+
                 <div id="notification" class="seaRes">
                     PERSONAL INFORMATION <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
@@ -195,7 +196,7 @@
                         </tbody>
                     </table>
                 </div>
-              
+
                 <div id="notification" class="seaRes">
                     HOME AFFAIRS INFORMATION <span id="plusHome" class="coll"><i class="fas fa-plus"></i></span><span id="minusHome" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
@@ -240,7 +241,7 @@
                         </tbody>
                     </table>
                 </div>
-              
+
                 <div id="notification" class="seaRes">
                     CREDIT INFORMATION <span id="plusCreditHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusCreditHis" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
@@ -424,7 +425,6 @@
                                 <th colspan="2">By</th>
                                 <th style="border: none;" colspan="2"> Contact</th>
                                 <th></th>
-
                             </tr>
 
                             @foreach (var item in @ViewBag.EnqHIst)
@@ -434,35 +434,33 @@
                                     <td colspan="2">@item.EnquiredBy</td>
                                     <td style="border: none;" colspan="2">@item.EnquiredByContact</td>
                                     <td><a class="seaMore" href="#">View more</a></td>
-
                                 </tr>
                             }
-
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div id="notification" class="seaRes">
                     HISTORICAL INFORMATION <span id="plusHistInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHistInfo" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
                 <div class="HistInfo">
                     <table class="table table-striped">
-                            
+
                         <tbody id="HistInfo">
                             <tr>
                                 <th colspan="8" class="col_header">Address History</th>
                             </tr>
                             @if (@ViewBag.AddressHist != null)
                             {
-                                    <tr>
-                                        <th colspan="1">Type</th>
-                                        <th colspan="1">Line1</th>
-                                        <th colspan="1">Line2</th>
-                                        <th colspan="1">Line3</th>
-                                        <th colspan="1">PostalCode</th>
-                                        <th colspan="2">FullAddress</th>
-                                        <th colspan="1">Last Updated</th>
-                                    </tr>
+                                <tr>
+                                    <th colspan="1">Type</th>
+                                    <th colspan="1">Line1</th>
+                                    <th colspan="1">Line2</th>
+                                    <th colspan="1">Line3</th>
+                                    <th colspan="1">PostalCode</th>
+                                    <th colspan="2">FullAddress</th>
+                                    <th colspan="1">Last Updated</th>
+                                </tr>
                                 foreach (var item in @ViewBag.AddressHist)
                                 {
                                     <tr>
@@ -474,7 +472,7 @@
                                         <td colspan="2">@item.FullAddress</td>
                                         <td colspan="1">@item.LastUpdatedDate</td>
                                     </tr>
-                                     
+
                                 }
                             }
                             else
@@ -539,11 +537,10 @@
                                     <td colspan="8">No Data</td>
                                 </tr>
                             }
-
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div id="notification" class="seaRes">
                     INTERNAL ENQUIRY INFORMATION <span id="plusIntern" class="coll"><i class="fas fa-plus"></i></span><span id="minusintern" class="coll"><i class="fas fa-minus"></i></span>
                 </div>
@@ -577,7 +574,6 @@
                                     <td colspan="8">No Data</td>
                                 </tr>
                             }
-
                         </tbody>
                     </table>
                 </div>

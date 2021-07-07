@@ -168,7 +168,6 @@ namespace searchworks.client.Controllers
         public ActionResult Logout()
         {
             HttpContext.GetOwinContext().Authentication.SignOut(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
-            System.Diagnostics.Debug.WriteLine(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
 
             return RedirectToAction("Index", "Home");
         }
@@ -315,7 +314,7 @@ namespace searchworks.client.Controllers
                 Username = api_username,
                 Password = api_password
             };
-            string authBody = "{  \"Username\": \"" + api_username + "\",  \"Password\": \"" + api_password + "\" }";
+            string authBody = "{  \"Username\": \"" + userName + "\",  \"Password\": \"" + password + "\" }";
 
             var client = new RestClient(host);
             //client.Authenticator = new HttpBasicAuthenticator(userName, password);
@@ -355,7 +354,7 @@ namespace searchworks.client.Controllers
             string strCompanyName = name != null ? name.Trim() : null;
             string refe = search.Reference;
 
-            string authtoken = GetLoginToken("api@ktopportunities.co.za", "P@ssw0rd!");
+            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
@@ -418,8 +417,13 @@ namespace searchworks.client.Controllers
                 conn.Open();
 
                 var cmd2 = new MySqlCommand(query_uid, conn);
-
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 var reader2 = cmd2.ExecuteReader();
+                if (rootObject.ResponseMessage == "Invalid sessionToken" ) {
+
+                    TempData["msg"] = "Invalid sessionToken.";
+                    return View();
+                }
                 List<CompanyInformation> lst = new List<CompanyInformation>();
                 dynamic respContent = JObject.Parse(response.Content);
 
@@ -435,9 +439,31 @@ namespace searchworks.client.Controllers
                 }
                 catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.ToString());
+
                     TempData["msg"] = "An error occured, please check the entered values.";
                 }
 
+                /* try
+                 {
+                     System.Collections.Generic.List<CompanyInformation> CompanyList = new System.Collections.Generic.List<CompanyInformation>();
+                     foreach (CompanyInformation comp in rootObject.CompanyInformation)
+                     {
+
+                         CompanyList.Add(comp);
+
+                     }
+                     ViewData["CompanyList"] = CompanyList;
+                     ViewData["CompanyListCount"] = CompanyList.Count;
+
+
+                 }
+                 catch (Exception e)
+                 {
+                     System.Diagnostics.Debug.WriteLine(e.ToString());
+                     TempData["msg"] = "An error occured, please check the entered values.";
+                 }
+ */
                 conn.Close();
                 return View(lst);
             }
@@ -920,9 +946,6 @@ namespace searchworks.client.Controllers
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
             dynamic rootObject = JObject.Parse(response.Content);
-   
-
-        
 
             string CapitalType = "";
             string CompanyCapitalID = "";
@@ -961,7 +984,7 @@ namespace searchworks.client.Controllers
 
             if (rootObject.ResponseObject["Directors"] != null)
             {
-              List<Directors> DirecD;
+                List<Directors> DirecD;
 
                 Newtonsoft.Json.Linq.JArray elements2 = new Newtonsoft.Json.Linq.JArray();
                 elements2 = rootObject.ResponseObject.Directors;
