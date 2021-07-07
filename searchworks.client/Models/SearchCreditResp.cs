@@ -616,6 +616,7 @@ namespace searchworks.client.Credit
 
     public class TelephoneHistory
     {
+        public String TelephoneID { get; set; }
         public string TypeDescriptionTel { get; set; }
         public string DialCode { get; set; }
         public string Number { get; set; }
