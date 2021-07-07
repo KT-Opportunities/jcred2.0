@@ -17,15 +17,31 @@ namespace searchworks.client.Individual
 
     public class PersonInformation
     {
+        public string PersonID { get; set; }
+        public string PersonType { get; set; }
+        public string PersonTypeCode { get; set; }
+
         public string Title { get; set; }
         public string DateOfBirth { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string Fullname { get; set; }
         public string IDNumber { get; set; }
+        public string MiddleName1 { get; set; }
         public string MaritalStatus { get; set; }
         public string Gender { get; set; }
         public string Age { get; set; }
+        public string DeedsOfficeID { get; set; }
+        public string DeedsOfficeName { get; set; }
+        public string HasProperties { get; set; }
+    }
+
+    public class DeedsOfficeBonds
+    {
+        public string DocumentNumber { get; set; }
+        public string Value { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
     }
 
     public class HomeAffairsInformation
@@ -38,6 +54,34 @@ namespace searchworks.client.Individual
         public string IDCardIssuedDate { get; set; }
         public string IDCardIssued { get; set; }
         public string VerifiedStatus { get; set; }
+    }
+
+    public class PropertiesTransferInformation
+    {
+        public string PurchaseDate { get; set; }
+        public string PurchasePrice { get; set; }
+        public string TitleDeedNumber { get; set; }
+    }
+
+    public class PropertiesGeneralInformation
+    {
+        public string PropertyType { get; set; }
+        public string PropertyID { get; set; }
+        public string RawPropertyType { get; set; }
+        public string ShortPropertyDescription { get; set; }
+        public string DeedsOfficeID { get; set; }
+        public string DeedsOfficeName { get; set; }
+        public string RegistrationDate { get; set; }
+        public string Share { get; set; }
+        public string MultiOwner { get; set; }
+        public string MultiProperty { get; set; }
+    }
+
+    public class PropertiesSchemeInformation
+    {
+        public string Name { get; set; }
+        public string Number { get; set; }
+        public string UnitNumber { get; set; }
     }
 
     public class EmploymentHistory

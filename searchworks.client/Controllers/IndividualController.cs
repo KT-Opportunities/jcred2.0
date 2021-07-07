@@ -742,19 +742,31 @@ namespace searchworks.client.Controllers
                 Surname = Surname,
                 Firstname = FirstName,
                 IDNumber = IDNumber
-                 
             };
             //add parameters and token to request
             request.Parameters.Clear();
             request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
             request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-            
+
             IRestResponse response = client.Execute<RootObject>(request);
-           
+
             dynamic rootObject = JObject.Parse(response.Content);
             JObject o = JObject.Parse(response.Content);
 
             System.Diagnostics.Debug.WriteLine(o);
+
+            Newtonsoft.Json.Linq.JObject personElement = new Newtonsoft.Json.Linq.JObject();
+            personElement = rootObject.ResponseObject.PersonInformation;
+
+            PersonInformation personInformation = new PersonInformation();
+
+            for (int count = 0; count < (personElement.Count); count++)
+            {
+                System.Diagnostics.Debug.WriteLine(personElement);
+            }
+
+            System.Diagnostics.Debug.WriteLine(personElement);
+
             return View();
         }
 
@@ -771,6 +783,7 @@ namespace searchworks.client.Controllers
             string id = deed.IDNumber != null ? deed.IDNumber.Trim() : null;
             string refe = deed.Reference != null ? deed.Reference.Trim() : null;
 
+            System.Diagnostics.Debug.WriteLine(name, deeds, sur, id, refe);
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
