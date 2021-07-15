@@ -26,6 +26,7 @@ namespace searchworks.client.Models
             {
                 this.Company = db.Query<orgtenant>("Select * From orgtenant where orgtenantid=" + intorgtenant).FirstOrDefault();
                 this.orgunits = db.Query<orgunit>("Select * From orgunit where orgtenantid=" + this.Company.orgtenantid).ToList();
+                this.users = db.Query<User>("Select * From orgunit where orgtenantid=" + this.Company.orgtenantid).ToList();
             }
         }
     }

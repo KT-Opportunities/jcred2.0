@@ -15,5 +15,7 @@ namespace searchworks.client.DAL
         void DeleteOrgUnit(int orgunitID);
         void UpdateOrgUnit(orgunit vorgunit);
         void Save();
+
+        //void NewMethod(); NLog
     }
 }

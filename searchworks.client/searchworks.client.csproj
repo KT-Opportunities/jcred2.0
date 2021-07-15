@@ -458,6 +458,13 @@
     <Compile Include="Controllers\TrustController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
+    <Compile Include="DAL\IOrgTenantRepository.cs" />
+    <Compile Include="DAL\IOrgUnitRepository.cs" />
+    <Compile Include="DAL\IOrgUnitUserRepository.cs" />
+    <Compile Include="DAL\JCredDBContext.cs" />
+    <Compile Include="DAL\OrgTenantRepository.cs" />
+    <Compile Include="DAL\OrgUnitRepository.cs" />
+    <Compile Include="DAL\OrgUnitUserRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -717,7 +724,7 @@
     <Compile Include="Models\user1.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserManagementViewModel.cs" />
+    <Compile Include="ModelViews\UserManagementViewModel.cs" />
     <Compile Include="Models\users.cs" />
     <Compile Include="Models\check_list.cs">
       <DependentUpon>DBModel.tt</DependentUpon>

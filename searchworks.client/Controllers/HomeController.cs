@@ -46,6 +46,12 @@ namespace searchworks.client.Controllers
             return View();
         }
 
+
+        public ActionResult ForgotPassword()
+        {
+            return this.RedirectToAction("ForgotPassword", "Account");
+        }
+
         //[AllowAnonymous]
         public ActionResult Login(Login log)
         {
