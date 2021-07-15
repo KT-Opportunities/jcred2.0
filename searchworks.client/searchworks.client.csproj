@@ -724,7 +724,7 @@
     <Compile Include="Models\user1.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelViews\UserManagementViewModel.cs" />
+    <Compile Include="ViewModels\UserManagementViewModel.cs" />
     <Compile Include="Models\users.cs" />
     <Compile Include="Models\check_list.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
