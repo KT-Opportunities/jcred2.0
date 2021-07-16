@@ -822,6 +822,7 @@
     <Content Include="Content\css\assets\tablejs\jquery.dataTables.min.js" />
     <Content Include="Content\css\home.css" />
     <Content Include="Content\css\landing.css" />
+    <Content Include="Content\css\landinglayoutform.css" />
     <Content Include="Content\css\L_assets\css\main.css" />
     <Content Include="Content\css\L_assets\css\util.css" />
     <Content Include="Content\css\L_assets\fonts\font-awesome-4.7.0\css\font-awesome%281%29.css" />
@@ -1023,6 +1024,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DBModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1543,6 +1548,7 @@
     <Content Include="Views\Individual\DatabasePropertyIndividualResults.cshtml" />
     <Content Include="Views\Home\DatabasePropertyCompanyResults.cshtml" />
     <Content Include="Views\Home\DeedsOfficeRecordsCompanyResult.cshtml" />
+    <Content Include="Views\Shared\_LandingLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
