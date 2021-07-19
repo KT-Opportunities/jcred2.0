@@ -21,12 +21,24 @@ using System.Net.Mail;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Dapper;
+using searchworks.client.Helpers;
 
 namespace searchworks.client.Controllers
 {
     //[Authorize]
     public class HomeController : Controller
     {
+        IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+
+        public  HomeController()
+        {
+            
+
+
+        }
+
+
         public bool IsValidEmail(string emailaddress)
         {
             try
@@ -82,6 +94,17 @@ namespace searchworks.client.Controllers
                     //if (userEmail == log.Email && userPass == log.Password)
                     if (ident.IsAuthenticated)
                     {
+                        //pull companyname
+                        string strUserGUID = ident.GetUserId();
+                        int tenantID = -1;
+                        tenantID = new JCredHelper().GetUserTenantID(strUserGUID);
+
+                        //var tenantusermap = db.Query<orgunitusermap>("Select * From orgunitusermap where strUserGUID='" + strUserGUID + "'").FirstOrDefault();
+                        //tenantID = Convert.ToInt32(tenantusermap.orgtenantid);
+
+                        //tenantID = new JCredHelper().GetUserTenantID(strUserGUID);
+                        //tenantID = new JCredHelper.Instance.GetUserTenantID(strUserGUID);
+
                         //conn.Close();
                         DateTime time = DateTime.Now;
 

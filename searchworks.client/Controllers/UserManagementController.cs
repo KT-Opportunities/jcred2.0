@@ -10,17 +10,25 @@ using searchworks.client.Models;
 using searchworks.client.Credit;
 using Dapper;
 using System.Data;
+using searchworks.client.Helpers;
+using Microsoft.AspNet.Identity;
 
 namespace searchworks.client.Controllers
 
 {
+    [Authorize]
     public class UserManagementController : Controller
     {
         private JCredDBContextEntities db = new JCredDBContextEntities();
 
         public ActionResult UserManagementHome()
         {
-            UserManagementViewModel userManagementViewModel = new UserManagementViewModel(2);
+
+            string strUserGUID =  User.Identity.GetUserId();
+            int tenantID = -1;
+            tenantID = new JCredHelper().GetUserTenantID(strUserGUID);
+
+            UserManagementViewModel userManagementViewModel = new UserManagementViewModel(tenantID);
             
             return View(userManagementViewModel);
         }

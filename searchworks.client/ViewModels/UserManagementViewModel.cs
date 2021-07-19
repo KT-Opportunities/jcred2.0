@@ -6,9 +6,11 @@ using Dapper;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.Web.Mvc;
 
 namespace searchworks.client.Models
 {
+    [Authorize]
     public class UserManagementViewModel
     {
         public orgtenant Company { get; set; }
@@ -22,6 +24,8 @@ namespace searchworks.client.Models
 
         public UserManagementViewModel(int intorgtenant)
         {
+           // string strUserGUID = User.Identity.GetUserId();
+
             using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
             {
                 this.Company = db.Query<orgtenant>("Select * From orgtenant where orgtenantid=" + intorgtenant).FirstOrDefault();
