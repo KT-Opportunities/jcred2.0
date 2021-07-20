@@ -32,14 +32,76 @@ namespace searchworks.client.Controllers
     public class HomeController : Controller
     {
         IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
-
+        
         public  HomeController()
         {
             
-
-
         }
 
+        public string GetSWAPILoginToken()
+        {
+            string loginToken = "";
+
+            //get config from settings
+            string api_username = "";
+            string api_password = "";
+            string api_host = "";
+
+            try
+            {
+                api_username = Convert.ToString(ConfigurationManager.AppSettings["SWAPIUID"]);
+                api_password = Convert.ToString(ConfigurationManager.AppSettings["SWAPIPWD"]);
+                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHost"]);
+            }
+            catch (Exception err)
+            {
+
+                //throw;
+            }
+
+            var userName = api_username;
+            var password = api_password;
+            var host = api_host;
+            var body_credentials = new
+            {
+                Username = api_username,
+                Password = api_password
+            };
+
+            string authBody = "{  \"Username\": \"" + userName + "\",  \"Password\": \"" + password + "\" }";
+
+            var client = new RestClient(host);
+            
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            
+            request.AddParameter("application/json", authBody, ParameterType.RequestBody);
+
+            try
+            {
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.IsSuccessful)
+                {
+                    dynamic respContent = JObject.Parse(response.Content);
+                    loginToken = respContent.ResponseMessage;
+                }
+                else
+                {//something went wrong: log the response
+
+                }
+            }
+            catch (Exception err)
+            {
+                //error 
+                //throw;
+            }
+
+
+            return loginToken;
+        }
 
         public bool IsValidEmail(string emailaddress)
         {
