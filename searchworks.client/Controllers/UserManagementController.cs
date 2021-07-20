@@ -81,5 +81,13 @@ namespace searchworks.client.Controllers
                 return View();
             }
         }
+
+
+
+        public ActionResult ViewTest(int id)
+        {
+            //Write your logic here 
+            return PartialView("_TestPartial");
+        }
     }
 }

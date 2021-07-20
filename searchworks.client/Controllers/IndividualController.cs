@@ -93,15 +93,16 @@ namespace searchworks.client.Controllers
             string page = "CSI Person " + eqType + "By " + seaType;
             string action = "Name:" + name + "; Surname:" + sur;
             string user_id = "";
-            if (Session["ID"] == null)
+            if (Session["Name"] == null)
             {
+
                 RedirectToAction("Logout", "Home");
             }
             else
             {
                 user_id = Session["ID"].ToString();
             }
-            string us = Session["Name"].ToString();
+           string us = Session["Name"].ToString();
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
