@@ -112,7 +112,7 @@
                                         data-target="#exampleModal">
                                         @item.ReportDate
                                     </td>
-                                    @if (Type.ToString() == "ExperianConsumerProfile" || Type.ToString() == "TransUnionConsumerProfile" || Type.ToString() == "VeriCredConsumerProfile")
+                                    @if (Type.ToString() == "ExperianConsumerProfile" || Type.ToString() == "TransUnionConsumerProfile" || Type.ToString() == "VeriCredConsumerProfile" @*|| Type.ToString() == "CombinedConsumerCreditReport"*@)
                                     {
                                         <td class="tdSearch">@Html.ActionLink("View", Type + "Database", "Credit", new { id = ID, token = Token }, null)</td>
 

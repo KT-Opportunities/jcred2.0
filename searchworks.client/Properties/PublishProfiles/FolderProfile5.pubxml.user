@@ -252,10 +252,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:31:20</publishTime>
     </File>
     <File Include="bin/searchworks.client.dll">
-      <publishTime>07/07/2021 10:09:43</publishTime>
+      <publishTime>07/12/2021 16:02:44</publishTime>
     </File>
     <File Include="bin/searchworks.client.pdb">
-      <publishTime>07/07/2021 10:09:43</publishTime>
+      <publishTime>07/12/2021 16:02:44</publishTime>
     </File>
     <File Include="bin/ServiceStack.Text.dll">
       <publishTime>05/24/2021 15:31:28</publishTime>
@@ -972,7 +972,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:39:59</publishTime>
     </File>
     <File Include="Content/css/home.css">
-      <publishTime>07/06/2021 09:31:56</publishTime>
+      <publishTime>07/12/2021 05:50:36</publishTime>
     </File>
     <File Include="Content/css/landing.css">
       <publishTime>05/24/2021 15:39:59</publishTime>
@@ -1914,7 +1914,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:39:59</publishTime>
     </File>
     <File Include="Content/css/nav.css">
-      <publishTime>06/15/2021 13:32:03</publishTime>
+      <publishTime>07/08/2021 04:06:21</publishTime>
     </File>
     <File Include="Content/css/signin.css">
       <publishTime>05/24/2021 15:39:59</publishTime>
@@ -2175,16 +2175,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Controllers/CreditController.cs">
-      <publishTime>07/07/2021 07:12:54</publishTime>
+      <publishTime>07/12/2021 11:56:48</publishTime>
     </File>
     <File Include="Controllers/DocumentsController.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Controllers/HomeController.cs">
-      <publishTime>07/06/2021 12:23:28</publishTime>
+      <publishTime>07/12/2021 13:17:02</publishTime>
     </File>
     <File Include="Controllers/IndividualController.cs">
-      <publishTime>07/07/2021 10:06:47</publishTime>
+      <publishTime>07/12/2021 15:30:58</publishTime>
     </File>
     <File Include="Controllers/IntelligenceReportController.cs">
       <publishTime>06/13/2021 00:36:43</publishTime>
@@ -2200,6 +2200,27 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="Controllers/VehicleController.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
+    </File>
+    <File Include="DAL/IOrgTenantRepository.cs">
+      <publishTime>07/12/2021 15:15:32</publishTime>
+    </File>
+    <File Include="DAL/IOrgUnitRepository.cs">
+      <publishTime>07/12/2021 15:15:32</publishTime>
+    </File>
+    <File Include="DAL/IOrgUnitUserRepository.cs">
+      <publishTime>07/12/2021 15:15:32</publishTime>
+    </File>
+    <File Include="DAL/JCredDBContext.cs">
+      <publishTime>07/12/2021 15:15:32</publishTime>
+    </File>
+    <File Include="DAL/OrgTenantRepository.cs">
+      <publishTime>07/12/2021 15:15:32</publishTime>
+    </File>
+    <File Include="DAL/OrgUnitRepository.cs">
+      <publishTime>07/12/2021 15:15:32</publishTime>
+    </File>
+    <File Include="DAL/OrgUnitUserRepository.cs">
+      <publishTime>07/12/2021 15:15:33</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -2529,10 +2550,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2021 16:21:22</publishTime>
     </File>
     <File Include="Models/SearchCompanyResp.cs">
-      <publishTime>05/24/2021 15:40:00</publishTime>
+      <publishTime>07/12/2021 12:19:54</publishTime>
     </File>
     <File Include="Models/SearchCreditResp.cs">
-      <publishTime>07/06/2021 13:28:59</publishTime>
+      <publishTime>07/08/2021 12:11:29</publishTime>
     </File>
     <File Include="Models/searchhistory.cs">
       <publishTime>06/30/2021 16:21:22</publishTime>
@@ -2541,7 +2562,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Models/SearchIndiResp.cs">
-      <publishTime>07/07/2021 05:10:22</publishTime>
+      <publishTime>07/07/2021 14:45:49</publishTime>
     </File>
     <File Include="Models/SearchInformationViewModel.cs">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -9474,7 +9495,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Properties/PublishProfiles/FolderProfile5.pubxml.user">
-      <publishTime>07/02/2021 16:52:50</publishTime>
+      <publishTime>07/09/2021 06:30:30</publishTime>
     </File>
     <File Include="Properties/PublishProfiles/jcred - FTP.pubxml">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -9879,10 +9900,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="searchworks.client.csproj">
-      <publishTime>07/07/2021 06:49:33</publishTime>
+      <publishTime>07/12/2021 10:23:16</publishTime>
     </File>
     <File Include="searchworks.client.csproj.user">
-      <publishTime>07/07/2021 10:09:33</publishTime>
+      <publishTime>07/08/2021 11:30:01</publishTime>
     </File>
     <File Include="searchworks.client/obj/Release/AspnetCompileMerge/Source/Views/Credit/CompuScanEmploymentConfidenceIndexResults.cshtml">
       <publishTime>06/13/2021 12:30:11</publishTime>
@@ -9942,13 +9963,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Views/Credit/CombinedConsumerTraceDatabase.cshtml">
-      <publishTime>07/07/2021 04:27:39</publishTime>
+      <publishTime>07/08/2021 04:59:47</publishTime>
     </File>
     <File Include="Views/Credit/CombinedConsumerTraceDbResults.cshtml">
       <publishTime>06/25/2021 16:55:14</publishTime>
     </File>
     <File Include="Views/Credit/CombinedConsumerTraceResults.cshtml">
-      <publishTime>07/04/2021 23:22:26</publishTime>
+      <publishTime>07/08/2021 04:59:45</publishTime>
     </File>
     <File Include="Views/Credit/CombinedCreditReport.cshtml">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -10014,7 +10035,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/22/2021 06:30:11</publishTime>
     </File>
     <File Include="Views/Credit/ExperianConsumerProfileDatabase.cshtml">
-      <publishTime>07/07/2021 07:30:23</publishTime>
+      <publishTime>07/12/2021 09:55:08</publishTime>
     </File>
     <File Include="Views/Credit/ExperianConsumerProfileResults.cshtml">
       <publishTime>07/07/2021 09:50:43</publishTime>
@@ -10047,7 +10068,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2021 13:43:46</publishTime>
     </File>
     <File Include="Views/Credit/TransUnionConsumerProfileDatabase.cshtml">
-      <publishTime>07/01/2021 11:18:36</publishTime>
+      <publishTime>07/07/2021 14:44:31</publishTime>
     </File>
     <File Include="Views/Credit/TransUnionConsumerProfileResults.cshtml">
       <publishTime>07/02/2021 15:50:25</publishTime>
@@ -10152,28 +10173,31 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/15/2021 13:32:04</publishTime>
     </File>
     <File Include="Views/Home/CIPCCompanyResults.cshtml">
-      <publishTime>07/06/2021 11:57:09</publishTime>
+      <publishTime>07/09/2021 12:19:50</publishTime>
     </File>
     <File Include="Views/Home/CSICompanyDetails.cshtml">
-      <publishTime>07/01/2021 20:21:34</publishTime>
+      <publishTime>07/09/2021 12:25:16</publishTime>
     </File>
     <File Include="Views/Home/CSICompanyRecords.cshtml">
       <publishTime>06/22/2021 12:13:35</publishTime>
     </File>
     <File Include="Views/Home/CSICompanyRecordsResults.cshtml">
-      <publishTime>06/23/2021 13:45:07</publishTime>
+      <publishTime>07/09/2021 12:24:24</publishTime>
     </File>
     <File Include="Views/Home/DatabasePropertyCompany.cshtml">
-      <publishTime>06/27/2021 06:26:26</publishTime>
+      <publishTime>07/08/2021 16:08:06</publishTime>
     </File>
     <File Include="Views/Home/DatabasePropertyCompanyResults.cshtml">
-      <publishTime>06/26/2021 08:17:01</publishTime>
+      <publishTime>07/12/2021 12:53:13</publishTime>
     </File>
     <File Include="Views/Home/DeedsOfficeRecordsCompany.cshtml">
-      <publishTime>06/27/2021 06:35:43</publishTime>
+      <publishTime>07/12/2021 13:07:06</publishTime>
+    </File>
+    <File Include="Views/Home/DeedsOfficeRecordsCompanyDetails.cshtml">
+      <publishTime>07/12/2021 10:23:21</publishTime>
     </File>
     <File Include="Views/Home/DeedsOfficeRecordsCompanyResult.cshtml">
-      <publishTime>06/26/2021 08:17:29</publishTime>
+      <publishTime>07/12/2021 10:23:22</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>05/24/2021 15:40:00</publishTime>
@@ -10191,22 +10215,25 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2021 16:55:03</publishTime>
     </File>
     <File Include="Views/Individual/CSIPersonalRecordsDetails.cshtml">
-      <publishTime>07/05/2021 16:28:29</publishTime>
+      <publishTime>07/12/2021 11:08:10</publishTime>
     </File>
     <File Include="Views/Individual/CSIPersonalRecordsResults.cshtml">
-      <publishTime>06/18/2021 05:57:50</publishTime>
+      <publishTime>07/08/2021 02:52:18</publishTime>
     </File>
     <File Include="Views/Individual/DatabasePropertyIndividual.cshtml">
-      <publishTime>07/07/2021 07:07:28</publishTime>
+      <publishTime>07/08/2021 15:35:51</publishTime>
     </File>
     <File Include="Views/Individual/DatabasePropertyIndividualResults.cshtml">
-      <publishTime>07/07/2021 09:50:33</publishTime>
+      <publishTime>07/09/2021 16:17:36</publishTime>
     </File>
     <File Include="Views/Individual/DeedsOfficeRecordsIndividual.cshtml">
-      <publishTime>07/07/2021 09:23:28</publishTime>
+      <publishTime>07/12/2021 13:11:04</publishTime>
+    </File>
+    <File Include="Views/Individual/DeedsOfficeRecordsIndividualDetail.cshtml">
+      <publishTime>07/12/2021 10:23:24</publishTime>
     </File>
     <File Include="Views/Individual/DeedsOfficeRecordsIndividualResults.cshtml">
-      <publishTime>07/07/2021 09:22:56</publishTime>
+      <publishTime>07/12/2021 13:08:29</publishTime>
     </File>
     <File Include="Views/Individual/DOTSRecords.cshtml">
       <publishTime>06/15/2021 13:32:04</publishTime>
@@ -10251,7 +10278,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/24/2021 15:40:00</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>07/02/2021 16:51:43</publishTime>
+      <publishTime>07/08/2021 03:57:55</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>05/24/2021 15:40:00</publishTime>

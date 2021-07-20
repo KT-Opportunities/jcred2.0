@@ -1,0 +1,739 @@
+﻿@{
+    ViewBag.Title = "DeedsOfficeRecordsIndividualDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<searchworks.client.Individual.PropertiesInformation>
+
+<div class="col-md-10 col-sm-10">
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export('DeedsOfficeRecordsIndividualDetail.pdf')" class="button btn-b2" />
+    </div>
+    <div id="content">
+        <div class="con2">
+            <div class="left_col">
+                <div class="results">
+                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                    @*<p>2 Results</p>*@
+                </div>
+
+                <p class="num">@TempData["Fullname"]</p>
+                <p class="num2">Deeds Office Records Individual Detail</p>
+
+                <div class="multi non">
+                    Multiple Results
+                </div>
+                <div class="multi act">
+                    Detailed Information
+                </div>
+
+                <div class="seaInfo">
+                    Search Information
+                </div>
+
+                <div class="userInfo">
+                    <p class="">User:<span>@TempData["user"]</span></p>
+                    <p class="">Date:<span>@TempData["date"]</span></p>
+                    <p class="">Reference:<span>@TempData["ref"]</span></p>
+                    <p ="">Request:<span>@TempData["ResponseMessage"]</span></p>
+                </div>
+            </div>
+            <div class="right_col">
+                <div id="notification" class="seaRes">
+                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="not">
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                    <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                </div>
+
+                <div id="notification" class="seaRes">
+                    DEEDS OFFICE RECORDS INDIVIDUAL DETAILED RESULTS <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="PIU" style="border: none; cursor:pointer;font-weight:bold;" colspan="2">Search Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="PITU" style="display:none;">
+                            <tr>
+                                <td colspan="2">Search UserName</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.SearchUserName
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">Report Date</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.ReportDate
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">Search Token</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.SearchToken
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">Search Description</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.SearchDescription
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">Caller Module</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.CallerModule
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">Search ID</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.SearchID
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">Data Supplier</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.DataSupplier
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">Search Type</td>
+                                <td style="border: none;" colspan="4">
+                                    @ViewBag.searchInformationList.SearchType
+                                </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="HAIU" style="border: none; cursor:pointer;font-weight:bold;" colspan="2">Person Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="HAITU" style="display:none;">
+                            @if (@ViewBag.personInformationList != null)
+                            {
+                                <tr>
+                                    <td colspan="2">Person ID</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.PersonID
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Person Type</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.PersonType
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Person Type Code</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.PersonTypeCode
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Sequestration</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.Sequestration
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Date Of Birth</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.DateOfBirth
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">First Name</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.FirstName
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Maiden Name</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.MaidenName
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Surname</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.Surname
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Fullname</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.Fullname
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">ID Number</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.IDNumber
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Marital Status</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.MaritalStatus
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Gender</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.Gender
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Age</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.Age
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Deeds Office ID</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.DeedsOfficeID
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Deeds Office Name</td>
+                                    <td style="border: none;" colspan="4">
+                                        @ViewBag.personInformationList.DeedsOfficeName
+                                    </td>
+                                    <td><a class="seaMore" href="#">Search more</a></td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="CONI" style="border: none; cursor:pointer;" colspan="2">Deeds Office Contracts</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="CONIT" style="display:none;">
+                            @if (@ViewBag.DeedOffContractsList != null)
+                            {
+                                foreach (var item in @ViewBag.DeedOffContractsList)
+                                {
+                                    <tr>
+                                        <td colspan="2">Deeds Office ID</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.DeedsOfficeID
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Document Number</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.DocumentNumber
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">OtherParty</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.OtherParty
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Value</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.Value
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Micro Film Reference Number</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.MicroFilmReferenceNumber
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Type</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.Type
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Description</td>
+                                        <td style="border: none;" colspan="4">
+                                            @item.Description
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="PerInfo">
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th id="CI" style="border: none; cursor:pointer;" colspan="2">Property Information</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="CIT" style="display:none;">
+                            @foreach (var property in Model)
+                            {
+                                <tr>
+                                    <td style="font-weight:bold" border: none; cursor:pointer;" colspan="7">Transfer Information</td>
+                                </tr>
+                                foreach (var transferinfo in property.TransferInformation)
+                                {
+                                    <tr>
+                                        <td colspan="2">Purchase Date</td>
+                                        <td style="border: none;" colspan="4">
+                                            @transferinfo.PurchaseDate
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Purchase Price</td>
+                                        <td style="border: none;" colspan="4">
+                                            @transferinfo.PurchasePrice
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Title DeedNumber</td>
+                                        <td style="border: none;" colspan="4">
+                                            @transferinfo.TitleDeedNumber
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                }
+                                <tr>
+                                    <td style="font-weight:bold" border: none; cursor:pointer;" colspan="7">General Information</td>
+                                </tr>
+                                foreach (var generalinfo in property.GeneralInformation)
+                                {
+                                    <tr>
+                                        <td colspan="2">Property Type</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.PropertyType
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Property ID</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.PropertyID
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Raw Property Type</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.RawPropertyType
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Short Property Description</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.ShortPropertyDescription
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Deeds Office ID</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.DeedsOfficeID
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Deeds Office Name</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.DeedsOfficeName
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Registration Date</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.RegistrationDate
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Share</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.Share
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">MultiOwner</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.MultiOwner
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">MultiProperty</td>
+                                        <td style="border: none;" colspan="4">
+                                            @generalinfo.MultiProperty
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+
+                                }
+                                <tr>
+                                    <td style="font-weight:bold" border: none; cursor:pointer;" colspan="7">Erf Information</td>
+                                </tr>
+                                foreach (var Erfinfo in property.ErfInformation)
+                                {
+
+                                    <tr>
+                                        <td colspan="2">Name</td>
+                                        <td style="border: none;" colspan="4">
+                                            @Erfinfo.Name
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">Number</td>
+                                        <td style="border: none;" colspan="4">
+                                            @Erfinfo.Number
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">UnitNumber</td>
+                                        <td style="border: none;" colspan="4">
+                                            @Erfinfo.UnitNumber
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">UnitNumber</td>
+                                        <td style="border: none;" colspan="4">
+                                            @Erfinfo.PortionNumber
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //CompScan
+    $("#PI").click(function () {
+        $("#PIT").toggle();
+    });
+    $("#HAI").click(function () {
+        $("#HAIT").toggle();
+    });
+    $("#CI").click(function () {
+        $("#CIT").toggle();
+    });
+
+    $("#HI").click(function () {
+        $("#HIT").toggle();
+    });
+
+    $("#add").click(function () {
+        $("#addT").toggle();
+    });
+
+    $("#tel").click(function () {
+        $("#telT").toggle();
+    });
+    $("#CONI").click(function () {
+        $("#CONIT").toggle();
+    })
+
+    $("#em").click(function () {
+        $("#emT").toggle();
+    });
+
+    //TransUnion
+    $("#PIU").click(function () {
+        $("#PITU").toggle();
+    });
+    $("#HAIU").click(function () {
+        $("#HAITU").toggle();
+    });
+    $("#CIU").click(function () {
+        $("#CITU").toggle();
+    });
+
+    $("#HIU").click(function () {
+        $("#HITU").toggle();
+    });
+
+    $("#addU").click(function () {
+        $("#addTU").toggle();
+    });
+
+    $("#telU").click(function () {
+        $("#telTU").toggle();
+    });
+
+    $("#emU").click(function () {
+        $("#emTU").toggle();
+    });
+
+    //XDS
+    $("#PIX").click(function () {
+        $("#PITX").toggle();
+    });
+    $("#HAIX").click(function () {
+        $("#HAITX").toggle();
+    });
+    $("#CIX").click(function () {
+        $("#CITX").toggle();
+    });
+
+    $("#HIX").click(function () {
+        $("#HITX").toggle();
+    });
+
+    $("#addX").click(function () {
+        $("#addTX").toggle();
+    });
+
+    $("#telX").click(function () {
+        $("#telTX").toggle();
+    });
+
+    $("#emX").click(function () {
+        $("#emTX").toggle();
+    });
+
+    //VeriCred
+    $("#PIV").click(function () {
+        $("#PITV").toggle();
+    });
+    $("#HAIV").click(function () {
+        $("#HAITV").toggle();
+    });
+    $("#CIV").click(function () {
+        $("#CITV").toggle();
+    });
+
+    $("#HIV").click(function () {
+        $("#HITV").toggle();
+    });
+
+    $("#addV").click(function () {
+        $("#addTV").toggle();
+    });
+
+    $("#telV").click(function () {
+        $("#telTV").toggle();
+    });
+
+    $("#emV").click(function () {
+        $("#emTV").toggle();
+    });
+
+    $(document).ready(function () {
+        $(".not").hide();
+        $("#minusNot").hide();
+
+        $('#plusNot').on('click', function () {
+            $(".not").show();
+            $("#minusNot").show();
+            $("#plusNot").hide();
+
+        });
+
+        $('#minusNot').on('click', function () {
+            $("#minusNot").hide();
+            $("#plusNot").show();
+            $(".not").hide();
+
+        });
+
+        $("#minusSeaInfo").hide();
+        $(".SeaInfo").hide();
+
+        $('#plusSeaInfo').on('click', function () {
+            $(".SeaInfo").show();
+            $("#minusSeaInfo").show();
+            $("#plusSeaInfo").hide();
+
+        });
+
+        $('#minusSeaInfo').on('click', function () {
+            $("#minusSeaInfo").hide();
+            $("#plusSeaInfo").show();
+            $(".SeaInfo").hide();
+        });
+
+        $("#minusPerInfo").hide();
+        $(".PerInfo").hide();
+
+        $('#plusPerInfo').on('click', function () {
+            $(".PerInfo").show();
+            $("#minusPerInfo").show();
+            $("#plusPerInfo").hide();
+
+        });
+
+        $('#minusPerInfo').on('click', function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+        });
+
+        $("#minusHomeInfo").hide();
+        $(".HomeInfo").hide();
+
+        $('#plusHomeInfo').on('click', function () {
+            $(".HomeInfo").show();
+            $("#minusHomeInfo").show();
+            $("#plusHomeInfo").hide();
+
+        });
+
+        $('#minusHomeInfo').on('click', function () {
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+        });
+
+        $("#minusTeleHis").hide();
+        $(".TeleHis").hide();
+
+        $('#plusTeleHis').on('click', function () {
+            $(".TeleHis").show();
+            $("#minusTeleHis").show();
+            $("#plusTeleHis").hide();
+
+        });
+
+        $('#minusTeleHis').on('click', function () {
+            $("#minusTeleHis").hide();
+            $("#plusTeleHis").show();
+            $(".TeleHis").hide();
+        });
+
+        $("#minusEmpHis").hide();
+        $(".EmpHis").hide();
+
+        $('#plusEmpHis').on('click', function () {
+            $(".EmpHis").show();
+            $("#minusEmpHis").show();
+            $("#plusEmpHis").hide();
+
+        });
+
+        $('#minusEmpHis').on('click', function () {
+            $("#minusEmpHis").hide();
+            $("#plusEmpHis").show();
+            $(".EmpHis").hide();
+        });
+
+    });
+</script>
