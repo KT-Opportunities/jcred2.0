@@ -12,12 +12,8 @@
 
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
-
-
 
     <div class="sea_bar">
         <label>Search History</label>
@@ -51,27 +47,29 @@
                       new SelectListItem { Text = "Umtata", Value = "9"},
                       new SelectListItem { Text = "Mpumalanga", Value = "11"},
                       new SelectListItem { Text = "Limpopo", Value = "12"},
-                }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
+                }, " Select Enquiry Reason", new { @id = "DeedsOffice", required = "required" })
                 </div>
 
-                <div class="eqType">
-                    <label>ID Number</label><br>
 
-                    @Html.TextBox("IDNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
-                </div>
                 <div class="eqType">
                     <label>First Name</label><br>
 
-                    @Html.TextBox("Firstname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                    @Html.TextBox("Firstname", null, new { @id = "FirstName", minlength = "3", maxlength = "30" })
                 </div>
-
                 <div class="eqType">
                     <label>Surname</label><br>
 
-                    @Html.TextBox("Surname", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                    @Html.TextBox("Surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
                 </div>
+                <div class="eqType">
+                    <label>ID Number</label><br>
 
-
+                    @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
+                </div>
+                <div class="eqType">
+                    <label>Sequestration</label><br>
+                    @Html.CheckBox("Sequestration", false, new { style = "margin-left:3.5%" })
+                </div>
 
                 <div class="tc">
                     <div class="checkBoxDiv">
@@ -79,19 +77,8 @@
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
                     <button onclick="Search()" id="individualSearch" class="butn" name="individualSearch">Perform Search</button>
-
-
                 </div>
-
-
-
-
-
-
             }
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
@@ -103,31 +90,7 @@
     </div>
 </div>
 
-
- <script>
-     function Search() {
-         @*var Reference = document.getElementById("Ref").value == null ? "" : document.getElementById("Ref").value;*@
-        var deedsOffice = document.getElementById("DeedsOffice").value;
-         var Surname = document.getElementById("Surname").value;
-         var FirstName = document.getElementById("FirstName").value;
-         var IDNumber = document.getElementById("IDNumber").value;
-
-         var data = {
-         @* Reference: Reference,*@
-         DeedsOffice: deedsOffice,
-         Surname: Surname,
-         FirstName: FirstName,
-         IDNumber: IDNumber
-     }
-
-     $.ajax({
-         url: '/DeedsOfficeRecordsIndividualResults/Individual',
-         type: 'POST',
-         data: data,
-         dataType: 'json',
-         success: function (result) { alert("success") }
-     });
-    }
+<script>
     var tab = [];
     // removing duplicates
 
@@ -139,22 +102,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('Deeds Office Records Individual');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -166,7 +122,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -262,6 +217,4 @@
 
         console.log($(event.target).text());
     };
-
-
 </script>

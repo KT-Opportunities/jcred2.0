@@ -34,14 +34,13 @@ body {
 
 .sidenav {
     /*position: relative;*/
-    /*margin-top: 18px;*/
     /*left: 10px;*/
-    height: 785px;
+    height: 25%;
     /* width:200px;*/
     background: transparent linear-gradient(180deg, #09182F 0%, #011A44 100%) 0% 0% no-repeat padding-box;
     border-radius: 20px;
     opacity: 1;
-    overflow: scroll;
+    /*overflow: scroll;*/
 }
 
     .sidenav::-webkit-scrollbar {
@@ -61,22 +60,22 @@ body {
     -webkit-box-sizing: border-box;
     outline: 0;
     margin-bottom: 207px;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
 }
-
+ 
 .jquery-accordion-menu {
     min-width: 200px;
-    float: left;
+    /*float: left;*/
     position: relative;
-    left: -10px;
+    /*left: -10px;*/
 }
 
     .jquery-accordion-menu .jquery-accordion-menu-footer, .jquery-accordion-menu .jquery-accordion-menu-header {
         width: 100%;
         height: 50px;
         padding-left: 22px;
-        float: left;
-        line-height: 50px;
+       /* float: left;*/
+        /*line-height: 50px;*/
         font-weight: 600;
         color: #f0f0f0;
     }

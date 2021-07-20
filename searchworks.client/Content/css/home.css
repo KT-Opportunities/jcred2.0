@@ -79,7 +79,7 @@
     margin-right: 16px;
 }
 .container-fluid {
-    height: 100%;
+    margin-top : 2.5%
 }
 .sea_bar {
     display: flex;
@@ -95,19 +95,23 @@
     opacity: 1;
 }
 
-    .sea_bar label {
-        /* position: relative;
+#Sequestration {
+    margin-left: 3.10%
+}
+
+.sea_bar label {
+    /* position: relative;
         padding-top: 16px;*/
-        margin-left: 34px;
-        font-family: 'Poppins-Bold';
-        text-align: left;
-        font-size: 13px;
-        letter-spacing: 0.36px;
-        color: #4A4A4A;
-        opacity: 1;
-        display: inline-block;
-        margin-top: 1%;
-    }
+    margin-left: 34px;
+    font-family: 'Poppins-Bold';
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: 0.36px;
+    color: #4A4A4A;
+    opacity: 1;
+    display: inline-block;
+    margin-top: 1%;
+}
 
     .sea_bar input {
         position: relative;
@@ -399,7 +403,9 @@
     width: 87%;
     position: absolute;
 }
-
+#CompanyRegistrationNumber,
+#CompanyName,
+#DeedsOffice,
 #Ref,
 #FirstName,
 #Surname,
@@ -499,7 +505,7 @@ font-size: 12px;*/
     position: relative;
     left: 80px;
 }
-
+#DeedsOffice,
 #eqtype,
 #seatype {
     text-align: right;
@@ -510,6 +516,7 @@ font-size: 12px;*/
     opacity: 1;
 }
 
+    #DeedsOffice option,
     #eqtype option,
     #seatype option {
         background: #FFFFFF 0% 0% no-repeat padding-box;
@@ -564,6 +571,10 @@ font-size: 12px;*/
     display: flex;
 }
 
+
+
+
+
 .con2::-webkit-scrollbar {
     display: none;
 }
@@ -585,6 +596,13 @@ font-size: 12px;*/
     display:flex;
     flex-direction:column;
     justify-content:space-between
+}
+
+.ExportButtonleft_col {
+    width: 100%;
+    background: #EFEFEF 0% 0% no-repeat padding-box;
+    border-radius: 8px;
+    opacity: 1;
 }
 
 .results {
@@ -748,7 +766,9 @@ color: #fff;
   margin:1%;
     opacity: 1;
 }
- 
+tr td {
+    page-break-inside: avoid;
+}
 table {
     table-layout: fixed;
     width: 100%;
@@ -756,8 +776,14 @@ table {
 
 .table thead th {
    
-    word-break: unset;
+    word-break: break-all;
 }
+
+
+.table thead tr th {
+    word-break: break-word;
+}
+
 .seaRes {
     position: relative;
     width: 100%;
@@ -797,7 +823,16 @@ td {
     
 }
 
-
+.seaMoreDeedsOffice {
+    font-family: 'Poppins-SemiBold';
+    font-size: 10px;
+    border: 1px solid #2981E6;
+    border-radius: 10px;
+    color: #2981E6;
+    opacity: 1;
+    transition: 0.7s;
+    padding: 1%;
+}
 .seaMore {
     /*
     position: relative;
@@ -813,8 +848,8 @@ td {
     color: #2981E6;
     opacity: 1;
     transition: 0.7s;
-    padding:5%;
-   
+    padding: 5%;
+    visibility: visible
 }
 
     .seaMore:hover {
@@ -852,12 +887,13 @@ td {
 .TeleHis,
 .EmpHis {
     width: 100%;
-    top: -10px;
+    /*top: -10px;*/
     background: #F2F2F2 0% 0% no-repeat padding-box;
     border: 1px solid #E4E0E0;
     opacity: 1;
     position: relative;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
+    /*page-break-after: always*/
 }
 
 .coll {
@@ -1322,8 +1358,7 @@ height: 424px;
 
 
 html, body {
-    height: 100%;
-    width:100%;
+    
 }
 
 
