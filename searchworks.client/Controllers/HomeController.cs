@@ -196,7 +196,9 @@ namespace searchworks.client.Controllers
 
         public ActionResult Logout()
         {
-            HttpContext.GetOwinContext().Authentication.SignOut(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
+            
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            authManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
             return RedirectToAction("Index", "Home");
         }
