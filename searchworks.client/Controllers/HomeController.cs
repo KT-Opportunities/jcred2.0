@@ -246,7 +246,7 @@ namespace searchworks.client.Controllers
 
         public ActionResult Admin(Admin ad)
         {
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
