@@ -3,13 +3,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using searchworks.client.Credit;
+using searchworks.client.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
 
 namespace searchworks.client.Controllers
-{
+{   
+    [Authorize]
     public class CreditController : Controller
     {
         public void MakeConnection(string query_uid)
@@ -29,6 +31,7 @@ namespace searchworks.client.Controllers
 
         public void saveSearchHistory(dynamic SearchID, dynamic searchUserName, dynamic ResponseType, dynamic Name, dynamic reportDate, dynamic reference, dynamic searchToken, dynamic callerModule, dynamic dataSupplier, dynamic searchType, dynamic SearchDescription, dynamic typeOfSearch)
         {
+            //TODO: Add orgtenantid to the search history from JCredHelper class GetUserTenantID(string strAspUserID) method
             string query_uid = "INSERT INTO searchhistory (SearchID,searchUserName,ResponseType,Name,reportDate,reference,searchToken,callerModule,dataSupplier,searchType,SearchDescription,typeOfSearch) VALUES('" + SearchID + "','" + searchUserName + "','" + ResponseType + "','" + Name + "','" + reportDate + "','" + reference + "','" + searchToken + "','" + callerModule + "','" + dataSupplier + "','" + searchType + "','" + SearchDescription + "','" + typeOfSearch + "')";
 
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
@@ -3901,6 +3904,7 @@ namespace searchworks.client.Controllers
                 ViewData["ref"] = refe;
                 //ViewData["XDSName"] = comID;
 
+                //TODO: Add orgtenantid of the searcher to the logs, get it from JCredHelper class GetUserTenantID(string strAspUserID) method
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
@@ -3911,14 +3915,15 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/combinedreport/trace/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/combinedreport/trace/"; //"https://uatrest.searchworks.co.za/credit/combinedreport/trace/";
                 //var url = "https://uatuatrest.searchworks.co.za/credit/combinedreport/trace/";
 
                 //create RestSharp client and POST request object
@@ -4854,15 +4859,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/experian/consumerprofile/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/experian/consumerprofile/"; //"https://uatrest.searchworks.co.za/credit/experian/consumerprofile/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -6435,7 +6440,7 @@ namespace searchworks.client.Controllers
                 TempData["user"] = Session["Name"].ToString();
                 TempData["date"] = DateTime.Today.ToShortDateString();
                 TempData["ref"] = refe;
-
+                //TODO: Add orgtenantid of the searcher to the logs, get it from JCredHelper class GetUserTenantID(string strAspUserID) method
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
                 conn.Open();
@@ -6445,15 +6450,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumerprofile/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/consumerprofile/"; //"https://uatrest.searchworks.co.za/credit/transunion/consumerprofile/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -7901,14 +7906,15 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/vericred/consumerprofile/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/vericred/consumerprofile/"; //"https://uatrest.searchworks.co.za/credit/vericred/consumerprofile/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -9172,15 +9178,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/companyprofile/bycompanyid/"; //"https://uatrest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -9268,15 +9274,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/companyprofile/bycompanyid/"; //"https://uatrest.searchworks.co.za/credit/transunion/companyprofile/bycompanyid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -9372,15 +9378,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/transunion/contactinfo/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/contactinfo/"; //"https://uatrest.searchworks.co.za/credit/transunion/contactinfo/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -9480,15 +9486,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/transunion/idverification/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/idverification/"; //"https://uatrest.searchworks.co.za/credit/transunion/idverification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -9641,15 +9647,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/enquiryid/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/consumertrace/enquiryid/"; // "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/enquiryid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -9728,14 +9734,15 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/idnumber/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/consumertrace/idnumber/"; // "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/idnumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -9860,15 +9867,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/mobilenumber/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/consumertrace/mobilenumber/"; //"https://uatrest.searchworks.co.za/credit/transunion/consumertrace/mobilenumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -9940,14 +9947,15 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/dateofbirthsurname/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/consumertrace/dateofbirthsurname/"; //"https://uatrest.searchworks.co.za/credit/transunion/consumertrace/dateofbirthsurname/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -10019,15 +10027,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/transunion/consumertrace/telephonenumber/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/transunion/consumertrace/telephonenumber/"; //"https://uatrest.searchworks.co.za/credit/transunion/consumertrace/telephonenumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -10119,15 +10127,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/vericred/AccountVerification/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/vericred/AccountVerification/"; //"https://uatrest.searchworks.co.za/credit/vericred/AccountVerification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -10261,15 +10269,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/vericred/contactinfo/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/vericred/contactinfo/"; //"https://uatrest.searchworks.co.za/credit/vericred/contactinfo/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -10386,15 +10394,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/vericred/idphotoverification/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/vericred/idphotoverification/"; //"https://uatrest.searchworks.co.za/vericred/idphotoverification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -10519,15 +10527,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/vericred/incomeestimate/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/vericred/incomeestimate/"; //"https://uatrest.searchworks.co.za/credit/vericred/incomeestimate/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -10651,15 +10659,15 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
-
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/credit/vericred/personverification/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/credit/vericred/personverification/"; //"https://uatrest.searchworks.co.za/credit/vericred/personverification/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -10794,15 +10802,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/xds/idphotoverification/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/xds/idphotoverification/"; //"https://uatrest.searchworks.co.za/xds/idphotoverification/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -10933,15 +10941,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/idverification/enquiryid/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/idverification/enquiryid/"; //"https://uatrest.searchworks.co.za/credit/xds/idverification/enquiryid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11007,15 +11015,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); // GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/idverification/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/idverification/"; //"https://uatrest.searchworks.co.za/credit/xds/idverification/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11155,15 +11163,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/address/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/consumertrace/address/"; //"https://uatrest.searchworks.co.za/credit/xds/consumertrace/address/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11262,15 +11270,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/enquiryid/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/consumertrace/enquiryid/"; // "https://uatrest.searchworks.co.za/credit/xds/consumertrace/enquiryid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11336,15 +11344,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/idnumber/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/consumertrace/idnumber/"; //"https://uatrest.searchworks.co.za/credit/xds/consumertrace/idnumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11450,15 +11458,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/name/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/consumertrace/name/"; // "https://uatrest.searchworks.co.za/credit/xds/consumertrace/name/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11565,15 +11573,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/passportnumber/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/consumertrace/passportnumber/"; //"https://uatrest.searchworks.co.za/credit/xds/consumertrace/passportnumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -11695,15 +11703,15 @@ namespace searchworks.client.Controllers
                 var reader2 = cmd2.ExecuteReader();
 
                 conn.Close();
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/credit/xds/consumertrace/telephonenumber/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/credit/xds/consumertrace/telephonenumber/"; //"https://uatrest.searchworks.co.za/credit/xds/consumertrace/telephonenumber/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);

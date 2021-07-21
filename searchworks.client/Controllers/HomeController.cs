@@ -32,14 +32,76 @@ namespace searchworks.client.Controllers
     public class HomeController : Controller
     {
         IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
-
+        
         public  HomeController()
         {
             
-
-
         }
 
+        public string GetSWAPILoginToken()
+        {
+            string loginToken = "";
+
+            //get config from settings
+            string api_username = "";
+            string api_password = "";
+            string api_host = "";
+
+            try
+            {
+                api_username = Convert.ToString(ConfigurationManager.AppSettings["SWAPIUID"]);
+                api_password = Convert.ToString(ConfigurationManager.AppSettings["SWAPIPWD"]);
+                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHost"]);
+            }
+            catch (Exception err)
+            {
+
+                //throw;
+            }
+
+            var userName = api_username;
+            var password = api_password;
+            var host = api_host;
+            var body_credentials = new
+            {
+                Username = api_username,
+                Password = api_password
+            };
+
+            string authBody = "{  \"Username\": \"" + userName + "\",  \"Password\": \"" + password + "\" }";
+
+            var client = new RestClient(host);
+            
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            
+            request.AddParameter("application/json", authBody, ParameterType.RequestBody);
+
+            try
+            {
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.IsSuccessful)
+                {
+                    dynamic respContent = JObject.Parse(response.Content);
+                    loginToken = respContent.ResponseMessage;
+                }
+                else
+                {//something went wrong: log the response
+
+                }
+            }
+            catch (Exception err)
+            {
+                //error 
+                //throw;
+            }
+
+
+            return loginToken;
+        }
 
         public bool IsValidEmail(string emailaddress)
         {
@@ -248,7 +310,7 @@ namespace searchworks.client.Controllers
 
         public ActionResult Admin(Admin ad)
         {
-            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
@@ -373,7 +435,9 @@ namespace searchworks.client.Controllers
 
             string refe = search.Reference;
 
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
@@ -381,7 +445,7 @@ namespace searchworks.client.Controllers
             try
             {
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/cipc/company/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/cipc/company/";//"https://uatrest.searchworks.co.za/cipc/company/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -493,14 +557,15 @@ namespace searchworks.client.Controllers
         {
             try
             {
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/cipc/company/companyid/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/cipc/company/companyid/";// "https://uatrest.searchworks.co.za/cipc/company/companyid/";
 
                 //create RestSharp client and POST request object
                 var client = new RestClient(url);
@@ -673,14 +738,15 @@ namespace searchworks.client.Controllers
 
                     conn.Close();
 
-                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                    JCredHelper jCredHelper = new JCredHelper();
+                    string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                     if (!tokenValid(authtoken))
                     {
                         //exit with a warning
                     }
 
                     //company search API call
-                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyname/";
+                    var url = jCredHelper.GetSWAPIHostUrl() + "/company/csicompany/companytrace/companyname/";// "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyname/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -765,14 +831,15 @@ namespace searchworks.client.Controllers
 
                     conn.Close();
 
-                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                    JCredHelper jCredHelper = new JCredHelper();
+                    string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                     if (!tokenValid(authtoken))
                     {
                         //exit with a warning
                     }
 
                     //company search API call
-                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+                    var url = jCredHelper.GetSWAPIHostUrl() + "/company/csicompany/companytrace/companyid/";//"https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -856,14 +923,16 @@ namespace searchworks.client.Controllers
 
                     conn.Close();
 
-                    string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                    JCredHelper jCredHelper = new JCredHelper();
+
+                    string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                     if (!tokenValid(authtoken))
                     {
                         //exit with a warning
                     }
 
                     //company search API call
-                    var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
+                    var url = jCredHelper.GetSWAPIHostUrl()+ "/company/csicompany/companytrace/registrationnumber/";//"https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -930,12 +999,13 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSICompanyDetails(string comID)
         {
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
-            var url = "https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/company/csicompany/companytrace/companyid/";//"https://uatrest.searchworks.co.za/company/csicompany/companytrace/companyid/";
 
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
@@ -1151,14 +1221,14 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
-                var url = "https://uatrest.searchworks.co.za/databaseproperty/company/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/databaseproperty/company/";//"https://uatrest.searchworks.co.za/databaseproperty/company/";
 
                 /*var url = " http://localhost:3000/root";
                 var client = new RestClient(url);
@@ -1377,7 +1447,7 @@ namespace searchworks.client.Controllers
 
              conn.Close();
 
-             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+             string authtoken = new JCredHelper().GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
              if (!tokenValid(authtoken))
              {
                  //exit with a warning

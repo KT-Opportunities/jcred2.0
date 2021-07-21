@@ -3,20 +3,82 @@
 @{
     ViewBag.Title = "User Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var grid = new WebGrid(Model.orgunits, canPage: true, rowsPerPage: 10, ajaxUpdateContainerId: "webGrid", ajaxUpdateCallback: "setArrows");
 }
+
+
+<style>
+
+    .Large {
+        width: 10%;
+        text-align: center;
+    }
+
+    .webgrid {
+        margin: 4px;
+        border-collapse: collapse;
+        width: 90%;
+    }
+
+    .header {
+        padding: 6px 5px;
+        text-align: center;
+        background-color: #212529;
+        /*border-bottom: 2px solid #3966A2;*/
+        height: 59px;
+        font-weight: bold;
+        /* border-top: 2px solid #D6E8FF;
+        border-left: 2px solid #D6E8FF;
+        border-right: 2px solid #D6E8FF;*/
+
+       /* position: relative;
+        bottom: 87px;*/
+    }
+
+    .webgrid th, .webgrid td {
+        border: 1px solid #C0C0C0;
+        padding: 5px;
+    }
+
+    #webGrid tbody td {
+        position: relative;
+        bottom: 46px;
+    }
+
+    #webGrid thead th {
+        padding-bottom: 17px !important;
+        text-align: center;
+    }
+
+    #webGrid thead a {
+       color: white;
+    }
+/*
+    tbody td {
+        text-align: center;
+    }*/
+    #webGrid thead {
+        position: relative;
+        bottom: 86px;
+    }
+    #vi {
+        padding-left: 4px;
+    }
+</style>
 
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
         @*</div><span class="none" id="tabs-close">x</span>*@
     </div>
-    <div>
+    @*<div>
         <p>
             @Html.LabelFor(m => m.Company.orgname)
             @Html.DisplayFor(m => m.Company.orgname)
         </p>
-    </div>
-    <div class="btn-row">
+    </div*@
+    @*<div class="btn-row">
 
         <div class="col-md-6 col-sm-6">
             <div class="row">
@@ -40,78 +102,410 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
     <div id="companies" style="display: block; padding-top: 28px">
-        @*<div class="row com-row">
-            </div>*@
+        @*<div class="row com-row
+
+        </div>*@
+
+        <div class="btn-row" style="margin-bottom: 20px;">
+
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('companies')" style="cursor: pointer;color:white" type="button"
+                                class="btns active">
+                            MY COMPANY
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('branches')" style="cursor: pointer;color:white" type="button"
+                                class="btns ">
+                            BRANCHES
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('users')" style="cursor: pointer;color:white" type="button"
+                                class="btns ">
+                            USERS
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="sea_bar" @*class="row com-row"*@>
             <div class="col-6">
                 <label>COMPANY INFORMATION</label>
             </div>
         </div>
         <div class="row ro-2">
-            <div class="con2">
-                <div class="col-md-6 col-sm-6 left">
+            <div class="col-3">
+                <div class="con2" style="height: 512px;">
                     @using (Html.BeginForm("CSIPersonalRecordsResults", "Individual", FormMethod.Post))
                     {
                         //Use Editor For on TextBox
                         <div class="">
-                            <label>Company Name</label><br>
+                            @Html.LabelFor(m => m.Company.orgname)<br>
                             @Html.EditorFor(m => m.Company.orgname, new
                        {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30",
+                               disabled = "disabled",
+                               @readonly = "readonly"
+                           }
                        })
+
+
                         </div>
 
                         <div>
                             <label>Abbreviation</label><br>
-                            @Html.TextBox("abbreviation", null, new
-                             {
-                             @id = "FirstName",
-                             @class = "cus-input",
-                             minlength
-                             = "3",
-                             maxlength = "30"
-                             })
+                            @Html.EditorFor(m => m.Company.orgcode, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               maxlength = "30",
+                               disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
                         </div>
                         <label>Category</label><br>
-                        @Html.DropDownList("seaType", new List<SelectListItem>
-                            {
-                            new SelectListItem { Text = "Name", Value = "name"},
-                            new SelectListItem { Text = "Registration Number", Value = "regNum"},
-                            }, "Please Select", new { @id = "seatype", @class = "cus-input", required = "required" })
-                        <div class="">
-                            <label>Registration Number</label><br>
-                            @Html.TextBox("RegistrationNumber", null, new
-                            {
+                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           maxlength = "30",
+                           disabled = "disabled",
+                           @readonly = "readonly"
+                       }
+                   })
+                        <label>Registration Number</label><br>
+                        @Html.EditorFor(m => m.Company.org_regno,
+                        new
+                             {
+                                 htmlAttributes = new
+                        {
                             @id = "FirstName",
-                            @class = "cus-input"
-                            })
-                        </div>
+                            @class = "cus-input",
+                            maxlength = "30",
+                            disabled = "disabled",
+                            @readonly = "readonly"
+                        }
+                             })
+
                         <div class="vatregnum">
                             <label>Vat Registration Number</label><br>
-                            @Html.TextBox("VatRegistrationNumber", null, new
-                            {
-                            @id = "FirstName",
-                            @class
-                            = "cus-input"
-                            })
+                            @Html.EditorFor(m => m.Company.org_vatno,
+                             new
+                             {
+                                 htmlAttributes = new
+                                 {
+                                     @id = "FirstName",
+                                     @class = "cus-input",
+                                     maxlength = "30",
+                                     disabled = "disabled",
+                                     @readonly = "readonly"
+                                 }
+                             })
                         </div>
-                        <div class="tc">
-
-                            <button onclick="Search()" id="individualSearch" class="butn" name="combinedComSearch">Request Change</button>
-                        </div>
+                       
                     }
 
                     @*<div class="col-md-6 col-sm-6">
-                        </div>*@
+            </div>*@
                 </div>
-                <div class="col-md-6 col-sm-6 right">
-                    <p>Please remember to keep your company information up to date</p>
+            </div>
+
+            <div class="con2 col-9">
+                <div class="row">
+                    <div class="col-6"><span style="font-weight: bold;"> BILLING INFORMATION EXISTING</span></div>
+                    <div class="col-6 right"><p class="ban">Please remember to keep your company information up to date</p></div>
+                </div>
+                <div class="row my-cus-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
+                    <div class="col-md-6 col-sm-6">
+
+                        <div class="">
+                            <label>Bank Name</label><br>
+                            @Html.EditorFor(m => m.Company.orgname, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+
+
+                        </div>
+
+                        <div>
+                            <label>Bank Branch Code</label><br>
+                            @Html.EditorFor(m => m.Company.orgcode, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+                        </div>
+                        <label>Account Number</label><br>
+                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           maxlength = "30",
+                          // disabled = "disabled",
+                           @readonly = "readonly"
+                       }
+                   })
+                        <label>Pastel Account Number</label><br>
+                        @Html.EditorFor(m => m.Company.org_regno,
+                        new
+                             {
+                                 htmlAttributes = new
+                        {
+                            @id = "FirstName",
+                            @class = "cus-input",
+                            maxlength = "30",
+                           // disabled = "disabled",
+                            @readonly = "readonly"
+                        }
+                             })
+
+
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="">
+                            <label>Bank Branch Name</label><br>
+                            @Html.EditorFor(m => m.Company.orgname, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+
+
+                        </div>
+
+                        <div>
+                            <label>Account Holder</label><br>
+                            @Html.EditorFor(m => m.Company.orgcode, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+                        </div>
+                        <label>Account Type</label><br>
+                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           maxlength = "30",
+                          // disabled = "disabled",
+                           @readonly = "readonly"
+                       }
+                   })
+                        <label>Purchase Order</label><br>
+                        @Html.EditorFor(m => m.Company.org_regno,
+                        new
+                             {
+                                 htmlAttributes = new
+                        {
+                            @id = "FirstName",
+                            @class = "cus-input",
+                            maxlength = "30",
+                           // disabled = "disabled",
+                            @readonly = "readonly"
+                        }
+                             })
+
+
+
+
+                    </div>
+
+
+
+                    <div class="col-12">
+
+                        <label>Address</label><br>
+                        @Html.EditorFor(m => m.Company.orgname, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           minlength = "3",
+                           maxlength = "30",
+                           @placeholder = "street",
+                           // disabled = "disabled",
+                           @readonly = "readonly"
+                       }
+                   })
+
+                        <label></label><br>
+                        @Html.EditorFor(m => m.Company.orgcode, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           maxlength = "30",
+                           @placeholder = "Town",
+                          // disabled = "disabled",
+                           @readonly = "readonly"
+                       }
+                   })
+                        <label></label><br>
+                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @id = "FirstName",
+                           @class = "cus-input",
+                           maxlength = "30",
+                           @placeholder = "City",
+                          // disabled = "disabled",
+                           @readonly = "readonly"
+                       }
+                   })
+                        <label></label><br>
+                        @Html.EditorFor(m => m.Company.org_regno,
+                        new
+                        {
+                            htmlAttributes = new
+                            {
+                                @id = "FirstName",
+                                @class = "cus-input",
+                                maxlength = "30",
+                                @placeholder = "Postal code",
+                                @style = "width: 197px;",
+                               // disabled = "disabled",
+                                @readonly = "readonly"
+                            }
+                        })
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-6">
+
+                        <div class="">
+                            <label>Mobile Number</label><br>
+                            @Html.EditorFor(m => m.Company.orgname, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+
+
+                        </div>
+
+                        <div>
+                            <label>Billing Start Date</label><br>
+                            @Html.EditorFor(m => m.Company.orgcode, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+                        </div>
+                    
+
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="">
+                            <label>Telephone Number</label><br>
+                            @Html.EditorFor(m => m.Company.orgname, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               minlength = "3",
+                               maxlength = "30",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+
+
+                        </div>
+
+                        <div>
+                            <label></label><br>
+                            @Html.EditorFor(m => m.Company.orgcode, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @id = "FirstName",
+                               @class = "cus-input",
+                               maxlength = "30",
+                               @placeholder = "Excluded",
+                              // disabled = "disabled",
+                               @readonly = "readonly"
+                           }
+                       })
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            
+                <div class="row" style="position: relative; bottom: 44px;">
+                    <div class="tc">
+
+                        <button onclick="Search()" id="individualSearch" class="butn" name="combinedComSearch">Send Request for Change</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -119,83 +513,164 @@
 
     <div id="branches" style="display: none; padding-top: 28px">
         @*<div class="row com-row ">
-                <div class="com-div">
-                    <div class="row">
-                        <div class="col-6">
-                            <form class="form-inline my-form-inline">
+            <div class="com-div">
+                <div class="row">
+                    <div class="col-6">
+                        <form class="form-inline my-form-inline">
 
-                                <div class="form-group mb-2 in-mar">
-                                    <label for="inputPassword" class="col-form-label search-label">Search by</label>
-                                    <div class="in-mar">
-                                        <input type="text" class="form-control" id="inputPassword">
-                                    </div>
+                            <div class="form-group mb-2 in-mar">
+                                <label for="inputPassword" class="col-form-label search-label">Search by</label>
+                                <div class="in-mar">
+                                    <input type="text" class="form-control" id="inputPassword">
                                 </div>
-                                <button type="submit" class="btn-b">Search</button>
-                            </form>
-                        </div>
+                            </div>
+                            <button type="submit" class="btn-b">Search</button>
+                        </form>
+                    </div>
 
-                        <div class="col-6">
-                            <button class="btn-b2">Create branch</button>
-                        </div>
+                    <div class="col-6">
+                        <button class="btn-b2">Create branch</button>
                     </div>
                 </div>
-            </div>*@
-        <div class="sea_bar" @*class="row com-row"*@>
-            <div class="col-6" style="display: flex;">
-                <label>Search History</label>
-                <input name="search" />
-                <button data-toggle="modal" data-target="#adSearch">Search</button>
+            </div>
+        </div>*@
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('companies')" style="cursor: pointer;color:white" type="button"
+                                class="btns active">
+                            MY COMPANY
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('branches')" style="cursor: pointer;color:white" type="button"
+                                class="btns ">
+                            BRANCHES
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('users')" style="cursor: pointer;color:white" type="button"
+                                class="btns ">
+                            USERS
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sea_bar col-6">
+                <div style="display: flex;">
+                    <label>Search</label>
+                    <input name="search" />
+                    <button class="sea-b" data-toggle="modal" data-target="#adSearch">Search</button>
+                </div>
+
+                <div class="col-6 creat-mo">
+                    <button class="btn-b2" data-toggle="modal" data-target="#exampleModal" style="background-color: #00B46F; cursor: pointer ">Create branch</button>
+                </div>
             </div>
         </div>
+        
         <div class="row ro-2">
             <div class="con1">
-                <table class="table table-borderless custom-table">
-                    <thead>
-                        <tr class="justify-content-around t-row" style="display:flex">
-                            <th scope="col" class="thSearch color">
-                                <label class="control control--checkbox">
-                                    <input type="checkbox" class="js-check-all" />
-                                    @*<div class="control__indicator"></div>*@
-                                </label>
-                            </th>
-                            <th scope="col" class="thSearch color">Branch Name</th>
-                            <th scope="col" class="thSearch color">Telephone</th>
-                            <th scope="col" class="thSearch color">Fax</th>
-                            <th scope="col" class="thSearch color">Users</th>
-                            <th scope="col" class="thSearch color">Plus</th>
-                            <th scope="col" class="thSearch color">Enabled</th>
-                            <th scope="col" class="thSearch color"></th>
-                        </tr>
-                    </thead>
-                </table>
+                <!--<table class="table table-borderless custom-table">
+            <thead>
+                <tr class="justify-content-around t-row" style="display:flex">
+                    <th scope="col" class="thSearch color">
+                        <label class="control control--checkbox">
+                            <input type="checkbox" class="js-check-all" />-->
+                @*<div class="control__indicator"></div>*@
+                <!--</label>
+                        </th>
+                        <th scope="col" class="thSearch color">Branch Name</th>
+                        <th scope="col" class="thSearch color">Telephone</th>
+                        <th scope="col" class="thSearch color">Fax</th>
+                        <th scope="col" class="thSearch color">Users</th>
+                        <th scope="col" class="thSearch color">Plus</th>
+                        <th scope="col" class="thSearch color">Enabled</th>
+                        <th scope="col" class="thSearch color"></th>
+                    </tr>
+                </thead>
+            </table>-->
             </div>
         </div>
 
         <div class="rowTable ro-2">
-            <div class="conSearchHistory">
-                <div class="table-responsive my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
+            <div class="conSearchHistory" id="gridContainer">
+                <div class="my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass" id="webGrid">
 
-                    <table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
 
-                        <tbody>
-                            <tr scope="row" class="justify-content-around t-row ">
-                                <td scope="col" class="tdUM">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        @*<div class="control__indicator"></div>*@
-                                    </label>
+
+                    @MvcHtmlString.Create(
+                           grid.GetHtml(tableStyle: "table table-borderless",
+                           alternatingRowStyle: "alternate",
+                           headerStyle: "header",
+                           selectedRowStyle: "selected",
+                           mode: WebGridPagerModes.All,
+                           columns: grid.Columns
+                           (
+                            grid.Column(header: "{CheckBoxHeading}", style: "Large", format:@<text><input class="box" type="checkbox" /></text>),
+                            //grid.Column(columnName: "parent_orgunitid", header: "Parent Org", style: "Large"),
+                            grid.Column(columnName: "orgunitname", header: "Unit Name", style: "Large"),
+                            grid.Column(columnName: "orgunitcode", header: "Unit Code", style: "Large"),
+                            grid.Column(columnName: "regionid", header: "Region", style: "Large"),
+                            grid.Column(columnName: "telephone", header: "Tel", style: "Large"),
+                            grid.Column(columnName: "orgunit_regno", header: "Registration#.", style: "Large"),
+                            grid.Column(columnName: "orgunit_vatno", header: "VAT#", style: "Large"),
+                            grid.Column(columnName: "created_at", header: "Created AT", style: "Large"),
+                            grid.Column(columnName: "updated_at", header: "Updated AT", style: "Large"),
+                            grid.Column(header: "", canSort: false, style: "action",
+                            format: @<text>
+                                    @Html.Raw("<a data-modal='' class='raw_click' data-assigned-id='@orgunitid'  data-toggle='modal' data-target='#exampleModal' href ='' title='View'> <i class='fa fa-eye' aria-hidden='true'></i><span id='vi'>View</span> </a>")
+                                    @*@Html.Raw("<a data-modal='' href='' title='Edit'> <span class='glyphicon glyphicon-edit'> </span> </a>")
+                                    @Html.Raw("<a data-modal='' href='' title='Delete'> <span class='glyphicon glyphicon-trash'> </span> </a>")*@
+                                </text>)
+                            //,
+                            //grid.Column(header: "Action", format: (item) =>
+                            //{
+                            //    var link = Html.ActionLink("Edit", "Edit", new { id = item.orgtenantid });
+                            //    return link;
+                            //})
+                            //
+                            //,
+
+                            //grid.Column(header: "Action", format: (item) =>
+                            //{
+                            //var link = Html.ActionLink("Delete", "Delete", new { id = item.orgtenantid });
+                            //return link;
+                            //}),
+                                @*grid.Column(header: "Action", format: @<text>@Html.ActionLink("Detail", null, null, new { @onclick = "return GetSelectedRow(this);" })
+                                </text>)*@
+                            )
+                            ).ToString().Replace("{CheckBoxHeading}", "<input type='checkbox' id='allBox'/>")
+                            )
+
+                    @Html.Hidden("dir", @grid.SortDirection)
+
+                    @Html.Hidden("col", @grid.SortColumn)
+
+                    <!--<table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
+
+                <tbody>
+                    foreach (var d in Model.orgunits)
+                    {
+                        <tr scope="row" class="justify-content-around t-row ">
+                            <td scope="col" class="tdUM">
+                                <label class="control control--checkbox">
+                                    <input type="checkbox" />-->
+                    @*<div class="control__indicator"></div>*@
+                    <!--</label>
                                 </td>
                                 <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
-                                    Midrand
                                 </td>
                                 <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
-                                    +27102938475
+                                   d.telephone
                                 </td>
                                 <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
-                                    +27112938475
+                                    d.fax
                                 </td>
                                 <td scope="col" class="tdUM" data-toggle="modal"
                                     data-target="#exampleModal">
@@ -218,59 +693,87 @@
                                     <i class="fa fa-eye" aria-hidden="true"></i> View
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
+                        }
+
+                    </tbody>
+                </table>-->
                 </div>
             </div>
         </div>
     </div>
 
     <div id="users" style="display: none; padding-top: 28px">
-        <div class="sea_bar" @*class="row com-row"*@>
-            <div class="col-6" style="display: flex;">
-                <label>Search History</label>
-                <input name="search" />
-                <button data-toggle="modal" data-target="#adSearch">Search</button>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('companies')" style="cursor: pointer;color:white" type="button"
+                                class="btns active">
+                            MY COMPANY
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('branches')" style="cursor: pointer;color:white" type="button"
+                                class="btns ">
+                            BRANCHES
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-1">
+                        <button onclick="myFunction('users')" style="cursor: pointer;color:white" type="button"
+                                class="btns ">
+                            USERS
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-6">
-                <button class="btn-b2" data-toggle="modal" data-target="#userModal" style="background-color: #00B46F; cursor: pointer ">Create user</button>
+            <div class="sea_bar col-6">
+                <div style="display: flex;">
+                    <label>Search</label>
+                    <input name="search" />
+                    <button class="sea-b" data-toggle="modal" data-target="#adSearch">Search</button>
+                </div>
+
+                <div class="col-6 creat-mo">
+                    <button class="btn-b2" data-toggle="modal" data-target="#userModal" style="background-color: #00B46F; cursor: pointer">Create user</button>
+                </div>
             </div>
         </div>
         <!--<div class="row com-row">
-            <div class="com-div">
-                <div class="row">
-                    <div class="col-6">-->
+    <div class="com-div">
+        <div class="row">
+            <div class="col-6">-->
         @*<div class="row">
-                <div class="col-3">
-                    <p><strong>Search By</strong></p>
-                </div>
-                <div class="col-6">
-                    <input class="inp-b" name="search" />
-                </div>
-                <div class="col-3">
-                    <button class="btn-b">Search</button>
-                </div>
-            </div>*@
+            <div class="col-3">
+                <p><strong>Search By</strong></p>
+            </div>
+            <div class="col-6">
+                <input class="inp-b" name="search" />
+            </div>
+            <div class="col-3">
+                <button class="btn-b">Search</button>
+            </div>
+        </div>*@
 
         <!--<form class="form-inline my-form-inline">
 
-                            <div class="form-group mb-2 in-mar">
-                                <label for="inputPassword" class="col-form-label search-label">Search by</label>
-                                <div class="in-mar">
-                                    <input type="text" class="form-control" id="inputPassword">
-                                </div>
+                        <div class="form-group mb-2 in-mar">
+                            <label for="inputPassword" class="col-form-label search-label">Search by</label>
+                            <div class="in-mar">
+                                <input type="text" class="form-control" id="inputPassword">
                             </div>
-                            <button type="submit" class="btn-b">Search</button>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" class="btn-b">Search</button>
+                    </form>
+                </div>
 
-                    <div class="col-6">
-                        <button class="btn-b2" data-toggle="modal" data-target="#userModal" style="cursor:pointer">Create user</button>
-                    </div>
+                <div class="col-6">
+                    <button class="btn-b2" data-toggle="modal" data-target="#userModal" style="cursor:pointer">Create user</button>
                 </div>
             </div>
-        </div>-->
+        </div>
+    </div>-->
 
         <div class="row ro-2">
             <div class="con1">
@@ -368,36 +871,7 @@
                            style="font-size:40px;color:red;"></i>
                     </div>
                 </div>
-            </div>
-            <div class="row btn-row">
-                <div class="col-md-12 col-sm-12" style="padding-left: 56px;">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-4">
-                            <button onclick="myFunction('branchInfo')"
-                                    style="cursor: pointer;color:white" type="button"
-                                    class="btns active">
-                                BRANCH INFORMATION
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-3">
-                            <button onclick="myFunction('acctPersons')"
-                                    style="cursor: pointer;color:white" type="button"
-                                    class="btns ">
-                                ACCOUNT PERSONS
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-3">
-                            <button onclick="myFunction('billingInfo')"
-                                    style="cursor: pointer;color:white" type="button"
-                                    class="btns ">
-                                BILLING INFO
-                            </button>
-                        </div>
-                        <div class="col-md-2 col-sm-2">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>           
             <div class="modal-body modalBod">
 
                 <div id="branchInfo" class="con" style="display:flex; ">
@@ -407,36 +881,45 @@
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Branch Name</strong><br>
-                                @Html.TextBox("BranchName", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
+                                @Html.EditorFor(m => m.orgunit.orgunitname, new
+                                {
+                                     htmlAttributes = new
+                                     {
+                                         @id = "FirstName",
+                                         @class = "cus-input",
+                                         minlength = "3",
+                                         maxlength = "30"
+                                     }
+                                })
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Vat Number</strong><br>
-                                @Html.TextBox("VatRegistrationNumber", null, new
-                               {
-                                   @id = "FirstName",
-                                   @class = "cus-input",
-                                   minlength = "3",
-                                   maxlength = "30"
-                               })
+                                @Html.EditorFor(m => m.orgunit.orgunit_vatno, new
+                             {
+                                  htmlAttributes = new
+                                  {
+                                      @id = "FirstName",
+                                      @class = "cus-input",
+                                      minlength = "3",
+                                      maxlength = "30"
+                                  }
+                             })
                             </div>
                         </div>
 
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Sales Region/ Province</strong><br>
-                                @Html.TextBox("SalesRegion", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
+                                @Html.EditorFor(m => m.orgregion.regionname, new
+                               {
+                                    htmlAttributes = new
+                                    {
+                                        @id = "FirstName",
+                                        @class = "cus-input",
+                                        minlength = "3",
+                                        maxlength = "30"
+                                    }
+                               })
                             </div>
                             <div class="col-6">
                             </div>
@@ -445,47 +928,57 @@
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Physical Address</strong><br>
-                                @Html.TextArea("PhysicalAddress", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               @cols = "50",
-                               @rows = "10",
-
-                           })
+                                   @Html.EditorFor(m => m.orgunit.physical_address, new
+                                {
+                                     htmlAttributes = new
+                                     {
+                                         @id = "FirstName",
+                                         @class = "cus-input",
+                                         minlength = "3",
+                                         maxlength = "30"
+                                     }
+                                })
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Postal Addres</strong><br>
-                                @Html.TextArea("PostalAddress", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               cols = "50",
-                               rows = "10",
-
-                           })
+                                @Html.EditorFor(m => m.orgunit.postal_address, new
+                                {
+                                     htmlAttributes = new
+                                     {
+                                         @id = "FirstName",
+                                         @class = "cus-input",
+                                         minlength = "3",
+                                         maxlength = "30"
+                                     }
+                                })
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Telephone Number</strong><br>
-                                @Html.TextBox("TelephoneNumber", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
+                                @Html.EditorFor(m => m.orgunit.telephone, new
+                              {
+                                   htmlAttributes = new
+                                   {
+                                       @id = "FirstName",
+                                       @class = "cus-input",
+                                       minlength = "3",
+                                       maxlength = "30"
+                                   }
+                              })
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Fax Number</strong><br>
-                                @Html.TextBox("FaxNumber", null, new
-                               {
-                                   @id = "FirstName",
-                                   @class = "cus-input",
-                                   minlength = "3",
-                                   maxlength = "30"
-                               })
+                                @Html.EditorFor(m => m.orgunit.fax, new
+                             {
+                                  htmlAttributes = new
+                                  {
+                                      @id = "FirstName",
+                                      @class = "cus-input",
+                                      minlength = "3",
+                                      maxlength = "30"
+                                  }
+                             })
                             </div>
                         </div>
 
@@ -504,376 +997,7 @@
             </div>
 
             @*<div class="modal-body modalBod">*@
-            <div id="acctPersons" class="con"
-                 style="display:none;">
-                <div class="container" style="display: flex; flex-direction: column;justify-content:space-between; margin-top: 26px;">
-                    <div class="row"
-                         style="display: flex; align-content: center;background: #212529 0% 0% no-repeat padding-box; height: 40px; width: 96.5%; align-self: center; box-shadow: 0px 3px 6px #00000029; border-radius: 10px; opacity: 1;">
-                        <div class="col-sm heading">
-                            <strong style="display: flex;">
-                                Account
-                                Persons
-                            </strong>
-                        </div>
-                        <div class="col-sm heading">
-                            <strong style="display: flex;">
-                                Email
-                                Address
-                            </strong>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center ap">
-                        <div class="col-6">
-                            @* <strong class="heading1">Telephone Number</strong><br>*@
-                            @Html.TextBox("AccountPerson", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            @*  <strong class="heading1">Fax Number</strong><br>*@
-                            @Html.TextBox("Email", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center ap">
-                        <div class="col-6">
-                            @*  <strong class="heading1">Telephone Number</strong><br>*@
-                            @Html.TextBox("AccountPerson1", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            @*<strong class="heading1">Fax Number</strong><br>*@
-                            @Html.TextBox("Email1", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center" style="margin-right: 12px;">
-                        <div class="col-6">
-                        </div>
-                        <div class="col-6">
-                            <div class="row justify-content-end">
-                                <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
-                                <button class="btn-b2 btnSpace">Save Changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top: 17px !important;"></div>
-
-            <div id="billingInfo" class="con" style="display:none;overflow:scroll">
-                <div class="container my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass"
-                     style="display: flex; flex-direction: column;">
-
-                    <div class="row justify-content-between"
-                         style="align-items:center;padding:10px">
-
-                        <strong>EXISTING BILLING INFORMATION</strong>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Branch</strong><br>
-                            @Html.TextBox("Branch", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            <strong class="heading1">Use Bank Account</strong><br>
-                            @Html.TextBox("UseBankAccount", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="rad">
-                                    <div class="col-6">
-                                        <p class="rad-lab">Bill Selected Branch</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="align-items-center" style="float: right;">
-                                            <label class="custom-control ios-switch">
-                                                <input type="checkbox" class="ios-switch-control-input" checked="">
-                                                <span class="ios-switch-control-indicator"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Bank Name</strong><br>
-                            @Html.TextBox("BankName", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            <strong class="heading1">Bank Branch Name</strong><br>
-                            @Html.TextBox("BankBranchName", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Bank Branch Code</strong><br>
-                            @Html.TextBox("BranchName", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            <strong class="heading1">Account Holder</strong><br>
-                            @Html.TextBox("AccountHolder", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Account Number</strong><br>
-                            @Html.TextBox("Account Number", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            <strong class="heading1">Account Type</strong><br>
-                            @Html.TextBox("AccountType", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Pastel Account Number</strong><br>
-                            @Html.TextBox("PastelAccountNumber", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            <strong class="heading1">Purchase Order</strong><br>
-                            @Html.TextBox("Purchase Order", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <strong class="heading1">Address</strong><br>
-                            @Html.TextBox("Street", null, new
-                               {
-                                   @id = "FirstName",
-                                   @class = "cus-input addr",
-                                   minlength = "3",
-                                   maxlength = "30",
-                                   placeholder = "Street",
-                               })
-
-                            @Html.TextBox("Town", null, new
-                               {
-                                   @id = "FirstName",
-                                   @class = "cus-input addr",
-                                   minlength = "3",
-                                   maxlength = "30",
-                                   placeholder = "Town",
-                               })
-
-                            @Html.TextBox("City", null, new
-                              {
-                                  @id = "FirstName",
-                                  @class = "cus-input addr",
-                                  minlength = "3",
-                                  maxlength = "30",
-                                  placeholder = "City",
-                              })
-
-                            @Html.TextBox("PostalCode", null, new
-                               {
-                                   @id = "FirstName",
-                                   @class = "cus-input addr",
-                                   minlength = "3",
-                                   maxlength = "30",
-                                   placeholder = "Postal Code",
-                               })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Mobile Number (Optional)</strong><br>
-                            @Html.TextBox("MobileNumber", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                            <strong class="heading1">Telephone Number</strong><br>
-                            @Html.TextBox("TelephoneNumber", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Fax Number</strong><br>
-                            @Html.TextBox("FaxNumber", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="rad">
-                                    <div class="col-6">
-                                        <p class="rad-lab">Is Debt Order</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="align-items-center" style="float: right;">
-                                            <label class="custom-control ios-switch">
-                                                <input type="checkbox" class="ios-switch-control-input" checked="">
-                                                <span class="ios-switch-control-indicator"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-
-                            <div class="row">
-                                <div class="rad">
-                                    <div class="col-6">
-                                        <p class="rad-lab">Excluded</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="align-items-center" style="float: right;">
-                                            <label class="custom-control ios-switch">
-                                                <input type="checkbox" class="ios-switch-control-input" checked="">
-                                                <span class="ios-switch-control-indicator"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-6">
-                            <strong class="heading1">Billing Date</strong><br>
-                            @Html.TextBox("BillingDate", null, new
-                       {
-                           @id = "FirstName",
-                           @class = "cus-input",
-                           minlength = "3",
-                           maxlength = "30"
-                       })
-                        </div>
-                        <div class="col-6">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row justify-content-center" style="margin-right: 12px;">
-                    <div class="col-6">
-                    </div>
-                    <div class="col-6">
-                        <div class="row justify-content-end">
-                            <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>
-                            <button class="btn-b2 btnSpace">Save Changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
             <div style="margin-top: 17px !important;"></div>
         </div>
@@ -1333,11 +1457,11 @@
             window.location.href = "@Url.Action("CSIPersonalRecords", "Individual")";
         } else if (tab_d === "CIPC Company Search") {
 
-                window.location.href = "@Url.Action("CIPCCompany", "Home")";
+            window.location.href = "@Url.Action("CIPCCompany", "Home")";
         } else if (tab_d === "Deeds Office Records Individual") {
 
-              window.location.href = "@Url.Action("DeedsOfficeRecordsIndividual", "Individual")";
-       } else if (tab_d === "CSI Company Records") {
+            window.location.href = "@Url.Action("DeedsOfficeRecordsIndividual", "Individual")";
+        } else if (tab_d === "CSI Company Records") {
             window.location.href = "@Url.Action("CSICompanyRecords", "Home")";
 
         } else if (tab_d === "Combined Consumer Trace") {
@@ -1347,9 +1471,9 @@
 
             window.location.href = "@Url.Action("CombinedCreditReport", "Credit")";
 
-//// ====  CompuScan  =====////
+            //// ====  CompuScan  =====////
         } else if (tab_d === "Bank Codes Document") {
-             window.location.href = "@Url.Action("CompuScanBankCodesDocument", "Credit")";
+            window.location.href = "@Url.Action("CompuScanBankCodesDocument", "Credit")";
         } else if (tab_d === "Bank On File") {
 
             window.location.href = "@Url.Action("CompuScanBankOnFile", "Credit")";
@@ -1370,28 +1494,28 @@
 
         } else if (tab_d === "ID Photo Verification") {
 
-         window.location.href = "@Url.Action("CompuScanIDPhotoVerification", "Credit")";
+            window.location.href = "@Url.Action("CompuScanIDPhotoVerification", "Credit")";
         } else if (tab_d === "Experian Consumer Profile") {
-          window.location.href = "@Url.Action("ExperianConsumerProfile", "Credit")";
-//// ====  TransUnion   =====////
+            window.location.href = "@Url.Action("ExperianConsumerProfile", "Credit")";
+            //// ====  TransUnion   =====////
         } else if (tab_d === "TransUnion Company Profile") {
 
-           window.location.href = "@Url.Action("TransUnionCompanyProfile", "Credit")";
+            window.location.href = "@Url.Action("TransUnionCompanyProfile", "Credit")";
         } else if (tab_d === "TransUnion Consumer Contact Information") {
 
-         window.location.href = "@Url.Action("TransUnionConsumerContactInformation", "Credit")";
+            window.location.href = "@Url.Action("TransUnionConsumerContactInformation", "Credit")";
         } else if (tab_d === "TransUnion Consumer ID Verification") {
 
-          window.location.href = "@Url.Action("TransUnionConsumerIDVerification", "Credit")";
+            window.location.href = "@Url.Action("TransUnionConsumerIDVerification", "Credit")";
         } else if (tab_d === "TransUnion Consumer Profile") {
             window.location.href = "@Url.Action("TransUnionConsumerProfile", "Credit")";
         } else if (tab_d === "TransUnion Consumer Trace") {
 
-           window.location.href = "@Url.Action("TransUnionConsumerTrace", "Credit")";
-//// ====  veriCred   =====////
+            window.location.href = "@Url.Action("TransUnionConsumerTrace", "Credit")";
+            //// ====  veriCred   =====////
         } else if (tab_d === "VeriCred Account Verification") {
 
-          window.location.href = "@Url.Action("VeriCredAccountVerification", "Credit")";
+            window.location.href = "@Url.Action("VeriCredAccountVerification", "Credit")";
         } else if (tab_d === "VeriCred Consumer Profile") {
             window.location.href = "@Url.Action("VeriCredConsumerProfile", "Credit")";
 
@@ -1402,21 +1526,32 @@
 
             window.location.href = "@Url.Action("VeriCredIDPhotoVerification", "Credit")";
         } else if (tab_d === "VeriCred Income Estimate By ID Number") {
-             window.location.href = "@Url.Action("VeriCredIncomeEstimateByIDNumber", "Credit")";
+            window.location.href = "@Url.Action("VeriCredIncomeEstimateByIDNumber", "Credit")";
         } else if (tab_d === "VeriCred Person Verification By ID Number") {
             window.location.href = "@Url.Action("VeriCredPersonVerificationByIDNumber", "Credit")";
-//// ==== XDS   =====////
+            //// ==== XDS   =====////
         } else if (tab_d === "XDS Consumer ID Verification") {
             window.location.href = "@Url.Action("XDSConsumerIDVerification", "Credit")";
         } else if (tab_d === "XDS Consumer Trace") {
-             window.location.href = "@Url.Action("XDSConsumerTrace", "Credit")";
-//// ==== Search   =====////
+            window.location.href = "@Url.Action("XDSConsumerTrace", "Credit")";
+            //// ==== Search   =====////
         } else if (tab_d === "SEARCH HISTORY") {
-             window.location.href = "@Url.Action("SearchHistory", "UserManagement")";
+            window.location.href = "@Url.Action("SearchHistory", "UserManagement")";
         } else if (tab_d === "USER MANAGEMENT") {
-           //  window.location.href = "@Url.Action("UserManagementHome", "UserManagement")";
+            //  window.location.href = "@Url.Action("UserManagementHome", "UserManagement")";
         }
 
         console.log($(event.target).text());
-    };
+    }
+
+
+        $(function () {
+            $('.raw_click').click(function () {
+                var id = $(this).data('assigned-id');
+                var route = '@Url.Action("ViewTest", "Home")?id=' + id;
+                $('#partial').load(route);
+            });
+
+        });
+
 </script>
