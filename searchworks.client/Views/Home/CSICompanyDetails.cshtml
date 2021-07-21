@@ -3,158 +3,162 @@
 }
 <!DOCTYPE html>
 @{
-    ViewBag.Title = "CSI Company Details";
+    ViewBag.Title = "CSICompanyDetails";
     string absolutepath = HttpContext.Current.Request.Url.AbsolutePath;
     System.Diagnostics.Debug.WriteLine(absolutepath);
 }
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea act">SEARCH RESULTS</div>
-    @if (TempData["msg"] != null)
-    {
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export('CSICompanyDetails.pdf')" class="button btn-b2" />
+    </div>
+    <div id="content">
+        @if (TempData["msg"] != null)
+        {
 
-        <div>@TempData["msg"].ToString()  </div>
-        <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+            <div>@TempData["msg"].ToString()  </div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
 
-    }
-    <div class="con2">
-        <div class="left_col">
-            <div class="results">
-                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                <p>2 Results</p>
-            </div>
-            <p class="num">@ViewData["CompanyName"]</p>
-            <p class="num2">CSI Company Records</p>
-            <div class="btnNavigation">
-                <p class="multi active" onclick="openCity(event, 'CompanyInfo')">Search Results</p>
-                <p class="multi" onclick="openCity(event, 'DirectorsDetails')">Detailed Information</p>
-            </div>
-            <div class="seaInfo">
-                Search Information
-            </div>
-            <div class="userInfo">
-                <p class="">User:<span>@TempData["user"]</span></p>
-                <p class="">Date:<span>@TempData["date"]</span></p>
-                <p class="">Reference:<span>@TempData["ref"]</span></p>
-                <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
-            </div>
-        </div>
-        <div class="right_col">
+        }
 
-            <div id="notification" class="seaRes">
-                Company Information @*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
+        <div class="con2">
+            <div class="left_col">
+                <div class="results">
+                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                    <p>2 Results</p>
+                </div>
+                <p class="num">@ViewData["CompanyName"]</p>
+                <p class="num2">CSI Company Records</p>
+                <div class="btnNavigation">
+                    <p class="multi active" onclick="openCity(event, 'CompanyInfo')">Search Results</p>
+                    <p class="multi" onclick="openCity(event, 'DirectorsDetails')">Detailed Information</p>
+                </div>
+                <div class="seaInfo">
+                    Search Information
+                </div>
+                <div class="userInfo">
+                    <p class="">User:<span>@TempData["user"]</span></p>
+                    <p class="">Date:<span>@TempData["date"]</span></p>
+                    <p class="">Reference:<span>@TempData["ref"]</span></p>
+                    <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
+                </div>
             </div>
-            <div class="ConInfo">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Registration Number:</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                            <th>Finacial Year End:</th>
-                            <th>Region</th>
-                            <th>Country</th>
-                            <th>Registration Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@ViewData["CompanyID"] </td>
-                            <td>@ViewData["CompanyRegistrationNumber"]</td>
-                            <td>@ViewData["CompanyStatus"]</td>
-                            <td>@ViewData["CompanyType"]</td>
-                            <td>@ViewData["FinancialYearEnd"]</td>
-                            <td>@ViewData["Region"]</td>
-                            <td>@ViewData["Country"]</td>
-                            <td>@ViewData["RegistrationDate"]</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="notification" class="seaRes">
-                Directors Details @*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
-            </div>
-            <div class="DirecDetail">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>First Name</th>
-                            <th>Surname</th>
-                            <th>Gender</th>
-                            <th>ID Number</th>
-                            <th>Age</th>
-                            <th>Status</th>
-                            <th>Resignation Date</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in @ViewBag.DirectorsDetails)
-                        {
-                            <tr>
-                                <td>@item.DirectorID</td>
-                                <td>@item.FirstName</td>
-                                <td>@item.Surname</td>
-                                <td>@item.Gender</td>
-                                <td>@item.IdNumber</td>
-                                <td>@item.Age</td>
-                                <td>@item.Status</td>
-                                <td>@item.ResignationDate</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="notification" class="seaRes">
-                Capital Information@*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
-            </div>
-            <div class="CapInfo">
-                @if (@ViewBag.CapInfo != null)
-                {
+            <div class="right_col">
+                <div id="notification" class="seaRes">
+                    Company Information @*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
+                </div>
+                <div class="ConInfo">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Type</th>
                                 <th>ID</th>
-                                <th>CompanyID</th>
-                                <th>RegistrationNumber</th>
-                                <th>NoShares</th>
-                                <th>ParriValue</th>
-                                <th>Premium</th>
-                                <th>ShareAmount</th>
+                                <th>Registration Number:</th>
+                                <th>Status</th>
+                                <th>Type</th>
+                                <th>Finacial Year End:</th>
+                                <th>Region</th>
+                                <th>Country</th>
+                                <th>Registration Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in @ViewBag.CapInfo)
+                            <tr>
+                                <td>@ViewData["CompanyID"] </td>
+                                <td>@ViewData["CompanyRegistrationNumber"]</td>
+                                <td>@ViewData["CompanyStatus"]</td>
+                                <td>@ViewData["CompanyType"]</td>
+                                <td>@ViewData["FinancialYearEnd"]</td>
+                                <td>@ViewData["Region"]</td>
+                                <td>@ViewData["Country"]</td>
+                                <td>@ViewData["RegistrationDate"]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="notification" class="seaRes">
+                    Directors Details @*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
+                </div>
+                <div class="DirecDetail">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Surname</th>
+                                <th>Gender</th>
+                                <th>ID Number</th>
+                                <th>Age</th>
+                                <th>Status</th>
+                                <th>Resignation Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in @ViewBag.DirectorsDetails)
                             {
                                 <tr>
-                                    <td>@item.CapitalType</td>
-                                    <td>@item.CompanyCapitalID</td>
-                                    <td>@item.CompanyID</td>
-                                    <td>@item.CompanyRegistrationNumber</td>
-                                    <td>@item.NoShares</td>
-                                    <td>@item.ParriValue</td>
-                                    <td>@item.Premium</td>
-                                    <td>@item.ShareAmount</td>
+                                    <td>@item.DirectorID</td>
+                                    <td>@item.FirstName</td>
+                                    <td>@item.Surname</td>
+                                    <td>@item.Gender</td>
+                                    <td>@item.IdNumber</td>
+                                    <td>@item.Age</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.ResignationDate</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-                }
-                else
-                {
-                    <table class="table table-striped">
+                </div>
 
-                        <tbody>
-                            <tr>
-                                No Data
-                            </tr>
-                        </tbody>
-                    </table>}
+                <div id="notification" class="seaRes">
+                    Capital Information@*<span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>*@
+                </div>
+                <div class="CapInfo">
+                    @if (@ViewBag.CapInfo != null)
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>ID</th>
+                                    <th>CompanyID</th>
+                                    <th>RegistrationNumber</th>
+                                    <th>NoShares</th>
+                                    <th>ParriValue</th>
+                                    <th>Premium</th>
+                                    <th>ShareAmount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in @ViewBag.CapInfo)
+                                {
+                                    <tr>
+                                        <td>@item.CapitalType</td>
+                                        <td>@item.CompanyCapitalID</td>
+                                        <td>@item.CompanyID</td>
+                                        <td>@item.CompanyRegistrationNumber</td>
+                                        <td>@item.NoShares</td>
+                                        <td>@item.ParriValue</td>
+                                        <td>@item.Premium</td>
+                                        <td>@item.ShareAmount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <table class="table table-striped">
+
+                            <tbody>
+                                <tr>
+                                    No Data
+                                </tr>
+                            </tbody>
+                        </table>}
+                </div>
             </div>
         </div>
     </div>

@@ -62,7 +62,7 @@ namespace searchworks.client.Credit
         public string ConsumerID { get; set; }
         public string AkaName { get; set; }
         public string Remarks { get; set; }
-
+        public string VerificationStatus { get; set; }
         public string MaritalStatus { get; set; }
         public string Quality { get; set; }
         public bool HasProperties { get; set; }
@@ -362,6 +362,75 @@ namespace searchworks.client.Credit
         public string ApplicationDate { get; set; }
     }
 
+    public class DeclineReason
+    {
+        public string ReasonCode { get; set; }
+        public string ReasonDescription { get; set; }
+    }
+
+    public class FraudIndicatorSummary
+    {
+        public string SAFPSListing { get; set; }
+        public string EmployerFraudVerification { get; set; }
+        public string ProtectiveVerification { get; set; }
+    }
+
+    public class BuyerInformation
+    {
+        public string Fullname { get; set; }
+        public string IDNumber { get; set; }
+        public string MaritalStatus { get; set; }
+        public string PropertySharePercentage { get; set; }
+    }
+
+    public class BondInformation
+    {
+        public string Institution { get; set; }
+        public string BondNumber { get; set; }
+        public string BondAmount { get; set; }
+    }
+
+    public class SellerInformation
+    {
+        public string Fullname { get; set; }
+        public string IDNumber { get; set; }
+        public string MaritalStatus { get; set; }
+    }
+
+    public class GeneralInformation
+    {
+        public string Municipality { get; set; }
+        public string Township { get; set; }
+        public string CityName { get; set; }
+        public string StreetName { get; set; }
+        public string StreetNumber { get; set; }
+        public string RegisteredSize { get; set; }
+        public string DeedsOfficeName { get; set; }
+        public string OldTitleDeedNumber { get; set; }
+        public string PhysicalAddressG { get; set; }
+        public string StandNumber { get; set; }
+    }
+
+    public class PropertiesInformation
+    {
+        public List<TransferInformation> TransferInformation { get; set; }
+        public List<BuyerInformation> BuyerInformation { get; set; }
+
+        public List<SellerInformation> SellerInformation { get; set; }
+
+        public List<BondInformation> BondInformation { get; set; }
+
+        public List<GeneralInformation> GeneralInformation { get; set; }
+    }
+
+    public class TransferInformation
+    {
+        public string RegistrationDate { get; set; }
+        public string PurchaseDate { get; set; }
+        public string PurchasePrice { get; set; }
+        public string TitleDeedNumber { get; set; }
+    }
+
     public class Directorship
     {
         public string DesignationCode { get; set; }
@@ -613,15 +682,30 @@ namespace searchworks.client.Credit
         public string FullAddress { get; set; }
         public string LastUpdatedDate { get; set; }
     }
-
+    public class AlsoKnownAs
+    { 
+        public string AkaName { get; set; }
+        public string ConsumerID { get; set; }
+        public string InformationDate { get; set; }
+        public string Part { get; set; }
+        public string PartsEQ { get; set; }
+        public string RecordsEQ { get; set; }
+    }
     public class TelephoneHistory
     {
-        public String TelephoneID { get; set; }
+        public string TelephoneID { get; set; }
         public string TypeDescriptionTel { get; set; }
         public string DialCode { get; set; }
+        public string TypeCode { get; set; }
         public string Number { get; set; }
         public string FullNumber { get; set; }
         public string LastUpdatedDateTel { get; set; }
+    }
+
+    public class EmailHistory
+    {
+        public string EmailAddress { get; set; }
+        public string LastUpdatedDate { get; set; }
     }
 
     public class TransUnion

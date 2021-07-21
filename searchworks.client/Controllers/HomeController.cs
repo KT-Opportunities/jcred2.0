@@ -5,10 +5,13 @@ using RestSharp;
 using searchworks.client.Company;
 using ServiceStack.Text.Json;
 using System;
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Diagnostics;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -21,12 +24,58 @@ using System.Net.Mail;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Dapper;
+using searchworks.client.Helpers;
 
 namespace searchworks.client.Controllers
 {
     //[Authorize]
+    //Session expiring to login
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    public class CheckSessionOutAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            HttpContext context = HttpContext.Current;
+            if (context.Session != null)
+            {
+                if (context.Session.IsNewSession)
+                {
+                    string sessionCookie = context.Request.Headers["Cookie"];
+
+                    if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+                    {
+                        FormsAuthentication.SignOut();
+                        string redirectTo = "~/Home/Index";
+                        if (!string.IsNullOrEmpty(context.Request.RawUrl))
+                        {
+                            redirectTo = string.Format("~/UserManagement/UserManagementHome}", HttpUtility.UrlEncode(context.Request.RawUrl));
+                            filterContext.Result = new RedirectResult(redirectTo);
+                            return;
+                        }
+
+                    }
+                }
+            }
+
+            base.OnActionExecuting(filterContext);
+        }
+    }
+    //session expiring end
+
+    
     public class HomeController : Controller
     {
+        IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+
+        public  HomeController()
+        {
+            
+
+
+        }
+
+
         public bool IsValidEmail(string emailaddress)
         {
             try
@@ -40,10 +89,17 @@ namespace searchworks.client.Controllers
             }
         }
 
+        [CheckSessionOut]
         [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
+        }
+
+
+        public ActionResult ForgotPassword()
+        {
+            return this.RedirectToAction("ForgotPassword", "Account");
         }
 
         //[AllowAnonymous]
@@ -76,6 +132,17 @@ namespace searchworks.client.Controllers
                     //if (userEmail == log.Email && userPass == log.Password)
                     if (ident.IsAuthenticated)
                     {
+                        //pull companyname
+                        string strUserGUID = ident.GetUserId();
+                        int tenantID = -1;
+                        tenantID = new JCredHelper().GetUserTenantID(strUserGUID);
+
+                        //var tenantusermap = db.Query<orgunitusermap>("Select * From orgunitusermap where strUserGUID='" + strUserGUID + "'").FirstOrDefault();
+                        //tenantID = Convert.ToInt32(tenantusermap.orgtenantid);
+
+                        //tenantID = new JCredHelper().GetUserTenantID(strUserGUID);
+                        //tenantID = new JCredHelper.Instance.GetUserTenantID(strUserGUID);
+
                         //conn.Close();
                         DateTime time = DateTime.Now;
 
@@ -167,7 +234,9 @@ namespace searchworks.client.Controllers
 
         public ActionResult Logout()
         {
-            HttpContext.GetOwinContext().Authentication.SignOut(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
+            
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            authManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
             return RedirectToAction("Index", "Home");
         }
@@ -284,25 +353,6 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        public ActionResult Landing()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         public string GetLoginToken(string api_username, string api_password)
         {
             string loginToken = "";
@@ -349,9 +399,14 @@ namespace searchworks.client.Controllers
 
         public ActionResult CIPCCompanyResults(Search search)
         {
+            string searchBy = search.CipcSearchBy;
             string name = search.CompanyName;
+            string registrationNumber = search.RegistrationNumber;
             string pdf = search.PDF;
             string strCompanyName = name != null ? name.Trim() : null;
+            string strRegistrationNumber = registrationNumber != null ? registrationNumber.Trim() : null;
+            string strSearchBy = searchBy;
+
             string refe = search.Reference;
 
             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
@@ -375,10 +430,10 @@ namespace searchworks.client.Controllers
                 var apiInput = new
                 {
                     SessionToken = authtoken,
-                    CipcSearchBy = 2,//company name contains: See documentation
+                    CipcSearchBy = strSearchBy,//company name contains: See documentation
                     Reference = authtoken,//search reference: probably store in logs
                     CompanyName = strCompanyName,
-                    RegistrationNumber = ""
+                    RegistrationNumber = strRegistrationNumber
                 };
 
                 //add parameters and token to request
@@ -419,8 +474,8 @@ namespace searchworks.client.Controllers
                 var cmd2 = new MySqlCommand(query_uid, conn);
                 System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
                 var reader2 = cmd2.ExecuteReader();
-                if (rootObject.ResponseMessage == "Invalid sessionToken" ) {
-
+                if (rootObject.ResponseMessage == "Invalid sessionToken")
+                {
                     TempData["msg"] = "Invalid sessionToken.";
                     return View();
                 }
@@ -449,21 +504,17 @@ namespace searchworks.client.Controllers
                      System.Collections.Generic.List<CompanyInformation> CompanyList = new System.Collections.Generic.List<CompanyInformation>();
                      foreach (CompanyInformation comp in rootObject.CompanyInformation)
                      {
-
                          CompanyList.Add(comp);
-
                      }
                      ViewData["CompanyList"] = CompanyList;
                      ViewData["CompanyListCount"] = CompanyList.Count;
-
-
                  }
                  catch (Exception e)
                  {
                      System.Diagnostics.Debug.WriteLine(e.ToString());
                      TempData["msg"] = "An error occured, please check the entered values.";
                  }
- */
+                 */
                 conn.Close();
                 return View(lst);
             }
@@ -1103,9 +1154,107 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        public ActionResult DatabasePropertyCompanyResults()
+        public ActionResult DatabasePropertyCompanyResults(CompanyDeeds comDeeds)
         {
-            return View();
+            /* string Reference = deed.Reference != null ? deed.Reference.Trim() : null;*/
+            string Reference = " ";
+            string deedsOffice = comDeeds.DeedsOffice != null ? comDeeds.DeedsOffice.Trim() : " ";
+            string companyName = comDeeds.CompanyName != null ? comDeeds.CompanyName.Trim() : " ";
+            string companyRegistrationNumber = comDeeds.CompanyRegistrationNumber != null ? comDeeds.CompanyRegistrationNumber.Trim() : " ";
+
+            string user_id = Session["ID"].ToString();
+            string us = Session["Name"].ToString();
+            DateTime time = DateTime.Now;
+            string date_add = DateTime.Today.ToShortDateString();
+            string time_add = time.ToString("T");
+            string page = "Database Property Company";
+            string action = "Company Name:" + companyName + "; Company Registration Number:" + companyRegistrationNumber;
+
+            TempData["user"] = Session["Name"].ToString();
+            TempData["date"] = DateTime.Today.ToShortDateString();
+            TempData["ref"] = Reference;
+            try
+            {
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+                conn.Open();
+
+                var cmd2 = new MySqlCommand(query_uid, conn);
+
+                var reader2 = cmd2.ExecuteReader();
+
+                conn.Close();
+
+
+                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+                if (!tokenValid(authtoken))
+                {
+                    //exit with a warning
+                }
+
+                var url = "https://uatrest.searchworks.co.za/databaseproperty/company/";
+
+                /*var url = " http://localhost:3000/root";
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.GET);*/
+
+                //create RestSharp client and POST request object
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.POST);
+                //request headers
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    Reference = Reference,
+                    DeedsOffice = deedsOffice,
+                    CompanyName = companyName,
+                    RegistrationNumber = companyRegistrationNumber,
+                };
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                /*ViewData["ComName"] = rootObject.ResponseObject.SearchInformation.SearchDescription;*/
+
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+
+                if (ViewData["ResponseMessage"].ToString() == "ServiceOffline")
+                {
+                    TempData["msg"] = "Sorry Service Is Currently Offline, Please try again later ";
+                    return View();
+                }
+
+                if (rootObject.ResponseMessage == "NotFound")
+                {
+                    TempData["msg"] = "No Results Returned. ";
+                    return View();
+                }
+
+                List<ResponseObject> Resp = new List<ResponseObject>();
+                Newtonsoft.Json.Linq.JArray ResponseElement = new Newtonsoft.Json.Linq.JArray();
+
+                ResponseElement = rootObject.ResponseObject;
+                System.Diagnostics.Debug.WriteLine(ResponseElement);
+                ViewData["ResponseElement"] = ResponseElement;
+
+                return View();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                TempData["msg"] = "Error Occured, Please verify the details that have been entered. ";
+                return View();
+            }
         }
 
         public ActionResult DeedsOfficeRecordsCompany()
@@ -1113,8 +1262,302 @@ namespace searchworks.client.Controllers
             return View();
         }
 
-        public ActionResult DeedsOfficeRecordsCompanyResult()
+        public ActionResult DeedsOfficeRecordsCompanyResult(CompanyDeeds CompanyDeed)
         {
+            /*string Reference = CompanyDeed.Reference != null ? CompanyDeed.Reference.Trim() : " ";*/
+            /*string Reference = " ";
+            string deedsOffice = CompanyDeed.DeedsOffice != null ? CompanyDeed.DeedsOffice.Trim() : null;
+            string companyName = CompanyDeed.CompanyName != null ? CompanyDeed.CompanyName.Trim() : null;
+            string companyRegistrationNumber = CompanyDeed.CompanyRegistrationNumber != null ? CompanyDeed.CompanyRegistrationNumber.Trim() : null;
+            string sequestration = CompanyDeed.Sequestration;
+            System.Diagnostics.Debug.WriteLine(deedsOffice, Reference, companyName, companyRegistrationNumber, sequestration);
+            string user_id = Session["ID"].ToString();
+            string us = Session["Name"].ToString();
+            DateTime time = DateTime.Now;
+            string date_add = DateTime.Today.ToShortDateString();
+            string time_add = time.ToString("T");
+            string page = "Database Property Individual";
+            string action = "Company Name:" + companyName + "; Company Registration Number:" + companyRegistrationNumber;
+
+            ViewData["user"] = Session["Name"].ToString();
+            ViewData["date"] = DateTime.Today.ToShortDateString();
+            ViewData["ref"] = Reference;
+
+            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+
+            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            if (!tokenValid(authtoken))
+            {
+                //exit with a warning
+            }
+
+            //company search API call
+            var url = "https://uatrest.searchworks.co.za/deedsoffice/company/";
+
+            //create RestSharp client and POST request object
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            //request headers
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");*/
+            try
+            {
+                /*var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    Reference = Reference,
+                    DeedsOffice = deedsOffice,
+                    CompanyName = companyName,
+                    CompanyRegistrationNumber = companyRegistrationNumber,
+                    Sequestration = sequestration
+                };
+
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+
+                IRestResponse response = client.Execute<RootObject>(request);
+
+                dynamic rootObject = JObject.Parse(response.Content);
+                JObject responseObject = JObject.Parse(response.Content);
+
+                ViewData["ResponseMessage"] = rootObject.ResResponseMessage;*/
+
+                var url = "http://localhost:8000/root";
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute<RootObject>(request);
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+                dynamic rootObject = JObject.Parse(response.Content);
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                TempData["ResponseMessage"] = rootObject.ResponseMessage;
+
+                if (ViewData["ResponseMessage"].ToString() == "ServiceOffline")
+                {
+                    TempData["msg"] = "Sorry Service Is Currently Offline, Please try again later ";
+                    return View();
+                }
+
+                if (rootObject.ResponseMessage == "NotFound")
+                {
+                    TempData["msg"] = "No Results Returned. ";
+                    return View();
+                }
+
+                System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
+                Newtonsoft.Json.Linq.JArray ResponseElement = new Newtonsoft.Json.Linq.JArray();
+                ResponseElement = rootObject.ResponseObject;
+                System.Diagnostics.Debug.WriteLine(ResponseElement);
+                ViewData["ResponseElement"] = ResponseElement;
+                ViewData["DeedsOfficeID"] = rootObject.ResponseObject[0].CompanyInformation.DeedsOfficeID;
+                ViewData["CompanyID"] = rootObject.ResponseObject[0].CompanyInformation.CompanyID;
+                ViewData["SearchDescription"] = rootObject.ResponseObject[0].SearchInformation.SearchDescription;
+
+                return View();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                TempData["msg"] = "Error Occured, Please verify the details that have been entered. ";
+                return View();
+            }
+        }
+
+        public ActionResult DeedsOfficeRecordsCompanyDetails(CompanyDeeds CompanyDeed)
+        {
+            /*string Reference = CompanyDeed.Reference != null ? CompanyDeed.Reference.Trim() : " ";*/
+            /* string Reference = " ";
+             string dbKey = CompanyDeed.DBKey;
+             string deedsOffice = CompanyDeed.DeedsOffice != null ? CompanyDeed.DeedsOffice.Trim() : null;
+             string companyName = CompanyDeed.CompanyName != null ? CompanyDeed.CompanyName.Trim() : null;
+             string SearchDescription = CompanyDeed.SearchDescription;
+
+             System.Diagnostics.Debug.WriteLine(CompanyDeed.DBKey);
+             System.Diagnostics.Debug.WriteLine(CompanyDeed.DeedsOffice);
+             System.Diagnostics.Debug.WriteLine(CompanyDeed.Reference);
+             System.Diagnostics.Debug.WriteLine(CompanyDeed.SearchDescription);
+
+             string user_id = Session["ID"].ToString();
+             string us = Session["Name"].ToString();
+             DateTime time = DateTime.Now;
+             string date_add = DateTime.Today.ToShortDateString();
+             string time_add = time.ToString("T");
+             string page = "Deeds Office Records Company Details";
+             string action = "Company Name:" + companyName;
+
+             ViewData["user"] = Session["Name"].ToString();
+             ViewData["date"] = DateTime.Today.ToShortDateString();
+             ViewData["ref"] = Reference;
+
+             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+             conn.Open();
+
+             var cmd2 = new MySqlCommand(query_uid, conn);
+
+             var reader2 = cmd2.ExecuteReader();
+
+             conn.Close();
+
+             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+             if (!tokenValid(authtoken))
+             {
+                 //exit with a warning
+             }
+
+             //company search API call
+             var url = "https://uatrest.searchworks.co.za/deedsoffice/company/dbkey/";
+
+             //create RestSharp client and POST request object
+             var client = new RestClient(url);
+             var request = new RestRequest(Method.POST);
+             //request headers
+             request.RequestFormat = DataFormat.Json;
+             request.AddHeader("Content-Type", "application/json");
+
+             var apiInput = new
+             {
+                 SessionToken = authtoken,
+                 Reference = Reference,
+                 DeedsOffice = deedsOffice,
+                 DBKey = dbKey,
+                 SearchDescription = SearchDescription
+             };
+
+             //add parameters and token to request
+             request.Parameters.Clear();
+             request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+             request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+
+             IRestResponse response = client.Execute<RootObject>(request);
+
+             dynamic rootObject = JObject.Parse(response.Content);
+             JObject responseObject = JObject.Parse(response.Content);*/
+
+            var url = "http://localhost:3000/root";
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute<RootObject>(request);
+            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+            dynamic rootObject = JObject.Parse(response.Content);
+            ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+            TempData["ResponseMessage"] = rootObject.ResponseMessage;
+            if (ViewData["ResponseMessage"].ToString() == "ServiceOffline")
+            {
+                TempData["msg"] = "Sorry Service Is Currently Offline, Please try again later ";
+                return View();
+            }
+
+            if (rootObject.ResponseMessage == "NotFound")
+            {
+                TempData["msg"] = "No Results Returned. ";
+                return View();
+            }
+            Newtonsoft.Json.Linq.JObject ResponseElement = new Newtonsoft.Json.Linq.JObject();
+            /* Newtonsoft.Json.Linq.JArray ResponseElement = new Newtonsoft.Json.Linq.JArray();*/
+
+            ResponseElement = rootObject.ResponseObject;
+            System.Diagnostics.Debug.WriteLine(ResponseElement);
+            ViewData["ResponseElement"] = ResponseElement;
+            ViewData["CompanyInformation"] = rootObject.ResponseObject.CompanyInformation;
+            List<Property> PropInfo;
+            PropInfo = new List<Property>();
+            List<TransferInformation> TransferList;
+            TransferList = new List<TransferInformation>();
+            List<GeneralInformation> GeneralList;
+            GeneralList = new List<GeneralInformation>();
+            List<FarmInformation> FarmList;
+            FarmList = new List<FarmInformation>();
+            List<ErfInformation> ErfList;
+            ErfList = new List<ErfInformation>();
+
+            Newtonsoft.Json.Linq.JArray PropertyInfoElement = new Newtonsoft.Json.Linq.JArray();
+            PropertyInfoElement = rootObject.ResponseObject.PropertyInformation.Properties;
+            int PropertyCount;
+            for (PropertyCount = 0; PropertyCount < (PropertyInfoElement.Count); PropertyCount++)
+            {
+                {
+                    JToken TransferInfoExists = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount]["TransferInformation"];
+                    TransferInformation TransferInfo = new TransferInformation();
+
+                    if (TransferInfoExists != null)
+                    {
+                        TransferInfo.PurchaseDate = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].TransferInformation.PurchaseDate;
+                        TransferInfo.RegistrationDate = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].TransferInformation.RegistrationDate;
+                        TransferInfo.PurchasePrice = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].TransferInformation.PurchasePrice;
+                        TransferInfo.TitleDeedNumber = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].TransferInformation.TitleDeedNumber;
+
+                        TransferList.Add(TransferInfo);
+                    }
+                    ViewData["TransferList"] = TransferList;
+                }
+
+                {
+                    GeneralInformation GeneralInfo = new GeneralInformation();
+                    JToken GeneralInfoExists = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount]["GeneralInformation"];
+                    if (GeneralInfoExists != null)
+                    {
+                        GeneralInfo.PropertyType = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.PropertyType;
+                        GeneralInfo.PropertyID = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.PropertyID;
+                        GeneralInfo.RawPropertyType = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.RawPropertyType;
+                        GeneralInfo.ShortPropertyDescription = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.ShortPropertyDescription;
+                        GeneralInfo.Township = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.Township;
+                        GeneralInfo.SGCode = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.SGCode;
+                        GeneralInfo.DeedsOfficeID = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.DeedsOfficeID;
+                        GeneralInfo.DeedsOfficeName = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.DeedsOfficeName;
+                        GeneralInfo.RegistrationDate = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.RegistrationDate;
+                        GeneralInfo.MicrofilmReferenceNumber = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.MicrofilmReferenceNumber;
+                        GeneralInfo.Share = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.Share;
+                        GeneralInfo.MultiOwner = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.MultiOwner;
+                        GeneralInfo.MultiProperty = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].GeneralInformation.MultiProperty;
+
+                        GeneralList.Add(GeneralInfo);
+                    }
+                    ViewData["GeneralList"] = GeneralList;
+                }
+
+                {
+                    FarmInformation FarmInfo = new FarmInformation();
+                    JToken FarmInfoExists = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount]["FarmInformation"];
+                    if (FarmInfoExists != null)
+                    {
+                        FarmInfo.Number = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].FarmInformation.Number;
+                        FarmInfo.RegistrationDivision = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].FarmInformation.RegistrationDivision;
+                        FarmInfo.PortionNumber = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].FarmInformation.PortionNumber;
+
+                        FarmList.Add(FarmInfo);
+                    }
+                    ViewData["FarmList"] = FarmList;
+                }
+
+                {
+                    ErfInformation ErfInfo = new ErfInformation();
+                    JToken ErfInfoExists = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount]["ErfInformation"];
+                    if (ErfInfoExists != null)
+                    {
+                        ErfInfo.Number = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].ErfInformation.Number;
+                        ErfInfo.PortionNumber = rootObject.ResponseObject.PropertyInformation.Properties[PropertyCount].ErfInformation.PortionNumber;
+
+                        ErfList.Add(ErfInfo);
+                    }
+                }
+                ViewData["ErfList"] = ErfList;
+            }
+
             return View();
         }
 
@@ -1263,12 +1706,8 @@ namespace searchworks.client.Controllers
 
             foreach (ResponseObject responseObject in rawList)
             {
-                //ResponseObject res = responseObject.ToObject<ResponseObject>;
-                //res.SearchInformation = responseObject.SearchInformation;
                 lst.Add(responseObject.CompanyInformation);
             }
-
-            //TempData["msg"] = "An error occured, please check the entered values.";
 
             return lst;
         }

@@ -8,8 +8,6 @@
     ViewBag.Title = "Deeds Office Records Company";
 }
 
-
-
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
@@ -22,13 +20,13 @@
     </div>
     <div class="con">
         <div class="col-md-6 col-sm-6 left">
-            @using (Html.BeginForm("DatabasePropertyCompanyResults", "Home", FormMethod.Post))
+            @using (Html.BeginForm("DeedsOfficeRecordsCompanyResult", "Home", FormMethod.Post))
             {
 
                 <div class="ref">
                     <label>Reference</label><br>
 
-                    @Html.TextBox("reference", null, new { @id = "Ref" })
+                    @Html.TextBox("Reference", null, new { @id = "Ref" })
                 </div>
 
                 <div class="eqType">
@@ -37,29 +35,34 @@
                     @Html.DropDownList("deedsOffice", new List<SelectListItem>
                 {
 
-                      new SelectListItem { Text = "Bloemfontein", Value = "Bloemfontein"},
-                      new SelectListItem { Text = "CapeTown", Value = "CapeTown"},
-                      new SelectListItem { Text = "Johannesburg", Value = "Johannesburg"},
-                      new SelectListItem { Text = "Kimberley", Value = "Kimberley"},
-                      new SelectListItem { Text = "KingWilliamsTown", Value = "KingWilliamsTown"},
-                      new SelectListItem { Text = "Pietermaritzburg", Value = "Pietermaritzburg"},
-                      new SelectListItem { Text = "Pretoria", Value = "Pretoria"},
-                      new SelectListItem { Text = "Vryburg", Value = "Vryburg"},
-                         new SelectListItem { Text = "Umtata", Value = "Umtata"},
-                            new SelectListItem { Text = "Mpumalanga", Value = "Mpumalanga"},
-                               new SelectListItem { Text = "Limpopo", Value = "Limpopo"},
-                }, " Select Deeds Office", new { @id = "eqtype", required = "required" })
+                      new SelectListItem { Text = "Bloemfontein", Value = "1"},
+                      new SelectListItem { Text = "CapeTown", Value = "2"},
+                      new SelectListItem { Text = "Johannesburg", Value = "3"},
+                      new SelectListItem { Text = "Kimberley", Value = "4"},
+                      new SelectListItem { Text = "KingWilliamsTown", Value = "5"},
+                      new SelectListItem { Text = "Pietermaritzburg", Value = "6"},
+                      new SelectListItem { Text = "Pretoria", Value = "7"},
+                      new SelectListItem { Text = "Vryburg", Value = "8"},
+                         new SelectListItem { Text = "Umtata", Value = "9"},
+                            new SelectListItem { Text = "Mpumalanga", Value = "11"},
+                               new SelectListItem { Text = "Limpopo", Value = "12"},
+                }, " Select Deeds Office", new { @id = "DeedsOffice", required = "required" })
                 </div>
                 <div class="eqType">
                     <label>Company Name</label><br>
 
-                    @Html.TextBox("FirstName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                    @Html.TextBox("CompanyName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
                 <div class="eqType">
                     <label>Company Registration Number</label><br>
 
-                    @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                    @Html.TextBox("CompanyRegistrationNumber", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                </div>
+
+                <div class="eqType">
+                    <label>Sequestration</label><br>
+                    @Html.CheckBox("Sequestration", false, new { style = "margin-left:3.5%" })
                 </div>
 
                 <div class="tc">
@@ -67,10 +70,8 @@
                         I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
-                    <button id="individualSearch" class="butn" name="individualSearch">Perform Search</button>
+                    <button onclick="Search()" id="companySearch" class="butn" name="companySearch">Perform Search</button>
                 </div>
-
-
 
             }
         </div>
@@ -81,16 +82,11 @@
                 Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
             </div>
         </div>
-
-
     </div>
 
-
-
-        @*<div class="seaTab">
+    @*<div class="seaTab">
             <div class="col-md-6 col-sm-6">
                 <div class="sea">
-
                 </div>
             </div>
 
@@ -105,9 +101,7 @@
             </div>
         </div>*@
 
-
-
-        @*<div class="seaTable form-style-9">
+    @*<div class="seaTable form-style-9">
             <form action="" method="POST">
                 <h3 class="Trans">Deeds Office Records</h3>
                 <ul>
@@ -130,7 +124,6 @@
                     <li>
                         <input type="text" class="field-style field-split align-left" id="CompanyName" name="CompanyName" placeholder="Company Name">
                         <input type="text" class="field-style field-split align-right" id="CompanyRegistrationNumber" name="CompanyRegistrationNumber" placeholder="Company Registration Number">
-
                     </li>
                     <li>
                         <button id="companySearch" class="btn btn-primary" name="companySearch">Search</button>
@@ -138,12 +131,9 @@
                 </ul>
             </form>
         </div>*@
+</div>
 
-
-
-    </div>
-
-
+@*
     <script>
     function Search() {
                         $.ajax(
@@ -161,10 +151,6 @@
 
                                     $(".resturn-message").html(alertMessage)
 
-
-
-
-
                             },
                                 success: function (result) {
 
@@ -176,8 +162,6 @@
                                     //alert(result.user_type);
 
                                     debugger;
-
-
 
                           if (result.status == true) {
 
@@ -192,7 +176,6 @@
                                              window.location.href = '@Url.Action("Admin_S", "Dashboard")';
                                         }
 
-
                             }
                             else {
 
@@ -206,5 +189,5 @@
                             }
                         });
                         }
-
     </script>
+*@

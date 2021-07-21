@@ -93,7 +93,26 @@
     background: #DDDDDD 0% 0% no-repeat padding-box;
     border-radius: 10px;
     opacity: 1;
+    position: relative;
+    right: 19px;
 }
+
+.sea_bar2 {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    /* margin-left: 4%; */
+    align-self: center;
+    /* width: 100%; */
+    height: 48px;
+    background: #DDDDDD 0% 0% no-repeat padding-box;
+    border-radius: 10px;
+    opacity: 1;
+    position: relative;
+    left: 17px;
+}
+
 
 .creat-mo {
     display: flex;
@@ -278,11 +297,25 @@
 
 .right {
     position: relative;
-    display: inline-block;
     width: 50%;
+    font-size: 13px;
+    color: #D56C03;
+    font-weight: bold;
+    margin-bottom: 4px;
     height: 100%;
-    background: rgba(255, 241, 165, 0.29) 0% 0% no-repeat padding-box;
-    border-radius: 5px;
+    background: rgba(250, 230, 192, 1) 0% 0% no-repeat padding-box;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.ban {
+    margin-top: 14px !important;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-weight: bold;
 }
 
 .cen_text {
@@ -1343,6 +1376,12 @@ html, body {
     /*overflow: auto;*/
 }
 
+.my-cus-scrollbar {
+    position: relative;
+    height: 290px;
+    overflow: auto;
+}
+
 .inp-b {
     position: relative;
     display: inline-block;
@@ -1521,8 +1560,8 @@ justify-content:flex-start;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 10px;
     opacity: 1;
-    /*display:flex;
-    flex-direction:row*/
+    display:flex;
+    /*flex-direction:row*/
 
 }
 

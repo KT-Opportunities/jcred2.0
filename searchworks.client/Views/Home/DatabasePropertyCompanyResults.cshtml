@@ -3,4 +3,354 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>DatabasePropertyCompanyResults</h2>
+@{
+    ViewBag.Title = "DatabasePropertyCompanyResults";
+}
+
+<div class="col-md-10 col-sm-10">
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export('DatabasePropertyCompanyResults.pdf')" class="button btn-b2" />
+    </div>
+    <div id="content">
+        <div class="con2">
+            @if (TempData["msg"] != null)
+            {
+
+                <div>@TempData["msg"] </div>
+                <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+
+            }
+
+            else
+            {
+                <div class="left_col">
+                    <div class="results">
+                        <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                        <p>2 Results</p>
+                    </div>
+                    <p class="num">@ViewData["ComName"]</p>
+                    <p class="num2">Database Property Company</p>
+
+                    <div class="multi act">
+                        Multiple Results
+                    </div>
+                    <div class="multi non">
+                        Detailed Information
+                    </div>
+
+                    <div class="seaInfo">
+                        Search Information
+                    </div>
+
+                    <div class="userInfo">
+                        <p class="">User:<span>@TempData["user"]</span></p>
+                        <p class="">Date:<span>@TempData["date"]</span></p>
+                        <p class="">Reference:<span>@TempData["ref"]</span></p>
+                        <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @ViewData["ResponseMessage"]</span></p>
+                    </div>
+                </div>
+
+                <div class="right_col">
+                    <div id="notification" class="seaRes">
+                        NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                    </div>
+                    <div class="not">
+                        Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                        We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                        <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                    </div>
+                    <div id="notification" class="seaRes">
+                      DATABASE PROPERTY COMPANY RESULTS<span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+                    </div>
+
+                    @if (@ViewBag.ResponseElement != null)
+                    {
+                        <div class="PerInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="PIU" style="border: none; cursor:pointer;font-weight:bold;" colspan="2">Search Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="PITU" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Search UserName</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.SearchUserName
+
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Report Date</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.ReportDate
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Search Token</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.SearchToken
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Search Description</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.SearchDescription
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Caller Module</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.CallerModule
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Search ID</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.SearchID
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Data Supplier</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.DataSupplier
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Search Type</td>
+                                        <td style="border: none;" colspan="4">
+                                            @ViewBag.ResponseElement[0].SearchInformation.SearchType
+                                        </td>
+                                        <td><a class="seaMore" href="#">Search more</a></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <p>No Data</p>
+                        </div>
+                    }
+
+                    @if (@ViewBag.ResponseElement != null)
+                    {
+                        <div class="PerInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="COM" style="border: none; cursor:pointer;" colspan="2">Company Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="COMI" style="display:none;">
+
+                                    @foreach (var item in @ViewBag.ResponseElement)
+                                    {
+                                        <tr>
+                                            <td colspan="2">CompanyID</td>
+                                            <td style="border: none;" colspan="4">
+                                                @item.CompanyInformation.CompanyID
+                                            </td>
+                                            <td><a class="seaMore" href="#">Search more</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">DeedsOfficeID</td>
+                                            <td style="border: none;" colspan="4">
+                                                @item.CompanyInformation.DeedsOfficeID
+                                            </td>
+                                            <td><a class="seaMore" href="#">Search more</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">DeedsOfficeName</td>
+                                            <td style="border: none;" colspan="4">
+                                                @item.CompanyInformation.DeedsOfficeName
+                                            </td>
+                                            <td><a class="seaMore" href="#">Search more</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">CompanyRegistrationNumber</td>
+                                            <td style="border: none;" colspan="4">
+                                                @item.CompanyInformation.CompanyRegistrationNumber
+                                            </td>
+                                            <td><a class="seaMore" href="#">Search more</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">CompanyName</td>
+                                            <td style="border: none;" colspan="4">
+                                                @item.CompanyInformation.CompanyName
+                                            </td>
+                                            <td><a class="seaMore" href="#">Search more</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">EnquiryID</td>
+                                            <td style="border: none;" colspan="4">
+                                                @item.CompanyInformation.EnquiryID
+                                            </td>
+                                            <td><a class="seaMore" href="#">Search more</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div>
+                            <p>No Data</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("#COM").click(function () {
+        $("#COMI").toggle();
+    });
+
+    $("#PIU").click(function () {
+        $("#PITU").toggle();
+    });
+
+    $("#minusPerInfo").hide();
+    $(".PerInfo").hide();
+
+    $('#plusPerInfo').on('click', function () {
+        $(".PerInfo").show();
+        $("#minusPerInfo").show();
+        $("#plusPerInfo").hide();
+
+    });
+
+    $('#minusPerInfo').on('click', function () {
+        $("#minusPerInfo").hide();
+        $("#plusPerInfo").show();
+        $(".PerInfo").hide();
+    });
+
+
+    $(document).ready(function () {
+        $(".not").hide();
+        $("#minusNot").hide();
+
+        $('#plusNot').on('click', function () {
+            $(".not").show();
+            $("#minusNot").show();
+            $("#plusNot").hide();
+
+        });
+
+        $('#minusNot').on('click', function () {
+            $("#minusNot").hide();
+            $("#plusNot").show();
+            $(".not").hide();
+
+        });
+
+        $("#minusSeaInfo").hide();
+        $(".SeaInfo").hide();
+
+        $('#plusSeaInfo').on('click', function () {
+            $(".SeaInfo").show();
+            $("#minusSeaInfo").show();
+            $("#plusSeaInfo").hide();
+
+        });
+
+        $('#minusSeaInfo').on('click', function () {
+            $("#minusSeaInfo").hide();
+            $("#plusSeaInfo").show();
+            $(".SeaInfo").hide();
+        });
+
+        $("#minusPerInfo").hide();
+        $(".PerInfo").hide();
+
+        $('#plusPerInfo').on('click', function () {
+            $(".PerInfo").show();
+            $("#minusPerInfo").show();
+            $("#plusPerInfo").hide();
+
+        });
+
+        $('#minusPerInfo').on('click', function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+        });
+
+        $("#minusHomeInfo").hide();
+        $(".HomeInfo").hide();
+
+        $('#plusHomeInfo').on('click', function () {
+            $(".HomeInfo").show();
+            $("#minusHomeInfo").show();
+            $("#plusHomeInfo").hide();
+
+        });
+
+        $('#minusHomeInfo').on('click', function () {
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+        });
+
+        $("#minusTeleHis").hide();
+        $(".TeleHis").hide();
+
+        $('#plusTeleHis').on('click', function () {
+            $(".TeleHis").show();
+            $("#minusTeleHis").show();
+            $("#plusTeleHis").hide();
+
+        });
+
+        $('#minusTeleHis').on('click', function () {
+            $("#minusTeleHis").hide();
+            $("#plusTeleHis").show();
+            $(".TeleHis").hide();
+        });
+
+        $("#minusEmpHis").hide();
+        $(".EmpHis").hide();
+
+        $('#plusEmpHis').on('click', function () {
+            $(".EmpHis").show();
+            $("#minusEmpHis").show();
+            $("#plusEmpHis").hide();
+
+        });
+
+        $('#minusEmpHis').on('click', function () {
+            $("#minusEmpHis").hide();
+            $("#plusEmpHis").show();
+            $(".EmpHis").hide();
+        });
+
+    });
+
+
+</script>
