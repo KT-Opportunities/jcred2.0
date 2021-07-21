@@ -32,6 +32,15 @@ namespace searchworks.client.Models
             this.orgunit = vorgunit;
         }
 
+
+        public void SetCurrentOrgUnitByID(int orgunitid)
+        {
+            using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
+            {
+                this.orgunit = db.Query<orgunit>("Select * From orgunit where orgunitid=" +Convert.ToString(orgunitid)).FirstOrDefault();
+            }
+        }
+
         public UserManagementViewModel(int intorgtenant)
         {
             using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
