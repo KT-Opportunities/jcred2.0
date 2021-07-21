@@ -24,6 +24,21 @@ namespace searchworks.client.Helpers
 
         }
 
+        public string GetSWAPIHostUrl()
+        {
+            string api_host = "";
+            try
+            {
+                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHost"]);
+            }
+            catch (Exception  err)
+            {
+
+                throw;
+            }
+
+            return api_host;
+        }
 
         public string GetSWAPILoginToken()
         {
@@ -38,7 +53,7 @@ namespace searchworks.client.Helpers
             {
                 api_username = Convert.ToString(ConfigurationManager.AppSettings["SWAPIUID"]);
                 api_password = Convert.ToString(ConfigurationManager.AppSettings["SWAPIPWD"]);
-                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHost"]);
+                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHostUrl"]) + "/auth/login/";
             }
             catch (Exception err)
             {

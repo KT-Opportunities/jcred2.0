@@ -31,5 +31,6 @@ namespace searchworks.client.Models
         public Nullable<bool> deleted { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string typeOfSearch { get; set; }
+        public int orgtenantid { get; set; }
     }
 }

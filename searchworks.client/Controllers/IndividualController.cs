@@ -12,9 +12,11 @@ using System.Web.Script.Serialization;
 using System.Data;
 using System.Configuration;
 using ServiceStack.Text.Json;
+using searchworks.client.Helpers;
 
 namespace searchworks.client.Controllers
 {
+    [Authorize]
     public class IndividualController : Controller
     {
         public void saveSearchHistory(dynamic SearchID, dynamic searchUserName, dynamic ResponseType, dynamic Name, dynamic reportDate, dynamic reference, dynamic searchToken, dynamic callerModule, dynamic dataSupplier, dynamic searchType, dynamic SearchDescription, dynamic typeOfSearch)
@@ -127,7 +129,10 @@ namespace searchworks.client.Controllers
 
             var reader2 = cmd2.ExecuteReader();
             conn.Close();
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+
+            JCredHelper jCredHelper = new JCredHelper();
+
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
@@ -147,7 +152,7 @@ namespace searchworks.client.Controllers
                     case "idnumber|trace":
                         Debug.WriteLine("idnumber|trace");
 
-                        url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
+                        url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersontrace/idnumber/"; //"https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
                         var apiIdTrace = new
@@ -206,7 +211,7 @@ namespace searchworks.client.Controllers
 
                         Debug.WriteLine("name|trace");
 
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersonrecords/personverification/name/";// "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -266,7 +271,7 @@ namespace searchworks.client.Controllers
 
                     case "nameandidnumber|trace":
                         Debug.WriteLine("nameandidnumber|trace");
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersonrecords/personverification/nameidnumber/"; //"https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
 
@@ -327,7 +332,7 @@ namespace searchworks.client.Controllers
 
                     case "idnumber|verification":
                         //company search API call
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
+                        url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersonrecords/personverification/idnumber/"; //"https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/idnumber/";
                         //create RestSharp client and POST request object
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -389,7 +394,7 @@ namespace searchworks.client.Controllers
                     case "name|verification":
                         Debug.WriteLine("name|verification");
 
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
+                        url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersonrecords/personverification/name/";// "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/name/";
 
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
@@ -449,7 +454,7 @@ namespace searchworks.client.Controllers
 
                     case "nameandidnumber|verification":
                         Debug.WriteLine("nameandidnumber|verification");
-                        url = "https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
+                        url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersonrecords/personverification/nameidnumber/"; //"https://uatrest.searchworks.co.za/individual/csipersonrecords/personverification/nameidnumber/";
                         client = new RestClient(url);
                         request = new RestRequest(Method.POST);
 
@@ -519,14 +524,15 @@ namespace searchworks.client.Controllers
 
         public ActionResult CSIPersonalRecordsDetails(string indiID)
         {
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/individual/csipersontrace/idnumber/"; //"https://uatrest.searchworks.co.za/individual/csipersontrace/idnumber/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -858,14 +864,16 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-                string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+
+                JCredHelper jCredHelper = new JCredHelper();
+                string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
                 {
                     //exit with a warning
                 }
 
                 //company search API call
-                var url = "https://uatrest.searchworks.co.za/databaseproperty/person/";
+                var url = jCredHelper.GetSWAPIHostUrl() + "/databaseproperty/person/"; //"https://uatrest.searchworks.co.za/databaseproperty/person/";
 
                 /*var url = " http://localhost:3000/root";
                 var client = new RestClient(url);

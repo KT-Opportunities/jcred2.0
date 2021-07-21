@@ -21,5 +21,8 @@ namespace searchworks.client.Models
         public string action { get; set; }
         public Nullable<int> user_id { get; set; }
         public string user { get; set; }
+
+        public int orgtenantid { get; set; }
+        public string orgtenantname { get; set; }
     }
 }
