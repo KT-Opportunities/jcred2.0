@@ -407,7 +407,7 @@ namespace searchworks.client.Credit
         public string RegisteredSize { get; set; }
         public string DeedsOfficeName { get; set; }
         public string OldTitleDeedNumber { get; set; }
-        public string PhysicalAddressG { get; set; }
+        public string PhysicalAddress { get; set; }
         public string StandNumber { get; set; }
     }
 
@@ -673,6 +673,7 @@ namespace searchworks.client.Credit
     public class AddressHistory
     {
         public string AddressID { get; set; }
+        public string TypeCode { get; set; }
         public string TypeDescription { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
@@ -681,6 +682,17 @@ namespace searchworks.client.Credit
         public string PostalCode { get; set; }
         public string FullAddress { get; set; }
         public string LastUpdatedDate { get; set; }
+        public string FirstReportedDate { get; set; }
+    }
+
+    public class AlsoKnownAs
+    {
+        public string AkaName { get; set; }
+        public string ConsumerID { get; set; }
+        public string InformationDate { get; set; }
+        public string Part { get; set; }
+        public string PartsEQ { get; set; }
+        public string RecordsEQ { get; set; }
     }
 
     public class TelephoneHistory

@@ -880,7 +880,7 @@ td {
     padding: 10px;
     transition: 1.8s;
 }
-
+.CompuScanInfo,
 .SeaInfo,
 .PerInfo,
 .HomeInfo,
@@ -892,7 +892,7 @@ td {
     border: 1px solid #E4E0E0;
     opacity: 1;
     position: relative;
-    /*margin-bottom: 10px;*/
+    margin-bottom: 10px;
     /*page-break-after: always*/
 }
 

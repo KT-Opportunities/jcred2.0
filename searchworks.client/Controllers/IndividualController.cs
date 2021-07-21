@@ -593,7 +593,7 @@ namespace searchworks.client.Controllers
                 string DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
                 string SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
                 string SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, TempData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CSIPersonalRecords");
+                /*saveSearchHistory(SearchID, SearchUserName, ResponseType, TempData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CSIPersonalRecords");*/
             }
             catch (Exception e)
             {

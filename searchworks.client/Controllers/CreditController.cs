@@ -146,6 +146,23 @@ namespace searchworks.client.Controllers
             conn.Close();
         }
 
+        public void saveAlsoKnownAs(dynamic SearchToken, dynamic Reference, dynamic SearchID, dynamic AkaName, dynamic ConsumerID, dynamic InformationDate, dynamic Part, dynamic PartsEQ, dynamic RecordsEQ, dynamic typeOfSearch)
+        {
+            string query_uid = "INSERT INTO akaInformation (SearchToken,Reference,SearchID,AkaName,ConsumerID,InformationDate,Part,PartsEQ,RecordsEQ,typeOfSearch) VALUES('" + SearchToken + "','" + Reference + "','" + SearchID + "','" + AkaName + "','" + ConsumerID + "','" + InformationDate + "','" + Part + "','" + PartsEQ + "','" + RecordsEQ + "','" + typeOfSearch + "' )";
+
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+
+            conn.Open();
+
+            var cmd2 = new MySqlCommand(query_uid, conn);
+
+            var reader2 = cmd2.ExecuteReader();
+
+            conn.Close();
+        }
+
         public void saveHomeAffairsInformation(dynamic SearchToken, dynamic Reference, dynamic SearchID, dynamic FirstName, dynamic DeceasedDate, dynamic IDVerified, dynamic SurnameVerified, dynamic Warnings, dynamic DeceasedStatus, dynamic VerifiedStatus, dynamic InitialsVerified, dynamic CauseOfDeath, dynamic VerifiedDate, dynamic typeOfSearch)
         {
             string query_uid = "INSERT INTO homeaffairsinformation (SearchToken,Reference,SearchID,FirstName,DeceasedDate,IDVerified,SurnameVerified,Warnings,DeceasedStatus,VerifiedStatus,InitialsVerified,CauseOfDeath,VerifiedDate,typeOfSearch) VALUES('" + SearchToken + "','" + Reference + "','" + SearchID + "','" + FirstName + "','" + DeceasedDate + "','" + IDVerified + "','" + SurnameVerified + "','" + Warnings + "','" + DeceasedStatus + "','" + VerifiedStatus + "','" + InitialsVerified + "','" + CauseOfDeath + "','" + VerifiedDate + "','" + typeOfSearch + "' )";
@@ -628,7 +645,7 @@ namespace searchworks.client.Controllers
 
         public ActionResult CombinedConsumerCreditReportResults(Search search)
         {
-            /*string id = search.IDNumber != null ? search.IDNumber : null;
+            string id = search.IDNumber != null ? search.IDNumber : null;
             string name = search.FirstName != null ? search.FirstName : null;
             string sur = search.Surname != null ? search.Surname : null;
             int er = search.EnquiryReason;
@@ -693,14 +710,8 @@ namespace searchworks.client.Controllers
             //add parameters and token to request
             request.Parameters.Clear();
             request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);*/
+            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
             //ApiResponse is a class to model the data we want from the API response
-
-            //LocalAPI
-            //company search API call
-            var url = "http://localhost:5000";
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.GET);
 
             //make the API request and get a response
             IRestResponse response = client.Execute<RootObject>(request);
@@ -726,56 +737,51 @@ namespace searchworks.client.Controllers
             string DataSupplier;
             string SearchType;
             string SearchDescription;
+
+            SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+            SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+            ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+            ResponseType = rootObject.ResponseMessage;
+            Name = ViewData["user"].ToString();
+            Reference = rootObject.ResponseObject.SearchInformation.Reference;
+            SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+            CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+            DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+            SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+            SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+            saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CombinedCreditReport");
+            List<PropertiesInformation> PropertiesList = new List<PropertiesInformation>();
+            ViewData["XDSPropertiesList"] = null;
+
             try
             {
-                SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                ResponseType = rootObject.ResponseMessage; ;
-                Name = ViewData["user"].ToString();
-                Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(SearchID, SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CombinedCreditReport");
-            }
-            catch (Exception e)
-            {
-                ViewData["Message"] = "Error saving to database. ";
-                return View();
-            }
-
-            if (rootObject.ResponseMessage != "CombinedConsumerCreditReport")
-            {
-                ViewData["Message"] = "Service is offline";
-                return View();
-            }
-            else
-            {
-                ViewData["Message"] = "good";
-                ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
-
-                ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScan;
-                ViewData["ExperianMessage"] = rootObject.ResponseObject.CombinedCreditInformation.Experian;
-                ViewData["TransUnion"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
-                ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
-                try
+                if (rootObject.ResponseMessage != "CombinedConsumerCreditReport")
                 {
+                    ViewData["Message"] = "Service is offline";
+                }
+                else
+                {
+                    ViewData["Message"] = "good";
+                    ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
+
+                    ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScan;
+                    ViewData["ExperianMessage"] = rootObject.ResponseObject.CombinedCreditInformation.Experian;
+                    ViewData["TransUnionMessage"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
+                    ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
+
                     if (ViewData["CompuScanMessage"].ToString() == "CONSUMER MATCH")
                     {
                         saveCompuScanSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanCombinedCreditReport");
                         //PersonaInformantion
                         {
-                            ViewData["ComDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.DateOfBirth;
-                            ViewData["ComFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.FirstName;
-                            ViewData["ComSurname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Surname;
-                            ViewData["ComIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.IDNumber;
-                            ViewData["ComGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Gender;
-                            ViewData["ComAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Age;
-                            ViewData["ComVerificationStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus;
-                            savePersonInformation(SearchToken, Reference, SearchID,
+                            ViewData["CompuScanDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.DateOfBirth;
+                            ViewData["CompuScanFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.FirstName;
+                            ViewData["CompuScanSurname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Surname;
+                            ViewData["CompuScanIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.IDNumber;
+                            ViewData["CompuScanGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Gender;
+                            ViewData["CompuScanAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Age;
+                            ViewData["CompuScanVerificationStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus;
+                            /*savePersonInformation(SearchToken, Reference, SearchID,
                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.InformationDate,
                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.PersonID,
                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Title,
@@ -798,17 +804,18 @@ namespace searchworks.client.Controllers
                                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Remarks,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.CurrentEmployer,
                                                  rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus,
-                                                  rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.HasProperties, "CompuScanCombinedCreditReport");
+                                                  rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.HasProperties, "CompuScanCombinedCreditReport");*/
                         }
                         //CreditInformation
                         {
                             JToken CreditInformationExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["CreditInformation"];
                             if (CreditInformationExists != null)
                             {
-                                ViewData["ComDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScore;
-                                ViewData["ComRisk"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.Risk;
-                                ViewData["ComDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScoreChartURL;
-                                saveCreditInformation(SearchToken, Reference, SearchID, rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CreditSummaryChartURL,
+                                ViewData["CompuScanDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScore;
+                                ViewData["CompuScanRisk"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.Risk;
+                                ViewData["CompuScanDelphiScoreChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScoreChartURL;
+                                /*saveCreditInformation(SearchToken, Reference, SearchID,
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CreditSummaryChartURL,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScore,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DelphiScoreChartURL,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.RiskColour,
@@ -821,7 +828,7 @@ namespace searchworks.client.Controllers
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.TotalNumberActiveCPAAccounts_CompuScan,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.TotalNumberActiveNLRAccounts_CompuScan,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.TotalNumberClosedCPAAccounts_CompuScan,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.TotalNumberClosedNLRAccounts_CompuScan, "CompuScanCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.TotalNumberClosedNLRAccounts_CompuScan, "CompuScanCombinedCreditReport");*/
 
                                 JToken DeclineReasonExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["DeclineReason"];
                                 if (DeclineReasonExists != null)
@@ -836,10 +843,10 @@ namespace searchworks.client.Controllers
                                     for (int count = 0; count < (element.Count); count++)
 
                                     {
-                                        saveCreditDeclineReason(SearchToken, Reference, SearchID,
-                                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DeclineReason[count].ReasonCode,
-                                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DeclineReason[count].ReasonDescription,
-                                            "CompuScanCombinedCreditReport");
+                                        /* saveCreditDeclineReason(SearchToken, Reference, SearchID,
+                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DeclineReason[count].ReasonCode,
+                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DeclineReason[count].ReasonDescription,
+                                             "CompuScanCombinedCreditReport");*/
 
                                         DeclReasonList.Add(new DeclineReason
                                         {
@@ -849,44 +856,44 @@ namespace searchworks.client.Controllers
                                     }
                                     //Add to view
                                     ViewData["DeclReasonList"] = DeclReasonList;
-                                    ViewData["DeclReasonList"] = DeclReasonList.Count;
+                                    ViewData["DeclReasonListCount"] = DeclReasonList.Count;
                                 }
 
                                 JToken DataCountsExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["DataCounts"];
                                 if (DataCountsExists != null)
                                 {
-                                    ViewData["ComAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Accounts;
-                                    ViewData["ComEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Enquiries;
-                                    ViewData["ComJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Judgments;
-                                    ViewData["ComNotices"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Notices;
-                                    ViewData["ComBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.BankDefaults;
-                                    ViewData["ComDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Defaults;
-                                    ViewData["ComCollections"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Collections;
-                                    ViewData["ComDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Directors;
-                                    ViewData["ComAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Addresses;
-                                    ViewData["ComTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Telephones;
-                                    ViewData["ComOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Occupants;
-                                    ViewData["ComEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Employers;
-                                    ViewData["ComTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.TraceAlerts;
-                                    ViewData["ComPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PaymentProfiles;
-                                    ViewData["ComOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.OwnEnquiries;
+                                    ViewData["CompuScanAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Accounts;
+                                    ViewData["CompuScanEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Enquiries;
+                                    ViewData["CompuScanJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Judgments;
+                                    ViewData["CompuScanNotices"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Notices;
+                                    ViewData["CompuScanBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.BankDefaults;
+                                    ViewData["CompuScanDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Defaults;
+                                    ViewData["CompuScanCollections"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Collections;
+                                    ViewData["CompuScanDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Directors;
+                                    ViewData["CompuScanAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Addresses;
+                                    ViewData["CompuScanTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Telephones;
+                                    ViewData["CompuScanOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Occupants;
+                                    ViewData["CompuScanEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Employers;
+                                    ViewData["CompuScanTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.TraceAlerts;
+                                    ViewData["CompuScanPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PaymentProfiles;
+                                    ViewData["CompuScanOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.OwnEnquiries;
 
-                                    ViewData["ComAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.AdminOrders;
-                                    ViewData["ComPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PossibleMatches;
-                                    ViewData["ComDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DefiniteMatches;
-                                    ViewData["ComLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Loans;
-                                    ViewData["ComFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.FraudAlerts;
-                                    ViewData["ComCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Companies;
-                                    ViewData["ComProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Properties;
-                                    ViewData["ComDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Documents;
-                                    ViewData["ComDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DemandLetters;
-                                    ViewData["ComTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Trusts;
-                                    ViewData["ComBonds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Bonds;
-                                    ViewData["ComDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Deeds;
-                                    ViewData["ComPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PublicDefaults;
-                                    ViewData["ComNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.NLRAccounts;
-                                    ViewData["ComApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
-                                    saveDataCounts(SearchToken, Reference, SearchID,
+                                    ViewData["CompuScanAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.AdminOrders;
+                                    ViewData["CompuScanPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PossibleMatches;
+                                    ViewData["CompuScanDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DefiniteMatches;
+                                    ViewData["CompuScanLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Loans;
+                                    ViewData["CompuScanFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.FraudAlerts;
+                                    ViewData["CompuScanCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Companies;
+                                    ViewData["CompuScanProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Properties;
+                                    ViewData["CompuScanDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Documents;
+                                    ViewData["CompuScanDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.DemandLetters;
+                                    ViewData["CompuScanTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Trusts;
+                                    ViewData["CompuScanBonds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Bonds;
+                                    ViewData["CompuScanDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Deeds;
+                                    ViewData["CompuScanblicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PublicDefaults;
+                                    ViewData["CompuScanNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.NLRAccounts;
+                                    ViewData["CompuScanApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
+                                    /*saveDataCounts(SearchToken, Reference, SearchID,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Accounts,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Enquiries,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Judgments,
@@ -916,7 +923,7 @@ namespace searchworks.client.Controllers
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.Deeds,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.PublicDefaults,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.DataCounts.NLRAccounts,
-                                        "CompuScanCombinedCreditReport");
+                                        "CompuScanCombinedCreditReport");*/
                                 }
                                 JToken DebtReviewStatusExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["DebtReviewStatus"];
                                 if (DebtReviewStatusExists != null)
@@ -927,112 +934,112 @@ namespace searchworks.client.Controllers
                                 if (ConsumerStatisticsExists != null)
                                 {
                                     //ConsumerStatistics
-                                    ViewData["ComHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
-                                    ViewData["ComRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
-                                    ViewData["ComInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
-                                    ViewData["ComOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
-                                    ViewData["ComAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
-                                    saveConsumerStatistics(SearchToken, Reference, SearchID,
+                                    ViewData["CompuScanHighestJudgment"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.HighestJudgment;
+                                    ViewData["CompuScanRevolvingAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts;
+                                    ViewData["CompuScanInstalmentAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts;
+                                    ViewData["CompuScanOpenAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.OpenAccounts;
+                                    ViewData["CompuScanAdverseAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts;
+                                    /*saveConsumerStatistics(SearchToken, Reference, SearchID,
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.HighestJudgment,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts,
                                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.OpenAccounts,
-                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts, " ", " ", " ", " ", "CompuScanCombinedCreditReport");
+                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.AdverseAccounts, " ", " ", " ", " ", "CompuScanCombinedCreditReport");*/
                                 }
 
                                 //NLRStats
-                                ViewData["ComNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
-                                ViewData["ComNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
-                                ViewData["ComNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
-                                ViewData["ComNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
-                                ViewData["ComNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-                                saveNLRStats(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
+                                ViewData["CompuScanNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
+                                ViewData["CompuScanNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
+                                ViewData["CompuScanNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
+                                ViewData["CompuScanNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
+                                /*saveNLRStats(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthStatus,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.CumulativeArrears, "CompuScanCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLRStats.CumulativeArrears, "CompuScanCombinedCreditReport");*/
 
                                 //CCAStats
-                                ViewData["ComCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
-                                ViewData["ComCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
-                                ViewData["ComCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
-                                ViewData["ComCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
-                                ViewData["ComCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-                                saveCCAStats(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
+                                ViewData["CompuScanCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
+                                ViewData["CompuScanCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
+                                ViewData["CompuScanCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
+                                ViewData["CompuScanCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
+                                /*saveCCAStats(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears, " ",
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure, " ",
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment, "CompuScanCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment, "CompuScanCombinedCreditReport");*/
 
                                 //NLR12Months
-                                ViewData["ComNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
-                                ViewData["ComNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
-                                ViewData["ComNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
-                                ViewData["ComNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
-                                saveNLR12Months(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
+                                ViewData["CompuScanNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
+                                ViewData["CompuScanNLR12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans;
+                                ViewData["CompuScanNLR12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears;
+                                /*saveNLR12Months(SearchToken, Reference, SearchID,
                                      rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient,
                                      rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther,
                                      rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.PositiveLoans,
-                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");
+                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR12Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");*/
                                 //NLR24Months
-                                ViewData["ComNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
-                                ViewData["ComNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
-                                ViewData["ComNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
-                                ViewData["ComNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
-                                saveNLR24Months(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanNLR24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient;
+                                ViewData["CompuScanNLR24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther;
+                                ViewData["CompuScanNLR24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans;
+                                ViewData["CompuScanNLR24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears;
+                                /*saveNLR24Months(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByClient,
                                      rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.EnquiriesByOther,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.PositiveLoans,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR24Months.HighestMonthsInArrears,
-                                    "CompuScanCombinedCreditReport");
+                                    "CompuScanCombinedCreditReport");*/
 
                                 //NLR36Months
-                                ViewData["ComNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
-                                ViewData["ComNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
-                                ViewData["ComNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
-                                ViewData["ComNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
-                                saveNLR36Months(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanNLR36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient;
+                                ViewData["CompuScanNLR36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther;
+                                ViewData["CompuScanNLR36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans;
+                                ViewData["CompuScanNLR36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears;
+                                /*saveNLR36Months(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByClient,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.EnquiriesByOther,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.PositiveLoans,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.NLR36Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");*/
 
                                 //CCA12Months
-                                ViewData["ComCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
-                                ViewData["ComCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
-                                ViewData["ComCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
-                                ViewData["ComCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
-                                saveCCA12Months(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanCCA12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient;
+                                ViewData["CompuScanCCA12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther;
+                                ViewData["CompuScanCCA12MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.PositiveLoans;
+                                ViewData["CompuScanCCA12MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears;
+                                /*saveCCA12Months(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByClient,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.EnquiriesByOther,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA12Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");*/
 
                                 //CCA24Months
-                                ViewData["ComCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
-                                ViewData["ComCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
-                                ViewData["ComCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
-                                ViewData["ComCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
-                                saveCCA24Months(SearchToken, Reference, SearchID,
+                                ViewData["CompuScanCCA24MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient;
+                                ViewData["CompuScanCCA24MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther;
+                                ViewData["CompuScanCCA24MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans;
+                                ViewData["CompuScanCCA24MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears;
+                                /*saveCCA24Months(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByClient,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.EnquiriesByOther,
                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.PositiveLoans,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA24Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");*/
 
                                 //CCA36Months
-                                ViewData["ComCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
-                                ViewData["ComCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
-                                ViewData["ComCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
-                                ViewData["ComCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
-                                saveCCA36Months(SearchToken, Reference, SearchID,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans,
-                                    rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");
+                                ViewData["CompuScanCCA36MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient;
+                                ViewData["CompuScanCCA36MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther;
+                                ViewData["CompuScanCCA36MonthsPositiveLoans"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans;
+                                ViewData["CompuScanCCA36MonthsHighestMonthsInArrears"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears;
+                                /* saveCCA36Months(SearchToken, Reference, SearchID,
+                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByClient,
+                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.EnquiriesByOther,
+                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.PositiveLoans,
+                                     rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ConsumerStatistics.CCA36Months.HighestMonthsInArrears, "CompuScanCombinedCreditReport");*/
 
                                 //EnquiryHistory
                                 {
@@ -1047,12 +1054,12 @@ namespace searchworks.client.Controllers
 
                                         for (int count = 0; count < (elements.Count); count++)
                                         {
-                                            saveEnquiryHistory(SearchToken, Reference, SearchID,
+                                            /*saveEnquiryHistory(SearchToken, Reference, SearchID,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.EnquiryHistory[count].EnquiryDate,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.EnquiryHistory[count].EnquiredBy,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.EnquiryHistory[count].EnquiredByContact,
                                                 null,
-                                                null, "CompuScanCombinedCreditReport");
+                                                null, "CompuScanCombinedCreditReport");*/
                                             EnqHIst.Add(new EnquiryHistory
                                             {
                                                 EnquiryDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.EnquiryHistory[count].EnquiryDate,
@@ -1061,10 +1068,9 @@ namespace searchworks.client.Controllers
                                             });
                                         }
                                         //Add to view
-                                        ViewData["EnqHIst"] = EnqHIst;
-                                        ViewData["EnqHIstCount"] = EnqHIst.Count;
+                                        ViewData["CompuScanEnqHIst"] = EnqHIst;
+                                        ViewData["CompuScanEnqHIstCount"] = EnqHIst.Count;
                                     }
-
                                 }
                                 //CPAAccounts
                                 {
@@ -1079,7 +1085,7 @@ namespace searchworks.client.Controllers
 
                                         for (int count = 0; count < (elements1.Count); count++)
                                         {
-                                            saveCPA_Accounts(SearchToken, Reference, SearchID,
+                                            /*saveCPA_Accounts(SearchToken, Reference, SearchID,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].Account_ID,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].SubscriberCode,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].SubscriberName,
@@ -1117,7 +1123,7 @@ namespace searchworks.client.Controllers
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].PaymentHistoryChart,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].MonthEndDate,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].DateCreated,
-                                                "CompuScanCombinedCreditReport");
+                                                "CompuScanCombinedCreditReport");*/
 
                                             CPAACCOUNTS.Add(new CPAaccounts
                                             {
@@ -1160,26 +1166,24 @@ namespace searchworks.client.Controllers
                                                 DateCreated = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CPA_Accounts[count].DateCreated,
                                                 //PaymentHistoryAccountDetails = PaymentHistoryAccountDetails,
                                             });
-                                            ViewData["CPAACCOUNTS"] = CPAACCOUNTS;
+                                            ViewData["CompuScanCPAACCOUNTS"] = CPAACCOUNTS;
                                         }
                                     }
                                 }
                                 //NLRAccounts
                                 {
-                                    JToken NLRAccountsExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["NLR_Accounts"];
+                                    JToken NLRAccountsExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["CompuScanNLR_Accounts"];
                                     if (NLRAccountsExists != null)
                                     {
-
                                         List<NLRaccounts> NLRACCOUNTS;
                                         NLRACCOUNTS = new List<NLRaccounts>();
-
 
                                         Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
                                         elements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts;
 
                                         for (int count = 0; count < (elements.Count); count++)
                                         {
-                                            saveNLR_Accounts(
+                                            /*saveNLR_Accounts(
                                                 SearchToken, Reference, SearchID,
                                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].Account_ID,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].SubscriberCode,
@@ -1219,7 +1223,7 @@ namespace searchworks.client.Controllers
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].PaymentHistoryChart,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].MonthEndDate,
                                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].DateCreated,
-                                                                                            "CompuScanCombinedCreditReport");
+                                                                                            "CompuScanCombinedCreditReport");*/
                                             NLRACCOUNTS.Add(new NLRaccounts
                                             {
                                                 Account_ID = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].Account_ID,
@@ -1300,11 +1304,9 @@ namespace searchworks.client.Controllers
                                                 PaymentHistoryChart = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].PaymentHistoryChart,
                                                 MonthEndDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].MonthEndDate,
                                                 DateCreated = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.NLR_Accounts[count].DateCreated,
-
-
                                             });
                                             //Add to view
-                                            ViewData["NLRACCOUNTS"] = NLRACCOUNTS;
+                                            ViewData["CompuScanNLRACCOUNTS"] = NLRACCOUNTS;
                                         }
                                     }
                                 }
@@ -1329,8 +1331,7 @@ namespace searchworks.client.Controllers
 
                                     for (int count = 0; count < (elements1.Count); count++)
                                     {
-
-                                        saveAddressHistory(SearchToken, Reference, SearchID,
+                                        /*saveAddressHistory(SearchToken, Reference, SearchID,
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].AddressID,
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1,
@@ -1340,12 +1341,10 @@ namespace searchworks.client.Controllers
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode,
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].FullAddress,
                                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
-                                       "CompuScanCombinedCreditReport");
-
+                                       "CompuScanCombinedCreditReport");*/
 
                                         AddressHist.Add(new AddressHistory
                                         {
-
                                             AddressID = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].AddressID,
                                             TypeDescription = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
                                             Line1 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1,
@@ -1357,8 +1356,8 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["AddressHist"] = AddressHist;
-                                    ViewData["AddressHistCount"] = AddressHist.Count;
+                                    ViewData["CompuScanAddressHist"] = AddressHist;
+                                    ViewData["CompuScanAddressHistCount"] = AddressHist.Count;
                                 }
 
                                 JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation["TelephoneHistory"];
@@ -1373,18 +1372,17 @@ namespace searchworks.client.Controllers
 
                                     for (int count = 0; count < (elements2.Count); count++)
                                     {
-                                        saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                        /*saveTelephoneHistory(SearchToken, Reference, SearchID,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeCode,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "CompuScanCombinedCreditReport");
+                                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "CompuScanCombinedCreditReport");*/
 
                                         TelHist.Add(new TelephoneHistory
                                         {
-
                                             DialCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
                                             TelephoneID = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
                                             TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
@@ -1394,7 +1392,7 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDateTel = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["TelHist"] = TelHist;
+                                    ViewData["CompuScanTelHist"] = TelHist;
                                 }
 
                                 JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation["EmploymentHistory"];
@@ -1407,10 +1405,10 @@ namespace searchworks.client.Controllers
                                     EmpHist = new List<EmploymentHistory>();
                                     for (int count = 0; count < (elements3.Count); count++)
                                     {
-                                        saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                        /*saveEmploymentHistory(SearchToken, Reference, SearchID,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
                                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "CompuScanCombinedCreditReport");
+                                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "CompuScanCombinedCreditReport");*/
                                         EmpHist.Add(new EmploymentHistory
                                         {
                                             EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName,
@@ -1418,11 +1416,8 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["EmpHist"] = EmpHist;
-
+                                    ViewData["CompuScanEmpHist"] = EmpHist;
                                 }
-
-
                             }
                         }
                     }
@@ -1430,7 +1425,6 @@ namespace searchworks.client.Controllers
                     {
                         ViewData["CompuScanMessage"] = "No Match";
                     }
-
                     if (ViewData["ExperianMessage"].ToString() == "CONSUMER MATCH")
                     {
                         //PersonInformation
@@ -1448,10 +1442,7 @@ namespace searchworks.client.Controllers
                             ViewData["ExReference"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Reference;
                             ViewData["ExHasProperties"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.HasProperties;//Add to view
 
-                            /*PersonInformation PerInfo = new PersonInformation();*/
-
-
-                            savePersonInformation(SearchToken, Reference, SearchID,
+                            /*savePersonInformation(SearchToken, Reference, SearchID,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.InformationDate,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.PersonID,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Title,
@@ -1474,14 +1465,14 @@ namespace searchworks.client.Controllers
                                                rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.Remarks,
                                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.CurrentEmployer,
                                                  rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.VerificationStatus,
-                                                  rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.HasProperties, "ExperianCombinedCreditReport");
+                                                  rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.PersonInformation.HasProperties, "ExperianCombinedCreditReport");*/
                         }
                         //HomeAffairsInformation
                         {
                             ViewData["ExIDVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.IDVerified;
                             ViewData["ExSurnameVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.SurnameVerified;
                             ViewData["ExInitialsVerified"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.InitialsVerified;
-                            saveHomeAffairsInformation(SearchToken, Reference, SearchID,
+                            /*saveHomeAffairsInformation(SearchToken, Reference, SearchID,
                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.FirstName,
                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.DeceasedDate,
                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.IDVerified,
@@ -1492,20 +1483,20 @@ namespace searchworks.client.Controllers
                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.InitialsVerified,
                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.CauseOfDeath,
                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HomeAffairsInformation.VerifiedDate, "ExperianCombinedCreditReport"
-                           );
+                           );*/
                         }
                         JToken ContactInformationExists = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo["ContactInformation"];
                         if (ContactInformationExists != null)
                         //ContactInformation
                         {
                             ViewData["ExPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress; //<Add to view
-                            saveContactInformation(SearchToken, Reference, SearchID,
+                            /*saveContactInformation(SearchToken, Reference, SearchID,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.EmailAddress,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.MobileNumber,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.HomeTelephoneNumber,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.WorkTelephoneNumber,
                                 rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PhysicalAddress,
-                                rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PostalAddress, "ExperianCombinedCreditReport");
+                                rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.ContactInformation.PostalAddress, "ExperianCombinedCreditReport");*/
                         }
                         //CreditInformation
                         {
@@ -1517,7 +1508,7 @@ namespace searchworks.client.Controllers
                                 ViewData["ExDelphiScore"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScore;
                                 ViewData["ExFlagCount"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagCount;
                                 ViewData["ExFlagDetails"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.FlagDetails;
-                                saveCreditInformation(SearchToken, Reference, SearchID,
+                                /*saveCreditInformation(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.CreditSummaryChartURL,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScore,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DelphiScoreChartURL,
@@ -1531,7 +1522,7 @@ namespace searchworks.client.Controllers
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.TotalNumberActiveCPAAccounts_CompuScan,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.TotalNumberActiveNLRAccounts_CompuScan,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.TotalNumberClosedCPAAccounts_CompuScan,
-                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.TotalNumberClosedNLRAccounts_CompuScan, "ExperianCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.TotalNumberClosedNLRAccounts_CompuScan, "ExperianCombinedCreditReport");*/
 
                                 ViewData["ExAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Accounts;
                                 ViewData["ExEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Enquiries;
@@ -1563,7 +1554,7 @@ namespace searchworks.client.Controllers
                                 ViewData["ExDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Deeds;
                                 ViewData["ExPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PublicDefaults;
                                 ViewData["ExNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.NLRAccounts;
-                                saveDataCounts(SearchToken, Reference, SearchID,
+                                /*saveDataCounts(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Accounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Enquiries,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Judgments,
@@ -1592,18 +1583,17 @@ namespace searchworks.client.Controllers
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Bonds,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.Deeds,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.PublicDefaults,
-                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.NLRAccounts, "ExperianCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DataCounts.NLRAccounts, "ExperianCombinedCreditReport");*/
                                 JToken DebtReviewStatusExits = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation["DebtReviewStatus"];
                                 if (DebtReviewStatusExits != null)
                                 {
                                     ViewData["ExStatusCode"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.StatusCode;//<add to view
                                     ViewData["ExStatusDescription"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.StatusDescription;//<add to view
-                                    saveDebtReviewStatus(SearchToken, Reference, SearchID,
+                                    /*saveDebtReviewStatus(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.StatusCode,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.StatusDate,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.StatusDescription,
-                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.ApplicationDate, "ExperianCombinedCreditReport");
-
+                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.DebtReviewStatus.ApplicationDate, "ExperianCombinedCreditReport");*/
                                 }
 
                                 //ConsumerStatistics
@@ -1617,7 +1607,7 @@ namespace searchworks.client.Controllers
                                 ViewData["NumberPPSLast12Months"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NumberPPSLast12Months;//<add to view
                                 ViewData["NLRMicroloansPast12Months"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months;//<add to view
 
-                                saveConsumerStatistics(SearchToken, Reference, SearchID,
+                                /*saveConsumerStatistics(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.HighestJudgment,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.RevolvingAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.InstalmentAccounts,
@@ -1626,35 +1616,35 @@ namespace searchworks.client.Controllers
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.Percent0ArrearsLast12Histories,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.MonthsOldestOpenedPPSEver,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NumberPPSLast12Months,
-                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months, "ExperianCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRMicroloansPast12Months, "ExperianCombinedCreditReport");*/
                                 //NLRStats
                                 ViewData["ExNLRActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts;
                                 ViewData["ExNLRClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts;
                                 ViewData["ExNLRWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears;
                                 ViewData["ExNLRBalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure;
                                 ViewData["ExNLRCumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment;
-                                saveNLRStats(SearchToken, Reference, SearchID,
+                                /*saveNLRStats(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ActiveAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.ClosedAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstMonthArrears,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.WorstArrearsStatus,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.BalanceExposure,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.MonthlyInstalment,
-                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.CumulativeArrears, "ExperianCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLRStats.CumulativeArrears, "ExperianCombinedCreditReport");*/
                                 //CCAStats
                                 ViewData["ExCCAActiveAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts;
                                 ViewData["ExCCAClosedAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts;
                                 ViewData["ExCCAWorstMonthArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears;
                                 ViewData["ExCCABalanceExposure"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure;
                                 ViewData["ExCCACumulativeArrears"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment;
-                                saveCCAStats(SearchToken, Reference, SearchID,
+                                /*saveCCAStats(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ActiveAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.ClosedAccounts,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstMonthArrears,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.WorstArrearsStatus,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.BalanceExposure,
                                     rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.MonthlyInstalment,
-                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.CumulativeArrears, "ExperianCombinedCreditReport");
+                                    rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.CCAStats.CumulativeArrears, "ExperianCombinedCreditReport");*/
                                 //NLR12Months
                                 ViewData["ExNLR12MonthsEnquiriesByClient"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByClient;
                                 ViewData["ExNLR12MonthsEnquiriesByOther"] = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.ConsumerStatistics.NLR12Months.EnquiriesByOther;
@@ -1726,33 +1716,32 @@ namespace searchworks.client.Controllers
                                     if (EnquiryHistoryExists != null)
                                     {
                                         Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                                        elements = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformationEnquiryHistory;
+                                        elements = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory;
 
                                         List<EnquiryHistory> EnqHIst;
                                         EnqHIst = new List<EnquiryHistory>();
 
                                         for (int count = 0; count < (elements.Count); count++)
                                         {
-                                            saveEnquiryHistory(SearchToken, Reference, SearchID,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation[count].EnquiryDate,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation[count].EnquiredBy,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation[count].EnquiredByContact,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation[count].EnquiredByType,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation[count].ReasonForEnquiry, "ExperianConsumerProfile");
+                                            /*saveEnquiryHistory(SearchToken, Reference, SearchID,
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiryDate,
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiredBy,
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiredByContact,
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiredByType,
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].ReasonForEnquiry, "ExperianConsumerProfile");*/
                                             EnqHIst.Add(new EnquiryHistory
                                             {
-                                                EnquiryDate = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiryDate,
-                                                EnquiredBy = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredBy,
-                                                EnquiredByContact = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByContact,
-                                                EnquiredByType = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].EnquiredByType,
-                                                ReasonForEnquiry = rootObject.ResponseObject.CreditInformation.EnquiryHistory[count].ReasonForEnquiry
+                                                EnquiryDate = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiryDate,
+                                                EnquiredBy = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiredBy,
+                                                EnquiredByContact = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiredByContact,
+                                                EnquiredByType = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].EnquiredByType,
+                                                ReasonForEnquiry = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.CreditInformation.EnquiryHistory[count].ReasonForEnquiry
                                             });
                                         }
-                                        ViewData["EnqHIst"] = EnqHIst;
-                                        ViewData["EnqHIstCount"] = EnqHIst.Count;
+                                        ViewData["ExEnqHIst"] = EnqHIst;
+                                        ViewData["ExEnqHIstCount"] = EnqHIst.Count;
                                     }
                                 }
-
                             }
                         }
                         //HistoricalInformation
@@ -1775,8 +1764,7 @@ namespace searchworks.client.Controllers
 
                                     for (int count = 0; count < (elements1.Count); count++)
                                     {
-
-                                        saveAddressHistory(SearchToken, Reference, SearchID,
+                                        /*saveAddressHistory(SearchToken, Reference, SearchID,
                                        rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].AddressID,
                                        rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
                                        rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].Line1,
@@ -1786,12 +1774,10 @@ namespace searchworks.client.Controllers
                                        rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].PostalCode,
                                        rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].FullAddress,
                                        rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
-                                       "ExperianCombinedCreditReport");
-
+                                       "ExperianCombinedCreditReport");*/
 
                                         AddressHist.Add(new AddressHistory
                                         {
-
                                             AddressID = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].AddressID,
                                             TypeDescription = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
                                             Line1 = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].Line1,
@@ -1803,7 +1789,7 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["AddressHist"] = AddressHist;
+                                    ViewData["ExAddressHist"] = AddressHist;
                                     ViewData["AddressHistCount"] = AddressHist.Count;
                                 }
 
@@ -1819,18 +1805,17 @@ namespace searchworks.client.Controllers
 
                                     for (int count = 0; count < (elements2.Count); count++)
                                     {
-                                        saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                        /*saveTelephoneHistory(SearchToken, Reference, SearchID,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].TypeCode,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].Number,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "ExperianCombinedCreditReport");
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "ExperianCombinedCreditReport");*/
 
                                         TelHist.Add(new TelephoneHistory
                                         {
-
                                             DialCode = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
                                             TelephoneID = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
                                             TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
@@ -1840,7 +1825,7 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDateTel = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["TelHist"] = TelHist;
+                                    ViewData["ExTelHist"] = TelHist;
                                 }
 
                                 JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation["EmploymentHistory"];
@@ -1853,10 +1838,10 @@ namespace searchworks.client.Controllers
                                     EmpHist = new List<EmploymentHistory>();
                                     for (int count = 0; count < (elements3.Count); count++)
                                     {
-                                        saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                        /*saveEmploymentHistory(SearchToken, Reference, SearchID,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
                                             rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "ExperianCombinedCreditReport");
+                                            rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "ExperianCombinedCreditReport");*/
                                         EmpHist.Add(new EmploymentHistory
                                         {
                                             EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName,
@@ -1864,8 +1849,7 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["EmpHist"] = EmpHist;
-
+                                    ViewData["ExEmpHist"] = EmpHist;
                                 }
                             }
                         }
@@ -1874,8 +1858,7 @@ namespace searchworks.client.Controllers
                     {
                         ViewData["Experian"] = "No Match";
                     }
-
-                    if (rootObject.ResponseObject.CombinedCreditInformation.TransUnion == "CONSUMER MATCH")
+                    if (ViewData["TransUnionMessage"].ToString() == "CONSUMER MATCH")
                     {
                         ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                         return View();
@@ -1884,7 +1867,6 @@ namespace searchworks.client.Controllers
                     {
                         ViewData["TransUnion"] = "No Match";
                     }
-
                     if (ViewData["XDSMessage"].ToString() == "CONSUMER MATCH")
                     {
                         //Person Information
@@ -1898,7 +1880,7 @@ namespace searchworks.client.Controllers
                             ViewData["Gender"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Gender;
                             ViewData["MiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.MiddleName1;
                             ViewData["Fullname"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Fullname;
-                            savePersonInformation(SearchToken, Reference, SearchID,
+                            /*savePersonInformation(SearchToken, Reference, SearchID,
                               rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.InformationDate,
                               rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.PersonID,
                               rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Title,
@@ -1921,7 +1903,7 @@ namespace searchworks.client.Controllers
                               rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.Remarks,
                               rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.CurrentEmployer,
                               rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.VerificationStatus,
-                              rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.HasProperties, "XDSCombinedCreditReport");
+                              rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PersonInformation.HasProperties, "XDSCombinedCreditReport");*/
                         }
                         //HomeAffairs Information
                         {
@@ -1931,7 +1913,7 @@ namespace searchworks.client.Controllers
                                 ViewData["DeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedStatus;
                                 ViewData["DeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate;
                                 ViewData["VerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus;
-                                saveHomeAffairsInformation(SearchToken, Reference, SearchID,
+                                /*saveHomeAffairsInformation(SearchToken, Reference, SearchID,
                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.FirstName,
                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate,
                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.IDVerified,
@@ -1942,7 +1924,7 @@ namespace searchworks.client.Controllers
                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.InitialsVerified,
                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.CauseOfDeath,
                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedDate, "XDSCombinedCreditReport"
-                               );
+                               );*/
                             }
                         }
                         //ContactInformation
@@ -1950,10 +1932,10 @@ namespace searchworks.client.Controllers
                             JToken ContactInformationExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["ContactInformation"];
                             if (ContactInformationExists != null)
                             {
-                                ViewData["EmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress;
-                                ViewData["MobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.MobileNumber;
-                                ViewData["PhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PhysicalAddress;
-                                ViewData["PostalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PostalAddress;
+                                ViewData["XDSEmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress;
+                                ViewData["XDSMobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.MobileNumber;
+                                ViewData["XDSPhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PhysicalAddress;
+                                ViewData["XDSPostalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.PostalAddress;
                                 saveContactInformation(SearchToken, Reference, SearchID,
                                     rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.EmailAddress,
                                     rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.ContactInformation.MobileNumber,
@@ -1974,9 +1956,9 @@ namespace searchworks.client.Controllers
                                 if (FraudIndicatorSummaryExists != null)
                                 {
                                     //FraudIndicatorSummary:
-                                    ViewData["SAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing;
-                                    ViewData["EmployerFraudVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification;
-                                    ViewData["ProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
+                                    ViewData["XDSSAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing;
+                                    ViewData["XDSEmployerFraudVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification;
+                                    ViewData["XDSProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
                                     saveFraudIndicatorSummary(SearchToken, Reference, SearchID,
                                         rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing,
                                         rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification,
@@ -1986,89 +1968,179 @@ namespace searchworks.client.Controllers
                                 JToken DataCountsExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["DataCounts"];
                                 if (DataCountsExists != null)
                                 {
+                                    ViewData["XDSAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Accounts;
+                                    ViewData["XDSEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Enquiries;
+                                    ViewData["XDSJudgments"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Judgments;
+                                    ViewData["XDSNotices"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Notices;
+                                    ViewData["XDSBankDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.BankDefaults;
+                                    ViewData["XDSDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Defaults;
+                                    ViewData["XDSCollections"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Collections;
+                                    ViewData["XDSDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Directors;
+                                    ViewData["XDSAddresses"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Addresses;
+                                    ViewData["XDSTelephones"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Telephones;
+                                    ViewData["XDSOccupants"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Occupants;
+                                    ViewData["XDSEmployers"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Employers;
+                                    ViewData["XDSTraceAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.TraceAlerts;
+                                    ViewData["XDSPaymentProfiles"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.PaymentProfiles;
+                                    ViewData["XDSOwnEnquiries"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.OwnEnquiries;
+                                    ViewData["XDSAdminOrders"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.AdminOrders;
+                                    ViewData["XDSPossibleMatches"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.PossibleMatches;
+                                    ViewData["XDSDefiniteMatches"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.DefiniteMatches;
+                                    ViewData["XDSLoans"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Loans;
+                                    ViewData["XDSFraudAlerts"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.FraudAlerts;
+                                    ViewData["XDSCompanies"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Companies;
+                                    ViewData["XDSProperties"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Properties;
+                                    ViewData["XDSDocuments"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Documents;
+                                    ViewData["XDSDemandLetters"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.DemandLetters;
+                                    ViewData["XDSTrusts"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Trusts;
+                                    ViewData["XDSBonds"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Bonds;
+                                    ViewData["XDSDeeds"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Deeds;
+                                    ViewData["XDSPublicDefaults"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.PublicDefaults;
+                                    ViewData["XDSNLRAccounts"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.NLRAccounts;
+                                    JToken DebtReviewStatusExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["DebtReviewStatus"];
+                                    if (DebtReviewStatusExists != null)
+                                    {
+                                        ViewData["XDSApplicationDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DebtReviewStatus.ApplicationDate;
+                                    }
+                                    /*saveDataCounts(SearchToken, Reference, SearchID,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Accounts,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Enquiries,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Judgments,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Notices,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.BankDefaults,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Defaults,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Collections,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Directors,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Addresses,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Telephones,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Occupants,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Employers,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.TraceAlerts,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.PaymentProfiles,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.OwnEnquiries,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.AdminOrders,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.PossibleMatches,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.DefiniteMatches,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Loans,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.FraudAlerts,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Companies,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Properties,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Documents,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.DemandLetters,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Trusts,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Bonds,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.Deeds,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.PublicDefaults,
+                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.DataCounts.NLRAccounts,
+                                        "XDSCombinedCreditReport");*/
                                 }
 
                                 JToken EnquiryHistoryExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["EnquiryHistory"];
                                 if (EnquiryHistoryExists != null)
                                 {
+                                    List<EnquiryHistory> EnqHIst;
+                                    EnqHIst = new List<EnquiryHistory>();
+                                    Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+
+                                    elements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory;
+
+                                    for (int count = 0; count < (elements.Count); count++)
+                                    {
+                                        /*saveEnquiryHistory(SearchToken, Reference, SearchID,
+                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory[count].EnquiryDate,
+                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory[count].EnquiredBy,
+                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory[count].EnquiredByContact,
+                                            null,
+                                            null, "XDSCombinedCreditReport");*/
+                                        EnqHIst.Add(new EnquiryHistory
+                                        {
+                                            EnquiryDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory[count].EnquiryDate,
+                                            EnquiredBy = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory[count].EnquiredBy,
+                                            EnquiredByContact = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.EnquiryHistory[count].EnquiredByContact,
+                                        });
+                                    }
+                                    //Add to view
+                                    ViewData["XDSEnqHIst"] = EnqHIst;
+                                    ViewData["XDSEnqHIstCount"] = EnqHIst.Count;
                                 }
                             }
                         }
                         //DirectorShipInformation
+                        ViewData["DirectorshipList"] = null;
                         {
-                            JToken DirectorSummaryExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["DirectorSummary"];
-                            if (DirectorSummaryExists != null)
-                            {
-                                ViewData["NoOfCompanyDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorSummary.NoOfCompanyDirectors;//Add to view
-                                //saveDirectorSummary()
-
-                            }
                             JToken DirectorshipExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["DirectorshipInformation"];
                             if (DirectorshipExists != null)
                             {
-                                List<Directorship> Direc = new List<Directorship>();
-                                Newtonsoft.Json.Linq.JArray Directorshipelement = new Newtonsoft.Json.Linq.JArray();
-                                Directorshipelement = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships;
-
-                                for (int count = 0; count < (Directorshipelement.Count); count++)
+                                JToken DirectorSummaryExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation["DirectorSummary"];
+                                if (DirectorSummaryExists != null)
                                 {
-                                    Direc.Add(new Directorship
-                                    {
-                                        DesignationCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DesignationCode,
-                                        AppointmentDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].AppointmentDate,
-                                        DirectorStatus = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatus,
-                                        DirectorStatusDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatusDate,
-                                        CompanyName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyName,
-                                        CompanyType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyType,
-                                        CompanyStatus = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatus,
-                                        CompanyStatusCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatusCode,
-                                        CompanyRegistrationNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationNumber,
-                                        CompanyRegistrationDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationDate,
-                                        CompanyStartDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStartDate,
-                                        CompanyTaxNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyTaxNumber,
-                                        DirectorTypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorTypeCode,
-                                        DirectorType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorType,
-                                        MemberSize = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberSize,
-                                        MemberContribution = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContribution,
-                                        MemberContributionType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContributionType,
-                                        ResignationDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].ResignationDate,
-                                    });
-
-                                    ViewData["CompanyName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyName;
-                                    ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationNumber;
-                                    ViewData["AppointmentDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].AppointmentDate;
-                                    ViewData["PhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].PhysicalAddress;
-
-                                    saveDirectorship(SearchToken, Reference, SearchID,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DesignationCode,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].AppointmentDate,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatus,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatusDate,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyName,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyType,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatus,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].PhysicalAddress,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatusCode,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationNumber,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationDate,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStartDate,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyTaxNumber,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorTypeCode,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorType,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberSize,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContribution,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContributionType,
-                                   rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].ResignationDate,
-                                   "XDSCombinedCreditReport");
+                                    ViewData["NoOfCompanyDirectors"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.DirectorSummary.NoOfCompanyDirectors;//Add to view
                                 }
+                                JToken DirectorshipsExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation["Directorships"];
+                                if (DirectorshipsExists != null)
+                                {
+                                    List<Directorship> Direc = new List<Directorship>();
+                                    Newtonsoft.Json.Linq.JArray Directorshipelement = new Newtonsoft.Json.Linq.JArray();
+                                    Directorshipelement = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships;
+                                    ViewData["CompanyName"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyName;
+                                    ViewData["CompanyRegistrationNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].CompanyRegistrationNumber;
+                                    ViewData["AppointmentDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].AppointmentDate;
+                                    ViewData["PhysicalAddress"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[0].PhysicalAddress;
 
-                                ViewData["DirectorshipList"] = Direc;
+                                    for (int count = 0; count < (Directorshipelement.Count); count++)
+                                    {
+                                        Direc.Add(new Directorship
+                                        {
+                                            DesignationCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DesignationCode,
+                                            AppointmentDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].AppointmentDate,
+                                            DirectorStatus = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatus,
+                                            DirectorStatusDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatusDate,
+                                            CompanyName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyName,
+                                            CompanyType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyType,
+                                            CompanyStatus = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatus,
+                                            CompanyStatusCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatusCode,
+                                            CompanyRegistrationNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationNumber,
+                                            CompanyRegistrationDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationDate,
+                                            CompanyStartDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStartDate,
+                                            CompanyTaxNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyTaxNumber,
+                                            DirectorTypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorTypeCode,
+                                            DirectorType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorType,
+                                            MemberSize = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberSize,
+                                            MemberContribution = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContribution,
+                                            MemberContributionType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContributionType,
+                                            ResignationDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].ResignationDate,
+                                        });
+
+                                        /*saveDirectorship(SearchToken, Reference, SearchID,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DesignationCode,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].AppointmentDate,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatus,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorStatusDate,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyName,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyType,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatus,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].PhysicalAddress,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStatusCode,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationNumber,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyRegistrationDate,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyStartDate,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].CompanyTaxNumber,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorTypeCode,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].DirectorType,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberSize,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContribution,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].MemberContributionType,
+                                       rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.DirectorshipInformation.Directorships[count].ResignationDate,
+                                       "XDSCombinedCreditReport");*/
+                                    }
+
+                                    ViewData["DirectorshipList"] = Direc;
+                                }
                             }
                         }
                         //PropertyInformation
                         {
                             JToken PropertyInformationExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["PropertyInformation"];
-                            List<PropertiesInformation> PropertiesList = new List<PropertiesInformation>();
                             //PropertyInformationSummary
                             if (PropertyInformationExists != null)
                             {
@@ -2077,25 +2149,23 @@ namespace searchworks.client.Controllers
                                 {
                                     Newtonsoft.Json.Linq.JArray Propertyelement = new Newtonsoft.Json.Linq.JArray();
                                     Propertyelement = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties;
+                                    TransferInformation TransferInfo = new TransferInformation();
+                                    List<TransferInformation> TransferList;
 
+                                    List<BuyerInformation> BuyerList;
+                                    BuyerList = new List<BuyerInformation>();
+
+                                    SellerInformation SellerInfo = new SellerInformation();
+                                    List<SellerInformation> SellerList;
+
+                                    BondInformation BondInfo = new BondInformation();
+                                    List<BondInformation> BondList;
+
+                                    GeneralInformation GeneralInfo = new GeneralInformation();
+                                    List<GeneralInformation> GeneralList;
                                     //Properties
                                     for (int count = 0; count < (Propertyelement.Count); count++)
-
                                     {
-                                        TransferInformation TransferInfo = new TransferInformation();
-                                        List<TransferInformation> TransferList;
-
-                                        List<BuyerInformation> BuyerList;
-                                        BuyerList = new List<BuyerInformation>();
-
-                                        SellerInformation SellerInfo = new SellerInformation();
-                                        List<SellerInformation> SellerList;
-
-                                        BondInformation BondInfo = new BondInformation();
-                                        List<BondInformation> BondList;
-
-                                        GeneralInformation GeneralInfo = new GeneralInformation();
-                                        List<GeneralInformation> GeneralList;
                                         //TransferInformation
                                         {
                                             JToken TransferInfoExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties["TransferInformation"];
@@ -2110,7 +2180,7 @@ namespace searchworks.client.Controllers
                                                 ViewData["PurchaseDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].TransferInformation.PurchaseDate;
                                                 ViewData["PurchasePrice"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].TransferInformation.PurchasePrice;
                                                 ViewData["TitleDeedNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].TransferInformation.TitleDeedNumber;
-                                            TODO: /*saveTransferInformation();*/
+                                            TODO://saveTransferInformation();
                                                 TransferInfo.PurchaseDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties.TransferInformation[count].PurchaseDate;
                                                 TransferInfo.RegistrationDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties.TransferInformation[count].RegistrationDate;
                                                 TransferInfo.PurchasePrice = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties.TransferInformation[count].PurchasePrice;
@@ -2118,7 +2188,6 @@ namespace searchworks.client.Controllers
                                             }
                                             TransferList.Add(TransferInfo);
                                         }
-
                                         //BuyerInformation
                                         {
                                             JToken BuyerInfoExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties["BuyerInformation"];
@@ -2130,7 +2199,7 @@ namespace searchworks.client.Controllers
                                                 ViewData["BuyerIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].BuyerInformation.IDNumber;
                                                 ViewData["BuyerMaritalStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].BuyerInformation.MaritalStatus;
                                                 ViewData["BuyerPropertySharePercentage"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].BuyerInformation.PropertySharePercentage;
-                                                /*saveBuyerInformation*/
+                                                //saveBuyerInformation
 
                                                 BuyerInfo.Fullname = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].BuyerInformation.Fullname;
                                                 BuyerInfo.IDNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].BuyerInformation.Fullname;
@@ -2203,7 +2272,7 @@ namespace searchworks.client.Controllers
                                                 GeneralInfo.RegisteredSize = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].GeneralInformation.RegisteredSize;
                                                 GeneralInfo.DeedsOfficeName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].GeneralInformation.DeedsOfficeName;
                                                 GeneralInfo.OldTitleDeedNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].GeneralInformation.OldTitleDeedNumber;
-                                                GeneralInfo.PhysicalAddressG = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].GeneralInformation.PhysicalAddress;
+                                                GeneralInfo.PhysicalAddress = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].GeneralInformation.PhysicalAddress;
                                                 GeneralInfo.StandNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.PropertyInformation.Properties[count].GeneralInformation.StandNumber;
                                             }
                                             GeneralList.Add(GeneralInfo);
@@ -2217,7 +2286,7 @@ namespace searchworks.client.Controllers
                                             BondInformation = BondList,
                                             GeneralInformation = GeneralList,
                                         });
-                                        ViewData["PropertiesList"] = PropertiesList;
+                                        ViewData["XDSPropertiesList"] = PropertiesList;
                                     }
                                 }
                             }
@@ -2225,9 +2294,9 @@ namespace searchworks.client.Controllers
                         //HistoricalInformation
                         {
                             JToken HistoricalInformationExists = rootObject.ResponseObject.CombinedCreditInformation.ExperianInfo["HistoricalInformation"];
-                            ViewData["AddressHist"] = null;
-                            ViewData["EmpHist"] = null;
-                            ViewData["TelHist"] = null;
+                            ViewData["XDSAddressHist"] = null;
+                            ViewData["XDSEmpHist"] = null;
+                            ViewData["XDSTelHist"] = null;
 
                             if (HistoricalInformationExists != null)
                             {
@@ -2242,8 +2311,7 @@ namespace searchworks.client.Controllers
 
                                     for (int count = 0; count < (elements1.Count); count++)
                                     {
-
-                                        saveAddressHistory(SearchToken, Reference, SearchID,
+                                        /*saveAddressHistory(SearchToken, Reference, SearchID,
                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
@@ -2253,12 +2321,10 @@ namespace searchworks.client.Controllers
                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode,
                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FullAddress,
                                        rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
-                                       "XDSCombinedCreditReport");
-
+                                       "XDSCombinedCreditReport");*/
 
                                         AddressHist.Add(new AddressHistory
                                         {
-
                                             AddressID = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
                                             TypeDescription = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
                                             Line1 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
@@ -2270,8 +2336,8 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["AddressHist"] = AddressHist;
-                                    ViewData["AddressHistCount"] = AddressHist.Count;
+                                    ViewData["XDSAddressHist"] = AddressHist;
+                                    ViewData["XDSAddressHistCount"] = AddressHist.Count;
                                 }
 
                                 JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation["TelephoneHistory"];
@@ -2286,18 +2352,17 @@ namespace searchworks.client.Controllers
 
                                     for (int count = 0; count < (elements2.Count); count++)
                                     {
-                                        saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                        /*saveTelephoneHistory(SearchToken, Reference, SearchID,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeCode,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "XDSCombinedCreditReport");
+                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "XDSCombinedCreditReport");*/
 
                                         TelHist.Add(new TelephoneHistory
                                         {
-
                                             DialCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
                                             TelephoneID = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
                                             TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
@@ -2307,7 +2372,7 @@ namespace searchworks.client.Controllers
                                             LastUpdatedDateTel = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["TelHist"] = TelHist;
+                                    ViewData["XDSTelHist"] = TelHist;
                                 }
 
                                 JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation["EmploymentHistory"];
@@ -2320,19 +2385,18 @@ namespace searchworks.client.Controllers
                                     EmpHist = new List<EmploymentHistory>();
                                     for (int count = 0; count < (elements3.Count); count++)
                                     {
-                                        saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                        /*saveEmploymentHistory(SearchToken, Reference, SearchID,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
                                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSCombinedCreditReport");
+                                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSCombinedCreditReport");*/
                                         EmpHist.Add(new EmploymentHistory
                                         {
-                                            EmployerName = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                                            Designation = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].Designation,
-                                            LastUpdatedDate = rootObject.ResponseObject.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate,
+                                            EmployerName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                            Designation = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                            LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["EmpHist"] = EmpHist;
-
+                                    ViewData["XDSEmpHist"] = EmpHist;
                                 }
 
                                 JToken EmailHistoryExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation["EmailHistory"];
@@ -2343,17 +2407,16 @@ namespace searchworks.client.Controllers
                                     List<EmailHistory> EmailHist;
                                     EmailHist = new List<EmailHistory>();
 
-                                    /*saveEmailHistory()*/
+                                    /**//*saveEmailHistory()*//**/
                                     for (int count = 0; count < (elements4.Count); count++)
                                     {
                                         EmailHist.Add(new EmailHistory
                                         {
                                             EmailAddress = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmailHistory[count].EmailAddress,
-                                            LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmailHistory[count].EmailAddress,
-
+                                            LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmailHistory[count].LastUpdatedDate,
                                         });
                                     }
-                                    ViewData["EmailHist"] = EmailHist; //<--add to view
+                                    ViewData["XDSEmailHist"] = EmailHist; //<--add to view
                                 }
                             }
                         }
@@ -2363,15 +2426,14 @@ namespace searchworks.client.Controllers
                         ViewData["XDS"] = "No Match";
                     }
                 }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e);
-                    ViewData["msg"] = "Error Occured, Please verify the details that have been entered. ";
-
-                    //ViewData["msg"] = "Error Occured, Please verify the details that have been entered";
-                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+                ViewData["msg"] = "Error Occured, Please verify the details that have been entered. ";
                 return View();
             }
+            return View(PropertiesList);
         }
 
         public ActionResult CombinedConsumerCreditReportDatabase(DatabaseSearch DbSearch)
@@ -2503,7 +2565,7 @@ namespace searchworks.client.Controllers
                                 int DefiniteMatches = reader.GetOrdinal("DefiniteMatches");
                                 int Loans = reader.GetOrdinal("Loans");
                                 int FraudAlerts = reader.GetOrdinal("FraudAlerts");
-                                int Companies = reader.GetOrdinal("Companies");
+                                int Companies = reader.GetOrdinal("XDSpanies");
                                 int Properties = reader.GetOrdinal("Properties");
                                 int Documents = reader.GetOrdinal("Documents");
                                 int DemandLetters = reader.GetOrdinal("DemandLetters");
@@ -3117,7 +3179,7 @@ namespace searchworks.client.Controllers
                                 int DefiniteMatches = reader.GetOrdinal("DefiniteMatches");
                                 int Loans = reader.GetOrdinal("Loans");
                                 int FraudAlerts = reader.GetOrdinal("FraudAlerts");
-                                int Companies = reader.GetOrdinal("Companies");
+                                int Companies = reader.GetOrdinal("XDSpanies");
                                 int Properties = reader.GetOrdinal("Properties");
                                 int Documents = reader.GetOrdinal("Documents");
                                 int DemandLetters = reader.GetOrdinal("DemandLetters");
@@ -3743,14 +3805,14 @@ namespace searchworks.client.Controllers
                                 int AppointmentDate = reader.GetOrdinal("AppointmentDate");
                                 int DirectorStatus = reader.GetOrdinal("DirectorStatus");
                                 int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
-                                int CompanyName = reader.GetOrdinal("CompanyName");
-                                int CompanyType = reader.GetOrdinal("CompanyType");
-                                int CompanyStatus = reader.GetOrdinal("CompanyStatus");
-                                int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
-                                int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
-                                int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
-                                int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
-                                int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                                int CompanyName = reader.GetOrdinal("XDSpanyName");
+                                int CompanyType = reader.GetOrdinal("XDSpanyType");
+                                int CompanyStatus = reader.GetOrdinal("XDSpanyStatus");
+                                int CompanyStatusCode = reader.GetOrdinal("XDSpanyStatusCode");
+                                int CompanyRegistrationNumber = reader.GetOrdinal("XDSpanyRegistrationNumber");
+                                int CompanyRegistrationDate = reader.GetOrdinal("XDSpanyRegistrationDate");
+                                int CompanyStartDate = reader.GetOrdinal("XDSpanyStartDate");
+                                int CompanyTaxNumber = reader.GetOrdinal("XDSpanyTaxNumber");
                                 int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
                                 int DirectorType = reader.GetOrdinal("DirectorType");
                                 int MemberSize = reader.GetOrdinal("MemberSize");
@@ -3829,7 +3891,7 @@ namespace searchworks.client.Controllers
 
                 string date_add = DateTime.Today.ToShortDateString();
                 string time_add = time.ToString("T");
-                string page = "Combined Consumer Trace";
+                string page = "XDSbined Consumer Trace";
                 string action = "ID: " + id;
                 string user_id = Session["ID"].ToString();
                 string us = Session["Name"].ToString();
@@ -3837,7 +3899,7 @@ namespace searchworks.client.Controllers
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
-                //ViewData["ComName"] = comID;
+                //ViewData["XDSName"] = comID;
 
                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
@@ -3890,68 +3952,55 @@ namespace searchworks.client.Controllers
                 JToken token = JToken.Parse(response.Content);
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
-                int SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                string Reference = rootObject.ResponseObject.SearchInformation.Reference;
-                string SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                int SearchID;
+                string SearchUserName;
+                string ReportDate;
+                string ResponseType;
+                string Name;
+                string Reference;
+                string SearchToken;
+                string CallerModule;
+                string DataSupplier;
+                string SearchType;
+                string SearchDescription;
 
-                int CompuScanSearchID;
-                string CompuScanSearchUserName;
-                string CompuScanReportDate;
-                string CompuScanResponseType;
-                string CompuScanName;
-                string CompuScanReference;
-                string CompuScanSearchToken;
-                string CompuScanCallerModule;
-                string CompuScanDataSupplier;
-                string CompuScanSearchType;
-                string CompuScanSearchDescription;
-
-                CompuScanSearchID = rootObject.ResponseObject.SearchInformation.SearchID;
-                CompuScanSearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
-                CompuScanReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
-                CompuScanResponseType = rootObject.ResponseMessage;
-                CompuScanName = ViewData["user"].ToString();
-                CompuScanReference = rootObject.ResponseObject.SearchInformation.Reference;
-                CompuScanSearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
-                CompuScanCallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
-                CompuScanDataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
-                CompuScanSearchType = rootObject.ResponseObject.SearchInformation.SearchType;
-                CompuScanSearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
-                saveSearchHistory(CompuScanSearchID, CompuScanSearchUserName, CompuScanResponseType, CompuScanName, CompuScanReportDate, CompuScanReference, CompuScanSearchToken, CompuScanCallerModule, CompuScanDataSupplier, CompuScanSearchType, CompuScanSearchDescription, "CompuScanCombinedConsumerTrace");
+                SearchID = rootObject.ResponseObject.SearchInformation.SearchID;
+                SearchUserName = rootObject.ResponseObject.SearchInformation.SearchUserName;
+                ReportDate = rootObject.ResponseObject.SearchInformation.ReportDate;
+                ResponseType = rootObject.ResponseMessage;
+                Name = ViewData["user"].ToString();
+                Reference = rootObject.ResponseObject.SearchInformation.Reference;
+                SearchToken = rootObject.ResponseObject.SearchInformation.SearchToken;
+                CallerModule = rootObject.ResponseObject.SearchInformation.CallerModule;
+                DataSupplier = rootObject.ResponseObject.SearchInformation.DataSupplier;
+                SearchType = rootObject.ResponseObject.SearchInformation.SearchType;
+                SearchDescription = rootObject.ResponseObject.SearchInformation.SearchDescription;
+                saveSearchHistory(SearchID, SearchUserName, ResponseType, Name, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "XDSbinedConsumerTrace");
 
                 ViewData["Message"] = "good";
                 ViewData["Message2"] = "No recent searches available. Please modify criteria above.";
 
-                ViewData["CompuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScan;
+                ViewData["XDSpuScanMessage"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScan;
                 ViewData["TransUnionMessage"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnion;
                 ViewData["XDSMessage"] = rootObject.ResponseObject.CombinedCreditInformation.XDS;
                 ViewData["VeriCredMessage"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCred;
 
-                if (ViewData["CompuScanMessage"].ToString() == "Found")
+                if (ViewData["XDSpuScanMessage"].ToString() == "Found")
                 {
-                    int CSSearchID = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.SearchID;
-                    string CSSearchUserName = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.SearchUserName;
-                    string CSReportDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.ReportDate;
-                    string CSReference = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.Reference;
-                    string CSSearchToken = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.SearchToken;
-                    string CSCallerModule = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.CallerModule;
-                    string CSDataSupplier = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.DataSupplier;
-                    string CSSearchType = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.SearchType;
-                    string CSSearchDescription = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.SearchInformation.SearchDescription;
-                    saveCompuScanSearchHistory(CSSearchID, CSSearchUserName, CSReportDate, CSReference, CSSearchToken, CSCallerModule, CSDataSupplier, CSSearchType, CSSearchDescription, "CompuScanCombinedConsumerTrace");
+                    saveCompuScanSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanCombinedConsumerTrace");
 
                     //PersonInformation
                     {
-                        ViewData["CompuScanDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].DateOfBirth;
-                        ViewData["CompuScanFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].FirstName;
-                        ViewData["CompuScanSurname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Surname;
-                        ViewData["CompuScanFullname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Fullname;
-                        ViewData["CompuScanIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].IDNumber;
-                        ViewData["CompuScanGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Gender;
-                        ViewData["CompuScanAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Age;
-                        ViewData["CompuScanMiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].MiddleName1;
-                        ViewData["CompuScanMiddleName2"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].MiddleName2;
-                        ViewData["CompuScanHasProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].HasProperties;
+                        ViewData["XDSpuScanDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].DateOfBirth;
+                        ViewData["XDSpuScanFirstName"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].FirstName;
+                        ViewData["XDSpuScanSurname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Surname;
+                        ViewData["XDSpuScanFullname"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Fullname;
+                        ViewData["XDSpuScanIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].IDNumber;
+                        ViewData["XDSpuScanGender"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Gender;
+                        ViewData["XDSpuScanAge"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].Age;
+                        ViewData["XDSpuScanMiddleName1"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].MiddleName1;
+                        ViewData["XDSpuScanMiddleName2"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].MiddleName2;
+                        ViewData["XDSpuScanHasProperties"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["PersonInformation"].HasProperties;
                         savePersonInformation(SearchToken, Reference, SearchID,
                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.InformationDate,
                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.PersonID,
@@ -3975,7 +4024,7 @@ namespace searchworks.client.Controllers
                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.Remarks,
                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.CurrentEmployer,
                             rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.VerificationStatus,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.HasProperties, "CompuScanInfoCombinedConsumerTrace");
+                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.PersonInformation.HasProperties, "XDSpuScanInfoCombinedConsumerTrace");
                     }
                     //Home Affairs Information
                     {
@@ -3989,18 +4038,16 @@ namespace searchworks.client.Controllers
                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HomeAffairsInformation.VerifiedStatus,
                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HomeAffairsInformation.InitialsVerified,
                         rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HomeAffairsInformation.CauseOfDeath,
-                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HomeAffairsInformation.VerifiedDate, "CompuScanCombinedConsumerTrace"
+                        rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HomeAffairsInformation.VerifiedDate, "XDSpuScanCombinedConsumerTrace"
                         );
-                        ViewData["CompuScanDeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].DeceasedStatus;
-                        ViewData["CompuScanDeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].DeceasedDate;
-                        ViewData["CompuScanCauseOfDeath"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].CauseOfDeath;
-                        ViewData["CompuScanVerifiedDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].VerifiedDate;
-                        ViewData["CompuScanVerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].VerifiedStatus;
+                        ViewData["XDSpuScanDeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].DeceasedStatus;
+                        ViewData["XDSpuScanDeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].DeceasedDate;
+                        ViewData["XDSpuScanCauseOfDeath"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].CauseOfDeath;
+                        ViewData["XDSpuScanVerifiedDate"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].VerifiedDate;
+                        ViewData["XDSpuScanVerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HomeAffairsInformation"].VerifiedStatus;
                     }
-
                     //Credit Information
                     JToken CreditInformationExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["CreditInformation"];
-
                     if (CreditInformationExists != null)
                     {
                         JToken FraudIndicatorSummaryExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["FraudIndicatorSummary"];
@@ -4009,144 +4056,133 @@ namespace searchworks.client.Controllers
                             saveFraudIndicatorSummary(SearchToken, Reference, SearchID,
                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.SAFPSListing,
                                 rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.EmployerFraudVerification,
-                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ProtectiveVerification, "CompuScanCombinedConsumerTrace"
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.ProtectiveVerification, "XDSpuScanCombinedConsumerTrace"
                                 );
-                            ViewData["CompuScanProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
+                            ViewData["XDSpuScanProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
                         }
                     }
-
                     //Historical Information
-                    // Address
-                    JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].AddressHistory;
-                    if (AddressExists != null)
+                    JToken HistoricalInformationExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"];
                     {
-                        List<AddressHistory> AddressHist;
-                        AddressHist = new List<AddressHistory>();
-
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory;
-
-                        for (int count = 0; count < (elements.Count); count++)
+                        // Address
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation["AddressHistory"];
+                        if (AddressExists != null)
                         {
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                            List<AddressHistory> AddressHist;
+                            AddressHist = new List<AddressHistory>();
 
-                            AddressHist.Add(new AddressHistory
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory;
+
+                            for (int count = 0; count < (elements.Count); count++)
                             {
-                                TypeDescription = TypeCode,
-                                Line1 = Line1,
-                                Line2 = Line2,
-                                Line3 = Line3,
-                                PostalCode = PostalCode,
-                                FullAddress = null,
-                                LastUpdatedDate = LastUpdatedDate,
-                            });
+                                string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode;
+                                string Line1 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1;
+                                string Line2 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2;
+                                string Line3 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3;
+                                string Line4 = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4;
+                                string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "CompuScanCombinedConsumerTrace"
-                            );
+                                AddressHist.Add(new AddressHistory
+                                {
+                                    TypeDescription = TypeCode,
+                                    Line1 = Line1,
+                                    Line2 = Line2,
+                                    Line3 = Line3,
+                                    Line4 = Line4,
+                                    PostalCode = PostalCode,
+                                    FullAddress = null,
+                                    LastUpdatedDate = LastUpdatedDate,
+                                });
+
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].TypeCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "XDSpuScanCombinedConsumerTrace"
+                                );
+                            }
+                            ViewData["XDSpuScanAddressHist"] = AddressHist;
                         }
-                        ViewData["ArrayList"] = AddressHist;
-                    }
-
-                    // Telephone
-                    JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].TelephoneHistory;
-                    if (TelephoneExists != null)
-                    {
-                        List<TelephoneHistory> TelHist;
-                        TelHist = new List<TelephoneHistory>();
-                        Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
-                        Telelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
-
-                        for (int count = 0; count < (Telelements.Count); count++)
+                        // Telephone
+                        JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
                         {
-                            string TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
+                            List<TelephoneHistory> TelHist;
+                            TelHist = new List<TelephoneHistory>();
+                            Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
+                            Telelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory;
 
-                            TelHist.Add(new TelephoneHistory
+                            for (int count = 0; count < (Telelements.Count); count++)
                             {
-                                TypeDescriptionTel = TypeDescriptionTel,
-                                DialCode = null,
-                                Number = Number,
-                                FullNumber = null,
-                                LastUpdatedDateTel = LastUpdatedDate,
-                            });
-                            saveTelephoneHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate
-                            , "CompuScanCombinedConsumerTrace"
-                            );
+                                string TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
+                                string Number = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
+
+                                TelHist.Add(new TelephoneHistory
+                                {
+                                    DialCode = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                    TelephoneID = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                    TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                    Number = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                    FullNumber = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                    LastUpdatedDateTel = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate,
+                                });
+                                saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].TypeCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate
+                                , "XDSpuScanCombinedConsumerTrace"
+                                );
+                            }
+                            ViewData["XDSpuScanTelHist"] = TelHist;
                         }
-                        ViewData["TelArrayList"] = TelHist;
-                    }
-
-                    // Employment
-                    JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].EmploymentHistory;
-                    if (EmploymentExists != null)
-                    {
-                        List<EmploymentHistory> EmpHist;
-                        EmpHist = new List<EmploymentHistory>();
-                        Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
-                        EMelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory;
-
-                        for (int count = 0; count < (EMelements.Count); count++)
+                        // Employment
+                        JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
                         {
-                            string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            string Designation = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
+                            List<EmploymentHistory> EmpHist;
+                            EmpHist = new List<EmploymentHistory>();
+                            Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
+                            EMelements = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory;
 
-                            EmpHist.Add(new EmploymentHistory
+                            for (int count = 0; count < (EMelements.Count); count++)
                             {
-                                EmployerName = EmployerName,
-                                Designation = Designation,
-                                LastUpdatedDate = LastUpdatedDate,
-                            });
+                                EmpHist.Add(new EmploymentHistory
+                                {
+                                    EmployerName = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                    Designation = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                    LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate,
+                                });
 
-                            saveEmploymentHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                            rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "CompuScanCombinedConsumerTrace"
-                            );
+                                saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSpuScanCombinedConsumerTrace"
+                                );
+                            }
+                            ViewData["XDSpuScanEmpHist"] = EmpHist;
                         }
-                        ViewData["EMArrayList"] = EmpHist;
                     }
                 }
                 else
                 {
-                    ViewData["CompuScanMessage"] = "NotFound";
+                    ViewData["XDSpuScanMessage"] = "NotFound";
                 }
 
                 if (ViewData["TransUnionMessage"].ToString() == "Found")
                 {
-                    int TUSearchID = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.SearchID;
-                    string TUSearchUserName = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.SearchUserName;
-                    string TUReportDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.ReportDate;
-                    string TUReference = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.Reference;
-                    string TUSearchToken = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.SearchToken;
-                    string TUCallerModule = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.CallerModule;
-                    string TUDataSupplier = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.DataSupplier;
-                    string TUSearchType = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.SearchType;
-                    string TUSearchDescription = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.SearchInformation.SearchDescription;
-                    saveTransUnionSearchHistory(TUSearchID, TUSearchUserName, TUReportDate, TUReference, TUSearchToken, TUCallerModule, TUDataSupplier, TUSearchType, TUSearchDescription, "TransUnionCombinedConsumerTrace");
+                    saveTransUnionSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "TransUnionCombinedConsumerTrace");
                     //Personal Information
                     {
                         ViewData["TransUnionInfoInformationDate"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["PersonInformation"].InformationDate;
@@ -4192,75 +4228,104 @@ namespace searchworks.client.Controllers
                             rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.CurrentEmployer,
                             rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.VerificationStatus,
                             rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.HasProperties, "TransUnionCombinedConsumerTrace");
+
+                        //AlsoKnownAs
+                        JToken AKAExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation["AlsoKnownAs"];
+                        if (AKAExists != null)
+                        {
+                            Newtonsoft.Json.Linq.JArray AKAElements = new Newtonsoft.Json.Linq.JArray();
+                            AKAElements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs;
+
+                            List<AlsoKnownAs> AKAList;
+                            AKAList = new List<AlsoKnownAs>();
+
+                            for (int count = 0; count < (AKAElements.Count); count++)
+                            {
+                                AKAList.Add(new AlsoKnownAs
+                                {
+                                    AkaName = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].AkaName,
+                                    ConsumerID = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].ConsumerID,
+                                    InformationDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].InformationDate,
+                                    Part = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].Part,
+                                    PartsEQ = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].PartsEQ,
+                                    RecordsEQ = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].RecordsEQ,
+                                });
+
+                                saveAlsoKnownAs(SearchToken, Reference, SearchID,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].AkaName,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].ConsumerID,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].InformationDate,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].Part,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].PartsEQ,
+                                    rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.PersonInformation.AlsoKnownAs[count].RecordsEQ,
+                                    "TransUnionCombinedConsumerTrace");
+                            }
+                            ViewData["AKAList"] = AKAList;
+                        }
                     }
                     //Contact Information
                     JToken ContactInformationExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"];
                     if (ContactInformationExists != null)
                     {
-                        ViewData["TransUnionInfoEmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].EmailAddress;
-                        ViewData["TransUnionInfoMobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].MobileNumber;
-                        ViewData["TransUnionInfoHomeTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].HomeTelephoneNumber;
-                        ViewData["TransUnionInfoWorkTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].WorkTelephoneNumber;
+                        ViewData["TransUnionInfoEmailAddress"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.EmailAddress;
+                        ViewData["TransUnionInfoMobileNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.MobileNumber;
+                        ViewData["TransUnionInfoHomeTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.HomeTelephoneNumber;
+                        ViewData["TransUnionInfoWorkTelephoneNumber"] = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.WorkTelephoneNumber;
                         saveContactInformation(SearchToken, Reference, SearchID,
-                              rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].HomeTelephoneNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].MobileNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].HomeTelephoneNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].WorkTelephoneNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].PhysicalAddress,
-                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["ContactInformation"].PostalAddress, "TransUnionCombinedConsumerTrace");
+                              rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.HomeTelephoneNumber,
+                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.MobileNumber,
+                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.HomeTelephoneNumber,
+                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.WorkTelephoneNumber,
+                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.PhysicalAddress,
+                            rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.ContactInformation.PostalAddress, "TransUnionCombinedConsumerTrace");
                     }
 
                     //Historical Information
-                    // Address
-                    JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"].AddressHistory;
-                    if (AddressExists != null)
+                    JToken HistoricalInformation = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"];
                     {
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory;
-                        List<string> thatlist = new List<string>();
-                        //Dictionary<string, string> arrayList = new Dictionary<string, string>();
-                        List<AddressHistory> AddressHist;
-                        AddressHist = new List<AddressHistory>();
-                        for (int count = 0; count < (elements.Count); count++)
+                        // Address
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation["AddressHistory"];
+                        if (AddressExists != null)
                         {
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string FullAddress = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
-
-                            AddressHist.Add(new AddressHistory
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory;
+                            List<string> thatlist = new List<string>();
+                            //Dictionary<string, string> arrayList = new Dictionary<string, string>();
+                            List<AddressHistory> AddressHist;
+                            AddressHist = new List<AddressHistory>();
+                            for (int count = 0; count < (elements.Count); count++)
                             {
-                                TypeDescription = TypeCode,
-                                Line1 = Line1,
-                                Line2 = Line2,
-                                Line3 = Line3,
-                                Line4 = Line4,
-                                PostalCode = PostalCode,
-                                FullAddress = FullAddress,
-                                LastUpdatedDate = LastUpdatedDate,
-                            });
+                                AddressHist.Add(new AddressHistory
+                                {
+                                    AddressID = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                    TypeDescription = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
+                                    Line1 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                    Line2 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                    Line3 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                    Line4 = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                    PostalCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                    FullAddress = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                    LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
+                                });
 
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                               rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
-                               );
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                   rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "TransUnionCombinedConsumerTrace"
+                                   );
+                            }
+                            ViewData["AddressHist"] = AddressHist;
                         }
-                        ViewData["AddressHist"] = AddressHist;
                     }
 
                     // Telephone
-                    JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"].TelephoneHistory;
+                    JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"];
                     if (TelephoneExists != null)
                     {
                         Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
@@ -4271,15 +4336,15 @@ namespace searchworks.client.Controllers
 
                         for (int count = 0; count < (Telelements.Count); count++)
                         {
-                            string Type = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
-
                             TelHist.Add(new TelephoneHistory
                             {
-                                TypeDescriptionTel = Type,
-                                Number = Number,
-                                LastUpdatedDateTel = LastUpdatedDate,
+                                TelephoneID = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeDescriptionTel,
+                                DialCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                TypeCode = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].TypeCode,
+                                Number = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                FullNumber = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                LastUpdatedDateTel = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate
                             });
 
                             saveTelephoneHistory(SearchToken, Reference, SearchID,
@@ -4297,7 +4362,7 @@ namespace searchworks.client.Controllers
                     }
 
                     // Employment
-                    JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"].EmploymentHistory;
+                    JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.TransUnionInfo["HistoricalInformation"];
                     if (EmploymentExists != null)
                     {
                         Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
@@ -4334,16 +4399,7 @@ namespace searchworks.client.Controllers
                 }
                 if (ViewData["XDSMessage"].ToString() == "Found")
                 {
-                    int XDSSearchID = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.SearchID;
-                    string XDSSearchUserName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.SearchUserName;
-                    string XDSReportDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.ReportDate;
-                    string XDSReference = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.Reference;
-                    string XDSSearchToken = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.SearchToken;
-                    string XDSCallerModule = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.CallerModule;
-                    string XDSDataSupplier = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.DataSupplier;
-                    string XDSSearchType = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.SearchType;
-                    string XDSSearchDescription = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.SearchInformation.SearchDescription;
-                    saveXDSSearchHistory(XDSSearchID, XDSSearchUserName, XDSReportDate, XDSReference, XDSSearchToken, XDSCallerModule, XDSDataSupplier, XDSSearchType, XDSSearchDescription, "XDSCombinedConsumerTrace");
+                    saveXDSSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "XDSCombinedConsumerTrace");
 
                     //Personal Information
                     {
@@ -4390,154 +4446,177 @@ namespace searchworks.client.Controllers
                     }
                     //HomeAffairs
                     {
-                        ViewData["XDSInfoDeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].DeceasedStatus;
-                        ViewData["XDSInfoDeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].DeceasedDate;
-                        ViewData["XDSInfoVerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HomeAffairsInformation"].VerifiedStatus;
+                        ViewData["XDSInfoDeceasedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedStatus;
+                        ViewData["XDSInfoDeceasedDate"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate;
+                        ViewData["XDSInfoVerifiedStatus"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus;
                         saveHomeAffairsInformation(SearchToken, Reference, SearchID,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.FirstName,
-                            ViewData["XDSInfoDeceasedDate"],
+                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedDate,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.IDVerified,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.SurnameVerified,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.Warnings,
-                            ViewData["XDSInfoDeceasedStatus"],
+                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.DeceasedStatus,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.InitialsVerified,
                             rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.CauseOfDeath,
-                            ViewData["XDSInfoVerifiedStatus"], "XDSCombinedConsumerTrace"
+                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HomeAffairsInformation.VerifiedStatus, "XDSCombinedConsumerTrace"
                             );
                     }
-                    //Credit Information
-                    JToken ContactInformationExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["ContactInformation"];
-                    if (ContactInformationExists != null)
+                    //CreditInformation
+                    JToken CreditInformationExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["ContactInformation"];
+                    if (CreditInformationExists != null)
                     {
+                        ViewData["CreditSummaryChartURL"] = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation.CreditSummaryChartURL;
                         JToken FraudIndicatorSummaryExists = rootObject.ResponseObject.CombinedCreditInformation.CompuScanInfo.CreditInformation["FraudIndicatorSummary"];
                         if (FraudIndicatorSummaryExists != null)
                         {
-                            ViewData["XDSInfoProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["FraudIndicatorSummary"].ProtectiveVerification;
-                            ViewData["XDSInfoSAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["FraudIndicatorSummary"].SAFPSListing;
-                            ViewData["XDSInfoEmployerFraudVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation["FraudIndicatorSummary"].EmployerFraudVerification;
+                            ViewData["XDSInfoProtectiveVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification;
+                            ViewData["XDSInfoSAFPSListing"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing;
+                            ViewData["XDSInfoEmployerFraudVerification"] = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification;
                             saveFraudIndicatorSummary(SearchToken, Reference, SearchID,
-                                ViewData["XDSInfoSAFPSListing"].ToString(),
-                                ViewData["XDSInfoEmployerFraudVerification"].ToString(),
-                                ViewData["XDSInfoProtectiveVerification"].ToString(), "XDSCombinedConsumerTrace");
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.SAFPSListing,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.ProtectiveVerification,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.CreditInformation.FraudIndicatorSummary.EmployerFraudVerification, "XDSCombinedConsumerTrace");
                         }
                     }
 
-                    // Address
-                    JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].AddressHistory;
-                    if (AddressExists != null)
+                    JToken HistoricalInformationExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"];
                     {
-                        List<AddressHistory> AddressHist;
-                        AddressHist = new List<AddressHistory>();
-
-                        Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
-                        elements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory;
-
-                        for (int count = 0; count < (elements.Count); count++)
+                        // Address
+                        JToken AddressExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation["AddressHistory"];
+                        if (AddressExists != null)
                         {
-                            string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode;
-                            string Line1 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1;
-                            string Line2 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2;
-                            string Line3 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3;
-                            string Line4 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4;
-                            string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
+                            List<AddressHistory> AddressHist;
+                            AddressHist = new List<AddressHistory>();
 
-                            AddressHist.Add(new AddressHistory
+                            Newtonsoft.Json.Linq.JArray elements = new Newtonsoft.Json.Linq.JArray();
+                            elements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory;
+
+                            for (int count = 0; count < (elements.Count); count++)
                             {
-                                TypeDescription = TypeCode,
-                                Line1 = Line1,
-                                Line2 = Line2,
-                                Line3 = Line3,
-                                Line4 = Line4,
-                                PostalCode = PostalCode,
-                                FullAddress = null,
-                                LastUpdatedDate = LastUpdatedDate,
-                            });
+                                string TypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode;
+                                string Line1 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1;
+                                string Line2 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2;
+                                string Line3 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3;
+                                string Line4 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4;
+                                string PostalCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode;
+                                string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate;
 
-                            saveAddressHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FullAddress,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
-                            );
+                                AddressHist.Add(new AddressHistory
+                                {
+                                    AddressID = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                    TypeDescription = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
+                                    TypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeCode,//<-- Add to database
+                                    Line1 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                    Line2 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                    Line3 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                    Line4 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                    PostalCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                    FullAddress = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                    LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
+                                    FirstReportedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FirstReportedDate, //<-- Add to database
+                                });
+
+                                saveAddressHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].AddressID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].TypeDescription,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line1,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line2,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line3,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].Line4,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].PostalCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FullAddress,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].LastUpdatedDate,
+                                /*rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.AddressHistory[count].FirstReportedDate,*/ //<---Add field to database
+                                "XDSCombinedConsumerTrace"
+                                );
+                            }
+                            ViewData["XDSAddressHist"] = AddressHist;
                         }
-                        ViewData["ArrayList"] = AddressHist;
+
+                        // Telephone
+                        JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].TelephoneHistory;
+                        if (TelephoneExists != null)
+                        {
+                            Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
+                            Telelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory;
+
+                            List<TelephoneHistory> TelHist;
+                            TelHist = new List<TelephoneHistory>();
+
+                            for (int count = 0; count < (Telelements.Count); count++)
+                            {
+                                TelHist.Add(new TelephoneHistory
+                                {
+                                    DialCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                    TelephoneID = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                    TypeDescriptionTel = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                    TypeCode = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeCode,
+                                    Number = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                    FullNumber = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                    LastUpdatedDateTel = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate,
+                                });
+
+                                saveTelephoneHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeCOde,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
+                                );
+                            }
+                            ViewData["XDSTelHist"] = TelHist;
+                        }
+
+                        // Employment
+                        JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].EmploymentHistory;
+                        if (EmploymentExists != null)
+                        {
+                            Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
+                            EMelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory;
+
+                            List<EmploymentHistory> EmpHist;
+                            EmpHist = new List<EmploymentHistory>();
+
+                            for (int count = 0; count < (EMelements.Count); count++)
+                            {
+                                EmpHist.Add(new EmploymentHistory
+                                {
+                                    EmployerName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                    Designation = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                    LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate
+                                });
+
+                                saveEmploymentHistory(SearchToken, Reference, SearchID,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
+                                rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
+                                );
+                            }
+                            ViewData["XDSEmpHist"] = EmpHist;
+                        }
                     }
-
-                    // Telephone
-                    JToken TelephoneExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].TelephoneHistory;
-                    if (TelephoneExists != null)
+                    //EmailInformation
+                    JToken EmailHistoryExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation["EmailHistory"];
+                    Newtonsoft.Json.Linq.JArray elements4 = new Newtonsoft.Json.Linq.JArray();
+                    elements4 = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmailHistory;
+                    if (EmailHistoryExists != null)
                     {
-                        Newtonsoft.Json.Linq.JArray Telelements = new Newtonsoft.Json.Linq.JArray();
-                        Telelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory;
+                        List<EmailHistory> EmailHist;
+                        EmailHist = new List<EmailHistory>();
 
-                        List<TelephoneHistory> TelHist;
-                        TelHist = new List<TelephoneHistory>();
-
-                        for (int count = 0; count < (Telelements.Count); count++)
+                        /*saveEmailHistory()*/
+                        for (int count = 0; count < (elements4.Count); count++)
                         {
-                            string Type = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription;
-                            string Number = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate;
-
-                            TelHist.Add(new TelephoneHistory
+                            EmailHist.Add(new EmailHistory
                             {
-                                TypeDescriptionTel = Type,
-                                DialCode = null,
-                                Number = Number,
-                                FullNumber = null,
-                                LastUpdatedDateTel = LastUpdatedDate,
+                                EmailAddress = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmailHistory[count].EmailAddress,
+                                LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmailHistory[count].LastUpdatedDate,
                             });
-
-                            saveTelephoneHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TelephoneID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].TypeDescription,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].DialCode,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].Number,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].FullNumber,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.TelephoneHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
-                            );
                         }
-                        ViewData["TelArrayList"] = TelHist;
-                    }
-
-                    // Employment
-                    JToken EmploymentExists = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo["HistoricalInformation"].EmploymentHistory;
-                    if (EmploymentExists != null)
-                    {
-                        Newtonsoft.Json.Linq.JArray EMelements = new Newtonsoft.Json.Linq.JArray();
-                        EMelements = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory;
-
-                        List<EmploymentHistory> EmpHist;
-                        EmpHist = new List<EmploymentHistory>();
-
-                        for (int count = 0; count < (EMelements.Count); count++)
-                        {
-                            string EmployerName = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName;
-                            string Designation = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation;
-                            string LastUpdatedDate = rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate;
-
-                            EmpHist.Add(new EmploymentHistory
-                            {
-                                EmployerName = EmployerName,
-                                Designation = Designation,
-                                LastUpdatedDate = LastUpdatedDate
-                            });
-
-                            saveEmploymentHistory(SearchToken, Reference, SearchID,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].EmployerName,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].Designation,
-                            rootObject.ResponseObject.CombinedCreditInformation.XDSInfo.HistoricalInformation.EmploymentHistory[count].LastUpdatedDate, "XDSCombinedConsumerTrace"
-                            );
-                        }
-                        ViewData["EMArrayList"] = EmpHist;
+                        ViewData["XDSEmailHist"] = EmailHist; //<--add to view
                     }
                 }
                 else
@@ -4546,25 +4625,7 @@ namespace searchworks.client.Controllers
                 }
                 if (ViewData["VeriCredMessage"].ToString() == "Found")
                 {
-                    int VeriSearchID = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.SearchID;
-                    string VeriSearchUserName = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.SearchUserName;
-                    string VeriReportDate = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.ReportDate;
-                    string VeriReference = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.Reference;
-                    string VeriSearchToken = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.SearchToken;
-                    string VeriCallerModule = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.CallerModule;
-                    string VeriDataSupplier = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.DataSupplier;
-                    string VeriSearchType = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.SearchType;
-                    string VeriSearchDescription = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo.SearchInformation.SearchDescription;
-                    saveVeriCredSearchHistory(VeriSearchID,
-                            VeriSearchUserName,
-                            VeriReportDate,
-                            VeriReference,
-                            VeriSearchToken,
-                            VeriCallerModule,
-                            VeriDataSupplier,
-                            VeriSearchType,
-                            VeriSearchDescription,
-                            "VeriCredCombinedConsumerTrace");
+                    saveVeriCredSearchHistory(SearchID, SearchUserName, ReportDate, Reference, SearchToken, CallerModule, DataSupplier, SearchType, SearchDescription, "VeriCredCombinedConsumerTrace");
                     //Personal Information
                     {
                         ViewData["VeriCredInfoDateOfBirth"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].DateOfBirth;
@@ -4572,7 +4633,6 @@ namespace searchworks.client.Controllers
                         ViewData["VeriCredInfoSurname"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Surname;
                         ViewData["VeriCredInfoFullname"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Fullname;
                         ViewData["VeriCredInfoIDNumber"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].IDNumber;
-
                         ViewData["VeriCredInfoGender"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Gender;
                         ViewData["VeriCredInfoAge"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].Age;
                         ViewData["VeriCredInfoCurrentEmployer"] = rootObject.ResponseObject.CombinedCreditInformation.VeriCredInfo["PersonInformation"].CurrentEmployer;
@@ -5555,7 +5615,7 @@ namespace searchworks.client.Controllers
                             int DefiniteMatches = reader.GetOrdinal("DefiniteMatches");
                             int Loans = reader.GetOrdinal("Loans");
                             int FraudAlerts = reader.GetOrdinal("FraudAlerts");
-                            int Companies = reader.GetOrdinal("Companies");
+                            int Companies = reader.GetOrdinal("XDSpanies");
                             int Properties = reader.GetOrdinal("Properties");
                             int Documents = reader.GetOrdinal("Documents");
                             int DemandLetters = reader.GetOrdinal("DemandLetters");
@@ -6162,14 +6222,14 @@ namespace searchworks.client.Controllers
                             int AppointmentDate = reader.GetOrdinal("AppointmentDate");
                             int DirectorStatus = reader.GetOrdinal("DirectorStatus");
                             int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
-                            int CompanyName = reader.GetOrdinal("CompanyName");
-                            int CompanyType = reader.GetOrdinal("CompanyType");
-                            int CompanyStatus = reader.GetOrdinal("CompanyStatus");
-                            int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
-                            int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
-                            int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
-                            int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
-                            int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                            int CompanyName = reader.GetOrdinal("XDSpanyName");
+                            int CompanyType = reader.GetOrdinal("XDSpanyType");
+                            int CompanyStatus = reader.GetOrdinal("XDSpanyStatus");
+                            int CompanyStatusCode = reader.GetOrdinal("XDSpanyStatusCode");
+                            int CompanyRegistrationNumber = reader.GetOrdinal("XDSpanyRegistrationNumber");
+                            int CompanyRegistrationDate = reader.GetOrdinal("XDSpanyRegistrationDate");
+                            int CompanyStartDate = reader.GetOrdinal("XDSpanyStartDate");
+                            int CompanyTaxNumber = reader.GetOrdinal("XDSpanyTaxNumber");
                             int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
                             int DirectorType = reader.GetOrdinal("DirectorType");
                             int MemberSize = reader.GetOrdinal("MemberSize");
@@ -6567,7 +6627,7 @@ namespace searchworks.client.Controllers
                             ViewData["PossibleMatches"] = rootObject.ResponseObject.CreditInformation.DataCounts.PossibleMatches;
                             ViewData["Loans"] = rootObject.ResponseObject.CreditInformation.DataCounts.Loans;
                             ViewData["FraudAlerts"] = rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts;
-                            ViewData["Companies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
+                            ViewData["XDSpanies"] = rootObject.ResponseObject.CreditInformation.DataCounts.Companies;
                             ViewData["Properties"] = rootObject.ResponseObject.CreditInformation.DataCounts.Properties;
                             ViewData["Documents"] = rootObject.ResponseObject.CreditInformation.DataCounts.Documents;
                             ViewData["DemandLetters"] = rootObject.ResponseObject.CreditInformation.DataCounts.DemandLetters;
@@ -6977,7 +7037,7 @@ namespace searchworks.client.Controllers
                             int DefiniteMatches = reader.GetOrdinal("DefiniteMatches");
                             int Loans = reader.GetOrdinal("Loans");
                             int FraudAlerts = reader.GetOrdinal("FraudAlerts");
-                            int Companies = reader.GetOrdinal("Companies");
+                            int Companies = reader.GetOrdinal("XDSpanies");
                             int Properties = reader.GetOrdinal("Properties");
                             int Documents = reader.GetOrdinal("Documents");
                             int DemandLetters = reader.GetOrdinal("DemandLetters");
@@ -7588,14 +7648,14 @@ namespace searchworks.client.Controllers
                             int AppointmentDate = reader.GetOrdinal("AppointmentDate");
                             int DirectorStatus = reader.GetOrdinal("DirectorStatus");
                             int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
-                            int CompanyName = reader.GetOrdinal("CompanyName");
-                            int CompanyType = reader.GetOrdinal("CompanyType");
-                            int CompanyStatus = reader.GetOrdinal("CompanyStatus");
-                            int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
-                            int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
-                            int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
-                            int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
-                            int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                            int CompanyName = reader.GetOrdinal("XDSpanyName");
+                            int CompanyType = reader.GetOrdinal("XDSpanyType");
+                            int CompanyStatus = reader.GetOrdinal("XDSpanyStatus");
+                            int CompanyStatusCode = reader.GetOrdinal("XDSpanyStatusCode");
+                            int CompanyRegistrationNumber = reader.GetOrdinal("XDSpanyRegistrationNumber");
+                            int CompanyRegistrationDate = reader.GetOrdinal("XDSpanyRegistrationDate");
+                            int CompanyStartDate = reader.GetOrdinal("XDSpanyStartDate");
+                            int CompanyTaxNumber = reader.GetOrdinal("XDSpanyTaxNumber");
                             int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
                             int DirectorType = reader.GetOrdinal("DirectorType");
                             int MemberSize = reader.GetOrdinal("MemberSize");
@@ -7770,7 +7830,7 @@ namespace searchworks.client.Controllers
                         {
                             InternalEnquiryHistory IntEnqHist = new InternalEnquiryHistory();
 
-                            int CompanyName = reader.GetOrdinal("CompanyName");
+                            int CompanyName = reader.GetOrdinal("XDSpanyName");
                             int IntEnquiryDate = reader.GetOrdinal("IntEnquiryDate");
                             int ContactPerson = reader.GetOrdinal("ContactPerson");
                             int PhoneNumber = reader.GetOrdinal("PhoneNumber");
@@ -8285,7 +8345,7 @@ namespace searchworks.client.Controllers
                             int DefiniteMatches = reader.GetOrdinal("DefiniteMatches");
                             int Loans = reader.GetOrdinal("Loans");
                             int FraudAlerts = reader.GetOrdinal("FraudAlerts");
-                            int Companies = reader.GetOrdinal("Companies");
+                            int Companies = reader.GetOrdinal("XDSpanies");
                             int Properties = reader.GetOrdinal("Properties");
                             int Documents = reader.GetOrdinal("Documents");
                             int DemandLetters = reader.GetOrdinal("DemandLetters");
@@ -8896,14 +8956,14 @@ namespace searchworks.client.Controllers
                             int AppointmentDate = reader.GetOrdinal("AppointmentDate");
                             int DirectorStatus = reader.GetOrdinal("DirectorStatus");
                             int DirectorStatusDate = reader.GetOrdinal("DirectorStatusDate");
-                            int CompanyName = reader.GetOrdinal("CompanyName");
-                            int CompanyType = reader.GetOrdinal("CompanyType");
-                            int CompanyStatus = reader.GetOrdinal("CompanyStatus");
-                            int CompanyStatusCode = reader.GetOrdinal("CompanyStatusCode");
-                            int CompanyRegistrationNumber = reader.GetOrdinal("CompanyRegistrationNumber");
-                            int CompanyRegistrationDate = reader.GetOrdinal("CompanyRegistrationDate");
-                            int CompanyStartDate = reader.GetOrdinal("CompanyStartDate");
-                            int CompanyTaxNumber = reader.GetOrdinal("CompanyTaxNumber");
+                            int CompanyName = reader.GetOrdinal("XDSpanyName");
+                            int CompanyType = reader.GetOrdinal("XDSpanyType");
+                            int CompanyStatus = reader.GetOrdinal("XDSpanyStatus");
+                            int CompanyStatusCode = reader.GetOrdinal("XDSpanyStatusCode");
+                            int CompanyRegistrationNumber = reader.GetOrdinal("XDSpanyRegistrationNumber");
+                            int CompanyRegistrationDate = reader.GetOrdinal("XDSpanyRegistrationDate");
+                            int CompanyStartDate = reader.GetOrdinal("XDSpanyStartDate");
+                            int CompanyTaxNumber = reader.GetOrdinal("XDSpanyTaxNumber");
                             int DirectorTypeCode = reader.GetOrdinal("DirectorTypeCode");
                             int DirectorType = reader.GetOrdinal("DirectorType");
                             int MemberSize = reader.GetOrdinal("MemberSize");
@@ -9099,7 +9159,7 @@ namespace searchworks.client.Controllers
             string date_add = DateTime.Today.ToShortDateString();
             string time_add = time.ToString("T");
             string page = "TransUnion Company Profile By CompanyID";
-            string action = "Company ID: " + companyID + "; Search Description: " + searchDesc + "; Enquiry Reason: " + enquiryReason + "; Module Codes: " + moduleCodes;
+            string action = "XDSpany ID: " + companyID + "; Search Description: " + searchDesc + "; Enquiry Reason: " + enquiryReason + "; Module Codes: " + moduleCodes;
             string user_id = Session["ID"].ToString();
             string us = Session["Name"].ToString();
 
@@ -11750,7 +11810,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "Combined Consumer Trace"; string action = "Client Name:" + clientName + "; Bank
+// string page = "XDSbined Consumer Trace"; string action = "Client Name:" + clientName + "; Bank
 // Name: " + bankName + "; Branch Code:" + branchCode + "; Branch Name: " + branchName + "; Account
 // Number:" + accountNumber + "; Amount:" + amount + "; Terms:" + terms + "; Report Type" +
 // reportType; string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
@@ -11803,7 +11863,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanBankCodesDocument"); } catch
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanBankCodesDocument"); } catch
 // (Exception e) { TempData["msg"] = "An error occured, please check the entered values."; }
 
 // return View(); }
@@ -11820,7 +11880,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Bank On File"; string action = "ID: " + id; string user_id =
+// string page = "XDSpuScan Bank On File"; string action = "ID: " + id; string user_id =
 // Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add +
@@ -11869,9 +11929,9 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.DataSupplier; string SearchType =
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; //string ResponseType =
-// rootObject.ResponseMessage; ; saveSearchHistory(SearchID, SearchUserName, "CompuScanBankOnFile",
+// rootObject.ResponseMessage; ; saveSearchHistory(SearchID, SearchUserName, "XDSpuScanBankOnFile",
 // Session["Name"].ToString(), ReportDate, Reference, SearchToken, "credit/compuScan", null,
-// SearchType, SearchDescription, "CompuScanBankOnFile"); } catch (Exception e) { TempData["msg"] =
+// SearchType, SearchDescription, "XDSpuScanBankOnFile"); } catch (Exception e) { TempData["msg"] =
 // "An error occured, please check the entered values."; } return View(); }
 
 // public ActionResult CompuScanConsumerProfile() { return View(); }
@@ -11887,7 +11947,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Consumer Profile"; string action = "First Name: " + firstname + ";
+// string page = "XDSpuScan Consumer Profile"; string action = "First Name: " + firstname + ";
 // Surname: " + surname + "; Enquiry Reason: " + enquiryReason + "; ID: " + id; string user_id =
 // Session["ID"].ToString(); string us = Session["Name"].ToString();
 
@@ -11942,7 +12002,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, Session["Name"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerProfile");
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanConsumerProfile");
 
 // if (rootObject.ResponseObject.PersonInformation != null) { //personaInformantion
 // ViewData["DateOfBirth"] = rootObject.ResponseObject.PersonInformation.DateOfBirth;
@@ -11959,7 +12019,7 @@ namespace searchworks.client.Controllers
 // ViewData["FirstName"].ToString(), ViewData["Surname"].ToString(),
 // ViewData["Fullname"].ToString(), ViewData["IDNumber"].ToString(), null, null, null, null,
 // ViewData["Gender"].ToString(), ViewData["Age"].ToString(), null, null, null, null, null, null ,
-// null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"], "CompuScan"); } else
+// null, ViewData["VerificationStatus"].ToString(), ViewData["HasProperties"], "XDSpuScan"); } else
 // { ViewData["PersonInformationMessage"] = "No Match"; }
 
 // if (rootObject.ResponseObject.CreditInformation != null) { //CreditInformation
@@ -11997,7 +12057,7 @@ namespace searchworks.client.Controllers
 // //DeclineReason ViewData["ReasonDescription"] =
 // rootObject.ResponseObject.CreditInformation.DeclineReason[0].ReasonDescription;
 // saveCreditDeclineReason(SearchToken, Reference, SearchID, null,
-// ViewData["ReasonDescription"].ToString(), "CompuScan"); //DataCounts ViewData["Accounts"] =
+// ViewData["ReasonDescription"].ToString(), "XDSpuScan"); //DataCounts ViewData["Accounts"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Accounts; ViewData["Enquiries"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Enquiries; ViewData["Judgments"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Judgments; ViewData["Notices"] =
@@ -12018,7 +12078,7 @@ namespace searchworks.client.Controllers
 // ViewData["DefiniteMatches"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.DefiniteMatches; ViewData["Loans"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Loans; ViewData["FraudAlerts"] =
-// rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts; ViewData["Companies"] =
+// rootObject.ResponseObject.CreditInformation.DataCounts.FraudAlerts; ViewData["XDSpanies"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Companies; ViewData["Properties"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Properties; ViewData["Documents"] =
 // rootObject.ResponseObject.CreditInformation.DataCounts.Documents; ViewData["DemandLetters"] =
@@ -12485,7 +12545,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Consumer Trace By IDNumber"; string action = "ID: " + id; string user_id
+// string page = "XDSpuScan Consumer Trace By IDNumber"; string action = "ID: " + id; string user_id
 // = Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
@@ -12539,7 +12599,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerTrace");
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanConsumerTrace");
 
 // ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
 // criteria above.";
@@ -12614,7 +12674,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Consumer Trace By Telephone Number"; string action = "Telephone Number:
+// string page = "XDSpuScan Consumer Trace By Telephone Number"; string action = "Telephone Number:
 // " + tele; string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
@@ -12689,7 +12749,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Consumer Trace By TelephoneID"; string action = "TelephoneID: " + tele;
+// string page = "XDSpuScan Consumer Trace By TelephoneID"; string action = "TelephoneID: " + tele;
 // string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
@@ -12749,7 +12809,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Contact Information"; string action = "First Name: " + firstname + ";
+// string page = "XDSpuScan Contact Information"; string action = "First Name: " + firstname + ";
 // Surname: " + surname + "; Passport: " + passport + "; ID: " + id; string user_id =
 // Session["ID"].ToString(); string us = Session["Name"].ToString();
 
@@ -12799,7 +12859,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanConsumerTrace");
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanConsumerTrace");
 
 // ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
 // criteria above.";
@@ -12864,7 +12924,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Employment Confidence Index"; string action = "First Name: " + firstname
+// string page = "XDSpuScan Employment Confidence Index"; string action = "First Name: " + firstname
 // + "; Surname: " + surname + "; ID: " + id; string user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
@@ -12918,7 +12978,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanEmploymentConfidenceIndex");
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanEmploymentConfidenceIndex");
 
 // ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
 // criteria above.";
@@ -12973,7 +13033,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan Employment Confidence Index"; string action = "ID: " + id; string
+// string page = "XDSpuScan Employment Confidence Index"; string action = "ID: " + id; string
 // user_id = Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
@@ -13029,7 +13089,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanGrossMonthlyIncomeByIDNumber");
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanGrossMonthlyIncomeByIDNumber");
 
 // ViewData["Message"] = "good";
 
@@ -13064,7 +13124,7 @@ namespace searchworks.client.Controllers
 // DateTime time = DateTime.Now;
 
 // string date_add = DateTime.Today.ToShortDateString(); string time_add = time.ToString("T");
-// string page = "CompuScan ID Photo Verification"; string action = "ID: " + id; string user_id =
+// string page = "XDSpuScan ID Photo Verification"; string action = "ID: " + id; string user_id =
 // Session["ID"].ToString(); string us = Session["Name"].ToString();
 
 // ViewData["user"] = Session["Name"].ToString(); ViewData["date"] =
@@ -13119,7 +13179,7 @@ namespace searchworks.client.Controllers
 // rootObject.ResponseObject.SearchInformation.SearchType; string SearchDescription =
 // rootObject.ResponseObject.SearchInformation.SearchDescription; saveSearchHistory(SearchID,
 // SearchUserName, ResponseType, ViewData["user"].ToString(), ReportDate, Reference, SearchToken,
-// CallerModule, DataSupplier, SearchType, SearchDescription, "CompuScanIDPhotoVerification");
+// CallerModule, DataSupplier, SearchType, SearchDescription, "XDSpuScanIDPhotoVerification");
 
 // ViewData["Message"] = "good"; ViewData["Message2"] = "No recent searches available. Please modify
 // criteria above.";

@@ -207,7 +207,7 @@
                                     <tr>
                                         <th id="add" style="border: none; cursor:pointer;" colspan="2">Address History</th>
                                     </tr>
-                                    @if (@ViewBag.ArrayList.Count != null)
+                                    @if (@ViewBag.CompuScanAddressHist.Count != null)
                                     {
                                         <tr>
                                             <th colspan="2">Code Type</th>
@@ -219,7 +219,7 @@
                                             <th colspan="1">Last Updated</th>
                                         </tr>
 
-                                        foreach (var item in @ViewBag.ArrayList)
+                                        foreach (var item in @ViewBag.CompuScanAddressHist)
                                         {
                                             <tr>
                                                 <td colspan="2">@item.TypeDescription</td>
