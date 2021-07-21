@@ -12,10 +12,10 @@ using Newtonsoft.Json.Linq;
 
 namespace searchworks.client.Helpers
 {
-    public class JCredHelper
+    public class JCredHelper : IDisposable
     {
-        IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
-
+        private  IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+        private bool disposed = false;
         //singleton
         public static JCredHelper Instance { get; protected set; } = new JCredHelper();
         
@@ -121,5 +121,22 @@ namespace searchworks.client.Helpers
             return tenantID;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    //dispos any object that got created //_context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
