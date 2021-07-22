@@ -7,54 +7,55 @@
 @model IEnumerable<searchworks.client.Company.CompanyInformation>
 
 @{
-    ViewBag.Title = "CSI Company Records";
+    ViewBag.Title = "CSICompanyRecords";
     var type = @TempData["type"].ToString();
-    var mes = @ViewData["Message"].ToString();
 }
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea act">SEARCH RESULTS</div>
-    <div class="con2">
-        @if (TempData["msg"] != null)
-        {
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export('CSICompanyRecords.pdf')" class="button btn-b2" />
+    </div>
+    <div id="content">
+        <div class="con2">
+            @if (TempData["msg"] != null)
+            {
 
-            <div>@TempData["msg"] </div>
-            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+                <div>@TempData["msg"] </div>
+                <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
 
-        }
-        else
-        { <div class="left_col">
-                <div class="results">
-                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                    <p>2 Results</p>
-                </div>
-                <p class="num">@ViewData["ComName"]</p>
-                <p class="num2">CSI Company Records</p>
+            }
+            else
+            {
+                <div class="left_col">
+                    <div class="results">
+                        <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                        <p>2 Results</p>
+                    </div>
+                    <p class="num">@ViewData["ComName"]</p>
+                    <p class="num2">CSI Company Records</p>
 
-                <div class="multi act">
-                    Multiple Results
-                </div>
-                <div class="multi non">
-                    Detailed Information
-                </div>
+                    <div class="multi act">
+                        Multiple Results
+                    </div>
+                    <div class="multi non">
+                        Detailed Information
+                    </div>
 
-                <div class="seaInfo">
-                    Search Information
-                </div>
+                    <div class="seaInfo">
+                        Search Information
+                    </div>
 
-                <div class="userInfo">
-                    <p class="">User:<span>@TempData["user"]</span></p>
-                    <p class="">Date:<span>@TempData["date"]</span></p>
-                    <p class="">Reference:<span>@TempData["ref"]</span></p>
-                    <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
+                    <div class="userInfo">
+                        <p class="">User:<span>@TempData["user"]</span></p>
+                        <p class="">Date:<span>@TempData["date"]</span></p>
+                        <p class="">Reference:<span>@TempData["ref"]</span></p>
+                        <p class="">Request:<span style="margin-left: 10px; left: -25px; font-size: 8px;"> @TempData["ResponseMessage"]</span></p>
+                    </div>
                 </div>
-            </div>
-            <div class="right_col">
-                <div class="seaRes">
-                    Search Results
-                </div>
-                <p>
-
+                <div class="right_col">
+                    <div class="seaRes">
+                        CSI Company Records
+                    </div>
                     @if (ViewData["Message"].ToString() == "good" && type == "name")
                     {
                         <table class="table table-striped">
@@ -106,6 +107,7 @@
 
                     else if (@ViewData["Message"].ToString() == "good" && type == "comID" || type == "regNum")
                     {
+
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -163,9 +165,9 @@
                         </div>
 
                     }
-            </div>}
-
-
+                </div>
+            }
+        </div>
     </div>
 </div>
 

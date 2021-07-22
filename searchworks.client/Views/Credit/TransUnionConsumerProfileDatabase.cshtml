@@ -1,0 +1,754 @@
+﻿@{
+    ViewBag.Title = "TransUnionConsumerProfileDatabaseResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-10 col-sm-10">
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export()" class="button btn-b2" />
+    </div>
+
+    <div class="con2">
+        @if (TempData["msg"] != null)
+        {
+            <div>@TempData["msg"] </div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
+        }
+        else
+        {
+            <div class="left_col">
+                <div class="results">
+                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                    <p>@TempData["ResponseCount"]</p>
+                </div>
+                <p class="num">@TempData["Fullname"]</p>
+                <p class="num2">TransUnion Consumer Profile Results</p>
+
+                <div class="multi act">
+                    Multiple Results
+                </div>
+                <div class="multi non">
+                    Detailed Information
+                </div>
+
+                <div class="seaInfo">
+                    Search Information
+                </div>
+
+                <div class="userInfo">
+                    <p class="">User:<span>@TempData["user"]</span></p>
+                    <p class="">Date:<span>@TempData["date"]</span></p>
+                    <p class="">Reference:<span>@TempData["ref"]</span></p>
+                    <p class="">Request:<span>@TempData["ResponseMessage"]</span></p>
+                </div>
+            </div>
+            <div class="right_col">
+                <div id="notification" class="seaRes">
+                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="not">
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                    <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                </div>
+
+                <div id="notification" class="seaRes">
+                    PERSONAL INFORMATION <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <tbody>
+                            @foreach (var item in @ViewBag.PersonInfoList)
+                            {
+                                <tr>
+                                    <td colspan="2">Information Date</td>
+                                    <td style="border: none;" colspan="4">@item.InformationDate</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">PersonID</td>
+                                    <td style="border: none;" colspan="4">@item.PersonID</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Title</td>
+                                    <td style="border: none;" colspan="4">@item.Title</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">DateOfBirth</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.DateOfBirth
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">FirstName</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.FirstName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Surname</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.Surname
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Fullname</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.Fullname
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">IDNumber</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.IDNumber
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">IDNumber_Alternate</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.IDNumber_Alternate
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">MaritalStatus</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.MaritalStatus
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Gender</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.Gender
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Age</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.Age
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">MiddleName1</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.MiddleName1
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">MiddleName2</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.MiddleName2
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">SpouseFirstName</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.SpouseFirstName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">SpouseSurname</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.SpouseSurname
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NumberOfDependants</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.NumberOfDependants
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Remarks</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.Remarks
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">HasProperties</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.HasProperties
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">AlsoKnownAs</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.AkaName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">ConsumerID</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.ConsumerID
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="notification" class="seaRes">
+                    HOME AFFAIRS INFORMATION <span id="plusHome" class="coll"><i class="fas fa-plus"></i></span><span id="minusHome" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="HomeAffairs">
+                    <table class="table table-striped">
+                        <tbody>
+                            @foreach (var item in @ViewBag.HomeAffairsInfoList)
+                            {
+                                <tr>
+                                    <td colspan="2">FirstName</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.FirstName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">DeceasedDate</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.DeceasedDate
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">IDVerified</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.IDVerified
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">SurnameVerified</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.SurnameVerified
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Warnings</td>
+                                    <td style="border: none;" colspan="4">
+                                        @item.Warnings
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="notification" class="seaRes">
+                    CREDIT INFORMATION <span id="plusCreditHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusCreditHis" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="CreHis">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th class="col_header" style="border: none;" colspan="6">Data Counts</th>
+                            </tr>
+                            @foreach (var item in @ViewBag.dataCountsList)
+                            {
+                                <tr>
+                                    <td colspan="2">Accounts</td>
+                                    <td style="border: none;" colspan="4">@item.Accounts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Enquires</td>
+                                    <td style="border: none;" colspan="4">@item.Enquires</td>
+                                </tr>
+                                @*
+                                    <tr>
+                                        <td colspan="2">Judgments</td>
+                                        <td style="border: none;" colspan="4">@item.Judgments </td>
+                                    </tr>
+                                *@
+                                <tr>
+                                    <td colspan="2">Notices</td>
+                                    <td style="border: none;" colspan="4">@item.Notices </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Bank Defaults</td>
+                                    <td style="border: none;" colspan="4">@item.BankDefaults </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Collections</td>
+                                    <td style="border: none;" colspan="4">@item.Collections </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Directors</td>
+                                    <td style="border: none;" colspan="4">@item.Directors </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Addresses</td>
+                                    <td style="border: none;" colspan="4">@item.Addresses </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Telepohnes</td>
+                                    <td style="border: none;" colspan="4">@item.Telephones </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Occupants</td>
+                                    <td style="border: none;" colspan="4">@item.Occupants </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Employers</td>
+                                    <td style="border: none;" colspan="4">@item.Employers </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Trace Alerts</td>
+                                    <td style="border: none;" colspan="4">@item.TraceAlerts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Payment Profiles</td>
+                                    <td style="border: none;" colspan="4">@item.PaymentProfiles</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Own Enquires</td>
+                                    <td style="border: none;" colspan="4">@item.OwnEnquiries</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Admin Orders</td>
+                                    <td style="border: none;" colspan="4">@item.AdminOrders</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Possible Matches</td>
+                                    <td style="border: none;" colspan="4">@item.PossibleMatches</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Definite Matches</td>
+                                    <td style="border: none;" colspan="4">@item.DefiniteMatches</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Loans</td>
+                                    <td style="border: none;" colspan="4">@item.Loans</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Fraud Alerts</td>
+                                    <td style="border: none;" colspan="4">@item.FraudAlerts</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Companies</td>
+                                    <td style="border: none;" colspan="4">@item.Companies</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Properties</td>
+                                    <td style="border: none;" colspan="4">@item.Properties</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Documents</td>
+                                    <td style="border: none;" colspan="4">@item.Documents</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Demand Letters</td>
+                                    <td style="border: none;" colspan="4">@item.DemandLetters</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Trusts</td>
+                                    <td style="border: none;" colspan="4">@item.Trusts</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Bonds</td>
+                                    <td style="border: none;" colspan="4">@item.Bonds</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Public Defaults</td>
+                                    <td style="border: none;" colspan="4">@item.PublicDefaults</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">NLR Accounts</td>
+                                    <td style="border: none;" colspan="4">@item.NLRAccounts</td>
+                                </tr>
+                            }
+                            <tr>
+                                <th class="col_header" style="border: none;" colspan="6">DebtReview Status</th>
+                            </tr>
+                            @if (@ViewBag.debtReviewStatusList != null)
+                            {
+                                foreach (var a in @ViewBag.debtReviewStatusList)
+                                {
+                                    <tr>
+                                        <td colspan="2">StatusDate</td>
+                                        <td style="border: none;" colspan="4">
+                                            @a.StatusDate
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">StatusDescription</td>
+                                        <td style="border: none;" colspan="4">
+                                            @a.StatusDescription
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6">No Data</td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <th class="col_header" style="border: none;" colspan="6">Enquiry History</th>
+                            </tr>
+
+                            <tr>
+                                <th colspan="2">Date</th>
+                                <th colspan="2">By</th>
+                                <th colspan="2">Contact</th>
+                            </tr>
+
+                            @foreach (var enq in @ViewBag.enquiryInformationList)
+                            {
+                                <tr>
+                                    <td colspan="2">@enq.EnquiryDate</td>
+                                    <td colspan="2">@enq.EnquiredBy</td>
+                                    <td colspan="2">@enq.EnquiredByContact</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="notification" class="seaRes">
+                    HISTORICAL INFORMATION <span id="plusHistInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHistInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="HistInfo">
+                    <table class="table table-striped">
+                        <tr>
+                            <th class="col_header" style="border: none;" colspan="7">Address History</th>
+                        </tr>
+                        @if (@ViewBag.addressInformationList != null)
+                        {
+                            <tr>
+                                <th colspan="1">Type</th>
+                                <th colspan="1">Line1</th>
+                                <th colspan="1">Line2</th>
+                                <th colspan="1">Line3</th>
+                                <th colspan="1">PostalCode</th>
+                                <th colspan="1">FullAddress</th>
+                                <th colspan="1">LastUpdatedDate</th>
+                            </tr>
+                            foreach (var add in @ViewBag.addressInformationList)
+                            {
+                                <tr>
+                                    <td colspan="1">@add.TypeDescription</td>
+                                    <td colspan="1">@add.Line1</td>
+                                    <td colspan="1">@add.Line2</td>
+                                    <td colspan="1">@add.Line3</td>
+                                    <td colspan="1">@add.PostalCode</td>
+                                    <td colspan="1">@add.FullAddress</td>
+                                    <td colspan="1">@add.LastUpdatedDate</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+
+                            <tr>
+                                <td colspan="8">No Data</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th class="col_header" style="border: none;" colspan="7">Telephone History</th>
+                        </tr>
+                        @if (@ViewBag.telephoneInformationList != null)
+                        {
+                            <tr>
+                                <th colspan="2">TypeDescription</th>
+                                <th colspan="1">DialCode</th>
+                                <th colspan="1">Number</th>
+                                <th colspan="1">FullNumber</th>
+                                <th colspan="2">LastUpdatedDateTel</th>
+                            </tr>
+                            foreach (var Tel in @ViewBag.telephoneInformationList)
+                            {
+                                <tr>
+                                    <td colspan="2">@Tel.TypeDescriptionTel</td>
+                                    <td colspan="1">@Tel.DialCode</td>
+                                    <td colspan="1">@Tel.Number</td>
+                                    <td colspan="1">@Tel.FullNumber</td>
+                                    <td colspan="2">@Tel.LastUpdatedDateTel</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+
+                            <tr>
+                                <td colspan="8">No Data</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th class="col_header" style="border: none;" colspan="7">Employment History</th>
+                        </tr>
+                        @if (@ViewBag.employmentInformationList != null)
+                        {
+
+                            <tr>
+                                <th colspan="4">EmployerName</th>
+                                <th colspan="4">Designation</th>
+                            </tr>
+                            foreach (var Emp in @ViewBag.employmentInformationList)
+                            {
+                                <tr>
+                                    <td colspan="4">@Emp.EmployerName</td>
+                                    <td colspan="4">@Emp.Designation</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+
+                            <tr>
+                                <td colspan="8">No Data</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div id="notification" class="seaRes">
+                    INTERNAL ENQUIRY INFORMATION <span id="plusIntern" class="coll"><i class="fas fa-plus"></i></span><span id="minusintern" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+
+                <div class="INTENINFO">
+                    <table class="table table-striped">
+                        <tbody>
+                            @if (@ViewBag.InternalEnqHistoryList != null)
+
+                            {
+                                <tr>
+                                    <th colspan="2">CompanyName</th>
+                                    <th colspan="1">EnquiryDate</th>
+                                    <th colspan="1">ContactPerson</th>
+                                    <th colspan="1">PhoneNumber</th>
+                                    <th colspan="1">EmailAddress</th>
+                                </tr>
+                                foreach (var item in @ViewBag.InternalEnqHistoryList)
+                                {
+                                    <tr>
+                                        <td colspan="2">@item.CompanyName</td>
+                                        <td colspan="1">@item.IntEnquiryDate</td>
+                                        <td colspan="1">@item.ContactPerson</td>
+                                        <td colspan="1">@item.PhoneNumber</td>
+                                        <td colspan="1">@item.EmailAddress</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+
+                                <tr>
+                                    <td colspan="8">No Data</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+
+   function Export() {
+        $(".PerInfo").show();
+        $("#minusPerInfo").show();
+        $("#plusPerInfo").hide();
+        $("#PITU").toggle();
+        $(".HomeInfo").show();
+        $("#minusHomeInfo").show();
+        $("#plusHomeInfo").hide();
+        $("#HAITU").toggle();
+        $(".not").show();
+        $("#minusNot").show();
+        $("#plusNot").hide();
+        $("#minusNot").hide();
+        $("#plusNot").show();
+        $(".not").hide();
+        var opt = {
+            margin: 0.1,
+            filename: 'ExperianConsumerProfile.pdf',
+            //filename: 'ExperianConsumerProfile`${@ViewData["ExFullname"]}`.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 1 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+        };
+        var element = document.getElementById('content');
+        html2pdf().set(opt).from(element).save();
+        setTimeout(function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+            $("#PITU").toggle();
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+            $("#HAITU").toggle();
+        }, 1000);
+    }
+
+    $(document).ready(function () {
+
+        $("#minusHome").hide();
+        $(".HomeAffairs").hide();
+
+        $('#plusHome').on('click', function () {
+            $(".HomeAffairs").show();
+            $("#minusHome").show();
+            $("#plusHome").hide();
+
+        });
+
+        $('#minusHome').on('click', function () {
+            $("#minusHome").hide();
+            $("#plusHome").show();
+            $(".HomeAffairs").hide();
+        });
+
+        $("#minusintern").hide();
+        $(".INTENINFO").hide();
+
+        $('#plusIntern').on('click', function () {
+            $(".INTENINFO").show();
+            $("#minusintern").show();
+            $("#plusIntern").hide();
+
+        });
+
+        $('#minusintern').on('click', function () {
+            $("#minusintern").hide();
+            $("#plusIntern").show();
+            $(".INTENINFO").hide();
+        });
+
+        $(".not").hide();
+        $("#minusNot").hide();
+
+        $('#plusNot').on('click', function () {
+            $(".not").show();
+            $("#minusNot").show();
+            $("#plusNot").hide();
+
+        });
+
+        $('#minusNot').on('click', function () {
+            $("#minusNot").hide();
+            $("#plusNot").show();
+            $(".not").hide();
+
+        });
+
+        $("#minusSeaInfo").hide();
+        $(".SeaInfo").hide();
+
+        $('#plusSeaInfo').on('click', function () {
+            $(".SeaInfo").show();
+            $("#minusSeaInfo").show();
+            $("#plusSeaInfo").hide();
+
+        });
+
+        $('#minusSeaInfo').on('click', function () {
+            $("#minusSeaInfo").hide();
+            $("#plusSeaInfo").show();
+            $(".SeaInfo").hide();
+        });
+
+        $("#minusPerInfo").hide();
+        $(".PerInfo").hide();
+
+        $('#plusPerInfo').on('click', function () {
+            $(".PerInfo").show();
+            $("#minusPerInfo").show();
+            $("#plusPerInfo").hide();
+
+        });
+
+        $('#minusPerInfo').on('click', function () {
+            $("#minusPerInfo").hide();
+            $("#plusPerInfo").show();
+            $(".PerInfo").hide();
+        });
+
+        $("#minusHomeInfo").hide();
+        $(".HomeInfo").hide();
+
+        $('#plusHomeInfo').on('click', function () {
+            $(".HomeInfo").show();
+            $("#minusHomeInfo").show();
+            $("#plusHomeInfo").hide();
+
+        });
+
+        $('#minusHomeInfo').on('click', function () {
+            $("#minusHomeInfo").hide();
+            $("#plusHomeInfo").show();
+            $(".HomeInfo").hide();
+        });
+
+        $("#minusTeleHis").hide();
+        $(".TeleHis").hide();
+
+        $('#plusTeleHis').on('click', function () {
+            $(".TeleHis").show();
+            $("#minusTeleHis").show();
+            $("#plusTeleHis").hide();
+
+        });
+
+        $('#minusTeleHis').on('click', function () {
+            $("#minusTeleHis").hide();
+            $("#plusTeleHis").show();
+            $(".TeleHis").hide();
+        });
+
+        $("#minusEmpHis").hide();
+        $(".EmpHis").hide();
+
+        $('#plusEmpHis').on('click', function () {
+            $(".EmpHis").show();
+            $("#minusEmpHis").show();
+            $("#plusEmpHis").hide();
+
+        });
+
+        $('#minusEmpHis').on('click', function () {
+            $("#minusEmpHis").hide();
+            $("#plusEmpHis").show();
+            $(".EmpHis").hide();
+        });
+
+        $("#minusCreditHis").hide();
+        $(".CreHis").hide();
+
+        $('#plusCreditHis').on('click', function () {
+            $(".CreHis").show();
+            $("#minusCreditHis").show();
+            $("#plusCreditHis").hide();
+
+        });
+
+        $('#minusCreditHis').on('click', function () {
+            $("#minusCreditHis").hide();
+            $("#plusCreditHis").show();
+            $(".CreHis").hide();
+        });
+
+        $("#minusHistInfo").hide();
+        $(".HistInfo").hide();
+
+        $('#plusHistInfo').on('click', function () {
+            $(".HistInfo").show();
+            $("#minusHistInfo").show();
+            $("#plusHistInfo").hide();
+
+        });
+
+        $('#minusHistInfo').on('click', function () {
+            $("#minusHistInfo").hide();
+            $("#plusHistInfo").show();
+            $(".HistInfo").hide();
+        });
+
+    });
+</script>

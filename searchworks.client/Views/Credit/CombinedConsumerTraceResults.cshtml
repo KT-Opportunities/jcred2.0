@@ -5,1209 +5,972 @@
 @model IEnumerable<searchworks.client.Credit.PersonInformation>
 
 @{
-    ViewBag.Title = "Combined Consumer Trace";
+    ViewBag.Title = "CombinedConsumerTraceResults";
 }
 
-
-
 <div class="col-md-10 col-sm-10">
-    <div class="sea non">SEARCH RESULTS</div>
-    <div class="sea non">Combined Consumer Trace</div>
-    <div class="sea act">@ViewData["refe"]</div>
-    <div class="con2">
-        <div class="left_col">
-            <div class="results">
-                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                <p>2 Results</p>
-            </div>
-            <p class="num">@ViewData["refe"]</p>
-            <p class="num2">Combined Consumer Trace</p>
-
-            <div class="multi non">
-                Multiple Results
-            </div>
-            <div class="multi act">
-                Detailed Information
-            </div>
-
-            <div class="seaInfo">
-                Search Information
-            </div>
-
-            <div class="userInfo">
-                <p class="">User:<span>@ViewData["user"]</span></p>
-                <p class="">Date:<span>@ViewData["date"] </span></p>
-                <p class="">Reference:<span>@ViewData["ref"]</span></p>
-                <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
-
-            </div>
-
-        </div>
-        <div class="right_col">
-            <div id="notification" class="seaRes">
-                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="not">
-                Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
-                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
-                <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
-            </div>
-
-            <div id="notification" class="seaRes">
-                CompuScan <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            @if (@ViewData["Message"].ToString() == "good" && @ViewData["CompuScanMessage"].ToString() == "Found")
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export('CombinedConsumerTraceResults.pdf')" class="button btn-b2" />
+    </div>
+    <div id="content">
+        <div class="con2">
+            @if (@ViewData["Message"].ToString() == "Service is offline" ||
+                @ViewData["Message"].ToString() == "Branch defined search limit has been reached.")
             {
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="PI" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                <div>@ViewData["Message"].ToString()</div>
+                <a href="javascript:void(0);" onclick="history.go(-1);">Go back</a>
 
-                            </tr>
-                        </thead>
-                        <tbody id="PIT" style="display:none;">
-                            <tr>
-                                <td colspan="2">Date of Birth</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanDateOfBirth"] </td>
+            }
+            else
+            {
+                <div class="left_col">
+                    <div class="results">
+                        <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                        <p>2 Results</p>
+                    </div>
+                    <p class="num">@ViewData["refe"]</p>
+                    <p class="num2">Combined Consumer Trace</p>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">First Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanFirstName"]</td>
+                    <div class="multi non">
+                        Multiple Results
+                    </div>
+                    <div class="multi act">
+                        Detailed Information
+                    </div>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Surname</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanSurname"]</td>
+                    <div class="seaInfo">
+                        Search Information
+                    </div>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Fullname</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanFullname"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">ID Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanIDNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Gender</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanGender"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Age</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanAge"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Middle Name 1</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanMiddleName1"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Middle Name 2</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanMiddleName2"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Has Properties</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanHasProperties"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                    <div class="userInfo">
+                        <p class="">User:<span>@ViewData["user"]</span></p>
+                        <p class="">Date:<span>@ViewData["date"] </span></p>
+                        <p class="">Reference:<span>@ViewData["ref"]</span></p>
+                        <p class="">Request:<br /><span>@ViewData["ResponseMessage"]</span></p>
+                    </div>
                 </div>
+                <div class="right_col">
+                    <div id="notification" class="seaRes">
+                        NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                    </div>
+                    <div class="not">
+                        Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                        We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                        <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                    </div>
 
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HAI" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
+                    <div id="notification" class="seaRes">
+                        CompuScan <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
+                    </div>
+                    @if (@ViewData["Message"].ToString() == "good" && @ViewData["CompuScanMessage"].ToString() == "Found")
+                    {
+                        <div class="SeaInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="PI" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="PIT" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Date of Birth</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanDateOfBirth"] </td>
 
-                            </tr>
-                        </thead>
-                        <tbody id="HAIT" style="display:none;">
-                            <tr>
-                                <td colspan="2">Deceased Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanDeceasedStatus"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">First Name</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanFirstName"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Deceased Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanDeceasedDate"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Surname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanSurname"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Cause of Death</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanCauseOfDeath"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Fullname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanFullname"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Verified Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanVerifiedDate"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">ID Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanIDNumber"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Verified Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanVerifiedStatus"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Gender</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanGender"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Age</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanAge"]</td>
 
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Middle Name 1</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanMiddleName1"]</td>
 
-                        </tbody>
-                    </table>
-                </div>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Middle Name 2</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanMiddleName2"]</td>
 
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="CI" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Has Properties</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanHasProperties"]</td>
 
-                            </tr>
-                        </thead>
-                        <tbody id="CIT" style="display:none;">
-                            <tr>
-                                <td colspan="2">Protective Verification</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanProtectiveVerification"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                        <div class="SeaInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="HAI" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="HAIT" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Deceased Status</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanDeceasedStatus"] </td>
 
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Deceased Date</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanDeceasedDate"]</td>
 
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Cause of Death</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanCauseOfDeath"]</td>
 
-                        </tbody>
-                    </table>
-                </div>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Verified Date</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanVerifiedDate"]</td>
 
-                <div class="SeaInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
-                            </tr>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Verified Status</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanVerifiedStatus"] </td>
 
-                        </thead>
-                    </table>
-                    <table id="HIT" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="add" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="addT" style="display:none;">
-                            <tr>
-                                <td>
-                                    <div class="colspaceHeading">Code Type</div>
-                                    <div class="colspaceHeading">Line 1</div>
-                                    <div class="colspaceHeading">Line 2</div>
-                                    <div class="colspaceHeading">Line 3</div>
-                                    <div class="colspaceHeading">Line 4</div>
-                                    <div class="colspaceHeading">Postal Code</div>
-                                    <div class="colspaceHeading">Last Updated</div>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                                    @foreach (var key in ViewBag.ArrayList)
+                        <div class="SeaInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="CI" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="CIT" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Protective Verification</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanProtectiveVerification"] </td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="PerInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="HIT" style="display:none;">
+                                    <tr>
+                                        <th id="add" style="border: none; cursor:pointer;" colspan="2">Address History</th>
+                                    </tr>
+                                    @if (@ViewBag.CompuScanAddressHist.Count != null)
                                     {
-                                        <div class="colspace"> @key.Value</div>
+                                        <tr>
+                                            <th colspan="2">Code Type</th>
+                                            <th colspan="1">Line1</th>
+                                            <th colspan="1">Line2</th>
+                                            <th colspan="1">Line3</th>
+                                            <th colspan="1">Line4</th>
+                                            <th colspan="1">Postal Code</th>
+                                            <th colspan="1">Last Updated</th>
+                                        </tr>
+
+                                        foreach (var item in @ViewBag.CompuScanAddressHist)
+                                        {
+                                            <tr>
+                                                <td colspan="2">@item.TypeDescription</td>
+                                                <td colspan="1">@item.Line1</td>
+                                                <td colspan="1">@item.Line2</td>
+                                                <td colspan="1">@item.Line3</td>
+                                                <td colspan="1">@item.Line4</td>
+                                                <td colspan="1">@item.PostalCode</td>
+                                                <td colspan="1">@item.LastUpdatedDate</td>
+                                            </tr>
+                                        }
                                     }
-                                </td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="telT" style="display:none;">
-                            <tr>
-                                <td>
-                                    <div class="col_headerTel">Type</div>
-                                    <div class="col_headerTel">Number</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-                                    @foreach (var key in ViewBag.TelArrayList)
+                                    else
                                     {
-                                        <div class="colspaceTel"> @key.Value</div>
+                                        <tr>
+
+                                            <td colspan="8">No Data</td>
+                                        </tr>
                                     }
-                                </td>
-                            </tr>
-                        </tbody>
+                                </tbody>
 
-                        <thead>
-                            <tr>
-                                <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="emT" style="display:none;">
-                            <tr>
-                                <td>
-                                    <div class="col_headerTel">Employer Name</div>
-                                    <div class="col_headerTel">Designation</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-                                    @foreach (var key in ViewBag.EMArrayList)
-                                    {
-                                        <div class="colspaceTel"> @key.Value</div>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
+                                @*<tbody id="addT" style="display:none;">
+                                        <tr>
+                                            <td>
+                                                <div class="colspaceHeading"></div>
+                                                <div class="colspaceHeading">Line 1</div>
+                                                <div class="colspaceHeading">Line 2</div>
+                                                <div class="colspaceHeading">Line 3</div>
+                                                <div class="colspaceHeading">Line 4</div>
+                                                <div class="colspaceHeading">Postal Code</div>
+                                                <div class="colspaceHeading">Last Updated</div>
 
-                    </table>
-                    @*<div style="display:none;" id="addT">
+                                                @foreach (var key in ViewBag.ArrayList)
+                                                {
+                                                    <div class="colspace"> @key.Value</div>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <thead>
+                                        <tr>
+                                            <th id="tel" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="telT" style="display:none;">
+                                        <tr>
+                                            <td>
+                                                <div class="col_headerTel">Type</div>
+                                                <div class="col_headerTel">Number</div>
+                                                <div class="col_headerTel">Last Updated Date</div>
+                                                @foreach (var key in ViewBag.TelArrayList)
+                                                {
+                                                    <div class="colspaceTel"> @key.Value</div>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
 
-                        <div class="thatrow">
-                            <div class="col_header">Code Type</div>
-                            <div class="col_header">Line 1</div>
-                            <div class="col_header">Line 2</div>
-                            <div class="col_header">Line 3</div>
-                            <div class="col_header">Line 4</div>
-                            <div class="col_header">Postal Code</div>
-                            <div class="col_header">Last Updated Date</div>
+                                    <thead>
+                                        <tr>
+                                            <th id="em" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="emT" style="display:none;">
+                                        <tr>
+                                            <td>
+                                                <div class="col_headerTel">Employer Name</div>
+                                                <div class="col_headerTel">Designation</div>
+                                                <div class="col_headerTel">Last Updated Date</div>
+                                                @foreach (var key in ViewBag.EMArrayList)
+                                                {
+                                                    <div class="colspaceTel"> @key.Value</div>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>*@
+                            </table>
 
-                            @foreach (var key in ViewBag.ArrayList)
-                            {
-                                <div class="colspace"> @key.Value</div>
-                            }
+                            @*<div style="display:none;" id="addT">
+
+                                    <div class="thatrow">
+                                        <div class="col_header">Code Type</div>
+                                        <div class="col_header">Line 1</div>
+                                        <div class="col_header">Line 2</div>
+                                        <div class="col_header">Line 3</div>
+                                        <div class="col_header">Line 4</div>
+                                        <div class="col_header">Postal Code</div>
+                                        <div class="col_header">Last Updated Date</div>
+
+                                        @foreach (var key in ViewBag.ArrayList)
+                                        {
+                                            <div class="colspace"> @key.Value</div>
+                                        }
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="CIT" style="display:none;">
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div style="display:none;" id="telT">
+                                    <div class="thatrow">
+                                        <div class="col_headerTel">Type</div>
+                                        <div class="col_headerTel">Number</div>
+                                        <div class="col_headerTel">Last Updated Date</div>
+
+                                        @foreach (var key in ViewBag.TelArrayList)
+                                        {
+                                            <div class="colspaceTel"> @key.Value</div>
+                                        }
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="CIT" style="display:none;">
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div style="display:none;" id="emT">
+
+                                    <div class="thatrow">
+                                        <div class="col_headerTel">Employer Name</div>
+                                        <div class="col_headerTel">Designation</div>
+                                        <div class="col_headerTel">Last Updated Date</div>
+
+                                        @foreach (var key in ViewBag.EMArrayList)
+                                        {
+                                            <div class="colspaceTel"> @key.Value</div>
+                                        }
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="CIT" style="display:none;">
+                                        </tbody>
+                                    </table>
+                                </div>*@
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                            </thead>
-                            <tbody id="CIT" style="display:none;">
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div style="display:none;" id="telT">
-                        <div class="thatrow">
-                            <div class="col_headerTel">Type</div>
-                            <div class="col_headerTel">Number</div>
-                            <div class="col_headerTel">Last Updated Date</div>
-
-                            @foreach (var key in ViewBag.TelArrayList)
-                            {
-                                <div class="colspaceTel"> @key.Value</div>
-                            }
+                    }
+                    else if (@ViewData["Message"].ToString() == "Service is offline")
+                    {
+                        <div class="no_results">
+                            <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                            <div class="no_res">
+                                @ViewData["CompuScan"]
+                            </div>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                            </thead>
-                            <tbody id="CIT" style="display:none;">
-                            </tbody>
-                        </table>
-                    </div>
 
-                    <div style="display:none;" id="emT">
+                    }
+                    else if (@ViewData["CompuScanMessage"].ToString() == "NotFound")
+                    {
 
-                        <div class="thatrow">
-                            <div class="col_headerTel">Employer Name</div>
-                            <div class="col_headerTel">Designation</div>
-                            <div class="col_headerTel">Last Updated Date</div>
-
-                            @foreach (var key in ViewBag.EMArrayList)
-                            {
-                                <div class="colspaceTel"> @key.Value</div>
-                            }
+                        <div class="no_results">
+                            @ViewData["CompuScanMessage"]
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                            </thead>
-                            <tbody id="CIT" style="display:none;">
-                            </tbody>
-                        </table>
-                    </div>*@
-                </div>
-            }
-            else if (@ViewData["Message"].ToString() == "Service is offline")
-            {
-                <div class="no_results">
-                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                    <div class="no_res">
-                        @ViewData["Message2"]
+                    }
+
+                    <div id="notification" class="seaRes">
+                        TransUnion <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
                     </div>
-                </div>
+                    @if (@ViewData["Message"].ToString() == "good" && @ViewData["TransUnionMessage"].ToString() == "Found")
+                    {
+                        <div class="PerInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="PIU" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="PITU" style="display:none;">
 
-            }
+                                    <tr>
+                                        <td colspan="2">Information Date</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoInformationDate"] </td>
 
-            <div id="notification" class="seaRes">
-                TransUnion <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            @if (@ViewData["Message"].ToString() == "good" && @ViewData["TransUnionMessage"].ToString() == "Found")
-            {
-                <div class="PerInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="PIU" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                            </tr>
-                        </thead>
-                        <tbody id="PITU" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Person Date</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoPersonID"] </td>
 
-                            <tr>
-                                <td colspan="2">Information Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoInformationDate"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Title</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoTitle"] </td>
 
-                            <tr>
-                                <td colspan="2">Person Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoPersonID"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Date of Birth</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoDateOfBirth"] </td>
 
-                            <tr>
-                                <td colspan="2">Title</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoTitle"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">First Name</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoFirstName"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Surname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSurname"]</td>
 
-                            <tr>
-                                <td colspan="2">Date of Birth</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoDateOfBirth"] </td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Fullname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoFullname"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">First Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoFirstName"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">ID Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoIDNumber"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Surname</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSurname"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Fullname</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoFullname"]</td>
+                                    <tr>
+                                        <td colspan="2">Marital Status</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMaritalStatus"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">ID Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoIDNumber"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Gender</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoGender"]</td>
 
-                            <tr>
-                                <td colspan="2">Marital Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMaritalStatus"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Age</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoAge"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Middle Name 1</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMiddleName1"]</td>
 
-                            <tr>
-                                <td colspan="2">Gender</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoGender"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Middle Name 2</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMiddleName2"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Age</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoAge"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Middle Name 1</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMiddleName1"]</td>
+                                    <tr>
+                                        <td colspan="2">Deceased Date</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoDeceasedDate"]</td>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Middle Name 2</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMiddleName2"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Deceased Status</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoDeceasedStatus"]</td>
 
-                            <tr>
-                                <td colspan="2">Deceased Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoDeceasedDate"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Spouse First Name </td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSpouseFirstName"]</td>
 
-                            <tr>
-                                <td colspan="2">Deceased Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoDeceasedStatus"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Spouse First Name </td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSpouseFirstName"]</td>
 
-                            <tr>
-                                <td colspan="2">Spouse First Name </td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSpouseFirstName"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Spouse Surname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSpouseSurname"]</td>
 
-                            <tr>
-                                <td colspan="2">Spouse First Name </td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSpouseFirstName"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Number Of Dependants</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoNumberOfDependants"]</td>
 
-                            <tr>
-                                <td colspan="2">Spouse Surname</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoSpouseSurname"]</td>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="2">Has Properties</td>
+                                        <td style="border: none;" colspan="4">@ViewData["CompuScanHasProperties"]</td>
 
-                            <tr>
-                                <td colspan="2">Number Of Dependants</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoNumberOfDependants"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Has Properties</td>
-                                <td style="border: none;" colspan="4">@ViewData["CompuScanHasProperties"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="PerInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HAIU" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="HAITU" style="display:none;">
-                            <tr>
-                                <td colspan="2">Email Address</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoEmailAddress"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Mobile Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMobileNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Home Telephone Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoHomeTelephoneNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Work Telephone Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoWorkTelephoneNumber"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="PerInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HIU" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
-                            </tr>
-
-                        </thead>
-                    </table>
-                    <table style="display:none;" id="HITU" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="addU" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                            </tr>
-                            <tr>
-                                <th id="telU" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                            </tr>
-                            <tr>
-                                <th id="emU" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                            </tr>
-
-                        </thead>
-                    </table>
-                    <div style="display:none;" id="addTU">
-                        <div class="thatrow">
-                            <div class="col_header">Code Type</div>
-                            <div class="col_header">Line 1</div>
-                            <div class="col_header">Line 2</div>
-                            <div class="col_header">Line 3</div>
-                            <div class="col_header">Line 4</div>
-                            <div class="col_header">Postal Code</div>
-                            <div class="col_header">Last Updated Date</div>
-
-                            @foreach (var key in ViewBag.ArrayList)
-                            {
-                                <div class="colspace"> @key.Value</div>
-                            }
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                            </thead>
-                            <tbody id="CITU" style="display:none;">
-                            </tbody>
-                        </table>
-                    </div>
 
-                    <div style="display:none;" id="telTU">
+                        <div class="PerInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="HAIU" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="HAITU" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Email Address</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoEmailAddress"] </td>
 
-                        <div class="thatrow">
-                            <div class="col_headerTel">Type</div>
-                            <div class="col_headerTel">Number</div>
-                            <div class="col_headerTel">Last Updated Date</div>
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
 
-                            @foreach (var key in ViewBag.TelArrayList)
-                            {
-                                <div class="colspaceTel"> @key.Value</div>
-                            }
+                                    <tr>
+                                        <td colspan="2">Mobile Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoMobileNumber"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">Home Telephone Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoHomeTelephoneNumber"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">Work Telephone Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["TransUnionInfoWorkTelephoneNumber"] </td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                            </thead>
-                            <tbody id="CITU" style="display:none;">
-                            </tbody>
-                        </table>
-                    </div>
 
-                    <div style="display:none;" id="emTU">
-
-                        <div class="thatrow">
-                            <div class="col_headerTel">Employer Name</div>
-                            <div class="col_headerTel">Designation</div>
-                            <div class="col_headerTel">Last Updated Date</div>
-
-                            @foreach (var key in ViewBag.EMArrayList)
-                            {
-                                <div class="colspaceTel"> @key.Value</div>
-                            }
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                            </thead>
-                            <tbody id="CIT" style="display:none;">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            }
-            else if (@ViewData["Message"].ToString() == "Service is offline")
-            {
-                <div class="no_results">
-                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                    <div class="no_res">
-                        @ViewData["Message2"]
-                    </div>
-                </div>
-
-            }
-
-            <div id="notification" class="seaRes">
-                XDS<span id="plusHomeInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHomeInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            @if (@ViewData["Message"].ToString() == "good" && @ViewData["XDSMessage"].ToString() == "Found")
-            {
-                <div class="HomeInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="PIX" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="PITX" style="display:none;">
-
-                            <tr>
-                                <td colspan="2">Person ID</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoPersonID"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Title</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoTitle"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Date of Birth</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoDateOfBirth"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Initials</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoInitials"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">First Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoFirstName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Surname</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoSurname"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Fullname</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoFullname"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">ID Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoIDNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Passport Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoPassportNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Marital Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoMaritalStatus"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Gender</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoGender"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Age</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoAge"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Middle Name 1</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoMiddleName1"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Middle Name 2</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoMiddleName2"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Reference</td>
-                                <td style="border: none;" colspan="4">@ViewData["TransUnionInfoReference"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Has Properties</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoHasProperties"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="HomeInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HAIX" style="border: none; cursor:pointer;" colspan="2">Home Affairs Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="HAITX" style="display:none;">
-                            <tr>
-                                <td colspan="2">Deceased Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoDeceasedStatus"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Deceased Date</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoDeceasedDate"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Verified Status</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoVerifiedStatus"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="HomeInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="CIX" style="border: none; cursor:pointer;" colspan="2">Credit Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="CITX" style="display:none;">
-                            <tr>
-                                <td colspan="2">Protective Verification</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoProtectiveVerification"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">SAFPS Listing</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoSAFPSListing"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">Employer Fraud Verification</td>
-                                <td style="border: none;" colspan="4">@ViewData["XDSInfoEmployerFraudVerification"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="HomeInfo">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HIX" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
-                            </tr>
-
-                        </thead>
-                    </table>
-                    <table id="HITX" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="addX" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="addTX" style="display:none;">
-                            <tr>
-                                <td>
-                                <div class="colspaceHeading">Code Type</div>
-                                <div class="colspaceHeading">Line 1</div>
-                                <div class="colspaceHeading">Line 2</div>
-                                <div class="colspaceHeading">Line 3</div>
-                                <div class="colspaceHeading">Line 4</div>
-                                <div class="colspaceHeading">Postal Code</div>
-                                <div class="colspaceHeading">Updated Date</div>
-                                @foreach (var key in ViewBag.ArrayList)
+                        <div class="PerInfo">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="HI" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th colspan="8" class="col_header">Address History</th>
+                                </tr>
+                                @if (@ViewBag.AddressHist != null)
                                 {
-                                    <div class="colspace"> @key.Value</div>
+
+                                    <tr>
+                                        <th class="col_header">TypeDescription</th>
+                                        <th class="col_header">Line1</th>
+                                        <th class="col_header">Line2</th>
+                                        <th class="col_header">Line3</th>
+                                        <th class="col_header">Line4</th>
+                                        <th class="col_header">PostalCode</th>
+                                        <th class="col_header">FullAddress</th>
+                                        <th class="col_header">LastUpdatedDate</th>
+                                    </tr>
+                                    foreach (var item in @ViewBag.AddressHist)
+                                    {
+
+                                        <tr>
+                                            <td colspan="2">@item.TypeDescription</td>
+                                            <td colspan="1">@item.Line1</td>
+                                            <td colspan="1">@item.Line2</td>
+                                            <td colspan="1">@item.Line3</td>
+                                            <td colspan="1">@item.Line4</td>
+                                            <td colspan="1">@item.PostalCode</td>
+                                            <td colspan="1">@item.FullAddress</td>
+                                            <td colspan="1">@item.LastUpdatedDate</td>
+                                        </tr>
+                                    }
+
                                 }
-                                </td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th id="telX" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="telTX" style="display:none;" >
-                            <tr>
-                                <td>
-                                    <div class="col_headerTel">Type</div>
-                                    <div class="col_headerTel">Number</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
+                                else
+                                {
+                                    <tr>
 
-                                    @foreach (var key in ViewBag.TelArrayList)
+                                        <td colspan="8">No Data</td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <th colspan="8" class="col_header">Telephone History</th>
+                                </tr>
+                                @if (@ViewBag.TelHist != null)
+                                {
+                                    <tr>
+                                        <th colspan="2">TypeDescription</th>
+                                        <th colspan="1">Number</th>
+                                        <th colspan="3">Last Updated</th>
+                                    </tr>
+                                    foreach (var item in @ViewBag.TelHist)
                                     {
-                                        <div class="colspaceTel"> @key.Value</div>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th id="emX" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="emTX" style="display:none;">
-                            <tr>
-                                <td>
-
-                                    <div class="col_headerTel">Employer Name</div>
-                                    <div class="col_headerTel">Designation</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-
-                                    @foreach (var key in ViewBag.EMArrayList)
-                                    {
-                                        <div class="colspaceTel"> @key.Value</div>
+                                        <tr>
+                                            <td colspan="2">@item.TypeDescriptionTel</td>
+                                            <td colspan="1">@item.Number</td>
+                                            <td colspan="3">@item.LastUpdatedDateTel</td>
+                                        </tr>
                                     }
 
+                                }
+                                else
+                                {
+                                    <tr>
 
-                                </td>
+                                        <td colspan="8">No Data</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <th colspan="8" class="col_header">Employment History</th>
+                                </tr>
+                                @if (@ViewBag.EMArrayList != null)
+                                {
+                                    <tr>
+                                        <th colspan="4">EmployerName</th>
+                                        <th colspan="4">Designation</th>
+                                        <th colspan="4">Last Updated Date</th>
+                                    </tr>
 
+                                    foreach (var item in @ViewBag.EmpHist)
+                                    {
+                                        <tr>
+                                            <td colspan="4">@item.EmployerName</td>
+                                            <td colspan="4">@item.Designation</td>
+                                            <td colspan="4">@item.LastUpdatedDate</td>
+                                        </tr>
+                                    }
 
-                            </tr>
+                                }
+                                else
+                                {
+                                    <tr>
 
+                                        <td colspan="8">No Data</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
+                    else if (@ViewData["Message"].ToString() == "Service is offline")
+                    {
+                        <div class="no_results">
+                            <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                            <div class="no_res">
+                                @ViewData["TransUnion"]
+                            </div>
+                        </div>
 
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else if (@ViewData["Message"].ToString() == "Service is offline")
-            {
-                <div class="no_results">
-                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                    <div class="no_res">
-                        @ViewData["Message2"]
+                    }
+                    else if (@ViewData["TransUnionMessage"].ToString() == "NotFound")
+                    {
+
+                        <div class="no_results">
+                            @ViewData["TransUnionMessage"]
+                        </div>
+                    }
+
+                    <div id="notification" class="seaRes">
+                        VeriCred <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
                     </div>
-                </div>
 
-            }
-            <div id="notification" class="seaRes">
-                VeriCred <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-
-            @if (@ViewData["Message"].ToString() == "good" && @ViewData["VeriCredMessage"].ToString() == "Found")
-            {
-                <div class="TeleHis">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="PIV" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="PITV" style="display:none;">
-                            <tr>
-                                <td colspan="2">Date of Birth</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoDateOfBirth"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">First Name</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoFirstName"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Surname</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoSurname"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Fullname</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoFullname"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">ID Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoIDNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Gender</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoGender"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Age</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoAge"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Current Employer</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoCurrentEmployer"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="TeleHis">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HAIV" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="HAITV" style="display:none;">
-                            <tr>
-                                <td colspan="2">Physical Address</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoPhysicalAddress"] </td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Mobile Numnber</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoMobileNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Home Telephone Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoHomeTelephoneNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Work Telephone Number</td>
-                                <td style="border: none;" colspan="4">@ViewData["VeriCredInfoWorkTelephoneNumber"]</td>
-
-                                <td><a class="seaMore" href="#">View more</a></td>
-                            </tr>
-
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-
-
-                <div class="TeleHis">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="HIV" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
-                            </tr>
-                        </thead>
-
-                    </table>
-                    <table id="HITV" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th id="addV" style="border: none; cursor:pointer;" colspan="2">Address History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="addTV" style="display:none;">
-                            <tr>
-                                <td>
-                                    <div class="colspaceHeading">Code Type</div>
-                                    <div class="colspaceHeading">Line 1</div>
-                                    <div class="colspaceHeading">Line 2</div>
-                                    <div class="colspaceHeading">Line 3</div>
-                                    <div class="colspaceHeading">Line 4</div>
-                                    <div class="colspaceHeading">Postal Code</div>
-                                    <div class="colspaceHeading">Updated Date</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    @foreach (var key in ViewBag.ArrayList)
-                                    {
-                                        <div class="colspace">@key.Value</div>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th id="telV" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="telTV" style="display:none;">
-                            <tr>
-                                <td>
-                                    <div class="col_headerTel">Type</div>
-                                    <div class="col_headerTel">Number</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    @foreach (var key in ViewBag.TelArrayList)
-                                    {
-                                        <div class="colspaceTel"> @key.Value</div>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th id="emV" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                            </tr>
-                        </thead>
-                        <tbody id="emTV" style="display:none;">
-                            <tr>
-                                <td>
-                                    <div class="col_headerTel">Employer Name</div>
-                                    <div class="col_headerTel">Designation</div>
-                                    <div class="col_headerTel">Last Updated Date</div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    @foreach (var key in ViewBag.EMArrayList)
-                                    {
-                                        <div class="colspaceTel"> @key.Value</div>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                        @*<thead style="display:none;" id="HITV" class="table table-striped">
-                           
-                           
-                            <tr>
-                                <th id="telV" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
-                            </tr>
-                            <tr>
-                                <th id="emV" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
-                            </tr>
-                        </thead>*@
-                        @*<div style="display:none;" id="addTV">
-                <div class="thatrow">
-                    <div class="col_header">Code Type</div>
-                    <div class="col_header">Line 1</div>
-                    <div class="col_header">Line 2</div>
-                    <div class="col_header">Line 3</div>
-                    <div class="col_header">Line 4</div>
-                    <div class="col_header">Postal Code</div>
-                    <div class="col_header">Last Updated Date</div>
-                    @foreach (var key in ViewBag.ArrayList)
+                    @if (@ViewData["Message"].ToString() == "good" && @ViewData["VeriCredMessage"].ToString() == "Found")
                     {
-                        <div class="colspace"> @key.Value</div>
+                        <div class="TeleHis">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="PIV" style="border: none; cursor:pointer;" colspan="2">Person Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="PITV" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Date of Birth</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoDateOfBirth"] </td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">First Name</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoFirstName"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Surname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoSurname"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Fullname</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoFullname"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">ID Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoIDNumber"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Gender</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoGender"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Age</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoAge"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Current Employer</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoCurrentEmployer"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="TeleHis">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="HAIV" style="border: none; cursor:pointer;" colspan="2">Contact Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="HAITV" style="display:none;">
+                                    <tr>
+                                        <td colspan="2">Physical Address</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoPhysicalAddress"] </td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Mobile Numnber</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoMobileNumber"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Home Telephone Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoHomeTelephoneNumber"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Work Telephone Number</td>
+                                        <td style="border: none;" colspan="4">@ViewData["VeriCredInfoWorkTelephoneNumber"]</td>
+
+                                        <td><a class="seaMore" href="#">View more</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="TeleHis">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="HIV" style="border: none; cursor:pointer;" colspan="2">Historical Information</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table id="HITV" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th id="addV" style="border: none; cursor:pointer;" colspan="2">Address History</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="addTV" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <div class="colspaceHeading">Code Type</div>
+                                            <div class="colspaceHeading">Line 1</div>
+                                            <div class="colspaceHeading">Line 2</div>
+                                            <div class="colspaceHeading">Line 3</div>
+                                            <div class="colspaceHeading">Line 4</div>
+                                            <div class="colspaceHeading">Postal Code</div>
+                                            <div class="colspaceHeading">Updated Date</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @*@foreach (var key in ViewBag.ArrayList)
+                                                {
+                                                    <div class="colspace">@key.Value</div>
+                                                }*@
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th id="telV" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="telTV" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <div class="col_headerTel">Type</div>
+                                            <div class="col_headerTel">Number</div>
+                                            <div class="col_headerTel">Last Updated Date</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @*@foreach (var key in ViewBag.TelArrayList)
+                                                {
+                                                    <div class="colspaceTel"> @key.Value</div>
+                                                }*@
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th id="emV" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emTV" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <div class="col_headerTel">Employer Name</div>
+                                            <div class="col_headerTel">Designation</div>
+                                            <div class="col_headerTel">Last Updated Date</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @*@foreach (var key in ViewBag.EMArrayList)
+                                                {
+                                                    <div class="colspaceTel"> @key.Value</div>
+                                                }*@
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            @*<thead style="display:none;" id="HITV" class="table table-striped">
+
+                                    <tr>
+                                        <th id="telV" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+                                    </tr>
+                                    <tr>
+                                        <th id="emV" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+                                    </tr>
+                                </thead>*@
+                            @*<div style="display:none;" id="addTV">
+                                    <div class="thatrow">
+                                        <div class="col_header">Code Type</div>
+                                        <div class="col_header">Line 1</div>
+                                        <div class="col_header">Line 2</div>
+                                        <div class="col_header">Line 3</div>
+                                        <div class="col_header">Line 4</div>
+                                        <div class="col_header">Postal Code</div>
+                                        <div class="col_header">Last Updated Date</div>
+                                        @foreach (var key in ViewBag.ArrayList)
+                                        {
+                                            <div class="colspace"> @key.Value</div>
+                                        }
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="CITV" style="display:none;">
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div style="display:none;" id="telTV">
+
+                                    <div class="thatrow">
+                                        <div class="col_headerTel">Type</div>
+                                        <div class="col_headerTel">Number</div>
+                                        <div class="col_headerTel">Last Updated Date</div>
+
+                                        @foreach (var key in ViewBag.TelArrayList)
+                                        {
+                                            <div class="colspaceTel"> @key.Value</div>
+                                        }
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="CITVeriCredInfoWorkTelephoneNumber" style="display:none;">
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div style="display:none;" id="emTV">
+
+                                    <div class="thatrow">
+                                        <div class="col_headerTel">Employer Name</div>
+                                        <div class="col_headerTel">Designation</div>
+                                        <div class="col_headerTel">Last Updated Date</div>
+
+                                        @foreach (var key in ViewBag.EMArrayList)
+                                        {
+                                            <div class="colspaceTel"> @key.Value</div>
+                                        }
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody id="CIT" style="display:none;">
+                                        </tbody>
+                                    </table>
+                                </div>*@
+                        </div>
+                    }
+                    else if (@ViewData["Message"].ToString() == "Service is offline")
+                    {
+                        <div class="no_results">
+                            <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
+                            <div class="no_res">
+                                @ViewData["VeriCred"]
+                            </div>
+                        </div>
+                    }
+                    else if (@ViewData["VeriCredMessage"].ToString() == "NotFound")
+                    {
+
+                        <div class="no_results">
+                            @ViewData["VeriCredMessage"]
+                        </div>
                     }
                 </div>
-                <table class="table table-striped">
-                    <thead>
-                    </thead>
-                    <tbody id="CITV" style="display:none;">
-                    </tbody>
-                </table>
-            </div>
 
-            <div style="display:none;" id="telTV">
-
-                <div class="thatrow">
-                    <div class="col_headerTel">Type</div>
-                    <div class="col_headerTel">Number</div>
-                    <div class="col_headerTel">Last Updated Date</div>
-
-                    @foreach (var key in ViewBag.TelArrayList)
-                    {
-                        <div class="colspaceTel"> @key.Value</div>
-                    }
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    </thead>
-                    <tbody id="CITVeriCredInfoWorkTelephoneNumber" style="display:none;">
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="display:none;" id="emTV">
-
-                <div class="thatrow">
-                    <div class="col_headerTel">Employer Name</div>
-                    <div class="col_headerTel">Designation</div>
-                    <div class="col_headerTel">Last Updated Date</div>
-
-                    @foreach (var key in ViewBag.EMArrayList)
-                    {
-                        <div class="colspaceTel"> @key.Value</div>
-                    }
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    </thead>
-                    <tbody id="CIT" style="display:none;">
-                    </tbody>
-                </table>
-            </div>*@
-                </div>
-            }
-            else if (@ViewData["Message"].ToString() == "Service is offline")
-            {
-                <div class="no_results">
-                    <img src="~/Content/img/Place Holder for search history.png" alt="can't display image">
-                    <div class="no_res">
-                        @ViewData["Message2"]
-                    </div>
-                </div>
             }
         </div>
     </div>
 </div>
 
-
 <script>
-
-
 
     //CompScan
     $("#PI").click(function () {
@@ -1263,7 +1026,6 @@
         $("#emTU").toggle();
     });
 
-
     //XDS
     $("#PIX").click(function () {
         $("#PITX").toggle();
@@ -1318,16 +1080,9 @@
         $("#emTV").toggle();
     });
 
-
-
-
-
-
-
     $(document).ready(function () {
         $(".not").hide();
         $("#minusNot").hide();
-
 
         $('#plusNot').on('click', function () {
             $(".not").show();
@@ -1342,8 +1097,6 @@
             $(".not").hide();
 
         });
-
-
 
         $("#minusSeaInfo").hide();
         $(".SeaInfo").hide();
@@ -1361,8 +1114,6 @@
             $(".SeaInfo").hide();
         });
 
-
-
         $("#minusPerInfo").hide();
         $(".PerInfo").hide();
 
@@ -1378,8 +1129,6 @@
             $("#plusPerInfo").show();
             $(".PerInfo").hide();
         });
-
-
 
         $("#minusHomeInfo").hide();
         $(".HomeInfo").hide();
@@ -1397,8 +1146,6 @@
             $(".HomeInfo").hide();
         });
 
-
-
         $("#minusTeleHis").hide();
         $(".TeleHis").hide();
 
@@ -1414,7 +1161,6 @@
             $("#plusTeleHis").show();
             $(".TeleHis").hide();
         });
-
 
         $("#minusEmpHis").hide();
         $(".EmpHis").hide();
@@ -1432,6 +1178,50 @@
             $(".EmpHis").hide();
         });
 
-
     });
 </script>
+
+@*XDS onbined Seaech Resuts STarts Here*@
+@*@foreach (var key in ViewBag.ArrayList)
+    {
+        <div class="colspace"> @key.Value</div>
+
+    }*@
+<!--</td>
+    </tr>
+</tbody>
+<thead>
+    <tr>
+        <th id="telX" style="border: none; cursor:pointer;" colspan="2">Telephone History</th>
+    </tr>
+</thead>
+<tbody id="telTX" style="display:none;">
+    <tr>
+        <td>
+            <div class="col_headerTel">Type</div>
+            <div class="col_headerTel">Number</div>
+            <div class="col_headerTel">Last Updated Date</div>-->
+@*@foreach (var key in ViewBag.TelArrayList)
+    {
+        <div class="colspaceTel"> @key.Value</div>
+
+    }*@
+<!--</td>
+    </tr>
+</tbody>
+<thead>
+    <tr>
+        <th id="emX" style="border: none; cursor:pointer;" colspan="2">Employment History</th>
+    </tr>
+</thead>
+<tbody id="emTX" style="display:none;">
+    <tr>
+        <td>
+
+            <div class="col_headerTel">Employer Name</div>
+            <div class="col_headerTel">Designation</div>
+            <div class="col_headerTel">Last Updated Date</div>-->
+@*@foreach (var key in ViewBag.EMArrayList)
+    {
+        <div class="colspaceTel"> @key.Value</div>
+    }*@

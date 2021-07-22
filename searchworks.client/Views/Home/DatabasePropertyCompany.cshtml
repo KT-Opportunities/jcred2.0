@@ -8,129 +8,253 @@
     ViewBag.Title = "Database Property Company";
 }
 
+<div class="col-md-10 col-sm-10">
+    <div class="row tabs-row" id="tabs-div">
 
+        @*</div><span class="none" id="tabs-close">x</span>*@
+    </div>
+    <div class="sea_bar">
+        <label>Search History</label>
+        <input name="search" />
+        <button>RESET</button>
+    </div>
+    <div class="con">
+        <div class="col-md-6 col-sm-6 left">
+            @using (Html.BeginForm("DatabasePropertyCompanyResults", "Home", FormMethod.Post))
+            {
+                <div class="ref">
+                    <label>Reference</label><br>
 
-<div class="col-md-10 col-sm-10 con">
-    <div class="seaTab">
-        <div class="col-md-6 col-sm-6">
-            <div class="sea">
+                    @Html.TextBox("reference", null, new { @id = "Ref" })
+                </div>
+                <div class="eqType">
+                    <label>Deeds Office</label><br>
 
+                    @Html.DropDownList("deedsOffice", new List<SelectListItem>
+                {
+
+                      new SelectListItem { Text = "Bloemfontein", Value = "1"},
+                      new SelectListItem { Text = "CapeTown", Value = "2"},
+                      new SelectListItem { Text = "Johannesburg", Value = "3"},
+                      new SelectListItem { Text = "Kimberley", Value = "4"},
+                      new SelectListItem { Text = "KingWilliamsTown", Value = "5"},
+                      new SelectListItem { Text = "Pietermaritzburg", Value = "6"},
+                      new SelectListItem { Text = "Pretoria", Value = "7"},
+                      new SelectListItem { Text = "Vryburg", Value = "8"},
+                         new SelectListItem { Text = "Umtata", Value = "9"},
+                            new SelectListItem { Text = "Mpumalanga", Value = "11"},
+                               new SelectListItem { Text = "Limpopo", Value = "12"},
+                }, " Select Deeds Office", new { @id = "DeedsOffice", required = "required" })
+                </div>
+                <div class="eqType">
+                    <label>Company Name</label><br>
+
+                    @Html.TextBox("CompanyName", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                </div>
+                <div class="eqType">
+                    <label>Company Registration Number</label><br>
+
+                    @Html.TextBox("CompanyRegistrationNumber", null, new { @id = "CompanyRegistrationNumber", minlength = "3", maxlength = "30" })
+                </div>
+
+                <div class="eqType">
+                    <label>Sequestration</label><br>
+                    @Html.CheckBox("sequestration",false, new { style = "margin-left:3.5%" })
+                </div>
+
+                <div class="tc">
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </div>
+                    <button onclick="Search()" id="companySearch" class="butn" name="companySearch">Perform Search</button>
+                </div>
+
+            }
+        </div>
+        <div class="col-md-6 col-sm-6 right">
+            <div class="cen_text">
+                Obtain the consumer trace details of an individual comprising of address, contact or employment history.
+                For more information about this repost please download the sample report. <br><br>
+                Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
             </div>
         </div>
+    </div>
 
-        <div class="col-md-6 col-sm-6">
-            <div class="sea">
-                <div class="opt1">
-                    <div class="exp">Export List </div>
-                    <div class="create">Create Group</div>
-                    <div class="history"><i class="fa fa-history"></i>History</div>
+    @*<div class="seaTab">
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
                 </div>
             </div>
-        </div>
-    </div>
 
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+                    <div class="opt1">
+                        <div class="exp">Export List </div>
+                        <div class="create">Create Group</div>
+                        <div class="history"><i class="fa fa-history"></i>History</div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
 
+    @*<div class="seaTable form-style-9">
+            <form action="" method="POST">
+                <h3 class="Trans">Database Property Company</h3>
+                <ul>
+                    <li>
+                        <input type="text" class="field-style field-split align-left" id="ref" name="ref" placeholder="Reference" disabled>
+                        <select class="field-style field-split align-right" id="DeedsOffice" name="DeedsOffice" placeholder="Deeds Office">
+                            <option value="1" selected>Bloemfontein</option>
+                            <option value="2">CapeTown</option>
+                            <option value="3">Johannesburg</option>
+                            <option value="4">Kimberley</option>
+                            <option value="5">KingWilliamsTown</option>
+                            <option value="6">Pietermaritzburg</option>
+                            <option value="7">Pretoria</option>
+                            <option value="8">Vryburg</option>
+                            <option value="9">Umtata</option>
+                            <option value="11">Mpumalanga</option>
+                            <option value="12">Limpopo</option>
+                        </select>
+                    </li>
+                    <li>
 
-    <div class="seaTable form-style-9">
-        <form action="" method="POST">
-            <h3 class="Trans">Database Property Company</h3>
-            <ul>
-                <li>
-                    <input type="text" class="field-style field-split align-left" id="ref" name="ref" placeholder="Reference" disabled>
-                    <select class="field-style field-split align-right" id="DeedsOffice" name="DeedsOffice" placeholder="Deeds Office">
-                        <option value="1" selected>Bloemfontein</option>
-                        <option value="2">CapeTown</option>
-                        <option value="3">Johannesburg</option>
-                        <option value="4">Kimberley</option>
-                        <option value="5">KingWilliamsTown</option>
-                        <option value="6">Pietermaritzburg</option>
-                        <option value="7">Pretoria</option>
-                        <option value="8">Vryburg</option>
-                        <option value="9">Umtata</option>
-                        <option value="11">Mpumalanga</option>
-                        <option value="12">Limpopo</option>
-                    </select>
-                </li>
-                <li>
-
-                    <input type="text" class="field-style field-split align-left" id="CompanyName" name="CompanyName" placeholder="Company Name">
-                    <input type="text" class="field-style field-split align-right" id="RegistrationNumber" name="RegistrationNumber" placeholder="Registration Number">
-
-                </li>
-                <li>
-                    <button  id="companySearch" class="btn btn-primary" name="companySearch">Search</button>
-                </li>
-            </ul>
-        </form>
-    </div>
-
-    
-
- 
+                        <input type="text" class="field-style field-split align-left" id="CompanyName" name="CompanyName" placeholder="Company Name">
+                        <input type="text" class="field-style field-split align-right" id="RegistrationNumber" name="RegistrationNumber" placeholder="Registration Number">
+                    </li>
+                    <li>
+                        <button id="companySearch" class="btn btn-primary" name="companySearch">Search</button>
+                    </li>
+                </ul>
+            </form>
+        </div>*@
 </div>
-
-
+ 
 <script>
-    function Search() {
-                        $.ajax(
-                        {
-                            type: "POST",
-                            url: '@Url.Action("GetCompanyResults", "Home")',
-                                data: {
-                                    companyName: $('#comName').val(),
+     var tab = [];
+    // removing duplicates
 
-                                },
-                            dataType: "text",
-                                error: function (result) {
-                                    alertMessage = '<div class="alert alert-success" role="alert">'
-                                        + 'Account Created </div>';
+    function removeDup(data) {
+        return data.filter((value, index) => data.indexOf(value) === index);
+    }
 
-                                    $(".resturn-message").html(alertMessage)
+    // Parse the serialized data back into an array of objects
 
+    tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
+    // push the new data into the array
 
+    tab.push('Experian Consumer Profile');
 
+    tab = removeDup(tab);
 
-                            },
-                                success: function (result) {
+    // Re-serialize the array back into a string and store it in localStorage
 
-                             var alertMessage = '<div class="alert alert-success" role="alert">'
-                                        + 'Right Usename/Password</div>';
+    localStorage.setItem('tabs', JSON.stringify(tab));
 
-                                    $(".resturn-message").html(alertMessage)
+    var container = document.getElementById('tabs-div');
 
-                                    //alert(result.user_type);
+    console.log('test');
 
-                                    debugger;
+    for (var i = 0; i < tab.length; i++) {
+       const txt = tab[i];
+       console.log('txt: ', txt);
+       const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
+       container.insertAdjacentHTML("beforeend", new_tabs);
+    };
 
+    function tes() {
 
+        tab_d = $(event.target).text();
+        if (tab_d === "CSI Person Records") {
 
-                          if (result.status == true) {
+            window.location.href = "@Url.Action("CSIPersonalRecords", "Individual")";
+        } else if (tab_d === "CIPC Company Search") {
 
-                                        if (result.user_type === "client") {
+                window.location.href = "@Url.Action("CIPCCompany", "Home")";
+        } else if (tab_d === "Deeds Office Records Individual") {
 
-                                            console.log(result);
+              window.location.href = "@Url.Action("DeedsOfficeRecordsIndividual", "Individual")";
+       } else if (tab_d === "CSI Company Records") {
+            window.location.href = "@Url.Action("CSICompanyRecords", "Home")";
 
-                                            window.location.href = '@Url.Action("SubmissionStep2", "Checks")';
+        } else if (tab_d === "Combined Consumer Trace") {
 
-                                        }
-                                        else if (result.user_type === "admin") {
-                                             window.location.href = '@Url.Action("Admin_S", "Dashboard")';
-                                        }
+            window.location.href = "@Url.Action("CombinedConsumerTrace", "Credit")";
+        } else if (tab_d === "Combined Credit Report") {
 
+            window.location.href = "@Url.Action("CombinedCreditReport", "Credit")";
 
-                            }
-                            else {
+//// ====  CompuScan  =====////
+        } else if (tab_d === "Bank Codes Document") {
+             window.location.href = "@Url.Action("CompuScanBankCodesDocument", "Credit")";
+        } else if (tab_d === "Bank On File") {
 
-                                var alertMessage = '<div class="alert alert-danger" role="alert">'
-                                    + 'Invalid Usename/Password</div>';
+            window.location.href = "@Url.Action("CompuScanBankOnFile", "Credit")";
+        } else if (tab_d === "Consumer Profile") {
 
-                                $(".resturn-message").html(alertMessage)
+            window.location.href = "@Url.Action("CompuScanConsumerProfile", "Credit")";
+        } else if (tab_d === "Consumer Trace") {
+            window.location.href = "@Url.Action("CompuScanConsumerTrace", "Credit")";
 
-                                alert(result.message);
-                            }
-                            }
-                        });
-                        }
+        } else if (tab_d === "Contact Information") {
 
+            window.location.href = "@Url.Action("CompuScanContactInformation", "Credit")";
+        } else if (tab_d === "Employment Confidence Index") {
+
+            window.location.href = "@Url.Action("CompuScanEmploymentConfidenceIndex", "Credit")";
+        } else if (tab_d === "Gross Monthly Income By ID Number") {
+            window.location.href = "@Url.Action("CompuScanGrossMonthlyIncomeByIDNumber", "Credit")";
+
+        } else if (tab_d === "ID Photo Verification") {
+
+         window.location.href = "@Url.Action("CompuScanIDPhotoVerification", "Credit")";
+        } else if (tab_d === "Experian Consumer Profile") {
+           // window.location.href = "@Url.Action("ExperianConsumerProfile", "Credit")";
+//// ====  TransUnion   =====////
+        } else if (tab_d === "TransUnion Company Profile") {
+
+            window.location.href = "@Url.Action("TransUnionCompanyProfile", "Credit")";
+        } else if (tab_d === "TransUnion Consumer Contact Information") {
+
+            window.location.href = "@Url.Action("TransUnionConsumerContactInformation", "Credit")";
+        } else if (tab_d === "TransUnion Consumer ID Verification") {
+
+            window.location.href = "@Url.Action("TransUnionConsumerIDVerification", "Credit")";
+        } else if (tab_d === "TransUnion Consumer Profile") {
+             window.location.href = "@Url.Action("TransUnionConsumerProfile", "Credit")";
+        } else if (tab_d === "TransUnion Consumer Trace") {
+
+            window.location.href = "@Url.Action("TransUnionConsumerTrace", "Credit")";
+//// ====  veriCred   =====////
+        } else if (tab_d === "VeriCred Account Verification") {
+
+            window.location.href = "@Url.Action("VeriCredAccountVerification", "Credit")";
+        } else if (tab_d === "VeriCred Consumer Profile") {
+            window.location.href = "@Url.Action("VeriCredConsumerProfile", "Credit")";
+
+        } else if (tab_d === "VeriCred Contact Info By ID Number") {
+
+            window.location.href = "@Url.Action("VeriCredContactInfoByIDNumber", "Credit")";
+        } else if (tab_d === "VeriCred ID Photo Verification") {
+
+            window.location.href = "@Url.Action("VeriCredIDPhotoVerification", "Credit")";
+        } else if (tab_d === "VeriCred Income Estimate By ID Number") {
+             window.location.href = "@Url.Action("VeriCredIncomeEstimateByIDNumber", "Credit")";
+        } else if (tab_d === "VeriCred Person Verification By ID Number") {
+            window.location.href = "@Url.Action("VeriCredPersonVerificationByIDNumber", "Credit")";
+//// ==== XDS   =====////
+        } else if (tab_d === "XDS Consumer ID Verification") {
+             window.location.href = "@Url.Action("XDSConsumerIDVerification", "Credit")";
+        } else if (tab_d === "XDS Consumer Trace") {
+             window.location.href = "@Url.Action("XDSConsumerTrace", "Credit")";
+//// ==== Search   =====////
+        } else if (tab_d === "SEARCH HISTORY") {
+             window.location.href = "@Url.Action("SearchHistory", "UserManagement")";
+        } else if (tab_d === "USER MANAGEMENT") {
+             window.location.href = "@Url.Action("UserManagementHome", "UserManagement")";
+        }
+
+    };
 </script>

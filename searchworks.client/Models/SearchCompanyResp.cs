@@ -63,8 +63,10 @@ namespace searchworks.client.Company
         public string PrincipalDescription { get; set; }
         public string AverageDirectorAge { get; set; }
         public string seaType { get; set; }
-
-
+        public string DeedsOfficeID { get; set; }
+        public string DeedsOfficeName { get; set; }
+        public string CompanyTypeShortened { get; set; }
+        public string EnquiryID { get; set; }
     }
 
     public class Directors
@@ -80,7 +82,7 @@ namespace searchworks.client.Company
         public string Type { get; set; }
         public string AppointmentDate { get; set; }
         public string ResignationDate { get; set; }
-        public string MemberContribution{ get; set; }
+        public string MemberContribution { get; set; }
         public string MemberSize { get; set; }
         public string ResidentialAddress1 { get; set; }
         public string ResidentialAddress2 { get; set; }
@@ -94,19 +96,65 @@ namespace searchworks.client.Company
         public string PostalPostCode { get; set; }
         public string Country { get; set; }
         public string Gender { get; set; }
-
-
-
+    }
+    public class TransferInformation
+    {
+        public string RegistrationDate { get; set; }
+        public string PurchaseDate { get; set; }
+        public string PurchasePrice { get; set; }
+        public string TitleDeedNumber { get; set; }
     }
 
-        public class ResponseObject
+    public class GeneralInformation
+    {
+        public int PropertyType { get; set; }
+        public string PropertyID { get; set; }
+        public string RawPropertyType { get; set; }
+        public string ShortPropertyDescription { get; set; }
+        public string Township { get; set; }
+        public string SGCode { get; set; }
+        public string DeedsOfficeID { get; set; }
+        public string DeedsOfficeName { get; set; }
+        public string RegistrationDate { get; set; }
+        public string MicrofilmReferenceNumber { get; set; }
+        public string Share { get; set; }
+        public string MultiOwner { get; set; }
+        public string MultiProperty { get; set; }
+    }
+
+    public class ErfInformation
+    {
+        public string Number { get; set; }
+        public string PortionNumber { get; set; }
+    }
+
+    public class FarmInformation
+    {
+        public string Number { get; set; }
+        public string RegistrationDivision { get; set; }
+        public string PortionNumber { get; set; }
+    }
+    public class Property
+    {
+        public TransferInformation TransferInformation { get; set; }
+        public GeneralInformation GeneralInformation { get; set; }
+        public ErfInformation ErfInformation { get; set; }
+        public FarmInformation FarmInformation { get; set; }
+    }
+    public class PropertyInfo
+    {
+        public List<Property> Properties { get; set; }
+
+    }
+    public class ResponseObject
     {
         public SearchInformation SearchInformation { get; set; }
         public CompanyInformation CompanyInformation { get; set; }
         public Directors Directors { get; set; }
         public CapitalInformation CapitalInformation { get; set; }
-
+        public PropertyInfo PropertyInformation { get; set; }
     }
+
     public class RootObject
     {
         public string ResponseMessage { get; set; }
@@ -116,16 +164,26 @@ namespace searchworks.client.Company
 
     public class Search
     {
-         public string CipcSearchBy { get; set; }
-         public string CompanyName { get; set; }
-         public string RegistrationNumber { get; set; }
+        public string CipcSearchBy { get; set; }
+        public string CompanyName { get; set; }
+        public string RegistrationNumber { get; set; }
         public string CompanyID { get; set; }
         public string PDF { get; set; }
         public string seaType { get; set; }
         public string Reference { get; set; }
-        
+        public string Sequestration { get; set; }
+        public string DeedsOffice { get; set; }
+    }
 
-
-
+    public class CompanyDeeds
+    {
+        public string Reference { get; set; }
+        public string DeedsOffice { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyRegistrationNumber { get; set; }
+        public string Sequestration { get; set; }
+        public string DBKey { get; set; }
+        public string PropertyTypeCode { get; set; }
+        public string SearchDescription { get; set; }
     }
 }

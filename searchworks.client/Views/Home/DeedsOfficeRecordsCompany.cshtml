@@ -8,67 +8,133 @@
     ViewBag.Title = "Deeds Office Records Company";
 }
 
+<div class="col-md-10 col-sm-10">
+    <div class="row tabs-row" id="tabs-div">
 
+        @*</div><span class="none" id="tabs-close">x</span>*@
+    </div>
+    <div class="sea_bar">
+        <label>Search History</label>
+        <input name="search" />
+        <button>RESET</button>
+    </div>
+    <div class="con">
+        <div class="col-md-6 col-sm-6 left">
+            @using (Html.BeginForm("DeedsOfficeRecordsCompanyResult", "Home", FormMethod.Post))
+            {
 
-<div class="col-md-10 col-sm-10 con">
-    <div class="seaTab">
-        <div class="col-md-6 col-sm-6">
-            <div class="sea">
+                <div class="ref">
+                    <label>Reference</label><br>
 
+                    @Html.TextBox("Reference", null, new { @id = "Ref" })
+                </div>
+
+                <div class="eqType">
+                    <label>Deeds Office</label><br>
+
+                    @Html.DropDownList("deedsOffice", new List<SelectListItem>
+                {
+
+                      new SelectListItem { Text = "Bloemfontein", Value = "1"},
+                      new SelectListItem { Text = "CapeTown", Value = "2"},
+                      new SelectListItem { Text = "Johannesburg", Value = "3"},
+                      new SelectListItem { Text = "Kimberley", Value = "4"},
+                      new SelectListItem { Text = "KingWilliamsTown", Value = "5"},
+                      new SelectListItem { Text = "Pietermaritzburg", Value = "6"},
+                      new SelectListItem { Text = "Pretoria", Value = "7"},
+                      new SelectListItem { Text = "Vryburg", Value = "8"},
+                         new SelectListItem { Text = "Umtata", Value = "9"},
+                            new SelectListItem { Text = "Mpumalanga", Value = "11"},
+                               new SelectListItem { Text = "Limpopo", Value = "12"},
+                }, " Select Deeds Office", new { @id = "DeedsOffice", required = "required" })
+                </div>
+                <div class="eqType">
+                    <label>Company Name</label><br>
+
+                    @Html.TextBox("CompanyName", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                </div>
+
+                <div class="eqType">
+                    <label>Company Registration Number</label><br>
+
+                    @Html.TextBox("CompanyRegistrationNumber", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
+                </div>
+
+                <div class="eqType">
+                    <label>Sequestration</label><br>
+                    @Html.CheckBox("Sequestration", false, new { style = "margin-left:3.5%" })
+                </div>
+
+                <div class="tc">
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </div>
+                    <button onclick="Search()" id="companySearch" class="butn" name="companySearch">Perform Search</button>
+                </div>
+
+            }
+        </div>
+        <div class="col-md-6 col-sm-6 right">
+            <div class="cen_text">
+                Obtain the consumer trace details of an individual comprising of address, contact or employment history.
+                For more information about this repost please download the sample report. <br><br>
+                Please note : Tracing should only be utilised to locate debtors! Please not that the result will automatically be deleted on the specified "Expiry Date" as displayed and located in the NCR Searches tab per NCR regulation.
             </div>
         </div>
+    </div>
 
-        <div class="col-md-6 col-sm-6">
-            <div class="sea">
-                <div class="opt1">
-                    <div class="exp">Export List </div>
-                    <div class="create">Create Group</div>
-                    <div class="history"><i class="fa fa-history"></i>History</div>
+    @*<div class="seaTab">
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
                 </div>
             </div>
-        </div>
-    </div>
 
+            <div class="col-md-6 col-sm-6">
+                <div class="sea">
+                    <div class="opt1">
+                        <div class="exp">Export List </div>
+                        <div class="create">Create Group</div>
+                        <div class="history"><i class="fa fa-history"></i>History</div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
 
-
-    <div class="seaTable form-style-9">
-        <form action="" method="POST">
-            <h3 class="Trans">Deeds Office Records</h3>
-            <ul>
-                <li>
-                    <input type="text" class="field-style field-split align-left" id="ref" name="ref" placeholder="Reference" disabled>
-                    <select class="field-style field-split align-right" id="DeedsOffice" name="DeedsOffice" plceholder="Deeds Office">
-                        <option value="1" selected>Bloemfontein</option>
-                        <option value="2">CapeTown</option>
-                        <option value="3">Johannesburg</option>
-                        <option value="4">Kimberley</option>
-                        <option value="5">KingWilliamsTown</option>
-                        <option value="6">Pietermaritzburg</option>
-                        <option value="7">Pretoria</option>
-                        <option value="8">Vryburg</option>
-                        <option value="9">Umtata</option>
-                        <option value="11">Mpumalanga</option>
-                        <option value="12">Limpopo</option>
-                    </select>
-                </li>
-                <li>
-                    <input type="text" class="field-style field-split align-left" id="CompanyName" name="CompanyName" placeholder="Company Name">
-                    <input type="text" class="field-style field-split align-right" id="CompanyRegistrationNumber" name="CompanyRegistrationNumber" placeholder="Company Registration Number">
-
-                </li>
-                <li>
-                    <button  id="companySearch" class="btn btn-primary" name="companySearch">Search</button>
-                </li>
-            </ul>
-        </form>
-    </div>
-
-    
-   
+    @*<div class="seaTable form-style-9">
+            <form action="" method="POST">
+                <h3 class="Trans">Deeds Office Records</h3>
+                <ul>
+                    <li>
+                        <input type="text" class="field-style field-split align-left" id="ref" name="ref" placeholder="Reference" disabled>
+                        <select class="field-style field-split align-right" id="DeedsOffice" name="DeedsOffice" plceholder="Deeds Office">
+                            <option value="1" selected>Bloemfontein</option>
+                            <option value="2">CapeTown</option>
+                            <option value="3">Johannesburg</option>
+                            <option value="4">Kimberley</option>
+                            <option value="5">KingWilliamsTown</option>
+                            <option value="6">Pietermaritzburg</option>
+                            <option value="7">Pretoria</option>
+                            <option value="8">Vryburg</option>
+                            <option value="9">Umtata</option>
+                            <option value="11">Mpumalanga</option>
+                            <option value="12">Limpopo</option>
+                        </select>
+                    </li>
+                    <li>
+                        <input type="text" class="field-style field-split align-left" id="CompanyName" name="CompanyName" placeholder="Company Name">
+                        <input type="text" class="field-style field-split align-right" id="CompanyRegistrationNumber" name="CompanyRegistrationNumber" placeholder="Company Registration Number">
+                    </li>
+                    <li>
+                        <button id="companySearch" class="btn btn-primary" name="companySearch">Search</button>
+                    </li>
+                </ul>
+            </form>
+        </div>*@
 </div>
 
-
-<script>
+@*
+    <script>
     function Search() {
                         $.ajax(
                         {
@@ -85,10 +151,6 @@
 
                                     $(".resturn-message").html(alertMessage)
 
-
-
-
-
                             },
                                 success: function (result) {
 
@@ -100,8 +162,6 @@
                                     //alert(result.user_type);
 
                                     debugger;
-
-
 
                           if (result.status == true) {
 
@@ -116,7 +176,6 @@
                                              window.location.href = '@Url.Action("Admin_S", "Dashboard")';
                                         }
 
-
                             }
                             else {
 
@@ -130,5 +189,5 @@
                             }
                         });
                         }
-
-</script>
+    </script>
+*@

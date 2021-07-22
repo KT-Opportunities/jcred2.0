@@ -11,15 +11,68 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using searchworks.client.Models;
+using MailKit;
+using MimeKit;
+using System.Net.Configuration;
+using System.Configuration;
+using MimeKit.Text;
+using MailKit.Security;
+using MailKit.Net.Smtp;
 
 namespace searchworks.client
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public   Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            SmtpSection smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            var mailMessage = new MimeMessage();
+            mailMessage.From.Add(new MailboxAddress("JCred ", smtpSection.From));
+            mailMessage.To.Add(new MailboxAddress(message.Destination, message.Destination));
+            mailMessage.Subject = message.Subject;
+
+            mailMessage.Body = new TextPart("html")
+            {
+                Text = message.Body
+            };
+            using (var smtpClient = new SmtpClient())
+            {
+                smtpClient.Connect(smtpSection.Network.Host, smtpSection.Network.Port, smtpSection.Network.EnableSsl);
+                smtpClient.Authenticate(smtpSection.Network.UserName, smtpSection.Network.Password);
+                smtpClient.Send(mailMessage);
+                smtpClient.Disconnect(true);
+            }
+            return Task.FromResult(true);
+
+            /*
+            var smtp = new MailKit.Net.Smtp.SmtpClient();
+            var mail = new MimeMessage();
+            var smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            string username = smtpSection.Network.UserName;
+
+            //mail.IsBodyHtml = true;
+            mail.From.Add(new MailboxAddress(username, username));// = new MailAddress(username);
+            mail.To.Add(new MailboxAddress(message.Destination, message.Destination));
+            mail.Subject = "JCred Notification : "+message.Subject;
+            mail.Body = new TextPart(TextFormat.Html) { Text = message.Body }; 
+
+            
+
+            try {
+                smtp.Timeout = 1000;
+                await smtp.ConnectAsync(smtpSection.Network.Host, smtpSection.Network.Port, SecureSocketOptions.Auto);
+                await smtp.AuthenticateAsync(smtpSection.Network.UserName, smtpSection.Network.Password);
+                await smtp.SendAsync(mail);
+                await smtp.DisconnectAsync(true);
+            }
+            catch (Exception err)
+            {
+
+            }
+            */
+
+            //return Task.FromResult(0);
         }
     }
 

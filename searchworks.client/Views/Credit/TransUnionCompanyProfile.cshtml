@@ -8,14 +8,10 @@
     ViewBag.Title = "TransUnion Company Profile";
 }
 
-
-
 <div class="col-md-10 col-sm-10">
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
 
     <div class="sea_bar">
@@ -45,7 +41,6 @@
                 }, " Select Enquiry Type", new { @id = "eqtype", required = "required" })
                 </div>
 
-
                 <div class="firstname" style="">
                     <label>Enitity Name</label><br>
 
@@ -63,22 +58,19 @@
                     @Html.TextBox("EnquiryReason", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
                 </div>
 
-
                 <div class="tc">
                     <div class="checkBoxDiv">
-                        I accept the <a href="#">terms and conditions</a>
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
-
+                    <div class="checkBoxDiv">
+                        <a href="#">Consumer consent</a>&nbsp;acquired &nbsp;
+                        <input id="tc" type="checkbox" value="tc" required />
+                    </div>
+                    <button id="combinedComSearch" class="butn" name="combinedComSearch">Perform Search</button>
                 </div>
 
-                <button id="combinedComSearch" class="btn" name="combinedComSearch">Perform Search</button>
-
-
             }
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
@@ -107,10 +99,6 @@
 
                                     $(".resturn-message").html(alertMessage)
 
-
-
-
-
                             },
                                 success: function (result) {
 
@@ -122,8 +110,6 @@
                                     //alert(result.user_type);
 
                                     debugger;
-
-
 
                           if (result.status == true) {
 
@@ -137,7 +123,6 @@
                                         else if (result.user_type === "admin") {
                                              window.location.href = '@Url.Action("Admin_S", "Dashboard")';
                                         }
-
 
                             }
                             else {
@@ -164,22 +149,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('TransUnion Company Profile');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -191,7 +169,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -287,6 +264,4 @@
 
         console.log($(event.target).text());
     };
-
-
 </script>

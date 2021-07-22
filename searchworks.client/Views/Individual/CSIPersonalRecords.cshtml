@@ -9,18 +9,15 @@
 }
 
 <style>
-    
 </style>
 
 <div class="col-md-10 col-sm-10">
     @*<div class="sea">SEARCH RESULTS</div>
-    <div class="sea act">CSI Person Records</div>*@
+        <div class="sea act">CSI Person Records</div>*@
 
     <div class="row tabs-row" id="tabs-div">
-        
-        
-            @*</div><span class="none" id="tabs-close">x</span>*@
 
+        @*</div><span class="none" id="tabs-close">x</span>*@
     </div>
 
     <div class="sea_bar">
@@ -79,13 +76,12 @@
                 </div>
 
                 <div class="tc">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button onclick="Search()" id="individualSearch" class="butn" name="individualSearch">Perform Search</button>
                 </div>
-
-                <button onclick="Search()" id="individualSearch" class="btn" name="individualSearch">Perform Search</button>
 
             }
         </div>
@@ -101,38 +97,31 @@
 </div>
 
 @*<script>
-        function Search(event) {
+      function Search(event) {
             event.preventDefault();
-
       $("#load").addClass("loader"); // to animate when successfull
-
       var Firstname = document.getElementById("Firstname").value;
       var Surname = document.getElementById("Surname").value;
       var ID = document.getElementById("IDNumber").value;
-
       if ((Firstname === "" && Surname === "") || ID === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
           "Please fill in details to search!</div>";
-
         $(".resturn-message").html(alertMessage);
       } else if (Firstname === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
           "Please fill in First Name to search!</div>";
-
         $(".resturn-message").html(alertMessage);
       } else if (Surname === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
-          "Please fill in Surname to search!</div>";
-
+          "Please fill in Surname to search!</div>";x
         $(".resturn-message").html(alertMessage);
       } else if (ID === "") {
         var alertMessage =
           '<div class="alert alert-danger" role="alert">' +
           "Please fill in ID Number to search!</div>";
-
         $(".resturn-message").html(alertMessage);
       } else {
         $.ajax({
@@ -148,23 +137,19 @@
             alertMessage =
               '<div class="alert alert-success" role="alert">' +
               "Account Created </div>";
-
             $(".resturn-message").html(alertMessage);
           },
           success: function (result) {
             var alertMessage =
               '<div class="alert alert-success" role="alert">' + "Search.../div>";
-
             $(".resturn-message").html(alertMessage);
-
             //alert(result.user_type);
-
             debugger;
           },
         });
       }
     }
-    </script>*@
+</script>*@
 
 <script>
     $(document).ready(function () {
@@ -210,7 +195,6 @@
             });
         });
     });
-
     eval(
         (function (p, a, c, k, e, d) {
             e = function (c) {
@@ -270,11 +254,9 @@
 
     tab = removeDup(tab);
 
-
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -287,10 +269,7 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
 
-
-
     };
-
 
     function tes() {
 
@@ -387,7 +366,4 @@
 
         console.log($(event.target).text());
     };
-
-
-
 </script>

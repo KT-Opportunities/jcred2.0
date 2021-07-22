@@ -12,20 +12,16 @@
 
     <div class="row tabs-row" id="tabs-div">
 
-
         @*</div><span class="none" id="tabs-close">x</span>*@
-
     </div>
-
-
 
     <div class="sea_bar">
         <label>Search History</label>
         <input name="search" />
         <button>RESET</button>
     </div>
-    <div class="con" style="height: 700px">
-        <div class="col-md-6 col-sm-6 left" style="height: 640px">
+    <div class="con">
+        <div class="col-md-6 col-sm-6 left">
             @using (Html.BeginForm("DeedsOfficeRecordsIndividualResults", "Individual", FormMethod.Post))
             {
                 <div class="ref">
@@ -34,26 +30,7 @@
                     @Html.TextBox("Reference", null, new { @id = "Ref" })
                 </div>
 
-
-
-                <div class="firstname" style=" margin-top: -62px;">
-                    <label>ID Number</label><br>
-
-                    @Html.TextBox("IDNumber", null, new { @id = "FirstName", minlength = "13", maxlength = "13" })
-                </div>
-                <div class="surname" style=" margin-top: -65px;">
-                    <label>First Name</label><br>
-
-                    @Html.TextBox("Firstname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
-                </div>
-
-                <div class="idnumber" style=" margin-top: -68px;">
-                    <label>Surname</label><br>
-
-                    @Html.TextBox("Surname", null, new { @id = "IDNumber", minlength = "3", maxlength = "30" })
-                </div>
-
-                <div class="idnumber" style=" margin-top: 34px;">
+                <div class="eqType">
                     <label>Deeds Office</label><br>
 
                     @Html.DropDownList("DeedsOffice", new List<SelectListItem>
@@ -70,28 +47,38 @@
                       new SelectListItem { Text = "Umtata", Value = "9"},
                       new SelectListItem { Text = "Mpumalanga", Value = "11"},
                       new SelectListItem { Text = "Limpopo", Value = "12"},
-                }, " Select Enquiry Reason", new { @id = "eqtype", required = "required" })
+                }, " Select Enquiry Reason", new { @id = "DeedsOffice", required = "required" })
                 </div>
 
-                
 
+                <div class="eqType">
+                    <label>First Name</label><br>
 
+                    @Html.TextBox("Firstname", null, new { @id = "FirstName", minlength = "3", maxlength = "30" })
+                </div>
+                <div class="eqType">
+                    <label>Surname</label><br>
 
+                    @Html.TextBox("Surname", null, new { @id = "Surname", minlength = "3", maxlength = "30" })
+                </div>
+                <div class="eqType">
+                    <label>ID Number</label><br>
 
-                <div class="tc" style=" margin-top: 150px;">
-                    <div>
-                        I accept the <a href="#">terms and conditions</a>
+                    @Html.TextBox("IDNumber", null, new { @id = "IDNumber", minlength = "13", maxlength = "13" })
+                </div>
+                <div class="eqType">
+                    <label>Sequestration</label><br>
+                    @Html.CheckBox("Sequestration", false, new { style = "margin-left:3.5%" })
+                </div>
+
+                <div class="tc">
+                    <div class="checkBoxDiv">
+                        I accept the &nbsp; <a href="#">terms and conditions &nbsp; </a>
                         <input id="tc" type="checkbox" value="tc" required />
                     </div>
+                    <button onclick="Search()" id="individualSearch" class="butn" name="individualSearch">Perform Search</button>
                 </div>
-
-                <button id="combinedComSearch" class="btn" name="combinedComSearch" style=" margin-top: 162px;">Perform Search</button>
-
-
             }
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 right">
             <div class="cen_text">
@@ -103,91 +90,7 @@
     </div>
 </div>
 
-
-
-
 <script>
-    function Search() {
-        $('#load').addClass('loader'); // to animate when successfull
-
-        var comName = document.getElementById("comName").value;
-        var CIPCSearch = document.getElementById("CIPCSearch").value;
-        var Reg = document.getElementById("Reg").value;
-
-
-
-        if (comName === "" && CIPCSearch === "") {
-            var alertMessage = '<div class="alert alert-danger" role="alert">'
-                + 'Please fill in details to search!</div>';
-
-            $(".resturn-message").html(alertMessage)
-        }
-
-        else if (comName === "") {
-            var alertMessage = '<div class="alert alert-danger" role="alert">'
-                + 'Please fill in Company Name to search!</div>';
-
-            $(".resturn-message").html(alertMessage);
-
-
-        }
-
-
-        else if (CIPCSearch === "") {
-            var alertMessage = '<div class="alert alert-danger" role="alert">'
-                + 'Please fill in CIPC Search to search!</div>';
-
-            $(".resturn-message").html(alertMessage);
-
-
-        }
-
-        else  {
-
-
-
-
-        $.ajax(
-            {
-                type: "POST",
-                url: '@Url.Action("CIPCCompanyResults", "Home")',
-                data: {
-                    companyName: $('#comName').val(),
-
-                },
-                dataType: "text",
-                error: function (result) {
-                    alert(data);
-
-
-
-
-
-                },
-                success: function (result) {
-
-                    var alertMessage = '<div class="alert alert-success" role="alert">'
-                        + 'Searching...</div>';
-
-                    $(".resturn-message").html(alertMessage)
-
-                    //alert(result.user_type);
-
-
-
-
-
-                }
-            });
-    }
-    }
-
-
-
-
-
-
-
     var tab = [];
     // removing duplicates
 
@@ -199,22 +102,15 @@
 
     tab = JSON.parse(localStorage.getItem('tabs')) || [];
 
-
-
     // push the new data into the array
-
 
     tab.push('Deeds Office Records Individual');
 
-
-
     tab = removeDup(tab);
-
 
     // Re-serialize the array back into a string and store it in localStorage
 
     localStorage.setItem('tabs', JSON.stringify(tab));
-
 
     var container = document.getElementById('tabs-div');
 
@@ -226,7 +122,6 @@
        const new_tabs = "<div class='tabs-btn' onClick='tes()' id='tabs-btn'><span class='tab-txt'>"+ txt +"</span>";
        container.insertAdjacentHTML("beforeend", new_tabs);
     };
-
 
     function tes() {
 
@@ -322,6 +217,4 @@
 
         console.log($(event.target).text());
     };
-
-
 </script>

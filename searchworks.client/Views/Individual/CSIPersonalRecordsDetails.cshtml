@@ -2,238 +2,250 @@
 
 @model IEnumerable<searchworks.client.Individual.EmploymentHistory>
 
-@{ ViewBag.Title = "CSI Personal Records"; }
+@{ ViewBag.Title = "CSIPersonalRecords"; }
 
 <div class="col-md-10 col-sm-10">
-    <div class="sea non">SEARCH RESULTS</div>
-    <div class="sea non">CSI Person Records</div>
-    <div class="sea act">@TempData["SearchType"]</div>
-    <div class="con2">
-        <div class="left_col">
-            <div class="results">
-                <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
-                <p>2 Results</p>
+    <div class="col-12">
+        <input type="button" value="Export PDF" onclick="Export('CSIPersonalRecordsDetails.pdf','@(TempData["FirstName"])', '@(TempData["IDNumber"])', '@(TempData["ResponseMessage"])')" class="button btn-b2" />
+    </div>
+    <div id="content">
+        <div class="con2">
+            <div class="left_col">
+                <div class="results">
+                    <i class='far fa-check-circle' style='font-size:30px;color:white; margin-left:10px; padding-top: 15px; display: inline-block '></i>
+                    @*<p>2 Results</p>*@
+                </div>
+
+                <p class="num">@TempData["Fullname"]</p>
+                <p class="num2">CSI Person Records Details</p>
+
+                <div class="multi non">
+                    Multiple Results
+                </div>
+                <div class="multi act">
+                    Detailed Information
+                </div>
+
+                <div class="seaInfo">
+                    Search Information
+                </div>
+
+                <div class="userInfo">
+                    <p class="">User:<span>@TempData["user"]</span></p>
+                    <p class="">Date:<span>@TempData["date"]</span></p>
+                    <p class="">Reference:<span>@TempData["ref"]</span></p>
+                    <p class="">Request:<span>@TempData["ResponseMessage"]</span></p>
+                </div>
             </div>
 
-            <p class="num">@TempData["Fullname"]</p>
-            <p class="num2">CSI Person Recordsss</p>
+            <div class="right_col">
+                <div id="notification" class="seaRes">
+                    NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="not">
+                    Please note that the search results will automatically be deleted with in 72hours as per NCR regulations.
+                    We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
+                    <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
+                </div>
+                
 
-            <div class="multi non">
-                Multiple Results
-            </div>
-            <div class="multi act">
-                Detailed Information
-            </div>
+                <div id="notification" class="seaRes">
+                    SEARCH INFORMATION <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="SeaInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="border: none;" colspan="2">Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">Search Type</td>
+                                <td style="border: none;" colspan="4">@TempData["SearchType"]</td>
 
-            <div class="seaInfo">
-                Search Information
-            </div>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="notification" class="seaRes">
+                    PERSONAL INFORMATION <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="PerInfo">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Surname</th>
+                                <th>ID Number</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-            <div class="userInfo">
-                <p class="">User:<span>@TempData["user"]</span></p>
-                <p class="">Date:<span>@TempData["date"]</span></p>
-                <p class="">Reference:<span>@TempData["ref"]</span></p>
-                <p ="">Request:<span>@TempData["ResponseMessage"]</span></p>
-            </div>
-        </div>
+                            <tr>
+                                <td>@TempData["FirstName"]</td>
+                                <td>@TempData["Surname"]</td>
+                                <td>@TempData["IDNumber"]</td>
+                                <td>@TempData["Age"]</td>
+                                <td>@TempData["Gender"] </td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
+                <div id="notification" class="seaRes">
+                    HOME AFFAIRS INFORMATION <span id="plusHomeInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHomeInfo" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="HomeInfo">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">Deceased Status</td>
+                                <td style="border: none;" colspan="4">@ViewData["DeceasedStatus"]</td>
 
-        <div class="right_col">
-            <div id="notification" class="seaRes">
-                NCR NOTIFICATION <span id="plusNot" class="coll"><i class="fas fa-plus"></i></span><span id="minusNot" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="not">
-                Please note that the search results will automatically be deleted with in 48hours as per NCR regulations.
-                We recommend downloading/exporting a PDF or EXCEL copy of this search and storing it locally.<br>
-                <!--                                Click on In the top <p class="expt"></p> in the top left corner to download/export this search.-->
-            </div>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Deceased Date</td>
+                                <td style="border: none;" colspan="4">@ViewData["DeceasedDate"] </td>
 
-            <div id="notification" class="seaRes">
-                SSSEARCH INFORMATION <span id="plusSeaInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusSeaInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="SeaInfo">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="border: none;" colspan="2">Summary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">Search Type</td>
-                            <td style="border: none;" colspan="4">@TempData["SearchType"]</td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Cause Of Death</td>
+                                <td style="border: none;" colspan="4">@ViewData["CauseOfDeath"] </td>
 
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="notification" class="seaRes">
-                PERSONAL INFORMATION <span id="plusPerInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusPerInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="PerInfo">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>ID Number</th>
-                            <th>Age</th>
-                            <th class="last">Gender</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Verified Date</td>
+                                <td style="border: none;" colspan="4">@ViewData["VerifiedDate"] </td>
 
-                        <tr>
-                            <td>@TempData["FirstName"]</td>
-                            <td>@TempData["Surname"]</td>
-                            <td>@TempData["IDNumber"]</td>
-                            <td>@TempData["Age"]</td>
-                            <td class="last">@TempData["Gender"] </td>
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Verified Status</td>
+                                <td style="border: none;" colspan="4">@ViewData["VerifiedStatus"]</td>
 
-            <div id="notification" class="seaRes">
-                HOME AFFAIRS INFORMATION <span id="plusHomeInfo" class="coll"><i class="fas fa-plus"></i></span><span id="minusHomeInfo" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="HomeInfo">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="border: none;" colspan="2">Summary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">Deceased Status</td>
-                            <td style="border: none;" colspan="4">@ViewData["DeceasedStatus"]</td>
+                                <td><a class="seaMore" href="#">Search more</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                @*<div id="notification" class="seaRes">
+                        ADDRESS HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
+                    </div>
 
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Deceased Date</td>
-                            <td style="border: none;" colspan="4">@ViewData["DeceasedDate"] </td>
+                    <div class="plusEmpHis">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type Description</th>
+                                    <th>Type Code</th>
+                                    <th>Number</th>
+                                    <th class="last">Last Updated Date</th>
+                                </tr>
+                            </thead>
 
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Cause Of Death</td>
-                            <td style="border: none;" colspan="4">@ViewData["CauseOfDeath"] </td>
+                            @foreach (var item in @ViewBag.telH)
+                            {
+                <tr>
+                    <td>@item.TypeDescription</td>
+                    <td>@item.TypeCode</td>
+                    <td>@item.Number</td>
+                    <td>@item.LastUpdatedDate</td>
+                </tr>
+        }
+                        </table>
+                    </div>*@
 
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Verified Date</td>
-                            <td style="border: none;" colspan="4">@ViewData["VerifiedDate"] </td>
+                <div id="notification" class="seaRes">
+                    TELEPHONE HISTORY <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="TeleHis">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Type Description</th>
+                                <th>Type Code</th>
+                                <th>Number</th>
+                                <th class="last">Last Updated Date</th>
+                            </tr>
+                        </thead>
+                        @if (ViewBag.telH != null)
+                        {
+                            foreach (var item in @ViewBag.telH)
+                            {
+                                <tr>
+                                    <td>@item.TypeDescription</td>
+                                    <td>@item.TypeCode</td>
+                                    <td>@item.Number</td>
+                                    <td>@item.LastUpdatedDate</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">No Data</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
 
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Verified Status</td>
-                            <td style="border: none;" colspan="4">@ViewData["VerifiedStatus"]</td>
+                <div id="notification" class="seaRes">
+                    EMPLOYMENT HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
+                </div>
+                <div class="EmpHis">
 
-                            <td><a class="seaMore" href="#">Search more</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            @*<div id="notification" class="seaRes">
-                ADDRESS HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
+                    <table class="table table-striped">
 
-            <div class="plusEmpHis">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Type Description</th>
-                            <th>Type Code</th>
-                            <th>Number</th>
-                            <th class="last">Last Updated Date</th>
-                        </tr>
-                    </thead>
+                        <thead>
+                            <tr>
+                                <th>Employer Name</th>
+                                <th>Designation</th>
+                                <th class="last">Last Updated Date</th>
+                            </tr>
+                        </thead>
+                        @if (@ViewBag.empH != null)
+                        {
+                            foreach (var item in @ViewBag.empH)
+                            {
+                                <tr>
 
-                    @foreach (var item in @ViewBag.telH)
-                    {
-        <tr>
-            <td>@item.TypeDescription</td>
-            <td>@item.TypeCode</td>
-            <td>@item.Number</td>
-            <td>@item.LastUpdatedDate</td>
-        </tr>
-}
-                </table>
-            </div>*@
+                                    <td>@item.EmployerName</td>
+                                    <td>@item.Designation</td>
+                                    <td>@item.LastUpdatedDate</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">No Data</td>
+                            </tr>
+                        }
 
-            <div id="notification" class="seaRes">
-                TELEPHONE HISTORY <span id="plusTeleHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusTeleHis" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="TeleHis">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Type Description</th>
-                            <th>Type Code</th>
-                            <th>Number</th>
-                            <th class="last">Last Updated Date</th>
-                        </tr>
-                    </thead>
-
-                    @foreach (var item in @ViewBag.telH)
-                    {
-        <tr>
-            <td>@item.TypeDescription</td>
-            <td>@item.TypeCode</td>
-            <td>@item.Number</td>
-            <td>@item.LastUpdatedDate</td>
-        </tr>
-}
-                </table>
-            </div>
-
-            <div id="notification" class="seaRes">
-                EMPLOYMENT HISTORY <span id="plusEmpHis" class="coll"><i class="fas fa-plus"></i></span><span id="minusEmpHis" class="coll"><i class="fas fa-minus"></i></span>
-            </div>
-            <div class="EmpHis">
-
-                <table class="table table-striped">
-
-                    <thead>
-                        <tr>
-                            <th>Employer Name</th>
-                            <th>Designation</th>
-                            <th class="last">Last Updated Date</th>
-                        </tr>
-                    </thead>
-
-                    @foreach (var item in @ViewBag.empH)
-                    {
-        <tr>
-
-            <td>@item.EmployerName</td>
-            <td>@item.Designation</td>
-            <td>@item.LastUpdatedDate</td>
-        </tr>
-}
-
-                    @*<tr>*@
-                    @* @foreach (EmploymentHistory item in @ViewBag.ArrayList1)*@
-                    @*@foreach (KeyValuePair<string, string> item in @ViewBag.ArrayList1)
+                        @*<tr>*@
+                        @* @foreach (EmploymentHistory item in @ViewBag.ArrayList1)*@
+                        @*@foreach (KeyValuePair<string, string> item in @ViewBag.ArrayList1)
                 {
 
                     <td> @item.Value </td>*@
-                    @*<td> @item.Value[1] </td>
+                        @*<td> @item.Value[1] </td>
                 <td> @item.Value[2] </td>*@
 
-                    @*  }*@
+                        @*  }*@
 
-                    @*</tr>*@
-                </table>
+                        @*</tr>*@
+                    </table>
 
-                @*<table>
+                    @*<table>
                 <thead>
                     <tr>
                         <th>Employer Name</th>
@@ -253,10 +265,12 @@
                     </tr>
                 </tbody>
             </table>*@
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
 
@@ -401,10 +415,4 @@
                             }
                         });
     }
-
-
-
-
-
-
 </script>
