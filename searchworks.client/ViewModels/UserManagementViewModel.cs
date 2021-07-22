@@ -13,13 +13,17 @@ namespace searchworks.client.Models
     {
         public orgtenant Company { get; set; }
 
+        public orgtenant Emptycompany { get; set; }
+
         public List<orgunit> orgunits { get; set; }
 
         public orgcategory Category { get; set; }
 
         public List<User> users { get; set; }
 
-        public orgunit orgunit { get; set; }
+        public orgunit Currentorgunit { get; set; }
+
+        public orgunit Addorgunit { get; set; }
 
         public orgregion orgregion { get; set; }
 
@@ -29,16 +33,7 @@ namespace searchworks.client.Models
 
         public void SetCurrentOrgUnit(orgunit vorgunit)
         {
-            this.orgunit = vorgunit;
-        }
-
-
-        public void SetCurrentOrgUnitByID(int orgunitid)
-        {
-            using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
-            {
-                this.orgunit = db.Query<orgunit>("Select * From orgunit where orgunitid=" +Convert.ToString(orgunitid)).FirstOrDefault();
-            }
+            this.Currentorgunit = vorgunit;
         }
 
         public UserManagementViewModel(int intorgtenant)
@@ -78,17 +73,17 @@ namespace searchworks.client.Models
                 try
                 {
                     //a company can have more than one branch
-                    this.orgunit = db.Query<orgunit>("Select * From orgunit where orgtenantid=" + this.Company.orgtenantid).FirstOrDefault();
+                    this.Currentorgunit = db.Query<orgunit>("Select * From orgunit where orgtenantid=" + this.Company.orgtenantid).FirstOrDefault();
                 }
                 catch (Exception err)
                 {
-                    this.orgunit = null;
+                    this.Currentorgunit = null;
                     //TODO: log the error
                 }
 
                 try
                 {
-                    this.orgregion = db.Query<orgregion>("Select * From orgregion where orgregionid=" + this.orgunit.regionid).FirstOrDefault();
+                    this.orgregion = db.Query<orgregion>("Select * From orgregion where orgregionid=" + this.Currentorgunit.regionid).FirstOrDefault();
                 }
                 catch (Exception err)
                 {

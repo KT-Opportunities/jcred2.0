@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var grid = new WebGrid(Model.orgunits, canPage: true, rowsPerPage: 10, ajaxUpdateContainerId: "webGrid", ajaxUpdateCallback: "setArrows");
+    var grid2 = new WebGrid(Model.users, canPage: true, rowsPerPage: 10, ajaxUpdateContainerId: "webGrid", ajaxUpdateCallback: "setArrows");
 }
 
 
@@ -136,14 +137,14 @@
         </div>
 
 
-        <div class="sea_bar" @*class="row com-row"*@>
+        <div class="sea_bar2" @*class="row com-row"*@>
             <div class="col-6">
                 <label>COMPANY INFORMATION</label>
             </div>
         </div>
         <div class="row ro-2">
             <div class="col-3">
-                <div class="con2" style="height: 512px;">
+                <div class="con22" style="height: 512px;">
                     @using (Html.BeginForm("CSIPersonalRecordsResults", "Individual", FormMethod.Post))
                     {
                         //Use Editor For on TextBox
@@ -228,7 +229,7 @@
                 </div>
             </div>
 
-            <div class="con2 col-9">
+            <div class="con22 col-9">
                 <div class="row">
                     <div class="col-6"><span style="font-weight: bold;"> BILLING INFORMATION EXISTING</span></div>
                     <div class="col-6 right"><p class="ban">Please remember to keep your company information up to date</p></div>
@@ -238,7 +239,7 @@
 
                         <div class="">
                             <label>Bank Name</label><br>
-                            @Html.EditorFor(m => m.Company.orgname, new
+                            @Html.EditorFor(m => m.Emptycompany.orgname, new
                        {
                            htmlAttributes = new
                            {
@@ -256,7 +257,7 @@
 
                         <div>
                             <label>Bank Branch Code</label><br>
-                            @Html.EditorFor(m => m.Company.orgcode, new
+                            @Html.EditorFor(m => m.Emptycompany.orgcode, new
                        {
                            htmlAttributes = new
                            {
@@ -269,7 +270,7 @@
                        })
                         </div>
                         <label>Account Number</label><br>
-                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                        @Html.EditorFor(m => m.Emptycompany.orgcode, new
                    {
                        htmlAttributes = new
                        {
@@ -281,7 +282,7 @@
                        }
                    })
                         <label>Pastel Account Number</label><br>
-                        @Html.EditorFor(m => m.Company.org_regno,
+                        @Html.EditorFor(m => m.Emptycompany.org_regno,
                         new
                              {
                                  htmlAttributes = new
@@ -299,7 +300,7 @@
                     <div class="col-md-6 col-sm-6">
                         <div class="">
                             <label>Bank Branch Name</label><br>
-                            @Html.EditorFor(m => m.Company.orgname, new
+                            @Html.EditorFor(m => m.Emptycompany.orgname, new
                        {
                            htmlAttributes = new
                            {
@@ -317,7 +318,7 @@
 
                         <div>
                             <label>Account Holder</label><br>
-                            @Html.EditorFor(m => m.Company.orgcode, new
+                            @Html.EditorFor(m => m.Emptycompany.orgcode, new
                        {
                            htmlAttributes = new
                            {
@@ -330,7 +331,7 @@
                        })
                         </div>
                         <label>Account Type</label><br>
-                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                        @Html.EditorFor(m => m.Emptycompany.orgcode, new
                    {
                        htmlAttributes = new
                        {
@@ -342,7 +343,7 @@
                        }
                    })
                         <label>Purchase Order</label><br>
-                        @Html.EditorFor(m => m.Company.org_regno,
+                        @Html.EditorFor(m => m.Emptycompany.org_regno,
                         new
                              {
                                  htmlAttributes = new
@@ -365,7 +366,7 @@
                     <div class="col-12">
 
                         <label>Address</label><br>
-                        @Html.EditorFor(m => m.Company.orgname, new
+                        @Html.EditorFor(m => m.Emptycompany.orgname, new
                    {
                        htmlAttributes = new
                        {
@@ -380,7 +381,7 @@
                    })
 
                         <label></label><br>
-                        @Html.EditorFor(m => m.Company.orgcode, new
+                        @Html.EditorFor(m => m.Emptycompany.orgcode, new
                    {
                        htmlAttributes = new
                        {
@@ -393,7 +394,7 @@
                        }
                    })
                         <label></label><br>
-                        @Html.EditorFor(m => m.Category.orgcategoryname, new
+                        @Html.EditorFor(m => m.Emptycompany.orgcode, new
                    {
                        htmlAttributes = new
                        {
@@ -406,7 +407,7 @@
                        }
                    })
                         <label></label><br>
-                        @Html.EditorFor(m => m.Company.org_regno,
+                        @Html.EditorFor(m => m.Emptycompany.org_regno,
                         new
                         {
                             htmlAttributes = new
@@ -427,7 +428,7 @@
 
                         <div class="">
                             <label>Mobile Number</label><br>
-                            @Html.EditorFor(m => m.Company.orgname, new
+                            @Html.EditorFor(m => m.Emptycompany.orgname, new
                        {
                            htmlAttributes = new
                            {
@@ -445,7 +446,7 @@
 
                         <div>
                             <label>Billing Start Date</label><br>
-                            @Html.EditorFor(m => m.Company.orgcode, new
+                            @Html.EditorFor(m => m.Emptycompany.orgcode, new
                        {
                            htmlAttributes = new
                            {
@@ -463,7 +464,7 @@
                     <div class="col-md-6 col-sm-6">
                         <div class="">
                             <label>Telephone Number</label><br>
-                            @Html.EditorFor(m => m.Company.orgname, new
+                            @Html.EditorFor(m => m.Emptycompany.orgname, new
                        {
                            htmlAttributes = new
                            {
@@ -481,7 +482,7 @@
 
                         <div>
                             <label></label><br>
-                            @Html.EditorFor(m => m.Company.orgcode, new
+                            @Html.EditorFor(m => m.Emptycompany.orgcode, new
                        {
                            htmlAttributes = new
                            {
@@ -740,115 +741,115 @@
                 </div>
             </div>
         </div>
-        <!--<div class="row com-row">
-    <div class="com-div">
-        <div class="row">
-            <div class="col-6">-->
-        @*<div class="row">
-            <div class="col-3">
-                <p><strong>Search By</strong></p>
-            </div>
-            <div class="col-6">
-                <input class="inp-b" name="search" />
-            </div>
-            <div class="col-3">
-                <button class="btn-b">Search</button>
-            </div>
-        </div>*@
-
-        <!--<form class="form-inline my-form-inline">
-
-                        <div class="form-group mb-2 in-mar">
-                            <label for="inputPassword" class="col-form-label search-label">Search by</label>
-                            <div class="in-mar">
-                                <input type="text" class="form-control" id="inputPassword">
-                            </div>
-                        </div>
-                        <button type="submit" class="btn-b">Search</button>
-                    </form>
-                </div>
-
-                <div class="col-6">
-                    <button class="btn-b2" data-toggle="modal" data-target="#userModal" style="cursor:pointer">Create user</button>
-                </div>
-            </div>
-        </div>
-    </div>-->
 
         <div class="row ro-2">
             <div class="con1">
-                <table class="table table-borderless custom-table">
-                    <thead>
-                        <tr class="justify-content-around t-row" style="display:flex">
-                            <th scope="col" class="thSearch color">
-                                <label class="control control--checkbox">
-                                    <input type="checkbox" class="js-check-all" />
-                                    <div class="control__indicator"></div>
-                                </label>
-                            </th>
-                            <th scope="col" class="thSearch color">Name</th>
-                            <th scope="col" class="thSearch color">Branch Name</th>
-                            <th scope="col" class="thSearch color">Mobile</th>
-                            <th scope="col" class="thSearch color">Email</th>
-                            <th scope="col" class="thSearch color">CC Role</th>
-                            <th scope="col" class="thSearch color">SW Role</th>
-                            <th scope="col" class="thSearch color">Enabled</th>
-                            <th scope="col" class="thSearch color"></th>
-                        </tr>
-                    </thead>
-                </table>
+    
             </div>
         </div>
-        <div class="rowTable ro-2">
-            <div class="conUserMangement">
-                <div class="table-responsive my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass">
-                    <table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
 
-                        <tbody>
-                            <tr scope="row" class="justify-content-around t-row ">
-                                <td scope="col" class="tdSH">
-                                    <label class="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </td>
-                                <td scope="col" class="tdSH" data-toggle="modal"
-                                    data-target="#userModal">
-                                    Walt
-                                </td>
-                                <td scope="col" class="tdSH" data-toggle="modal"
-                                    data-target="#userModal">
-                                    Midrand
-                                </td>
-                                <td scope="col" class="tdSH" data-toggle="modal"
-                                    data-target="#userModal">
-                                    +27 107 7897
-                                </td>
-                                <td scope="col" class="tdSH" data-toggle="modal"
-                                    data-target="#userModal">
-                                    walt@ktopportunities.co.za
-                                </td>
-                                <td scope="col" class="tdSH" data-toggle="modal"
-                                    data-target="#userModal">
-                                    User
-                                </td>
-                                <td scope="col" class="tdSH" data-toggle="modal"
-                                    data-target="#userModal">
-                                    User
-                                </td>
-                                <td class="pl-0 en-u tdSH">
-                                    <div class=" align-items-center">
-                                        <label class="custom-control ios-switch">
-                                            <input type="checkbox" class="ios-switch-control-input" checked="">
-                                            <span class="ios-switch-control-indicator"></span>
-                                        </label>
-                                        @*<a href="#">James Yates</a>*@
-                                    </div>
-                                </td>
-                                <td class="ey-u tdSH" data-toggle="modal" data-target="#userModal"><i class="fa fa-eye" aria-hidden="true"></i> View</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="rowTable ro-2">
+            <div class="conSearchHistory" id="gridContainer">
+                <div class="my-custom-scrollbar my-custom-scrollbar-primary scrollbar scrollbar-dusty-grass" id="webGrid">
+
+
+
+                    @MvcHtmlString.Create(
+                           grid2.GetHtml(tableStyle: "table table-borderless",
+                           alternatingRowStyle: "alternate",
+                           headerStyle: "header",
+                           selectedRowStyle: "selected",
+                           mode: WebGridPagerModes.All,
+                           columns: grid2.Columns
+                           (
+                            grid2.Column(header: "{CheckBoxHeading}", style: "Large", format:@<text><input class="box" type="checkbox" /></text>),
+                            //grid.Column(columnName: "parent_orgunitid", header: "Parent Org", style: "Large"),
+                            grid2.Column(columnName: "firstName", header: "First Name", style: "Large"),
+                            grid2.Column(columnName: "lastName", header: "Last Name", style: "Large"),
+                            grid2.Column(columnName: "phone", header: "Phone", style: "Large"),
+                            grid2.Column(columnName: "email", header: "Email", style: "Large"),
+                            @*grid2.Column(header: "User Role", style: "Large"),
+                            grid2.Column(header: "Enable", style: "Large", format:@<text><input class="box" type="checkbox" /></text> ),*@
+                            //grid.Column(columnName: "created_at", header: "Created AT", style: "Large"),
+                            //grid.Column(columnName: "updated_at", header: "Updated AT", style: "Large"),
+                            grid2.Column(header: "", canSort: false, style: "actions",
+                            format: @<text>
+                    @Html.Raw("<a data-modal='' class='raw_click' data-assigned-id=''  data-toggle='modal' data-target='#userModal' href ='' title='View'> <i class='fa fa-eye' aria-hidden='true'></i><span id='vi'>View</span> </a>")
+                    @*@Html.Raw("<a data-modal='' href='' title='Edit'> <span class='glyphicon glyphicon-edit'> </span> </a>")
+        @Html.Raw("<a data-modal='' href='' title='Delete'> <span class='glyphicon glyphicon-trash'> </span> </a>")*@
+                </text>)
+     //,
+     //grid.Column(header: "Action", format: (item) =>
+     //{
+     //    var link = Html.ActionLink("Edit", "Edit", new { id = item.orgtenantid });
+     //    return link;
+     //})
+     //
+     //,
+
+     //grid.Column(header: "Action", format: (item) =>
+     //{
+     //var link = Html.ActionLink("Delete", "Delete", new { id = item.orgtenantid });
+     //return link;
+     //}),
+                @*grid.Column(header: "Action", format: @<text>@Html.ActionLink("Detail", null, null, new { @onclick = "return GetSelectedRow(this);" })
+    </text>)*@
+)
+).ToString().Replace("{CheckBoxHeading}", "<input type='checkbox' id='allBox'/>")
+)
+
+                    @Html.Hidden("dir", @grid.SortDirection)
+
+                    @Html.Hidden("col", @grid.SortColumn)
+
+                    <!--<table class="table table-borderless table-hover custom-table" style="table-layout:fixed;">
+
+    <tbody>
+        foreach (var d in Model.orgunits)
+        {
+            <tr scope="row" class="justify-content-around t-row ">
+                <td scope="col" class="tdUM">
+                    <label class="control control--checkbox">
+                        <input type="checkbox" />-->
+                    @*<div class="control__indicator"></div>*@
+                    <!--</label>
+                    </td>
+                    <td scope="col" class="tdUM" data-toggle="modal"
+                        data-target="#exampleModal">
+                    </td>
+                    <td scope="col" class="tdUM" data-toggle="modal"
+                        data-target="#exampleModal">
+                       d.telephone
+                    </td>
+                    <td scope="col" class="tdUM" data-toggle="modal"
+                        data-target="#exampleModal">
+                        d.fax
+                    </td>
+                    <td scope="col" class="tdUM" data-toggle="modal"
+                        data-target="#exampleModal">
+                        6 Users
+                    </td>
+                    <td scope="col" class="tdUM" data-toggle="modal"
+                        data-target="#exampleModal">
+                        -
+                    </td>
+                    <td class="pl-0 en-u tdUM">
+                        <div class=" align-items-center">
+                            <label class="custom-control ios-switch">
+                                <input type="checkbox" class="ios-switch-control-input" checked="">
+                                <span class="ios-switch-control-indicator"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="ey-u tdUM" data-toggle="modal"
+                        data-target="#exampleModal">
+                        <i class="fa fa-eye" aria-hidden="true"></i> View
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>-->
                 </div>
             </div>
         </div>
@@ -881,7 +882,7 @@
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Branch Name</strong><br>
-                                @Html.EditorFor(m => m.orgunit.orgunitname, new
+                                @Html.EditorFor(m => m.Addorgunit.orgunitname, new
                                 {
                                      htmlAttributes = new
                                      {
@@ -894,7 +895,7 @@
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Vat Number</strong><br>
-                                @Html.EditorFor(m => m.orgunit.orgunit_vatno, new
+                                @Html.EditorFor(m => m.Addorgunit.orgunit_vatno, new
                              {
                                   htmlAttributes = new
                                   {
@@ -910,7 +911,7 @@
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Sales Region/ Province</strong><br>
-                                @Html.EditorFor(m => m.orgregion.regionname, new
+                                @Html.EditorFor(m => m.Addorgunit.regionid, new
                                {
                                     htmlAttributes = new
                                     {
@@ -928,7 +929,7 @@
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Physical Address</strong><br>
-                                   @Html.EditorFor(m => m.orgunit.physical_address, new
+                                   @Html.EditorFor(m => m.Currentorgunit.physical_address, new
                                 {
                                      htmlAttributes = new
                                      {
@@ -941,7 +942,7 @@
                             </div>
                             <div class="col-6">
                                 <strong class="heading1">Postal Addres</strong><br>
-                                @Html.EditorFor(m => m.orgunit.postal_address, new
+                                @Html.EditorFor(m => m.Addorgunit.postal_address, new
                                 {
                                      htmlAttributes = new
                                      {
@@ -956,7 +957,7 @@
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <strong class="heading1">Telephone Number</strong><br>
-                                @Html.EditorFor(m => m.orgunit.telephone, new
+                                @Html.EditorFor(m => m.Addorgunit.telephone, new
                               {
                                    htmlAttributes = new
                                    {
@@ -968,17 +969,7 @@
                               })
                             </div>
                             <div class="col-6">
-                                <strong class="heading1">Fax Number</strong><br>
-                                @Html.EditorFor(m => m.orgunit.fax, new
-                             {
-                                  htmlAttributes = new
-                                  {
-                                      @id = "FirstName",
-                                      @class = "cus-input",
-                                      minlength = "3",
-                                      maxlength = "30"
-                                  }
-                             })
+                            
                             </div>
                         </div>
 
@@ -1159,14 +1150,7 @@
                             </div>
                             <div class="col-6">
 
-                                <strong class="heading1">Fax Number</strong><br>
-                                @Html.TextBox("FaxNumber", null, new
-                           {
-                               @id = "FirstName",
-                               @class = "cus-input",
-                               minlength = "3",
-                               maxlength = "30"
-                           })
+
                             </div>
                         </div>
 
