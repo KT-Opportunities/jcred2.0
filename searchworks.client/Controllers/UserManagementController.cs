@@ -35,11 +35,23 @@ namespace searchworks.client.Controllers
 
         public ActionResult SearchHistory()
         {
+            
+            string aspUserID = "";
+            int intOrgTenantID = -1;
+
+            using (JCredHelper jCredHelper = new JCredHelper())
+            { 
+                aspUserID = User.Identity.GetUserId();//returns the GUID key of identityuser
+                intOrgTenantID = jCredHelper.GetUserTenantID(aspUserID);
+            }
+
+
+
             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-            string query_uid = "SELECT * FROM searchhistory";
+            string query_uid = "SELECT * FROM searchhistory where orgtenantid = " + intOrgTenantID;
 
             conn.Open();
 

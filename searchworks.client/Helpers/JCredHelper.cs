@@ -14,9 +14,8 @@ namespace searchworks.client.Helpers
 {
     public class JCredHelper : IDisposable
     {
-        private IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+        private  IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
         private bool disposed = false;
-
         //singleton
         public static JCredHelper Instance { get; protected set; } = new JCredHelper();
 
