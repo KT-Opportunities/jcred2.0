@@ -31,11 +31,10 @@ namespace searchworks.client.Controllers
     //[Authorize]
     public class HomeController : Controller
     {
-        IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
-        
-        public  HomeController()
+        private IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+
+        public HomeController()
         {
-            
         }
 
         public string GetSWAPILoginToken()
@@ -55,7 +54,6 @@ namespace searchworks.client.Controllers
             }
             catch (Exception err)
             {
-
                 //throw;
             }
 
@@ -71,16 +69,15 @@ namespace searchworks.client.Controllers
             string authBody = "{  \"Username\": \"" + userName + "\",  \"Password\": \"" + password + "\" }";
 
             var client = new RestClient(host);
-            
+
             var request = new RestRequest(Method.POST);
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Content-Type", "application/json");
-            
+
             request.AddParameter("application/json", authBody, ParameterType.RequestBody);
 
             try
             {
-
                 IRestResponse response = client.Execute(request);
 
                 if (response.IsSuccessful)
@@ -90,15 +87,13 @@ namespace searchworks.client.Controllers
                 }
                 else
                 {//something went wrong: log the response
-
                 }
             }
             catch (Exception err)
             {
-                //error 
+                //error
                 //throw;
             }
-
 
             return loginToken;
         }
@@ -121,7 +116,6 @@ namespace searchworks.client.Controllers
         {
             return View();
         }
-
 
         public ActionResult ForgotPassword()
         {
@@ -260,7 +254,6 @@ namespace searchworks.client.Controllers
 
         public ActionResult Logout()
         {
-            
             var authManager = HttpContext.GetOwinContext().Authentication;
             authManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
@@ -932,7 +925,7 @@ namespace searchworks.client.Controllers
                     }
 
                     //company search API call
-                    var url = jCredHelper.GetSWAPIHostUrl()+ "/company/csicompany/companytrace/registrationnumber/";//"https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
+                    var url = jCredHelper.GetSWAPIHostUrl() + "/company/csicompany/companytrace/registrationnumber/";//"https://uatrest.searchworks.co.za/company/csicompany/companytrace/registrationnumber/";
 
                     //create RestSharp client and POST request object
                     var client = new RestClient(url);
@@ -1299,7 +1292,7 @@ namespace searchworks.client.Controllers
         public ActionResult DeedsOfficeRecordsCompanyResult(CompanyDeeds CompanyDeed)
         {
             /*string Reference = CompanyDeed.Reference != null ? CompanyDeed.Reference.Trim() : " ";*/
-            /*string Reference = " ";
+            string Reference = " ";
             string deedsOffice = CompanyDeed.DeedsOffice != null ? CompanyDeed.DeedsOffice.Trim() : null;
             string companyName = CompanyDeed.CompanyName != null ? CompanyDeed.CompanyName.Trim() : null;
             string companyRegistrationNumber = CompanyDeed.CompanyRegistrationNumber != null ? CompanyDeed.CompanyRegistrationNumber.Trim() : null;
@@ -1329,24 +1322,26 @@ namespace searchworks.client.Controllers
 
             conn.Close();
 
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            /*string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");*/
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/deedsoffice/company/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/deedsoffice/company/"; //"https://uatrest.searchworks.co.za/deedsoffice/company/";
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
             //request headers
             request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");*/
+            request.AddHeader("Content-Type", "application/json");
             try
             {
-                /*var apiInput = new
+                var apiInput = new
                 {
                     SessionToken = authtoken,
                     Reference = Reference,
@@ -1366,18 +1361,18 @@ namespace searchworks.client.Controllers
                 dynamic rootObject = JObject.Parse(response.Content);
                 JObject responseObject = JObject.Parse(response.Content);
 
-                ViewData["ResponseMessage"] = rootObject.ResResponseMessage;*/
-
-                var url = "http://localhost:8000/root";
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
-                IRestResponse response = client.Execute<RootObject>(request);
+                ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-                dynamic rootObject = JObject.Parse(response.Content);
+
+                /* var url = "http://localhost:8000/root";
+                 var client = new RestClient(url);
+                 var request = new RestRequest(Method.GET);*/
+                /* IRestResponse response = client.Execute<RootObject>(request);
+                 dynamic rootObject = JObject.Parse(response.Content);*/
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 TempData["ResponseMessage"] = rootObject.ResponseMessage;
 
-                if (ViewData["ResponseMessage"].ToString() == "ServiceOffline")
+                if (rootObject.ResponseMessage == "ServiceOffline")
                 {
                     TempData["msg"] = "Sorry Service Is Currently Offline, Please try again later ";
                     return View();
@@ -1386,6 +1381,11 @@ namespace searchworks.client.Controllers
                 if (rootObject.ResponseMessage == "NotFound")
                 {
                     TempData["msg"] = "No Results Returned. ";
+                    return View();
+                }
+                if (rootObject.ResponseMessage == "DeedsOfficeCompany, Error occurred. Please try again.")
+                {
+                    TempData["msg"] = "DeedsOfficeCompany, Error occurred. Please try again. ";
                     return View();
                 }
 
@@ -1412,82 +1412,85 @@ namespace searchworks.client.Controllers
         public ActionResult DeedsOfficeRecordsCompanyDetails(CompanyDeeds CompanyDeed)
         {
             /*string Reference = CompanyDeed.Reference != null ? CompanyDeed.Reference.Trim() : " ";*/
-            /* string Reference = " ";
-             string dbKey = CompanyDeed.DBKey;
-             string deedsOffice = CompanyDeed.DeedsOffice != null ? CompanyDeed.DeedsOffice.Trim() : null;
-             string companyName = CompanyDeed.CompanyName != null ? CompanyDeed.CompanyName.Trim() : null;
-             string SearchDescription = CompanyDeed.SearchDescription;
+            string Reference = " ";
+            string dbKey = CompanyDeed.DBKey;
+            string deedsOffice = CompanyDeed.DeedsOffice != null ? CompanyDeed.DeedsOffice.Trim() : null;
+            string companyName = CompanyDeed.CompanyName != null ? CompanyDeed.CompanyName.Trim() : null;
+            string SearchDescription = CompanyDeed.SearchDescription;
 
-             System.Diagnostics.Debug.WriteLine(CompanyDeed.DBKey);
-             System.Diagnostics.Debug.WriteLine(CompanyDeed.DeedsOffice);
-             System.Diagnostics.Debug.WriteLine(CompanyDeed.Reference);
-             System.Diagnostics.Debug.WriteLine(CompanyDeed.SearchDescription);
+            System.Diagnostics.Debug.WriteLine(CompanyDeed.DBKey);
+            System.Diagnostics.Debug.WriteLine(CompanyDeed.DeedsOffice);
+            System.Diagnostics.Debug.WriteLine(CompanyDeed.Reference);
+            System.Diagnostics.Debug.WriteLine(CompanyDeed.SearchDescription);
 
-             string user_id = Session["ID"].ToString();
-             string us = Session["Name"].ToString();
-             DateTime time = DateTime.Now;
-             string date_add = DateTime.Today.ToShortDateString();
-             string time_add = time.ToString("T");
-             string page = "Deeds Office Records Company Details";
-             string action = "Company Name:" + companyName;
+            string user_id = Session["ID"].ToString();
+            string us = Session["Name"].ToString();
+            DateTime time = DateTime.Now;
+            string date_add = DateTime.Today.ToShortDateString();
+            string time_add = time.ToString("T");
+            string page = "Deeds Office Records Company Details";
+            string action = "Company Name:" + companyName;
 
-             ViewData["user"] = Session["Name"].ToString();
-             ViewData["date"] = DateTime.Today.ToShortDateString();
-             ViewData["ref"] = Reference;
+            ViewData["user"] = Session["Name"].ToString();
+            ViewData["date"] = DateTime.Today.ToShortDateString();
+            ViewData["ref"] = Reference;
 
-             string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
-             string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
-             var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+            string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+            string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+            var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-             conn.Open();
+            conn.Open();
 
-             var cmd2 = new MySqlCommand(query_uid, conn);
+            var cmd2 = new MySqlCommand(query_uid, conn);
 
-             var reader2 = cmd2.ExecuteReader();
+            var reader2 = cmd2.ExecuteReader();
 
-             conn.Close();
+            conn.Close();
 
-             string authtoken = new JCredHelper().GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-             if (!tokenValid(authtoken))
-             {
-                 //exit with a warning
-             }
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!"); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            if (!tokenValid(authtoken))
+            {
+                //exit with a warning
+            }
 
-             //company search API call
-             var url = "https://uatrest.searchworks.co.za/deedsoffice/company/dbkey/";
+            //company search API call
+            var url = jCredHelper.GetSWAPIHostUrl() + "/deedsoffice/company/dbkey/";
 
-             //create RestSharp client and POST request object
-             var client = new RestClient(url);
-             var request = new RestRequest(Method.POST);
-             //request headers
-             request.RequestFormat = DataFormat.Json;
-             request.AddHeader("Content-Type", "application/json");
+            /*var url = "https://uatrest.searchworks.co.za/deedsoffice/company/dbkey/";*/
 
-             var apiInput = new
-             {
-                 SessionToken = authtoken,
-                 Reference = Reference,
-                 DeedsOffice = deedsOffice,
-                 DBKey = dbKey,
-                 SearchDescription = SearchDescription
-             };
-
-             //add parameters and token to request
-             request.Parameters.Clear();
-             request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-             request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-
-             IRestResponse response = client.Execute<RootObject>(request);
-
-             dynamic rootObject = JObject.Parse(response.Content);
-             JObject responseObject = JObject.Parse(response.Content);*/
-
-            var url = "http://localhost:3000/root";
+            //create RestSharp client and POST request object
             var client = new RestClient(url);
-            var request = new RestRequest(Method.GET);
+            var request = new RestRequest(Method.POST);
+            //request headers
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+
+            var apiInput = new
+            {
+                SessionToken = authtoken,
+                Reference = Reference,
+                DeedsOffice = deedsOffice,
+                DBKey = dbKey,
+                SearchDescription = SearchDescription
+            };
+
+            //add parameters and token to request
+            request.Parameters.Clear();
+            request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+            request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+
             IRestResponse response = client.Execute<RootObject>(request);
-            System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+
             dynamic rootObject = JObject.Parse(response.Content);
+            JObject responseObject = JObject.Parse(response.Content);
+
+            /*  var url = "http://localhost:3000/root";
+              var client = new RestClient(url);
+              var request = new RestRequest(Method.GET);
+              IRestResponse response = client.Execute<RootObject>(request);
+              System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
+              dynamic rootObject = JObject.Parse(response.Content);*/
             ViewData["ResponseMessage"] = rootObject.ResponseMessage;
             TempData["ResponseMessage"] = rootObject.ResponseMessage;
             if (ViewData["ResponseMessage"].ToString() == "ServiceOffline")

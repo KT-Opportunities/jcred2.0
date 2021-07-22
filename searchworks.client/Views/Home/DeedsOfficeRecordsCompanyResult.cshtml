@@ -1,15 +1,19 @@
 ﻿@{
     ViewBag.Title = "DeedsOfficeRecordsCompanyResult";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string companyName = @ViewBag.ResponseElement[0].CompanyInformation.CompanyName;
-    string RegistrationNumber = @ViewBag.ResponseElement[0].CompanyInformation.CompanyRegistrationNumber;
-    string searchType = @ViewBag.ResponseElement[0].SearchInformation.CallerModule;
+    if (TempData["msg"] == null)
+    {
+        string companyName = @ViewBag.ResponseElement[0].CompanyInformation.CompanyName;
+        string RegistrationNumber = @ViewBag.ResponseElement[0].CompanyInformation.CompanyRegistrationNumber;
+        string searchType = @ViewBag.ResponseElement[0].SearchInformation.CallerModule;
+    }
+    
 }
 
 <div class="col-md-10 col-sm-10">
-    <div class="col-12">
+    @*<div class="col-12">
         <input type="button" value="Export PDF" onclick="Export('DeedsOfficeRecordsCompanyResult.pdf', '@(companyName)', '@(RegistrationNumber)', '@(searchType)')" class="button btn-b2" />
-    </div>
+    </div>*@
     <div id="content">
         <div class="con2">
             @if (TempData["msg"] != null)

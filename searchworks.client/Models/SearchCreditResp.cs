@@ -451,6 +451,8 @@ namespace searchworks.client.Credit
         public string MemberContribution { get; set; }
         public string MemberContributionType { get; set; }
         public string ResignationDate { get; set; }
+        public string PhysicalAddress { get; set; }
+
     }
 
     public class ConsumerStatistics

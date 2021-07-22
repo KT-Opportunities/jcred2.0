@@ -864,7 +864,6 @@ namespace searchworks.client.Controllers
 
                 conn.Close();
 
-
                 JCredHelper jCredHelper = new JCredHelper();
                 string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
                 if (!tokenValid(authtoken))
@@ -907,7 +906,7 @@ namespace searchworks.client.Controllers
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
 
-                if (ViewData["ResponseMessage"].ToString() == "NotFound")
+                if (rootObject.ResponseMessage == "NotFound")
                 {
                     TempData["msg"] = "Result Not Found ";
                     return View();
@@ -1025,7 +1024,7 @@ namespace searchworks.client.Controllers
                 TempData["msg"] = "Error Occured, Please check the values entered.";
             }
 
-            return View(PropInfo);
+            return View();
         }
 
         public ActionResult DeedsOfficeRecordsIndividual()
@@ -1035,89 +1034,91 @@ namespace searchworks.client.Controllers
 
         public ActionResult DeedsOfficeRecordsIndividualResults(Deeds deed)
         {
-            /* string name = deed.FirstName != null ? deed.FirstName.Trim() : null;
-             string deeds = deed.DeedsOffice != null ? deed.DeedsOffice.Trim() : null;
-             string sur = deed.Surname != null ? deed.Surname.Trim() : null;
-             string id = deed.IDNumber != null ? deed.IDNumber.Trim() : null;
-             string refe = deed.Reference != null ? deed.Reference.Trim() : null;
-             bool Sequestration = deed.Sequestration;
+            string name = deed.FirstName != null ? deed.FirstName.Trim() : null;
+            string deeds = deed.DeedsOffice != null ? deed.DeedsOffice.Trim() : null;
+            string sur = deed.Surname != null ? deed.Surname.Trim() : null;
+            string id = deed.IDNumber != null ? deed.IDNumber.Trim() : null;
+            string refe = deed.Reference != null ? deed.Reference.Trim() : null;
+            bool Sequestration = deed.Sequestration;
 
-             string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
-             if (!tokenValid(authtoken))
-             {
-                 //exit with a warning
-             }
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
+            if (!tokenValid(authtoken))
+            {
+                //exit with a warning
+            }
 
-             //company search API call
-             var url = "https://uatrest.searchworks.co.za/deedsoffice/person/";
-             //create RestSharp client and POST request object
-             var client = new RestClient(url);
-             var request = new RestRequest(Method.POST);
+            //company search API call
+            var url = jCredHelper.GetSWAPIHostUrl() + "/deedsoffice/person/";
+            /*var url = "https://uatrest.searchworks.co.za/deedsoffice/person/";*/
+            //create RestSharp client and POST request object
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
 
-             //request headers
-             request.RequestFormat = DataFormat.Json;
-             request.AddHeader("Content-Type", "application/json");*/
+            //request headers
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
 
             try
             {
-                /* var apiInput = new
-                 {
-                     SessionToken = authtoken,
-                     DeedsOfficeIDs = deeds,
-                     Reference = refe,
-                     Surname = sur,
-                     Firstname = name,
-                     IDNumber = id,
-                     Sequestration = Sequestration
-                 };
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    DeedsOfficeIDs = deeds,
+                    Reference = refe,
+                    Surname = sur,
+                    Firstname = name,
+                    IDNumber = id,
+                    Sequestration = Sequestration
+                };
 
-                 //add parameters and token to request
-                 request.Parameters.Clear();
-                 request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                 request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
-                 //ApiResponse is a class to model the data we want from the API response
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //ApiResponse is a class to model the data we want from the API response
 
-                 //make the API request and get a response
-                 IRestResponse response = client.Execute<RootObject>(request);
+                //make the API request and get a response
+                IRestResponse response = client.Execute<RootObject>(request);
 
-                 //dynamic rootObject = JObject.Parse(response.Content);
-                 //ViewData["ResponseMessage"] = rootObject.ResponseMessage;
-                 //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
-                 string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
+                //dynamic rootObject = JObject.Parse(response.Content);
+                //ViewData["ResponseMessage"] = rootObject.ResponseMessage;
+                //ViewData["PDFCopyURL"] = rootObject.PDFCopyURL;
+                string dbConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;//string.Format("server={0};uid={1};pwd={2};database={3};", serverIp, username, password, databaseName);
 
-                 var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
+                var conn = new MySql.Data.MySqlClient.MySqlConnection(dbConnectionString);
 
-                 DateTime time = DateTime.Now;
+                DateTime time = DateTime.Now;
 
-                 string date_add = DateTime.Today.ToShortDateString();
-                 string time_add = time.ToString("T");
-                 string page = "Deeds Office Records Individual ";
-                 string action = "Deeds Office:" + name;
-                 string user_id = Session["ID"].ToString();
-                 string us = Session["Name"].ToString();
+                string date_add = DateTime.Today.ToShortDateString();
+                string time_add = time.ToString("T");
+                string page = "Deeds Office Records Individual ";
+                string action = "Deeds Office:" + name;
+                string user_id = Session["ID"].ToString();
+                string us = Session["Name"].ToString();
 
-                 ViewData["user"] = Session["Name"].ToString();
-                 ViewData["date"] = DateTime.Today.ToShortDateString();
-                 ViewData["ref"] = refe;
-                 ViewData["ComName"] = name;
+                ViewData["user"] = Session["Name"].ToString();
+                ViewData["date"] = DateTime.Today.ToShortDateString();
+                ViewData["ref"] = refe;
+                ViewData["ComName"] = name;
 
-                 string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
+                string query_uid = "INSERT INTO logs (date,time,page,action,user_id,user) VALUES('" + date_add + "','" + time_add + "','" + page + "','" + action + "','" + user_id + "','" + us + "')";
 
-                 conn.Open();
+                conn.Open();
 
-                 var cmd2 = new MySqlCommand(query_uid, conn);
+                var cmd2 = new MySqlCommand(query_uid, conn);
 
-                 var reader2 = cmd2.ExecuteReader();
+                var reader2 = cmd2.ExecuteReader();
 
-                 conn.Close();*/
-                string refe = deed.Reference != null ? deed.Reference.Trim() : null;
+                conn.Close();
+                /*string refe = deed.Reference != null ? deed.Reference.Trim() : null;
                 ViewData["user"] = Session["Name"].ToString();
                 ViewData["date"] = DateTime.Today.ToShortDateString();
                 ViewData["ref"] = refe;
                 var url = " http://localhost:7000/root";
                 var client = new RestClient(url);
                 var request = new RestRequest(Method.GET);
-                IRestResponse response = client.Execute<RootObject>(request);
+                IRestResponse response = client.Execute<RootObject>(request);*/
                 System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
 
                 dynamic rootObject = JObject.Parse(response.Content);
@@ -1210,7 +1211,7 @@ namespace searchworks.client.Controllers
             System.Diagnostics.Debug.WriteLine(Sequestration);
 
             /*string Reference = CompanyDeed.Reference != null ? CompanyDeed.Reference.Trim() : " ";*/
-            /*string Reference = " ";
+            string Reference = " ";
             string deedsOffice = DeedsOffice != null ? DeedsOffice.Trim() : null;
             string personID = PersonID != null ? PersonID.Trim() : null;
             string searchDescription = SearchDescription != null ? SearchDescription.Trim() : null;
@@ -1238,51 +1239,53 @@ namespace searchworks.client.Controllers
             var reader2 = cmd2.ExecuteReader();
 
             conn.Close();
+            JCredHelper jCredHelper = new JCredHelper();
+            string authtoken = jCredHelper.GetSWAPILoginToken(); //GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
 
-            string authtoken = GetLoginToken("uatapi@ktopportunities.co.za", "P@ssw0rd!");
             if (!tokenValid(authtoken))
             {
                 //exit with a warning
             }
 
             //company search API call
-            var url = "https://uatrest.searchworks.co.za/deedsoffice/person/dbkey/";
+            var url = jCredHelper.GetSWAPIHostUrl() + "/deedsoffice/person/dbkey/";
+            /*var url = "https://uatrest.searchworks.co.za/deedsoffice/person/dbkey/";*/
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
             //request headers
             request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");*/
+            request.AddHeader("Content-Type", "application/json");
 
             try
             {
-                /* var apiInput = new
-                 {
-                     SessionToken = authtoken,
-                     Reference = Reference,
-                     DeedsOffice = deedsOffice,
-                     SearchDescription = searchDescription,
-                     DBKey = personID,
-                     IsSequastration = sequestration,
-                 };
+                var apiInput = new
+                {
+                    SessionToken = authtoken,
+                    Reference = Reference,
+                    DeedsOffice = deedsOffice,
+                    SearchDescription = searchDescription,
+                    DBKey = personID,
+                    IsSequastration = sequestration,
+                };
 
-                 //add parameters and token to request
-                 request.Parameters.Clear();
-                 request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                 request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
+                //add parameters and token to request
+                request.Parameters.Clear();
+                request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                request.AddParameter("Authorization", "Bearer " + authtoken, ParameterType.HttpHeader);
 
-                 IRestResponse response = client.Execute<RootObject>(request);
+                IRestResponse response = client.Execute<RootObject>(request);
 
-                 dynamic rootObject = JObject.Parse(response.Content);
-                 JObject responseObject = JObject.Parse(response.Content);*/
+                dynamic rootObject = JObject.Parse(response.Content);
+                JObject responseObject = JObject.Parse(response.Content);
 
-                var url = "http://localhost:7001/root";
+                /*var url = "http://localhost:7001/root";
                 var client = new RestClient(url);
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute<RootObject>(request);
                 System.Diagnostics.Debug.WriteLine(JObject.Parse(response.Content));
-                dynamic rootObject = JObject.Parse(response.Content);
+                dynamic rootObject = JObject.Parse(response.Content);*/
 
                 ViewData["ResponseMessage"] = rootObject.ResponseMessage;
                 TempData["ResponseMessage"] = rootObject.ResponseMessage;

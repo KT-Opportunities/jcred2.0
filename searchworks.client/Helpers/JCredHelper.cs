@@ -12,16 +12,16 @@ using Newtonsoft.Json.Linq;
 
 namespace searchworks.client.Helpers
 {
-    public class JCredHelper
+    public class JCredHelper : IDisposable
     {
-        IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+        private IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString);
+        private bool disposed = false;
 
         //singleton
         public static JCredHelper Instance { get; protected set; } = new JCredHelper();
-        
+
         public JCredHelper()
         {
-
         }
 
         public string GetSWAPIHostUrl()
@@ -29,11 +29,10 @@ namespace searchworks.client.Helpers
             string api_host = "";
             try
             {
-                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHost"]);
+                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHostUrl"]);
             }
-            catch (Exception  err)
+            catch (Exception err)
             {
-
                 throw;
             }
 
@@ -57,7 +56,6 @@ namespace searchworks.client.Helpers
             }
             catch (Exception err)
             {
-
                 //throw;
             }
 
@@ -82,7 +80,6 @@ namespace searchworks.client.Helpers
 
             try
             {
-
                 IRestResponse response = client.Execute(request);
 
                 if (response.IsSuccessful)
@@ -92,12 +89,11 @@ namespace searchworks.client.Helpers
                 }
                 else
                 {//something went wrong: log the response
-
                 }
             }
             catch (Exception err)
             {
-                //error 
+                //error
                 //throw;
             }
 
@@ -121,5 +117,22 @@ namespace searchworks.client.Helpers
             return tenantID;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    //dispos any object that got created //_context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
