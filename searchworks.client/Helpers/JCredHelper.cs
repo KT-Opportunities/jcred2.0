@@ -29,7 +29,7 @@ namespace searchworks.client.Helpers
             string api_host = "";
             try
             {
-                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHost"]);
+                api_host = Convert.ToString(ConfigurationManager.AppSettings["SWAPIHostUrl"]);
             }
             catch (Exception  err)
             {
