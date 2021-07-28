@@ -6,6 +6,7 @@ using Dapper;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using searchworks.client.DAL;
 
 namespace searchworks.client.Models
 {
@@ -21,9 +22,13 @@ namespace searchworks.client.Models
 
         public List<User> users { get; set; }
 
+        public List<OrgUnitUser> orgUnitUsers { get; set; }
+
         public orgunit Currentorgunit { get; set; }
 
-        public orgunit Addorgunit { get; set; }
+        public OrgUnitUser Currentorgunituser { get; set; }
+
+        public orgunit orgunit { get; set; }
 
         public orgregion orgregion { get; set; }
 
@@ -36,10 +41,25 @@ namespace searchworks.client.Models
             this.Currentorgunit = vorgunit;
         }
 
+        public void SetCurrentOrgUnitUser(OrgUnitUser vOrgUnitUser)
+        {
+            this.Currentorgunituser = vOrgUnitUser;
+        }
+
         public UserManagementViewModel(int intorgtenant)
         {
             using (IDbConnection db = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
             {
+                try
+                {
+                    this.orgunit = new orgunit();
+                    this.orgunit.orgtenantid = intorgtenant;
+                }
+                catch (Exception err)
+                {
+
+                    throw;
+                }
                 try
                 {
                     this.Company = db.Query<orgtenant>("Select * From orgtenant where orgtenantid=" + intorgtenant).FirstOrDefault();
@@ -96,6 +116,19 @@ namespace searchworks.client.Models
                 {
                     string query = "Select * From user where id in (select userid from orgunitusermap where orgtenantid = " + Convert.ToString(this.Company.orgtenantid) + " )";
                     this.users = db.Query<User>(query).ToList();
+                }
+                catch (Exception err)
+                {
+                    this.users = null;
+                    //TODO: log the error
+
+                }
+
+
+                try
+                {
+                    string query = "Select * From vworgunitusermap where orgtenantid = " + Convert.ToString(this.Company.orgtenantid) ;
+                    this.orgUnitUsers = db.Query<OrgUnitUser>(query).ToList();
                 }
                 catch (Exception err)
                 {

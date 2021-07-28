@@ -11,9 +11,9 @@ namespace searchworks.client.DAL
     {
         IEnumerable<orgunit> GetOrgUnits(int orgtenantID);
         orgunit GetOrgUnitByID(int orgunitID);
-        void InsertOrgUnit(orgunit vorgunit , int parent_orgunitid);
-        void DeleteOrgUnit(int orgunitID);
-        void UpdateOrgUnit(orgunit vorgunit);
+        int InsertOrgUnit(orgunit vorgunit, int parent_orgunitid);
+        int DeleteOrgUnit(int orgunitID);
+        int UpdateOrgUnit(orgunit vorgunit);
         void Save();
 
         //void NewMethod(); NLog

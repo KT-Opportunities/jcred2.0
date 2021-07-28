@@ -1,0 +1,193 @@
+﻿@model searchworks.client.Models.orgunit
+
+@{ ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+<div class="con22" style="width: 72% !important; margin-left: 80px;">
+    @using (Html.BeginForm())
+    {
+@Html.AntiForgeryToken()
+                <div class="justify-content-between" style="display:flex;flex-direction:column">
+                    <div class="justify-content-between" style="display: flex; flex-direction: column; position: relative; left: 39px;">
+                        <h4>Edit Branch</h4>
+                        <hr />
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.orgunitid)
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+
+
+                            @Html.HiddenFor(model => model.parent_orgunitid, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                        </div>
+
+                        <div class="form-group">
+
+
+                            @Html.HiddenFor(model => model.orgtenantid, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                        </div>
+
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group">
+
+                                    @Html.LabelFor(model => model.orgunitname, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.orgunitname, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.orgunitname, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.orgunitcode, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.orgunitcode, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.orgunitcode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.regionid, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.regionid, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.regionid, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.telephone, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.telephone, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.telephone, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.postal_address, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.postal_address, new { htmlAttributes = new { @style = "height: 73px;", @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.postal_address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.physical_address, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.physical_address, new { htmlAttributes = new { @style = "height: 73px;", @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.physical_address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.postal_code, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.postal_code, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.postal_code, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.orgunit_regno, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.orgunit_regno, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.orgunit_regno, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.orgunit_vatno, htmlAttributes: new { @class = "control-label col-12" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.orgunit_vatno, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                                        @Html.ValidationMessageFor(model => model.orgunit_vatno, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>*@
+
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                            </div>
+                            <div class="col-6 form-group" style="margin-left: 343px;">
+                                <div class="row justify-content-end">
+                                    @* <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>*@
+
+                                    @Html.ActionLink("Cancel", "UserManagementHome", "UserManagement", null, new
+                                    {
+                                        @class = "btn-b2-cancel btnSpace",
+                                        @style = "cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                    })
+
+                                    <input class="btn-b2 btnSpace" value="Create" type="submit" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>}
+
+
+
+
+</div>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

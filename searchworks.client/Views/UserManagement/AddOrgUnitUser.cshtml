@@ -1,0 +1,161 @@
+﻿@model searchworks.client.DAL.OrgUnitUser
+@{
+    ViewBag.Title = "Add Org Unit User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<h2>AddOrgUnitUser</h2>*@
+
+<style>
+    #orgunitname {
+        width: 100%;
+        height: 32px;
+        background: #E8E8E8 0% 0% no-repeat padding-box;
+        border-radius: 5px;
+        border: none;
+        opacity: 1;
+        padding-left: 12px;
+        font-size: 12px;
+    }
+</style>
+
+
+<div class="con22" style="width: 72% !important; margin-left: 80px;">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="justify-content-between" style="display:flex;flex-direction:column">
+        <div class="justify-content-between" style="display: flex; flex-direction: column; position: relative; left: 39px;">
+            <h4>Add User</h4>
+            <hr />
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.firstName, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.firstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.lastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.orgunitname, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @*@Html.DropDownListFor(model => model.orgunitname, new SelectList(Model.orgunits, "orgunitname", "orgunitname"), new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })*@
+                            @Html.DropDownListFor(model => model.orgunitname, new SelectList(Model.orgunits), new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.orgunitname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.address, new { htmlAttributes = new { @style = "height: 73px;", @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.city, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.code, new { htmlAttributes = new { @id = "FirstName", @class = "form-control cus-input" } })
+                            @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add User" class="btn btn-default" />
+            </div>
+        </div>*@
+
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                </div>
+                <div class="col-6 form-group" style="margin-left: 343px;">
+                    <div class="row justify-content-end">
+                        @* <button class="btn-b2-cancel btnSpace" data-dismiss="modal">Cancel</button>*@
+
+                        @Html.ActionLink("Cancel", "UserManagementHome", "UserManagement", null, new
+                   {
+                       @class = "btn-b2-cancel btnSpace",
+                       @style = "cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                   })
+
+                        <input class="btn-b2 btnSpace" value="Create" type="submit" />
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+            </div>
+
+            }
+
+        </div>
+
+    @*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

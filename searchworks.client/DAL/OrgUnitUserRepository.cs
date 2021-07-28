@@ -25,26 +25,37 @@ namespace searchworks.client.DAL
             this._context = context;
         }
 
-        public IEnumerable<orgunitusermap> GetOrgUnitUsers(int orgunitID)
+
+        public IEnumerable<OrgUnitUser> GetOrgUnitUsers(int orgunitID)
         {
             throw new NotImplementedException();
         }
-    
+
+        public OrgUnitUser GetOrgUnitUserByID(int orgunitusermapID)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         public void DeleteOrgUnitUser(int orgunitusermapID)
         {
             throw new NotImplementedException();
         }
 
-       
-        public orgunitusermap GetOrgUnitUserByID(int orgunitusermapID)
-        {
-            throw new NotImplementedException();
-        }
-
         
 
-        public void InsertOrgUnitUser(orgunit vorgunit, string aspneruserid)
+
+        
+        public void InsertOrgUnitUser(OrgUnitUser vOrgUnitUser)
+        {
+
+            //1 Create ASP login using the context.
+            //2 DB create
+            //throw new NotImplementedException();
+        }
+
+        public void UpdateOrgUnitUser(OrgUnitUser vOrgUnitUserp)
         {
             throw new NotImplementedException();
         }
@@ -54,10 +65,6 @@ namespace searchworks.client.DAL
             throw new NotImplementedException();
         }
 
-        public void UpdateOrgUnitUser(orgunitusermap vorgunitusermap)
-        {
-            throw new NotImplementedException();
-        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -76,6 +83,5 @@ namespace searchworks.client.DAL
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

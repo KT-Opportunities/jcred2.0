@@ -9,11 +9,14 @@ namespace searchworks.client.DAL
 {
     interface IOrgUnitUserRepository : IDisposable
     {
-        IEnumerable<orgunitusermap> GetOrgUnitUsers(int orgunitID);
-        orgunitusermap GetOrgUnitUserByID(int orgunitusermapID);
-        void InsertOrgUnitUser(orgunit vorgunit, string aspneruserid);
+        IEnumerable<OrgUnitUser> GetOrgUnitUsers(int orgunitID);
+        OrgUnitUser GetOrgUnitUserByID(int orgunitusermapID);
+
+        void InsertOrgUnitUser(OrgUnitUser vOrgUnitUser);
+        void UpdateOrgUnitUser(OrgUnitUser vOrgUnitUser);
         void DeleteOrgUnitUser(int orgunitusermapID);
-        void UpdateOrgUnitUser(orgunitusermap vorgunitusermap);
+        
+
         void Save();
     }
 }

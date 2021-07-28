@@ -26,7 +26,7 @@ namespace searchworks.client.DAL
             orgunit vorgunit = new orgunit();
 
 
-
+            vorgunit = db.Query<orgunit>("Select * From orgunit where orgunitid=" + orgunitID).FirstOrDefault();
             //throw new NotImplementedException();
             return vorgunit;
         }
@@ -37,8 +37,8 @@ namespace searchworks.client.DAL
 
             //using EF
             var orgUnitsEF = from s in _context.orgunits
-                                  where s.orgtenantid == orgtenantID
-                                  select s;
+                             where s.orgtenantid == orgtenantID
+                             select s;
             lstOrgunits = orgUnitsEF.ToList();
 
 
@@ -52,46 +52,71 @@ namespace searchworks.client.DAL
             //throw new NotImplementedException();
         }
 
-        public void InsertOrgUnit(orgunit vorgunit, int parent_orgunitid)
+        public int InsertOrgUnit(orgunit vorgunit, int parent_orgunitid)
         {
             //throw new NotImplementedException();
             // use EF
             try
             {
-                _context.orgunits.Add(vorgunit);
+                //_context.orgunits.Add(vorgunit);
+                var affectedRows = db.Execute("insert into orgunit(parent_orgunitid,orgtenantid,orgunitname,orgunitcode,regionid,telephone,fax,postal_address,postal_code,physical_address,physical_code,orgunit_regno,orgunit_vatno) values(@parent_orgunitid,@orgtenantid,@orgunitname,@orgunitcode,@regionid,@telephone,@fax,@postal_address,@postal_code,@physical_address,@physical_code,@orgunit_regno,@orgunit_vatno)",
+                            vorgunit, null, 60, CommandType.Text);
                 Save();
+                return affectedRows;
             }
             catch (Exception err)
             {
-
+                return 0;
             }
+
+
 
         }
 
-        public void UpdateOrgUnit(orgunit vorgunit)
+        public int UpdateOrgUnit(orgunit vorgunit)
         {
             //throw new NotImplementedException();
             try
             {
                 //_context.orgunits.up(vorgunit);
+                var affectedRows = db.Execute(@"update  orgunit set 
+                                                     parent_orgunitid=@parent_orgunitid,
+                                                     orgtenantid =@orgtenantid,
+                                                     orgunitname =@orgunitname,
+                                                     orgunitcode =@orgunitcode,
+                                                     regionid =@regionid,
+                                                     telephone =@telephone,
+                                                     fax =@fax,
+                                                     orgunit_vatno=@orgunit_vatno,
+                                                     orgunit_regno=@orgunit_regno,
+                                                     postal_address =@postal_address,
+                                                     postal_code =@postal_code,
+                                                     physical_address =@physical_address,
+                                                     physical_code =@physical_code
+                                                    where orgunitid=@orgunitid",
+                           vorgunit, null, 60, CommandType.Text);
                 Save();
+
+                return affectedRows;
+
             }
             catch (Exception err)
             {
-
+                return 0;
             }
         }
 
-        public void DeleteOrgUnit(int orgunitID)
+        public int DeleteOrgUnit(int orgunitID)
         {
-            throw new NotImplementedException();
+            return 0;
+            //throw new NotImplementedException();
         }
 
         public void Save()
         {
             _context.SaveChanges();
         }
-        
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -109,6 +134,6 @@ namespace searchworks.client.DAL
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
+
     }
 }

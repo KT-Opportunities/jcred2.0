@@ -464,6 +464,7 @@
     <Compile Include="DAL\JCredDBContext.cs" />
     <Compile Include="DAL\OrgTenantRepository.cs" />
     <Compile Include="DAL\OrgUnitRepository.cs" />
+    <Compile Include="DAL\OrgUnitUser.cs" />
     <Compile Include="DAL\OrgUnitUserRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1505,6 +1506,10 @@
     <Content Include="Views\Individual\DeedsOfficeRecordsIndividualDetail.cshtml" />
     <Content Include="Views\Home\DeedsOfficeRecordsCompanyDetails.cshtml" />
     <Content Include="Views\Shared\_LandingLayout.cshtml" />
+    <Content Include="Views\UserManagement\AddOrgUnit.cshtml" />
+    <Content Include="Views\UserManagement\EditOrgUnit.cshtml" />
+    <Content Include="Views\UserManagement\AddOrgUnitUser.cshtml" />
+    <Content Include="Views\UserManagement\EditOrgUnitUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

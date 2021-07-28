@@ -11,26 +11,41 @@ namespace searchworks.client.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class orgunit
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Key]
         public int orgunitid { get; set; }
         public Nullable<int> parent_orgunitid { get; set; }
         public Nullable<int> orgtenantid { get; set; }
+        [Display(Name="Branch Name")]
         public string orgunitname { get; set; }
+        [Display(Name="Branch Code")]
         public string orgunitcode { get; set; }
+        [Display(Name="Region")]
         public Nullable<int> regionid { get; set; }
+        [Display(Name ="Telephone")]
         public string telephone { get; set; }
         public string fax { get; set; }
-        public string postal_address { get; set; }
-        public string postal_code { get; set; }
+        [Display(Name = "Postal Address")]
+        [DataType(DataType.MultilineText)]
+        public string postal_address { get; set; } 
+        [Display(Name = "Postal Code")]
+        public string postal_code { get; set; } 
+        [Display(Name ="Physical Address")]
+        [DataType(DataType.MultilineText)]
         public string physical_address { get; set; }
         public string physical_code { get; set; }
         public Nullable<bool> isbillable { get; set; }
         public string billing_orgname { get; set; }
         public string billing_address { get; set; }
         public string billing_code { get; set; }
+        [Display(Name = "Registration Number")]
         public string orgunit_regno { get; set; }
+        [Display(Name = "Vat Number")]
         public string orgunit_vatno { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
